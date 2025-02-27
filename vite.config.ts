@@ -1,12 +1,13 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import deno from "@deno/vite-plugin";
 
 // @ts-expect-error process is a nodejs global
 const host = Deno.env.get("TAURI_DEV_HOST");
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
-  plugins: [react()],
+  plugins: [deno(), react()],
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //

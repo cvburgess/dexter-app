@@ -3,10 +3,24 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx"
   },
+  "imports": {
+    "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.4",
+    "@tauri-apps/api": "npm:@tauri-apps/api@^2",
+    "@tauri-apps/cli": "npm:@tauri-apps/cli@^2",
+    "@tauri-apps/plugin-opener": "npm:@tauri-apps/plugin-opener@^2",
+    "@types/react-dom": "npm:@types/react-dom@^18.3.1",
+    "@types/react": "npm:@types/react@^18.3.1",
+    "@vitejs/plugin-react": "npm:@vitejs/plugin-react@^4.3.4",
+    "react-dom": "npm:react-dom@^18.3.1",
+    "react": "npm:react@^18.3.1",
+    "typescript": "npm:typescript@~5.6.2",
+    "vite": "npm:vite@^6.0.3"
+  },
   "tasks": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "tauri": "tauri"
+    "dev": "deno task vite",
+    "build": "tsc && deno task vite build",
+    "preview": "deno task vite preview",
+    "tauri": "tauri",
+    "vite": "deno run -A --node-modules-dir npm:vite"
   }
 }
