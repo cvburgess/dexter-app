@@ -12,9 +12,9 @@
   "app": {
     "windows": [
       {
-        "title": "dexter-app",
-        "width": 800,
-        "height": 600
+        "title": "Dexter",
+        "width": 1000,
+        "height": 750
       }
     ],
     "security": {

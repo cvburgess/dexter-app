@@ -1,13 +1,15 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import deno from "@deno/vite-plugin";
+import tailwindcss from "@tailwindcss/vite";
 
-// @ts-expect-error process is a nodejs global
+// @ts-expect-error Deno support
 const host = Deno.env.get("TAURI_DEV_HOST");
 
 // https://vitejs.dev/config/
-export default defineConfig(() => ({
-  plugins: [deno(), react()],
+export default defineConfig({
+  // @ts-expect-error TODO
+  plugins: [deno(), react(), tailwindcss()],
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
@@ -30,4 +32,4 @@ export default defineConfig(() => ({
       ignored: ["**/src-tauri/**"],
     },
   },
-}));
+});
