@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-unused-vars
 type Task = {
   description?: string;
   priority: TaskPriority | null;
@@ -27,16 +28,39 @@ export const Card = (
 
   return (
     <div className={`shadow-md rounded-lg p-4 m-4 w-sm ${colors.bg}`}>
-      <h3 className={`text-lg font-semibold mb-2 ${colors.text}`}>
-        {title}
-      </h3>
-      <p className={`mb-2 ${colors.text}`}>{description}</p>
-      <p className={colors.text}>
-        Status: {status} | Priority: {priority} | Subtasks: {subtasks.length}
-      </p>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          <StatusButton status={status} />
+          <h3 className={`text-lg font-semibold ${colors.text}`}>
+            {title}
+          </h3>
+        </div>
+        <div className="flex items-center">
+          <ListButton list="🐶" />
+          <ListButton list="🐶" />
+          <ListButton list="🐶" />
+          <ListButton list="🐶" />
+        </div>
+      </div>
     </div>
   );
 };
+
+const StatusButton = ({ status }: { status: TaskStatus }) => (
+  <button
+    type="button"
+    className="w-5 h-5 rounded-full border border-current/50 mr-2 hover:bg-opacity-20 hover:bg-current focus:outline-none focus:ring-2 focus:ring-offset-2"
+  />
+);
+
+const ListButton = ({ list }: { list: string }) => (
+  <button
+    type="button"
+    className="w-5 h-5 rounded-full border border-current/50 mr-2 hover:bg-opacity-20 hover:bg-current focus:outline-none focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs"
+  >
+    {list}
+  </button>
+);
 
 const getColors = (priority: TaskPriority | null) => {
   switch (priority) {
