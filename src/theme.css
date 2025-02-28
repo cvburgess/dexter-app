@@ -2,4 +2,7 @@
   --color-app-bg: #F0EDE5;
   --color-card-bg: #FFFFFF;
   --color-card-text: #0f121a;
+  --color-nav-bg: oklch(0.709 0.01 56.259);
+  --color-nav-item-bg: #FFFFFF;
+  --color-nav-text: oklch(0.769 0.188 70.08);
 }

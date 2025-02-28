@@ -1,5 +1,6 @@
 import "./App.css";
 import { Card } from "./components/Card.tsx";
+import { Nav } from "./components/Nav.tsx";
 
 const tasks = [
   {
@@ -50,17 +51,20 @@ const tasks = [
 
 function App() {
   return (
-    <main className="">
-      {tasks.map((task) => (
-        <Card
-          description={task.description}
-          key={task.id}
-          priority={task.priority}
-          status={task.status}
-          title={task.title}
-          subtasks={task.subtasks}
-        />
-      ))}
+    <main className="flex">
+      <Nav />
+      <div>
+        {tasks.map((task) => (
+          <Card
+            description={task.description}
+            key={task.id}
+            priority={task.priority}
+            status={task.status}
+            title={task.title}
+            subtasks={task.subtasks}
+          />
+        ))}
+      </div>
     </main>
   );
 }
