@@ -6,7 +6,10 @@ const navItems = [
 ];
 
 export const Nav = () => (
-  <nav className="h-screen p-4 bg-nav-bg" aria-label="Main navigation">
+  <nav
+    className="bg-nav-bg overflow-hidden h-screen p-4 w-24"
+    aria-label="Main navigation"
+  >
     <ul className="flex flex-col gap-4 text-nav-text">
       {navItems.map((item) => (
         <li

@@ -51,9 +51,9 @@ const tasks = [
 
 function App() {
   return (
-    <main className="flex">
+    <main className="flex h-screen w-full">
       <Nav />
-      <div>
+      <div className="flex-1 flex-col overflow-auto w-full">
         {tasks.map((task) => (
           <Card
             description={task.description}
