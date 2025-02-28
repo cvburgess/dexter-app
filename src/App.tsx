@@ -1,6 +1,7 @@
 import "./App.css";
 import { Card } from "./components/Card.tsx";
 import { Nav } from "./components/Nav.tsx";
+import { View } from "./components/View.tsx";
 
 const tasks = [
   {
@@ -53,7 +54,7 @@ function App() {
   return (
     <main className="flex h-screen w-full">
       <Nav />
-      <div className="flex-1 flex-col overflow-auto w-full">
+      <View className="flex-col">
         {tasks.map((task) => (
           <Card
             description={task.description}
@@ -64,7 +65,7 @@ function App() {
             subtasks={task.subtasks}
           />
         ))}
-      </div>
+      </View>
     </main>
   );
 }
