@@ -16,5 +16,5 @@
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
-  "cSpell.words": ["tauri"]
+  "cSpell.words": ["oklch", "tauri"]
 }
