@@ -8,8 +8,6 @@
   --color-nav-text: oklch(0.769 0.188 70.08);
 
   /* Cards */
-  --color-card-none-bg: #FFFFFF;
-  --color-card-none-text: #0f121a;
   --color-card-p0-bg: red;
   --color-card-p0-text: #0f121a;
   --color-card-p1-bg: yellow;
@@ -18,4 +16,6 @@
   --color-card-p2-text: #0f121a;
   --color-card-p3-bg: gray;
   --color-card-p3-text: #0f121a;
+  --color-card-none-bg: #FFFFFF;
+  --color-card-none-text: #0f121a;
 }

@@ -3,6 +3,24 @@ import { Card } from "./components/Card.tsx";
 import { Nav } from "./components/Nav.tsx";
 import { View } from "./components/View.tsx";
 
+const App = () => (
+  <main className="flex h-screen w-full">
+    <Nav />
+    <View className="flex-col">
+      {tasks.map((task) => (
+        <Card
+          description={task.description}
+          key={task.id}
+          priority={task.priority}
+          status={task.status}
+          title={task.title}
+          subtasks={task.subtasks}
+        />
+      ))}
+    </View>
+  </main>
+);
+
 const tasks = [
   {
     id: "001-abc-000",
@@ -49,25 +67,5 @@ const tasks = [
     subtasks: [],
   },
 ];
-
-function App() {
-  return (
-    <main className="flex h-screen w-full">
-      <Nav />
-      <View className="flex-col">
-        {tasks.map((task) => (
-          <Card
-            description={task.description}
-            key={task.id}
-            priority={task.priority}
-            status={task.status}
-            title={task.title}
-            subtasks={task.subtasks}
-          />
-        ))}
-      </View>
-    </main>
-  );
-}
 
 export default App;
