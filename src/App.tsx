@@ -1,10 +1,10 @@
-import "./App.css";
+import "./app.css";
 import { Card } from "./components/Card.tsx";
 import { Nav } from "./components/Nav.tsx";
 import { View } from "./components/View.tsx";
 
 const App = () => (
-  <main className="flex h-screen w-full">
+  <main className="flex h-screen w-full" data-theme="light">
     <Nav />
     <View className="flex-col">
       {tasks.map((task) => (
@@ -40,7 +40,7 @@ const tasks = [
     id: "003-abc-000",
     description: "All files in Dropbox",
     status: 2,
-    priority: 1,
+    priority: 2,
     title: "File taxes",
     subtasks: [],
   },

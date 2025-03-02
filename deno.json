@@ -12,6 +12,7 @@
     "@types/react-dom": "npm:@types/react-dom@^18.3.1",
     "@types/react": "npm:@types/react@^18.3.1",
     "@vitejs/plugin-react": "npm:@vitejs/plugin-react@^4.3.4",
+    "daisyui": "npm:daisyui@^5.0.0",
     "react-dom": "npm:react-dom@^18.3.1",
     "react": "npm:react@^18.3.1",
     "tailwindcss": "npm:tailwindcss@^4.0.9",
