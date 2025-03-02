@@ -9,8 +9,8 @@ type Task = {
 
 enum TaskPriority {
   IMPORTANT_AND_URGENT,
-  IMPORTANT,
   URGENT,
+  IMPORTANT,
   NEITHER,
 }
 
@@ -33,9 +33,9 @@ export const Card = (
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <StatusButton status={status} />
-          <h3 className="text-lg font-semibold">
+          <p className="text-sm font-semibold">
             {title}
-          </h3>
+          </p>
         </div>
         <div className="flex items-center">
           <ListButton list="🐶" />
@@ -53,14 +53,14 @@ const StatusButton = (
 ) => (
   <button
     type="button"
-    className="w-5 h-5 rounded-full border mr-2 focus:ring-2 focus:ring-offset-2 border-current/50 hover:bg-current/25"
+    className="w-5 h-5 rounded-full border mr-2 focus:ring-2 focus:ring-offset-2 border-current/40 hover:bg-current/10"
   />
 );
 
 const ListButton = ({ list }: { list: string }) => (
   <button
     type="button"
-    className="w-5 h-5 rounded-full border mr-2 focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs border-current/50 hover:bg-current/25"
+    className="w-5 h-5 rounded-full outline mr-2 focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10"
   >
     {list}
   </button>
@@ -78,8 +78,6 @@ const getColors = (priority: TaskPriority | null) => {
       return "bg-error/80 hover:bg-error/90 text-error-content";
 
     case TaskPriority.NEITHER:
-      return "bg-neutral/80 hover:bg-neutral/90 text-neutral-content";
-
     default:
       return "bg-base-100/80 hover:bg-base-100/90 text-base-content";
   }
