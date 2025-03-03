@@ -2,11 +2,13 @@
   "version": "4",
   "specifiers": {
     "npm:@deno/vite-plugin@^1.0.4": "1.0.4_vite@6.2.0",
+    "npm:@dnd-kit/react@^0.0.9": "0.0.9_react@18.3.1_react-dom@18.3.1__react@18.3.1",
     "npm:@tailwindcss/vite@^4.0.9": "4.0.9_vite@6.2.0_lightningcss@1.29.1",
     "npm:@tauri-apps/api@2": "2.3.0",
     "npm:@tauri-apps/cli@2": "2.3.0",
     "npm:@tauri-apps/cli@2.3.0": "2.3.0",
     "npm:@tauri-apps/plugin-opener@2": "2.2.5",
+    "npm:@types/node@*": "22.12.0",
     "npm:@types/react-dom@^18.3.1": "18.3.5_@types+react@18.3.18",
     "npm:@types/react@^18.3.1": "18.3.18",
     "npm:@vitejs/plugin-react@^4.3.4": "4.3.4_vite@6.2.0_@babel+core@7.26.9",
@@ -168,6 +170,57 @@
         "vite@6.2.0"
       ]
     },
+    "@dnd-kit/abstract@0.0.9": {
+      "integrity": "sha512-4FjHPOREfJJfRu0clCAnYqYc8JNHQl6CL31FjLKR+1wER+YOGkb3s3JntsqvZost5Xm/G/Z4sQ3ouLdyYQ9KdQ==",
+      "dependencies": [
+        "@dnd-kit/geometry",
+        "@dnd-kit/state",
+        "tslib"
+      ]
+    },
+    "@dnd-kit/collision@0.0.9": {
+      "integrity": "sha512-8Brbcd0dM/y2yzg/6EI9O/SvsVAglx0fUDvqPSsXACewR+//OGno1GVKndh35GAVKqDxOgG3Q/fw+CVnMnFv6g==",
+      "dependencies": [
+        "@dnd-kit/abstract",
+        "@dnd-kit/geometry",
+        "tslib"
+      ]
+    },
+    "@dnd-kit/dom@0.0.9": {
+      "integrity": "sha512-nsDcL6MMdNfGOg0xp24c1xy/eNW7fO1uLU0AM2b1SFYJYsbXUMw6sQXq+2eHCQol/FixCoSbjMgjx9D8jQXb+w==",
+      "dependencies": [
+        "@dnd-kit/abstract",
+        "@dnd-kit/collision",
+        "@dnd-kit/geometry",
+        "@dnd-kit/state",
+        "tslib"
+      ]
+    },
+    "@dnd-kit/geometry@0.0.9": {
+      "integrity": "sha512-zqSY7vva+LGs9Y/c37GhD67q+boS27nCmyYYAohlZ29MGz66KwjpbSH5HNHa261kuq90KaaIVQQVHiZGjNfmOw==",
+      "dependencies": [
+        "@dnd-kit/state",
+        "tslib"
+      ]
+    },
+    "@dnd-kit/react@0.0.9_react@18.3.1_react-dom@18.3.1__react@18.3.1": {
+      "integrity": "sha512-a2ZUbVVyJwSf5gf0l6I10VqEj8EEe+O1W/q+rSR0fpjbxjwhLT0Gt+udwKZsg3yIKxmxJC4W6eHSS6feNca9aw==",
+      "dependencies": [
+        "@dnd-kit/abstract",
+        "@dnd-kit/dom",
+        "@dnd-kit/state",
+        "react",
+        "react-dom",
+        "tslib"
+      ]
+    },
+    "@dnd-kit/state@0.0.9": {
+      "integrity": "sha512-F43bOum8k/Rh1tfO3DiAUs/zw6KSv5IMm4PGKSPoU2tz+LW+37Kp37NlgwtLLDzx+z6R+6gILnJzE6Q5eVx7OQ==",
+      "dependencies": [
+        "@preact/signals-core",
+        "tslib"
+      ]
+    },
     "@esbuild/aix-ppc64@0.25.0": {
       "integrity": "sha512-O7vun9Sf8DFjH2UtqK8Ku3LkquL9SZL8OLY1T5NZkA34+wG3OQF7cl4Ql8vdNzM6fzBbYfLaiRLIOZ+2FOCgBQ=="
     },
@@ -266,6 +319,9 @@
         "@jridgewell/resolve-uri",
         "@jridgewell/sourcemap-codec"
       ]
+    },
+    "@preact/signals-core@1.8.0": {
+      "integrity": "sha512-OBvUsRZqNmjzCZXWLxkZfhcgT+Fk8DDcT/8vD6a1xhDemodyy87UJRJfASMuSD8FaAIeGgGm85ydXhm7lr4fyA=="
     },
     "@rollup/rollup-android-arm-eabi@4.34.8": {
       "integrity": "sha512-q217OSE8DTp8AFHuNHXo0Y86e1wtlfVrXiAlwkIvGRQv9zbc6mE3sjIVfwI8sYUyNxwOg0j/Vm1RKM04JcWLJw=="
@@ -476,6 +532,12 @@
     },
     "@types/estree@1.0.6": {
       "integrity": "sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw=="
+    },
+    "@types/node@22.12.0": {
+      "integrity": "sha512-Fll2FZ1riMjNmlmJOdAyY5pUbkftXslB5DgEzlIuNaiWhXd00FhWxVC/r4yV/4wBb9JfImTu+jiSvXTkJ7F/gA==",
+      "dependencies": [
+        "undici-types"
+      ]
     },
     "@types/prop-types@15.7.14": {
       "integrity": "sha512-gNMvNH49DJ7OJYv+KAKn0Xp45p8PLl6zo2YnvDIbTd4J6MER2BmWN49TG7n9LvkyihINxeKW8+3bfS2yDC9dzQ=="
@@ -764,8 +826,14 @@
     "tapable@2.2.1": {
       "integrity": "sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ=="
     },
+    "tslib@2.6.3": {
+      "integrity": "sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ=="
+    },
     "typescript@5.6.3": {
       "integrity": "sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw=="
+    },
+    "undici-types@6.20.0": {
+      "integrity": "sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg=="
     },
     "update-browserslist-db@1.1.3_browserslist@4.24.4": {
       "integrity": "sha512-UxhIZQ+QInVdunkDAaiazvvT/+fXL5Osr0JZlJulepYu6Jd7qJtDZjlur0emRlT71EN3ScPoE7gvsuIKKNavKw==",
@@ -801,6 +869,7 @@
   "workspace": {
     "dependencies": [
       "npm:@deno/vite-plugin@^1.0.4",
+      "npm:@dnd-kit/react@^0.0.9",
       "npm:@tailwindcss/vite@^4.0.9",
       "npm:@tauri-apps/api@2",
       "npm:@tauri-apps/cli@2",

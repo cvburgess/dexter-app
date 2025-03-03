@@ -1,22 +1,25 @@
+import { DragDropProvider } from "@dnd-kit/react";
+
 import "./app.css";
 import { Card } from "./components/Card.tsx";
 import { Nav } from "./components/Nav.tsx";
 import { View } from "./components/View.tsx";
 
+const List = ({ children }) => (
+  <DragDropProvider>
+    {children}
+  </DragDropProvider>
+);
+
 const App = () => (
   <main className="flex h-screen w-full" data-theme="light">
     <Nav />
-    <View className="flex-col">
-      {tasks.map((task) => (
-        <Card
-          description={task.description}
-          key={task.id}
-          priority={task.priority}
-          status={task.status}
-          title={task.title}
-          subtasks={task.subtasks}
-        />
-      ))}
+    <View>
+      <List>
+        {tasks.map((task, index) => (
+          <Card index={index} key={task.id} task={task} />
+        ))}
+      </List>
     </View>
   </main>
 );
@@ -66,7 +69,7 @@ const tasks = [
     subtasks: [],
   },
   {
-    id: "006-abc-000",
+    id: "007-abc-000",
     description: "321-752-2222 x7062",
     status: 0,
     priority: 2,
@@ -74,7 +77,7 @@ const tasks = [
     subtasks: [],
   },
   {
-    id: "006-abc-000",
+    id: "008-abc-000",
     status: 0,
     priority: null,
     title: "Exchange air filter",

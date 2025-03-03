@@ -1,5 +1,8 @@
 // deno-lint-ignore-file no-unused-vars
+import { useSortable } from "@dnd-kit/react/sortable";
+
 type Task = {
+  id: string;
   description?: string;
   priority: TaskPriority | null;
   status: TaskStatus;
@@ -22,19 +25,22 @@ enum TaskStatus {
 }
 
 export const Card = (
-  { description, priority, status, subtasks, title }: Task,
+  { task, index }: { task: Task; index: number },
 ) => {
-  const colors = getColors(priority);
+  const colors = getColors(task.priority);
+
+  const { ref } = useSortable({ id: task.id, index });
 
   return (
     <div
       className={`shadow-md rounded-lg p-4 m-4 w-sm ${colors}`}
+      ref={ref}
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <StatusButton status={status} />
+          <StatusButton status={task.status} />
           <p className="text-sm font-semibold">
-            {title}
+            {task.title}
           </p>
         </div>
         <div className="flex items-center">
