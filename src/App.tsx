@@ -4,25 +4,30 @@ import "./app.css";
 import { Card } from "./components/Card.tsx";
 import { Nav } from "./components/Nav.tsx";
 import { View } from "./components/View.tsx";
+import { useTheme } from "./hooks/useTheme.ts";
+import React from "react";
 
-const List = ({ children }) => (
+const List = ({ children }: { children: React.ReactNode }) => (
   <DragDropProvider>
     {children}
   </DragDropProvider>
 );
 
-const App = () => (
-  <main className="flex h-screen w-full" data-theme="dark">
-    <Nav />
-    <View>
-      <List>
-        {tasks.map((task, index) => (
-          <Card index={index} key={task.id} task={task} />
-        ))}
-      </List>
-    </View>
-  </main>
-);
+const App = () => {
+  const theme = useTheme();
+  return (
+    <main className="flex h-screen w-full" data-theme={theme}>
+      <Nav />
+      <View>
+        <List>
+          {tasks.map((task, index) => (
+            <Card index={index} key={task.id} task={task} />
+          ))}
+        </List>
+      </View>
+    </main>
+  );
+};
 
 const tasks = [
   {
