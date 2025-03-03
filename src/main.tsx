@@ -4,31 +4,23 @@ import { createHashRouter, RouterProvider } from "react-router";
 
 import App from "./App.tsx";
 import { Today } from "./routes/Today.tsx";
+import { Review } from "./routes/Review.tsx";
 import { Week } from "./routes/Week.tsx";
 import { Prioritize } from "./routes/Prioritize.tsx";
 import { Lists } from "./routes/Lists.tsx";
+import { Settings } from "./routes/Settings.tsx";
 
 const router = createHashRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      {
-        index: true,
-        element: <Today />,
-      },
-      {
-        path: "week",
-        element: <Week />,
-      },
-      {
-        path: "prioritize",
-        element: <Prioritize />,
-      },
-      {
-        path: "lists",
-        element: <Lists />,
-      },
+      { index: true, element: <Today /> },
+      { path: "week", element: <Week /> },
+      { path: "review", element: <Review /> },
+      { path: "prioritize", element: <Prioritize /> },
+      { path: "lists", element: <Lists /> },
+      { path: "settings", element: <Settings /> },
     ],
   },
 ]);
