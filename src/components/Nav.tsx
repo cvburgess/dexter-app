@@ -1,8 +1,11 @@
+import { List, Moon, SquaresFour, Strategy, Sun } from "@phosphor-icons/react";
+
 const navItems = [
-  { title: "H", href: "/" },
-  { title: "A", href: "/about" },
-  { title: "S", href: "/services" },
-  { title: "C", href: "/contact" },
+  { Icon: Sun, href: "/" },
+  { Icon: Moon, href: "/about" },
+  { Icon: Strategy, href: "/services" },
+  { Icon: SquaresFour, href: "/services" },
+  { Icon: List, href: "/contact" },
 ];
 
 export const Nav = () => (
@@ -20,7 +23,7 @@ export const Nav = () => (
             href={item.href}
             className="flex items-center justify-center h-16 w-16"
           >
-            {item.title}
+            {<item.Icon size={32} />}
           </a>
         </li>
       ))}
