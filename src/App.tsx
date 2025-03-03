@@ -12,7 +12,7 @@ const List = ({ children }) => (
 );
 
 const App = () => (
-  <main className="flex h-screen w-full" data-theme="light">
+  <main className="flex h-screen w-full" data-theme="dark">
     <Nav />
     <View>
       <List>
@@ -30,6 +30,8 @@ const tasks = [
     status: 0,
     priority: 0,
     title: "Send resume to recruiter",
+    dueBy: "2025-03-03",
+    scheduledFor: "2025-03-03",
     subtasks: [],
   },
   {
@@ -37,11 +39,15 @@ const tasks = [
     status: 1,
     priority: 1,
     title: "Prep talk for Friday",
+    dueBy: "2025-03-07",
+    scheduledFor: "2025-03-05",
     subtasks: [],
   },
   {
     id: "003-abc-000",
     description: "All files in Dropbox",
+    dueBy: "2025-04-15",
+    scheduledFor: "2025-04-01",
     status: 2,
     priority: 2,
     title: "File taxes",
@@ -52,6 +58,8 @@ const tasks = [
     status: 3,
     priority: 3,
     title: "Take out the trash",
+    dueBy: "2025-03-01",
+    scheduledFor: "2025-03-03",
     subtasks: [],
   },
   {

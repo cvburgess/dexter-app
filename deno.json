@@ -6,6 +6,8 @@
   "imports": {
     "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.4",
     "@dnd-kit/react": "npm:@dnd-kit/react@^0.0.9",
+    "@js-temporal/polyfill": "npm:@js-temporal/polyfill",
+    "@phosphor-icons/react": "npm:@phosphor-icons/react@^2.1.7",
     "@tailwindcss/vite": "npm:@tailwindcss/vite@^4.0.9",
     "@tauri-apps/api": "npm:@tauri-apps/api@^2",
     "@tauri-apps/cli": "npm:@tauri-apps/cli@^2",

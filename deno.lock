@@ -3,6 +3,8 @@
   "specifiers": {
     "npm:@deno/vite-plugin@^1.0.4": "1.0.4_vite@6.2.0",
     "npm:@dnd-kit/react@^0.0.9": "0.0.9_react@18.3.1_react-dom@18.3.1__react@18.3.1",
+    "npm:@js-temporal/polyfill@*": "0.4.4",
+    "npm:@phosphor-icons/react@^2.1.7": "2.1.7_react@18.3.1_react-dom@18.3.1__react@18.3.1",
     "npm:@tailwindcss/vite@^4.0.9": "4.0.9_vite@6.2.0_lightningcss@1.29.1",
     "npm:@tauri-apps/api@2": "2.3.0",
     "npm:@tauri-apps/cli@2": "2.3.0",
@@ -318,6 +320,20 @@
       "dependencies": [
         "@jridgewell/resolve-uri",
         "@jridgewell/sourcemap-codec"
+      ]
+    },
+    "@js-temporal/polyfill@0.4.4": {
+      "integrity": "sha512-2X6bvghJ/JAoZO52lbgyAPFj8uCflhTo2g7nkFzEQdXd/D8rEeD4HtmTEpmtGCva260fcd66YNXBOYdnmHqSOg==",
+      "dependencies": [
+        "jsbi",
+        "tslib"
+      ]
+    },
+    "@phosphor-icons/react@2.1.7_react@18.3.1_react-dom@18.3.1__react@18.3.1": {
+      "integrity": "sha512-g2e2eVAn1XG2a+LI09QU3IORLhnFNAFkNbo2iwbX6NOKSLOwvEMmTa7CgOzEbgNWR47z8i8kwjdvYZ5fkGx1mQ==",
+      "dependencies": [
+        "react",
+        "react-dom"
       ]
     },
     "@preact/signals-core@1.8.0": {
@@ -665,6 +681,9 @@
     "js-tokens@4.0.0": {
       "integrity": "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ=="
     },
+    "jsbi@4.3.0": {
+      "integrity": "sha512-SnZNcinB4RIcnEyZqFPdGPVgrg2AcnykiBy0sHVJQKHYeaLUvi3Exj+iaPpLnFVkDPZIV4U0yvgC9/R4uEAZ9g=="
+    },
     "jsesc@3.1.0": {
       "integrity": "sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA=="
     },
@@ -870,6 +889,8 @@
     "dependencies": [
       "npm:@deno/vite-plugin@^1.0.4",
       "npm:@dnd-kit/react@^0.0.9",
+      "npm:@js-temporal/polyfill@*",
+      "npm:@phosphor-icons/react@^2.1.7",
       "npm:@tailwindcss/vite@^4.0.9",
       "npm:@tauri-apps/api@2",
       "npm:@tauri-apps/cli@2",
