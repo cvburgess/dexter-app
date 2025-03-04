@@ -11,7 +11,7 @@ import {
 type Task = {
   id: string;
   description?: string;
-  dueBy?: string;
+  dueOn?: string;
   priority: TaskPriority | null;
   scheduledFor?: string;
   status: TaskStatus;
@@ -54,7 +54,7 @@ export const Card = (
         </div>
         <div className="flex items-center">
           <ListButton list="🐶" />
-          <DueDateButton dueBy={task.dueBy} inverseColors={colors.inverse} />
+          <DueDateButton dueOn={task.dueOn} inverseColors={colors.inverse} />
           <ScheduleButton scheduledFor={task.scheduledFor} />
           <FocusButton focusCycles={3} />
         </div>
@@ -88,9 +88,9 @@ const ListButton = ({ list }: { list: string }) => (
 );
 
 const DueDateButton = (
-  { dueBy, inverseColors }: { dueBy?: string; inverseColors?: string },
+  { dueOn, inverseColors }: { dueOn?: string; inverseColors?: string },
 ) => {
-  if (!dueBy) {
+  if (!dueOn) {
     return (
       <TaskButton>
         <BellRinging />
@@ -99,7 +99,7 @@ const DueDateButton = (
   }
 
   const now = Temporal.Now.plainDateISO();
-  const dueDate = Temporal.PlainDate.from(dueBy);
+  const dueDate = Temporal.PlainDate.from(dueOn);
   const daysUntilDue = now.until(dueDate).days;
   const styles = daysUntilDue <= 1 ? inverseColors : "";
 
