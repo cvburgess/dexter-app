@@ -16,5 +16,12 @@
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
-  "cSpell.words": ["daisyui", "oklch", "prefersdark", "tauri", "unlisten"]
+  "cSpell.words": [
+    "daisyui",
+    "oklch",
+    "prefersdark",
+    "supabase",
+    "tauri",
+    "unlisten"
+  ]
 }
