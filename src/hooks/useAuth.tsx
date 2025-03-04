@@ -6,6 +6,7 @@ import {
   createClient,
   OAuthResponse,
   Session,
+  SupabaseClient,
 } from "@supabase/supabase-js";
 
 const { VITE_SUPABASE_URL, VITE_SUPABASE_KEY } = import.meta.env;
@@ -21,6 +22,7 @@ type AuthContextType = {
   ) => Promise<AuthTokenResponsePassword>;
   signInWithGoogle: () => Promise<OAuthResponse>;
   signOut: () => Promise<{ error: AuthError | null }>;
+  supabase: SupabaseClient;
 };
 
 const signUp = ({ email, password }: EmailPassword) =>
@@ -44,6 +46,7 @@ const AuthContext = createContext<AuthContextType>({
   signInWithGoogle,
   signOut,
   signUp,
+  supabase,
 });
 
 type EmailPassword = {
@@ -80,6 +83,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         signInWithGoogle,
         signOut,
         signUp,
+        supabase,
       }}
     >
       {children}
