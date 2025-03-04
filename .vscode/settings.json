@@ -22,6 +22,7 @@
     "prefersdark",
     "supabase",
     "tauri",
-    "unlisten"
+    "unlisten",
+    "vite"
   ]
 }

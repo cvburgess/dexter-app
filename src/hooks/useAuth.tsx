@@ -1,4 +1,3 @@
-// deno-lint-ignore-file
 import { createContext, useContext, useEffect, useState } from "react";
 import {
   AuthError,
@@ -9,11 +8,9 @@ import {
   Session,
 } from "@supabase/supabase-js";
 
+const { VITE_SUPABASE_URL, VITE_SUPABASE_KEY } = import.meta.env;
 // Create a single supabase client for interacting with your database
-const supabase = createClient(
-  "https://isreileykodwkyedcewv.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlzcmVpbGV5a29kd2t5ZWRjZXd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEwMzc1NTQsImV4cCI6MjA1NjYxMzU1NH0.7Q2qSOCNuX0-J5pg0NDCqB2F0FwjadEoNN4NEnaH57w",
-);
+const supabase = createClient(VITE_SUPABASE_URL, VITE_SUPABASE_KEY);
 
 type AuthContextType = {
   initializing: boolean;
@@ -34,7 +31,7 @@ const signIn = ({ email, password }: EmailPassword) =>
 
 const signInWithGoogle = () =>
   supabase.auth.signInWithOAuth({
-    provider: "google",
+    provider: "google", // deno-lint-ignore no-window
     options: { redirectTo: window.location.origin },
   });
 

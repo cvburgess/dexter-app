@@ -2,9 +2,9 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import deno from "@deno/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
+import process from "node:process";
 
-// @ts-expect-error Deno support
-const host = Deno.env.get("TAURI_DEV_HOST");
+const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
 export default defineConfig({
