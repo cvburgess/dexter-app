@@ -31,8 +31,8 @@ const signIn = ({ email, password }: EmailPassword) =>
 
 const signInWithGoogle = () =>
   supabase.auth.signInWithOAuth({
-    provider: "google", // deno-lint-ignore no-window
-    options: { redirectTo: window.location.origin },
+    provider: "google",
+    options: { redirectTo: globalThis.location.origin },
   });
 
 export const signOut = () => supabase.auth.signOut({ scope: "local" });

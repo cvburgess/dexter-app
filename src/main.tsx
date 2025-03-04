@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createHashRouter, RouterProvider } from "react-router";
+import { createHashRouter, Navigate, RouterProvider } from "react-router";
 
 import App from "./App.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
@@ -14,7 +14,7 @@ import { Settings } from "./routes/Settings.tsx";
 import { Login } from "./routes/Login.tsx";
 
 const router = createHashRouter([
-  { path: "login", element: <Login /> },
+  { path: "/login", element: <Login /> },
   {
     path: "/",
     element: (
@@ -31,6 +31,7 @@ const router = createHashRouter([
       { path: "settings", element: <Settings /> },
     ],
   },
+  { path: "*", element: <Navigate to="/" replace /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
