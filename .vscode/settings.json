@@ -17,12 +17,27 @@
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
   "cSpell.words": [
+    "apikey",
     "daisyui",
+    "hcaptcha",
+    "inbucket",
+    "messagebird",
     "oklch",
+    "oneshot",
+    "orioledb",
+    "pooler",
     "prefersdark",
+    "SENDGRID",
+    "signup",
+    "signups",
     "supabase",
     "tauri",
+    "textlocal",
+    "timebox",
+    "totp",
     "unlisten",
-    "vite"
+    "vite",
+    "vonage",
+    "workos"
   ]
 }
