@@ -78,7 +78,7 @@ export const Login = () => {
 
           {message && (
             <div
-              className={`alert ${
+              className={`alert mb-4 ${
                 message.includes("Error") ? "alert-error" : "alert-success"
               }`}
             >
@@ -88,22 +88,22 @@ export const Login = () => {
 
           <button
             onClick={handleGoogleLogin}
-            className="btn btn-outline  rounded-full"
+            className="btn btn-outline rounded-full"
             disabled={loading}
           >
             <GoogleLogo size={24} weight="bold" />
             Continue with Google
           </button>
 
-          <div className="divider mt-6">OR</div>
+          <div className="divider mt-5 mb-4">OR</div>
 
           <form onSubmit={handleEmailPasswordAuth}>
-            <label className="floating-label mt-4">
+            <label className="floating-label">
               <span className="ml-1">Email</span>
               <input
                 type="email"
-                placeholder=""
-                className="input input-bordered w-full rounded-full"
+                placeholder="Email"
+                className="input input-md w-full rounded-full px-6 pb-0.5"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -114,8 +114,8 @@ export const Login = () => {
               <span className="ml-1">Password</span>
               <input
                 type="password"
-                placeholder=""
-                className="input input-bordered w-full rounded-full"
+                placeholder="Password"
+                className="input input-md w-full rounded-full px-6 pb-0.5"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -125,7 +125,7 @@ export const Login = () => {
             <div className="form-control mt-8">
               <button
                 type="submit"
-                className="btn btn-primary w-full  rounded-full"
+                className="btn btn-primary w-full rounded-full"
                 disabled={loading}
               >
                 {loading
@@ -138,18 +138,6 @@ export const Login = () => {
           </form>
 
           <div className="flex flex-col mt-4 gap-4">
-            {isLogin
-              ? (
-                <button
-                  type="button"
-                  className="link link-hover"
-                  onClick={() => {}}
-                >
-                  Forgot password?
-                </button>
-              )
-              : null}
-
             <button
               type="button"
               className="link link-hover"
@@ -158,6 +146,14 @@ export const Login = () => {
               {isLogin
                 ? "Don't have an account? Sign up"
                 : "Already have an account? Login"}
+            </button>
+
+            <button
+              type="button"
+              className={`link link-hover ${isLogin ? "" : "invisible"}`}
+              onClick={() => {}}
+            >
+              Forgot password
             </button>
           </div>
         </div>
