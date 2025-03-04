@@ -2,16 +2,16 @@ import { useAuth } from "../hooks/useAuth.tsx";
 import { View } from "../components/View.tsx";
 
 export const Settings = () => {
-  const { supabase } = useAuth();
-
-  const signOut = async () => {
-    await supabase.auth.signOut({ scope: "local" });
-  };
+  const { signOut } = useAuth();
 
   return (
     <View>
       <h1>Settings</h1>
-      <button type="button" className="btn" onClick={signOut}>
+      <button
+        type="button"
+        className="btn"
+        onClick={async () => await signOut()}
+      >
         Sign out
       </button>
     </View>

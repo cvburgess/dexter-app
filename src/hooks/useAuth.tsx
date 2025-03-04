@@ -1,5 +1,13 @@
+// deno-lint-ignore-file
 import { createContext, useContext, useEffect, useState } from "react";
-import { createClient, Session, SupabaseClient } from "@supabase/supabase-js";
+import {
+  AuthError,
+  AuthResponse,
+  AuthTokenResponsePassword,
+  createClient,
+  OAuthResponse,
+  Session,
+} from "@supabase/supabase-js";
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient(
@@ -10,14 +18,41 @@ const supabase = createClient(
 type AuthContextType = {
   initializing: boolean;
   session: Session | null;
-  supabase: SupabaseClient;
+  signUp: ({ email, password }: EmailPassword) => Promise<AuthResponse>;
+  signIn: (
+    { email, password }: EmailPassword,
+  ) => Promise<AuthTokenResponsePassword>;
+  signInWithGoogle: () => Promise<OAuthResponse>;
+  signOut: () => Promise<{ error: AuthError | null }>;
 };
+
+const signUp = ({ email, password }: EmailPassword) =>
+  supabase.auth.signUp({ email, password });
+
+const signIn = ({ email, password }: EmailPassword) =>
+  supabase.auth.signInWithPassword({ email, password });
+
+const signInWithGoogle = () =>
+  supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: window.location.origin },
+  });
+
+export const signOut = () => supabase.auth.signOut({ scope: "local" });
 
 const AuthContext = createContext<AuthContextType>({
   initializing: true,
   session: null,
-  supabase,
+  signIn,
+  signInWithGoogle,
+  signOut,
+  signUp,
 });
+
+type EmailPassword = {
+  email: string;
+  password: string;
+};
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
@@ -40,7 +75,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ initializing, session, supabase }}>
+    <AuthContext.Provider
+      value={{
+        initializing,
+        session,
+        signIn,
+        signInWithGoogle,
+        signOut,
+        signUp,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

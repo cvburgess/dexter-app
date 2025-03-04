@@ -7,7 +7,7 @@ import { View } from "../components/View.tsx";
 import { useAuth } from "../hooks/useAuth.tsx";
 
 export const Login = () => {
-  const { supabase } = useAuth();
+  const { signIn, signInWithGoogle, signUp } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,24 +30,16 @@ export const Login = () => {
 
     try {
       if (isLogin) {
-        // Sign in with email and password
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+        const { data, error } = await signIn({ email, password });
 
         if (error) throw error;
         setMessage("Login successful!");
-        console.log("User logged in:", data);
         navigate("/");
       } else {
-        // Sign up with email and password
-        const { data, error } = await supabase.auth.signUp({ email, password });
+        const { data, error } = await signUp({ email, password });
 
         if (error) throw error;
-        setMessage(
-          "Sign up successful! Please check your email for verification.",
-        );
+        setMessage("Success! Check your email for verification");
         console.log("User signed up:", data);
       }
     } catch (error) {
@@ -62,10 +54,7 @@ export const Login = () => {
     setMessage("");
 
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: { redirectTo: window.location.origin },
-      });
+      const { data, error } = await signInWithGoogle();
 
       if (error) throw error;
       console.log("Google auth initiated:", data);
@@ -97,7 +86,7 @@ export const Login = () => {
             className="btn btn-outline rounded-full"
             disabled={loading}
           >
-            <GoogleLogo size={24} weight="bold" />
+            <GoogleLogo className="mr-2" size={18} weight="bold" />
             Continue with Google
           </button>
 
