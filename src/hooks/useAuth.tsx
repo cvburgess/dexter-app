@@ -8,31 +8,39 @@ const supabase = createClient(
 );
 
 type AuthContextType = {
+  initializing: boolean;
   session: Session | null;
   supabase: SupabaseClient;
 };
 
-const AuthContext = createContext<AuthContextType>({ session: null, supabase });
+const AuthContext = createContext<AuthContextType>({
+  initializing: true,
+  session: null,
+  supabase,
+});
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
+  const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+    }).finally(() => {
+      setInitializing(false);
     });
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      },
+    );
 
     return () => subscription.unsubscribe();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ session, supabase }}>
+    <AuthContext.Provider value={{ initializing, session, supabase }}>
       {children}
     </AuthContext.Provider>
   );

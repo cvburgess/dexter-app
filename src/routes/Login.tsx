@@ -1,17 +1,29 @@
 // deno-lint-ignore-file
 import { FormEventHandler, useState } from "react";
 import { GoogleLogo } from "@phosphor-icons/react";
+import { useNavigate } from "react-router";
 
 import { View } from "../components/View.tsx";
+import { useAuth } from "../hooks/useAuth.tsx";
 
 export const Login = () => {
+  const { supabase } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
 
-  const handleEmailPasswordAuth = async (event: FormEventHandler) => {
+  const handleError = (error: unknown) => {
+    setMessage(
+      `Error: ${error instanceof Error ? error.message : "An error occurred"}`,
+    );
+  };
+
+  const handleEmailPasswordAuth = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
     setLoading(true);
     setMessage("");
@@ -27,13 +39,10 @@ export const Login = () => {
         if (error) throw error;
         setMessage("Login successful!");
         console.log("User logged in:", data);
+        navigate("/");
       } else {
         // Sign up with email and password
-        const { data, error } = await supabase.auth
-          .signUp({
-            email,
-            password,
-          });
+        const { data, error } = await supabase.auth.signUp({ email, password });
 
         if (error) throw error;
         setMessage(
@@ -42,7 +51,7 @@ export const Login = () => {
         console.log("User signed up:", data);
       }
     } catch (error) {
-      setMessage(`Error: ${error.message}`);
+      handleError(error);
     } finally {
       setLoading(false);
     }
@@ -55,16 +64,13 @@ export const Login = () => {
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: {
-          redirectTo: window.location.origin,
-        },
+        options: { redirectTo: window.location.origin },
       });
 
       if (error) throw error;
       console.log("Google auth initiated:", data);
     } catch (error) {
-      setMessage(`Error: ${error.message}`);
-      setLoading(false);
+      handleError(error);
     }
   };
 
