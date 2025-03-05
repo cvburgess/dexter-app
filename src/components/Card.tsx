@@ -7,6 +7,7 @@ import {
   CalendarCheck,
   Play,
 } from "@phosphor-icons/react";
+import classNames from "classnames";
 
 import { Task, TaskPriority, TaskStatus } from "../api/tasks.ts";
 
@@ -19,7 +20,10 @@ export const Card = (
 
   return (
     <div
-      className={`shadow-md rounded-lg p-4 m-4 w-sm ${colors.main} border border-current/10`}
+      className={classNames(
+        "shadow-md rounded-lg p-4 m-4 w-sm border border-current/10",
+        colors.main,
+      )}
       ref={ref}
     >
       <div className="flex items-center justify-between">
@@ -54,7 +58,10 @@ const TaskButton = (
 ) => (
   <button
     type="button"
-    className={`w-5 h-5 rounded-full outline mr-2 focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10 ${className}`}
+    className={classNames(
+      "w-5 h-5 rounded-full outline mr-2 focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10",
+      className,
+    )}
   >
     {children}
   </button>
@@ -65,7 +72,7 @@ const ListButton = ({ list }: { list: string }) => (
 );
 
 const DueDateButton = (
-  { dueOn, inverseColors }: { dueOn?: string; inverseColors?: string },
+  { dueOn, inverseColors }: { dueOn?: string; inverseColors: string },
 ) => {
   if (!dueOn) {
     return (
@@ -78,10 +85,13 @@ const DueDateButton = (
   const now = Temporal.Now.plainDateISO();
   const dueDate = Temporal.PlainDate.from(dueOn);
   const daysUntilDue = now.until(dueDate).days;
-  const styles = daysUntilDue <= 1 ? inverseColors : "";
 
   return (
-    <TaskButton className={`text-[.65rem] ${styles}`}>
+    <TaskButton
+      className={classNames("text-[.65rem]", {
+        [inverseColors]: daysUntilDue <= 1,
+      })}
+    >
       {daysUntilDue}
     </TaskButton>
   );
