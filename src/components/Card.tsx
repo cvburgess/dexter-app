@@ -7,9 +7,9 @@ import {
   CalendarCheck,
   Play,
 } from "@phosphor-icons/react";
+import classNames from "classnames";
 
 import { Task, TaskPriority, TaskStatus } from "../api/tasks.ts";
-import classNames from "classnames";
 
 export const Card = (
   { task, index }: { task: Task; index: number },
