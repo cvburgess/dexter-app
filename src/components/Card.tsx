@@ -8,30 +8,7 @@ import {
   Play,
 } from "@phosphor-icons/react";
 
-type Task = {
-  id: string;
-  description?: string;
-  dueOn?: string;
-  priority: TaskPriority | null;
-  scheduledFor?: string;
-  status: TaskStatus;
-  subtasks: Task[];
-  title: string;
-};
-
-enum TaskPriority {
-  IMPORTANT_AND_URGENT,
-  URGENT,
-  IMPORTANT,
-  NEITHER,
-}
-
-enum TaskStatus {
-  TODO,
-  IN_PROGRESS,
-  DONE,
-  WONT_DO,
-}
+import { Task, TaskPriority, TaskStatus } from "../api/tasks.ts";
 
 export const Card = (
   { task, index }: { task: Task; index: number },
