@@ -2,6 +2,7 @@
 import { FormEventHandler, useState } from "react";
 import { GoogleLogo } from "@phosphor-icons/react";
 import { useNavigate } from "react-router";
+import classNames from "classnames";
 
 import { View } from "../components/View.tsx";
 import { useAuth } from "../hooks/useAuth.tsx";
@@ -73,9 +74,10 @@ export const Login = () => {
 
           {message && (
             <div
-              className={`alert mb-4 ${
-                message.includes("Error") ? "alert-error" : "alert-success"
-              }`}
+              className={classNames(
+                "alert mb-4",
+                message.includes("Error") ? "alert-error" : "alert-success",
+              )}
             >
               {message}
             </div>
@@ -145,7 +147,9 @@ export const Login = () => {
 
             <button
               type="button"
-              className={`link link-hover ${isLogin ? "" : "invisible"}`}
+              className={classNames("link link-hover", {
+                "invisible": isLogin,
+              })}
               onClick={() => {}}
             >
               Forgot password

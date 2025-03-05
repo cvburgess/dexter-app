@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { NavLink } from "react-router";
 import {
   Gear,
   List,
@@ -7,6 +7,7 @@ import {
   Strategy,
   Sun,
 } from "@phosphor-icons/react";
+import classNames from "classnames";
 
 const navItems = [
   { Icon: Sun, route: "/" },
@@ -24,19 +25,20 @@ export const Nav = () => (
   >
     <div className="flex flex-col gap-4 text-base-content h-full">
       {navItems.map((item) => (
-        <div
+        <NavLink
           key={item.route}
-          className={`bg-base-100 rounded-2xl shadow-md hover:shadow-lg transition-shadow ${
-            item.bottom ? "mt-auto" : ""
-          }`}
+          to={item.route}
+          className={({ isActive }) =>
+            classNames(
+              "bg-base-100 rounded-2xl shadow-md hover:shadow-lg transition-shadow flex items-center justify-center h-16 w-16",
+              {
+                "bg-primary text-primary-content": isActive,
+                "mt-auto": item.bottom,
+              },
+            )}
         >
-          <Link
-            to={item.route}
-            className="flex items-center justify-center h-16 w-16"
-          >
-            {<item.Icon size={32} />}
-          </Link>
-        </div>
+          <item.Icon size={32} />
+        </NavLink>
       ))}
     </div>
   </nav>
