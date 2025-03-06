@@ -1,6 +1,5 @@
-// deno-lint-ignore-file no-unused-vars
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Temporal } from "@js-temporal/polyfill";
 
 import { Board, TColumn } from "../components/Board.tsx";
@@ -8,7 +7,7 @@ import { View } from "../components/View.tsx";
 
 import { useAuth } from "../hooks/useAuth.tsx";
 import {
-  createTask,
+  // createTask,
   getTasks,
   TTask,
   TUpdateTask,
@@ -18,9 +17,8 @@ import {
 export const Week = () => {
   const { supabase } = useAuth();
   const [weeksOffset, _setWeeksOffset] = useState<number>(0);
-  const queryClient = useQueryClient();
 
-  const { isPending, error, data: tasks, isFetching } = useQuery({
+  const { isPending, data: tasks } = useQuery({
     queryKey: ["tasks"],
     queryFn: () => getTasks(supabase),
   });

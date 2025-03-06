@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-unused-vars
 import { UniqueIdentifier } from "@dnd-kit/abstract";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { Temporal } from "@js-temporal/polyfill";
@@ -61,6 +60,7 @@ export const Card = (
 };
 
 const StatusButton = (
+  // deno-lint-ignore no-unused-vars
   { status }: { status: ETaskStatus },
 ) => (
   <button
@@ -119,6 +119,7 @@ const ScheduleButton = ({ scheduledFor }: { scheduledFor?: string }) => (
   </TaskButton>
 );
 
+// deno-lint-ignore no-unused-vars
 const FocusButton = ({ focusCycles }: { focusCycles: number }) => (
   <TaskButton>{<Play />}</TaskButton>
 );

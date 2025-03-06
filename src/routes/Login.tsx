@@ -1,5 +1,4 @@
-// deno-lint-ignore-file
-import { FormEventHandler, useState } from "react";
+import { useState } from "react";
 import { GoogleLogo } from "@phosphor-icons/react";
 import { useNavigate } from "react-router";
 import classNames from "classnames";
@@ -31,7 +30,7 @@ export const Login = () => {
 
     try {
       if (isLogin) {
-        const { data, error } = await signIn({ email, password });
+        const { error } = await signIn({ email, password });
 
         if (error) throw error;
         setMessage("Login successful!");
@@ -84,9 +83,10 @@ export const Login = () => {
           )}
 
           <button
-            onClick={handleGoogleLogin}
             className="btn btn-outline rounded-full"
             disabled={loading}
+            onClick={handleGoogleLogin}
+            type="button"
           >
             <GoogleLogo className="mr-2" size={18} weight="bold" />
             Continue with Google
