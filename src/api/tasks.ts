@@ -2,26 +2,26 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import camelCase from "camelcase-keys";
 import snakeCase from "decamelize-keys";
 
-export type Task = {
+export type TTask = {
   id: string;
   // description?: string;
   dueOn?: string;
   listId?: string;
-  priority: TaskPriority | null;
+  priority: ETaskPriority | null;
   scheduledFor?: string;
-  status: TaskStatus;
+  status: ETaskStatus;
   // subtasks: Task[];
   title: string;
 };
 
-export enum TaskPriority {
+export enum ETaskPriority {
   IMPORTANT_AND_URGENT,
   URGENT,
   IMPORTANT,
   NEITHER,
 }
 
-export enum TaskStatus {
+export enum ETaskStatus {
   TODO,
   IN_PROGRESS,
   DONE,
@@ -35,10 +35,10 @@ export const getTasks = async (supabase: SupabaseClient) => {
     .order("created_at");
 
   if (error) throw error;
-  return camelCase(data);
+  return camelCase(data) as TTask[];
 };
 
-export const createTask = async (supabase: SupabaseClient, task: Task) => {
+export const createTask = async (supabase: SupabaseClient, task: TTask) => {
   const { data, error } = await supabase
     .from("tasks")
     .insert(snakeCase(task))
@@ -48,7 +48,7 @@ export const createTask = async (supabase: SupabaseClient, task: Task) => {
   return data;
 };
 
-export const updateTask = async (supabase: SupabaseClient, task: Task) => {
+export const updateTask = async (supabase: SupabaseClient, task: TTask) => {
   const { data, error } = await supabase
     .from("tasks")
     .insert(snakeCase(task))

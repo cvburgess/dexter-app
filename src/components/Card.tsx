@@ -10,12 +10,13 @@ import {
 } from "@phosphor-icons/react";
 import classNames from "classnames";
 
-import { Task, TaskPriority, TaskStatus } from "../api/tasks.ts";
+import { EGroupBy } from "../components/Board.tsx";
+import { ETaskPriority, ETaskStatus, TTask } from "../api/tasks.ts";
 
 type CardProps = {
-  task: Task;
+  task: TTask;
   index: number;
-  groupBy?: "scheduledFor" | "listId" | "priority";
+  groupBy?: EGroupBy;
 };
 
 export const Card = (
@@ -26,13 +27,14 @@ export const Card = (
   const { ref, isDragging } = useSortable({
     id: task.id,
     index,
-    type: "item",
-    accept: "item",
+    type: "task",
+    data: task,
     group: groupBy ? task[groupBy] as UniqueIdentifier : undefined,
   });
 
   return (
     <div
+      data-task-id={task.id}
       data-dragging={isDragging}
       className={classNames(
         "shadow-md rounded-lg p-4 m-4 w-sm border border-current/10",
@@ -59,7 +61,7 @@ export const Card = (
 };
 
 const StatusButton = (
-  { status }: { status: TaskStatus },
+  { status }: { status: ETaskStatus },
 ) => (
   <button
     type="button"
@@ -121,9 +123,9 @@ const FocusButton = ({ focusCycles }: { focusCycles: number }) => (
   <TaskButton>{<Play />}</TaskButton>
 );
 
-const getColors = (priority: TaskPriority | null) => {
+const getColors = (priority: ETaskPriority | null) => {
   switch (priority) {
-    case TaskPriority.IMPORTANT_AND_URGENT:
+    case ETaskPriority.IMPORTANT_AND_URGENT:
       return {
         main:
           "bg-warning/80 hover:bg-warning/90 text-warning-content outline-warning-content/40",
@@ -131,7 +133,7 @@ const getColors = (priority: TaskPriority | null) => {
           "bg-warning-content hover:bg-warning-content/90 text-warning outline-warning-content/40",
       };
 
-    case TaskPriority.IMPORTANT:
+    case ETaskPriority.IMPORTANT:
       return {
         main:
           "bg-info/80 hover:bg-info/90 text-info-content outline-info-content/40",
@@ -139,7 +141,7 @@ const getColors = (priority: TaskPriority | null) => {
           "bg-info-content hover:bg-info-content/90 text-info outline-info-content/40",
       };
 
-    case TaskPriority.URGENT:
+    case ETaskPriority.URGENT:
       return {
         main:
           "bg-error/80 hover:bg-error/90 text-error-content outline-error-content/40",
@@ -147,7 +149,7 @@ const getColors = (priority: TaskPriority | null) => {
           "bg-error-content hover:bg-error-content/90 text-error outline-error-content/40",
       };
 
-    case TaskPriority.NEITHER:
+    case ETaskPriority.NEITHER:
     default:
       return {
         main:

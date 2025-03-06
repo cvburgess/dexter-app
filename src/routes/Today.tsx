@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // import { getTodos, postTodo } from "../my-api";
 import { Card } from "../components/Card.tsx";
-import { List } from "../components/List.tsx";
+import { Column } from "../components/Column.tsx";
 import { View } from "../components/View.tsx";
 import { useAuth } from "../hooks/useAuth.tsx";
 import { createTask, getTasks, Task } from "../api/tasks.ts";
@@ -31,11 +31,11 @@ export const Today = () => {
 
   return (
     <View>
-      <List id="today">
+      <Column id="today">
         {tasks?.map((task, index) => (
           <Card index={index} key={task.id} task={task} />
         ))}
-      </List>
+      </Column>
     </View>
   );
 };

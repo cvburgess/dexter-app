@@ -1,19 +1,13 @@
 // deno-lint-ignore-file no-unused-vars
 import { useState } from "react";
-import { DragDropProvider } from "@dnd-kit/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Temporal } from "@js-temporal/polyfill";
 
-import { Card } from "../components/Card.tsx";
-import { List } from "../components/List.tsx";
+import { Board, TColumn } from "../components/Board.tsx";
 import { View } from "../components/View.tsx";
-import { useAuth } from "../hooks/useAuth.tsx";
-import { createTask, getTasks, Task, updateTask } from "../api/tasks.ts";
 
-type Day = {
-  date: string;
-  dayName: string;
-};
+import { useAuth } from "../hooks/useAuth.tsx";
+import { createTask, getTasks, TTask, updateTask } from "../api/tasks.ts";
 
 export const Week = () => {
   const { supabase } = useAuth();
@@ -32,29 +26,12 @@ export const Week = () => {
 
   return (
     <View className="flex">
-      {daysOfWeek.map((day) => {
-        const tasksForDay = tasks?.filter((task: Task) =>
-          task.scheduledFor === day.date
-        );
-
-        return (
-          <List key={day.date} id={day.date}>
-            {tasksForDay?.map((task, index) => (
-              <Card
-                index={index}
-                key={task.id}
-                task={task}
-                groupBy="scheduledFor"
-              />
-            ))}
-          </List>
-        );
-      })}
+      <Board columns={daysOfWeek} groupBy="scheduledFor" tasks={tasks} />
     </View>
   );
 };
 
-const daysForWeekOfDate = (date: Temporal.PlainDate): Day[] => {
+const daysForWeekOfDate = (date: Temporal.PlainDate): TColumn[] => {
   const mostRecentMonday = date.subtract({ days: date.dayOfWeek - 1 });
 
   const dayNames = [
@@ -68,7 +45,7 @@ const daysForWeekOfDate = (date: Temporal.PlainDate): Day[] => {
   ];
 
   return dayNames.map((dayName, index) => ({
-    date: mostRecentMonday.add({ days: index }).toString(),
-    dayName: dayName,
+    id: mostRecentMonday.add({ days: index }).toString(),
+    title: dayName,
   }));
 };
