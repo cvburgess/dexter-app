@@ -2,6 +2,8 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import camelCase from "camelcase-keys";
 import snakeCase from "decamelize-keys";
 
+import { Database } from "./database.types.ts";
+
 export type TTask = {
   id: string;
   // description?: string;
@@ -28,7 +30,7 @@ export enum ETaskStatus {
   WONT_DO,
 }
 
-export const getTasks = async (supabase: SupabaseClient) => {
+export const getTasks = async (supabase: SupabaseClient<Database>) => {
   const { data, error } = await supabase
     .from("tasks")
     .select("*")
@@ -38,22 +40,39 @@ export const getTasks = async (supabase: SupabaseClient) => {
   return camelCase(data) as TTask[];
 };
 
-export const createTask = async (supabase: SupabaseClient, task: TTask) => {
+export const createTask = async (
+  supabase: SupabaseClient<Database>,
+  task: TTask,
+) => {
   const { data, error } = await supabase
     .from("tasks")
     .insert(snakeCase(task))
     .select();
 
   if (error) throw error;
-  return data;
+  return data as TTask[];
 };
 
-export const updateTask = async (supabase: SupabaseClient, task: TTask) => {
+export type TUpdateTask = {
+  id: string;
+  dueOn?: string;
+  listId?: string;
+  priority?: ETaskPriority;
+  scheduledFor?: string;
+  status?: ETaskStatus;
+  title?: string;
+};
+
+export const updateTask = async (
+  supabase: SupabaseClient<Database>,
+  { id, ...diff }: TUpdateTask,
+) => {
   const { data, error } = await supabase
     .from("tasks")
-    .insert(snakeCase(task))
+    .update(snakeCase(diff))
+    .eq("id", id)
     .select();
 
   if (error) throw error;
-  return data;
+  return data as TTask[];
 };

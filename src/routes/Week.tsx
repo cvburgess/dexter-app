@@ -7,7 +7,13 @@ import { Board, TColumn } from "../components/Board.tsx";
 import { View } from "../components/View.tsx";
 
 import { useAuth } from "../hooks/useAuth.tsx";
-import { createTask, getTasks, TTask, updateTask } from "../api/tasks.ts";
+import {
+  createTask,
+  getTasks,
+  TTask,
+  TUpdateTask,
+  updateTask,
+} from "../api/tasks.ts";
 
 export const Week = () => {
   const { supabase } = useAuth();
@@ -19,6 +25,10 @@ export const Week = () => {
     queryFn: () => getTasks(supabase),
   });
 
+  const { mutate: update } = useMutation<TTask[], Error, TUpdateTask>({
+    mutationFn: (diff) => updateTask(supabase, diff),
+  });
+
   if (isPending) return <p>Loading...</p>;
 
   const today = Temporal.Now.plainDateISO();
@@ -26,7 +36,12 @@ export const Week = () => {
 
   return (
     <View className="flex">
-      <Board columns={daysOfWeek} groupBy="scheduledFor" tasks={tasks} />
+      <Board
+        columns={daysOfWeek}
+        groupBy="scheduledFor"
+        onTaskChange={update}
+        tasks={tasks}
+      />
     </View>
   );
 };

@@ -4,11 +4,12 @@ import { DragDropProvider } from "@dnd-kit/react";
 import { Card } from "../components/Card.tsx";
 import { Column } from "../components/Column.tsx";
 
-import { TTask } from "../api/tasks.ts";
+import { TTask, TUpdateTask } from "../api/tasks.ts";
 
 type TBoardProps = {
   columns: TColumn[];
   groupBy?: EGroupBy;
+  onTaskChange: (diff: TUpdateTask) => void;
   tasks?: TTask[];
 };
 
@@ -22,6 +23,7 @@ export type TColumn = {
 type TDragEvent = {
   operation: {
     source: {
+      data: TTask;
       sortable: {
         index: string;
         group: string;
@@ -32,7 +34,9 @@ type TDragEvent = {
 
 const defaultDragData = { index: undefined, group: undefined };
 
-export const Board = ({ columns, groupBy, tasks }: TBoardProps) => {
+export const Board = (
+  { columns, groupBy, onTaskChange, tasks }: TBoardProps,
+) => {
   const dragRef = useRef<{ index?: string; group?: string }>(defaultDragData);
 
   const resetDragRef = () => {
@@ -45,8 +49,12 @@ export const Board = ({ columns, groupBy, tasks }: TBoardProps) => {
 
     const changedProps: [string, number | string][] = [];
 
-    if (start.index !== end.index) changedProps.push(["index", end.index]);
-    if (start.group !== end.group) changedProps.push(["group", end.group]);
+    // TODO: Support for ordering items
+    // if (start.index !== end.index) changedProps.push(["index", end.index]);
+
+    if (groupBy && start.group !== end.group) {
+      changedProps.push([groupBy, end.group]);
+    }
 
     return changedProps.length ? Object.fromEntries(changedProps) : null;
   };
@@ -63,7 +71,13 @@ export const Board = ({ columns, groupBy, tasks }: TBoardProps) => {
       // @ts-ignore types in library are incorrect
       onDragEnd={(event: TDragEvent) => {
         const diff = diffDragEvents(event);
-        console.dir(diff);
+        if (diff) {
+          console.dir(diff);
+          onTaskChange({
+            id: event.operation.source.data.id,
+            ...diff,
+          });
+        }
         resetDragRef();
       }}
     >

@@ -9,9 +9,11 @@ import {
   SupabaseClient,
 } from "@supabase/supabase-js";
 
+import { Database } from "../api/database.types.ts";
+
 const { VITE_SUPABASE_URL, VITE_SUPABASE_KEY } = import.meta.env;
 // Create a single supabase client for interacting with your database
-const supabase = createClient(VITE_SUPABASE_URL, VITE_SUPABASE_KEY);
+const supabase = createClient<Database>(VITE_SUPABASE_URL, VITE_SUPABASE_KEY);
 
 type AuthContextType = {
   initializing: boolean;

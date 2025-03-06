@@ -5,7 +5,7 @@ import { Card } from "../components/Card.tsx";
 import { Column } from "../components/Column.tsx";
 import { View } from "../components/View.tsx";
 import { useAuth } from "../hooks/useAuth.tsx";
-import { createTask, getTasks, Task } from "../api/tasks.ts";
+import { createTask, getTasks, TTask } from "../api/tasks.ts";
 
 export const Today = () => {
   const { supabase } = useAuth();
@@ -18,7 +18,7 @@ export const Today = () => {
   });
 
   const _mutation = useMutation({
-    mutationFn: (task: Task) => createTask(supabase, task),
+    mutationFn: (task: TTask) => createTask(supabase, task),
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
@@ -31,7 +31,7 @@ export const Today = () => {
 
   return (
     <View>
-      <Column id="today">
+      <Column id="today" title="Today">
         {tasks?.map((task, index) => (
           <Card index={index} key={task.id} task={task} />
         ))}
