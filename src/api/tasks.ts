@@ -6,6 +6,7 @@ export type Task = {
   id: string;
   // description?: string;
   dueOn?: string;
+  listId?: string;
   priority: TaskPriority | null;
   scheduledFor?: string;
   status: TaskStatus;
@@ -38,6 +39,16 @@ export const getTasks = async (supabase: SupabaseClient) => {
 };
 
 export const createTask = async (supabase: SupabaseClient, task: Task) => {
+  const { data, error } = await supabase
+    .from("tasks")
+    .insert(snakeCase(task))
+    .select();
+
+  if (error) throw error;
+  return data;
+};
+
+export const updateTask = async (supabase: SupabaseClient, task: Task) => {
   const { data, error } = await supabase
     .from("tasks")
     .insert(snakeCase(task))

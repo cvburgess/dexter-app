@@ -1,4 +1,5 @@
 // deno-lint-ignore-file no-unused-vars
+import { UniqueIdentifier } from "@dnd-kit/abstract";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { Temporal } from "@js-temporal/polyfill";
 import {
@@ -11,15 +12,28 @@ import classNames from "classnames";
 
 import { Task, TaskPriority, TaskStatus } from "../api/tasks.ts";
 
+type CardProps = {
+  task: Task;
+  index: number;
+  groupBy?: "scheduledFor" | "listId" | "priority";
+};
+
 export const Card = (
-  { task, index }: { task: Task; index: number },
+  { task, index, groupBy }: CardProps,
 ) => {
   const colors = getColors(task.priority);
 
-  const { ref } = useSortable({ id: task.id, index });
+  const { ref, isDragging } = useSortable({
+    id: task.id,
+    index,
+    type: "item",
+    accept: "item",
+    group: groupBy ? task[groupBy] as UniqueIdentifier : undefined,
+  });
 
   return (
     <div
+      data-dragging={isDragging}
       className={classNames(
         "shadow-md rounded-lg p-4 m-4 w-sm border border-current/10",
         colors.main,
