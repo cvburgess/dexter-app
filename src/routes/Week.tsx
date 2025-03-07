@@ -19,19 +19,25 @@ export const Week = () => {
   const queryClient = useQueryClient();
   const [weeksOffset, _setWeeksOffset] = useState<number>(0);
 
-  const { isPending, data: tasks } = useQuery({
+  const { data: tasks } = useQuery({
     queryKey: ["tasks"],
     queryFn: () => getTasks(supabase),
   });
 
   const { mutate: update } = useMutation<TTask[], Error, TUpdateTask>({
     mutationFn: (diff) => updateTask(supabase, diff),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    // onSuccess: () => {
+    //   queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    // },
+    onSuccess: ([newTaskData]) => {
+      queryClient.setQueryData(["tasks"], (oldData) => {
+        // console.log("data", newTaskData);
+        return oldData.map((task) => {
+          return (task.id === newTaskData.id) ? newTaskData : task;
+        });
+      });
     },
   });
-
-  if (isPending) return <p>Loading...</p>;
 
   const today = Temporal.Now.plainDateISO();
   const daysOfWeek = daysForWeekOfDate(today.add({ weeks: weeksOffset }));

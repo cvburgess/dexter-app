@@ -21,6 +21,7 @@ export type TColumn = {
 };
 
 type TDragEvent = {
+  preventDefault(): unknown;
   operation: {
     source: {
       id: string;
@@ -101,6 +102,7 @@ export const Board = (
             group: event.operation.target.id,
           };
         }
+        event.preventDefault();
       }}
     >
       <div className="flex gap-4">
