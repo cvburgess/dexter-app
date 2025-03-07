@@ -1,12 +1,7 @@
 import { UniqueIdentifier } from "@dnd-kit/abstract";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { Temporal } from "@js-temporal/polyfill";
-import {
-  BellRinging,
-  CalendarBlank,
-  CalendarCheck,
-  Play,
-} from "@phosphor-icons/react";
+import { BellRinging, DotsThreeOutlineVertical } from "@phosphor-icons/react";
 import classNames from "classnames";
 
 import { EGroupBy } from "../components/Board.tsx";
@@ -36,7 +31,7 @@ export const Card = (
       data-task-id={task.id}
       data-dragging={isDragging}
       className={classNames(
-        "shadow-md rounded-lg p-4 m-4 w-sm border border-current/10",
+        "shadow-md rounded-lg p-4 w-xs border border-current/10",
         colors.main,
       )}
       ref={ref}
@@ -44,15 +39,14 @@ export const Card = (
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <StatusButton status={task.status} />
-          <p className="text-sm font-semibold">
+          <p className="text-xs font-medium">
             {task.title}
           </p>
         </div>
         <div className="flex items-center">
           <ListButton list="🐶" />
           <DueDateButton dueOn={task.dueOn} inverseColors={colors.inverse} />
-          <ScheduleButton scheduledFor={task.scheduledFor} />
-          <FocusButton focusCycles={3} />
+          <MoreButton />
         </div>
       </div>
     </div>
@@ -113,15 +107,10 @@ const DueDateButton = (
   );
 };
 
-const ScheduleButton = ({ scheduledFor }: { scheduledFor?: string }) => (
+const MoreButton = () => (
   <TaskButton>
-    {scheduledFor ? <CalendarCheck weight="fill" /> : <CalendarBlank />}
+    <DotsThreeOutlineVertical />
   </TaskButton>
-);
-
-// deno-lint-ignore no-unused-vars
-const FocusButton = ({ focusCycles }: { focusCycles: number }) => (
-  <TaskButton>{<Play />}</TaskButton>
 );
 
 const getColors = (priority: ETaskPriority | null) => {

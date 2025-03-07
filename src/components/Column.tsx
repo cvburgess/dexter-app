@@ -17,13 +17,13 @@ export const Column = ({ children, id, title, icon }: TColumnProps) => {
   });
 
   return (
-    <div className="h-vh flex flex-col m-4">
-      <div className="badge badge-lg badge-neutral badge-soft p-5 w-sm m-auto">
+    <div className="h-vh flex flex-col">
+      <div className="badge badge-lg badge-ghost p-5 w-xs mx-auto mb-4">
         {icon}
         {title}
       </div>
       <div
-        className="flex-grow w-full"
+        className="flex-grow w-full flex flex-col gap-2"
         ref={ref}
         data-list-id={id}
       >

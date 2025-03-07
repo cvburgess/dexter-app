@@ -81,24 +81,26 @@ export const Board = (
         resetDragRef();
       }}
     >
-      {columns.map((column) => {
-        const tasksForColumn = groupBy
-          ? tasks?.filter((task: TTask) => task[groupBy] === column.id)
-          : tasks;
+      <div className="flex gap-4">
+        {columns.map((column) => {
+          const tasksForColumn = groupBy
+            ? tasks?.filter((task: TTask) => task[groupBy] === column.id)
+            : tasks;
 
-        return (
-          <Column key={column.id} id={column.id} title={column.title}>
-            {tasksForColumn?.map((task, index) => (
-              <Card
-                index={index}
-                key={task.id}
-                task={task}
-                groupBy={groupBy}
-              />
-            ))}
-          </Column>
-        );
-      })}
+          return (
+            <Column key={column.id} id={column.id} title={column.title}>
+              {tasksForColumn?.map((task, index) => (
+                <Card
+                  index={index}
+                  key={task.id}
+                  task={task}
+                  groupBy={groupBy}
+                />
+              ))}
+            </Column>
+          );
+        })}
+      </div>
     </DragDropProvider>
   );
 };
