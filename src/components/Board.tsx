@@ -95,6 +95,7 @@ export const Board = (
                   key={task.id}
                   task={task}
                   groupBy={groupBy}
+                  small
                 />
               ))}
             </Column>

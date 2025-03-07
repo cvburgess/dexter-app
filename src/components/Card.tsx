@@ -11,10 +11,11 @@ type CardProps = {
   task: TTask;
   index: number;
   groupBy?: EGroupBy;
+  small?: boolean;
 };
 
 export const Card = (
-  { task, index, groupBy }: CardProps,
+  { task, index, groupBy, small = false }: CardProps,
 ) => {
   const colors = getColors(task.priority);
 
@@ -31,23 +32,23 @@ export const Card = (
       data-task-id={task.id}
       data-dragging={isDragging}
       className={classNames(
-        "shadow-md rounded-lg p-4 w-xs border border-current/10",
+        "shadow-md rounded-lg p-4 border border-current/10",
         colors.main,
+        small ? "w-[10rem]" : "w-xs",
       )}
       ref={ref}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <StatusButton status={task.status} />
-          <p className="text-xs font-medium">
-            {task.title}
-          </p>
-        </div>
-        <div className="flex items-center">
-          <ListButton list="🐶" />
-          <DueDateButton dueOn={task.dueOn} inverseColors={colors.inverse} />
-          <MoreButton />
-        </div>
+      <div
+        className={classNames("flex items-center justify-start gap-2", {})}
+      >
+        {small ? null : <StatusButton status={task.status} />}
+        <p className="text-xs font-medium flex-grow">
+          {task.title}
+        </p>
+        {small ? <StatusButton status={task.status} push /> : null}
+        <ListButton list="🐶" />
+        <DueDateButton dueOn={task.dueOn} inverseColors={colors.inverse} />
+        <MoreButton />
       </div>
     </div>
   );
@@ -55,11 +56,14 @@ export const Card = (
 
 const StatusButton = (
   // deno-lint-ignore no-unused-vars
-  { status }: { status: ETaskStatus },
+  { push = false, status }: { push?: boolean; status: ETaskStatus },
 ) => (
   <button
     type="button"
-    className="w-5 h-5 rounded-full border mr-2 focus:ring-2 focus:ring-offset-2 border-current/40 hover:bg-current/10"
+    className={classNames(
+      "w-5 h-5 rounded-full border focus:ring-2 focus:ring-offset-2 border-current/40 hover:bg-current/10",
+      { "mr-auto": push },
+    )}
   />
 );
 
@@ -69,7 +73,7 @@ const TaskButton = (
   <button
     type="button"
     className={classNames(
-      "w-5 h-5 rounded-full outline mr-2 focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10",
+      "w-5 h-5 rounded-full outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10",
       className,
     )}
   >
