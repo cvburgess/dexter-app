@@ -1,61 +1,67 @@
-import { UniqueIdentifier } from "@dnd-kit/abstract";
-import { useSortable } from "@dnd-kit/react/sortable";
+import { Draggable } from "@hello-pangea/dnd";
 import { Temporal } from "@js-temporal/polyfill";
 import { BellRinging, DotsThreeOutlineVertical } from "@phosphor-icons/react";
 import classNames from "classnames";
 
-import { EGroupBy } from "../components/Board.tsx";
 import { ETaskPriority, ETaskStatus, TTask } from "../api/tasks.ts";
 
 type CardProps = {
   task: TTask;
   index: number;
-  groupBy?: EGroupBy;
   compact?: boolean;
 };
 
 export const Card = (
-  { task, index, groupBy, compact = false }: CardProps,
+  { task, index, compact = false }: CardProps,
 ) => {
   const colors = getColors(task.priority);
 
-  const { ref, isDragging } = useSortable({
-    id: task.id,
-    index,
-    type: "task",
-    group: groupBy ? task[groupBy] as UniqueIdentifier : undefined,
-  });
-
   return (
-    <div
-      data-task-id={task.id}
-      data-dragging={isDragging}
-      className={classNames(
-        "shadow-md rounded-lg p-4 border border-current/10",
-        colors.main,
-        compact ? "w-[10rem]" : "w-xs",
-      )}
-      ref={ref}
+    <Draggable
+      key={task.id}
+      draggableId={task.id}
+      index={index}
     >
-      <div className="flex flex-wrap items-center justify-start gap-2">
-        {compact ? null : <StatusButton status={task.status} />}
-        <p
-          className={classNames("text-xs font-medium", {
-            "flex-grow": !compact,
-            "w-full": compact,
-            "mb-2": compact,
-            "text-center": compact,
-            "text-pretty": compact,
-          })}
-        >
-          {task.title}
-        </p>
-        {compact ? <StatusButton status={task.status} push /> : null}
-        <ListButton list="🐶" />
-        <DueDateButton dueOn={task.dueOn} inverseColors={colors.inverse} />
-        <MoreButton />
-      </div>
-    </div>
+      {(provided, snapshot) => {
+        return (
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            data-task-id={task.id}
+            style={{ ...provided.draggableProps.style }}
+            className={classNames(
+              "shadow-md rounded-lg p-4 border border-current/10",
+              colors.main,
+              compact ? "w-[10rem]" : "w-xs",
+              { "bg-secondary": snapshot.isDragging },
+            )}
+          >
+            <div className="flex flex-wrap items-center justify-start gap-2">
+              {compact ? null : <StatusButton status={task.status} />}
+              <p
+                className={classNames("text-xs font-medium", {
+                  "flex-grow": !compact,
+                  "w-full": compact,
+                  "mb-2": compact,
+                  "text-center": compact,
+                  "text-pretty": compact,
+                })}
+              >
+                {task.title}
+              </p>
+              {compact ? <StatusButton status={task.status} push /> : null}
+              <ListButton list="🐶" />
+              <DueDateButton
+                dueOn={task.dueOn}
+                inverseColors={colors.inverse}
+              />
+              <MoreButton />
+            </div>
+          </div>
+        );
+      }}
+    </Draggable>
   );
 };
 
