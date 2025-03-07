@@ -23,7 +23,6 @@ export const Card = (
     id: task.id,
     index,
     type: "task",
-    data: task,
     group: groupBy ? task[groupBy] as UniqueIdentifier : undefined,
   });
 

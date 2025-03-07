@@ -23,13 +23,13 @@ export type TColumn = {
 type TDragEvent = {
   operation: {
     source: {
-      data: TTask;
+      id: string;
       sortable: {
         index: string;
         group: string;
       };
     };
-    target: {
+    target?: {
       id: string;
       type: "column" | "task";
     };
@@ -88,7 +88,7 @@ export const Board = (
         if (diff) {
           console.dir(diff);
           onTaskChange({
-            id: event.operation.source.data.id,
+            id: event.operation.source.id,
             ...diff,
           });
         }
@@ -96,7 +96,7 @@ export const Board = (
       }}
       // @ts-ignore types in library are incorrect
       onDragOver={(event: TDragEvent) => {
-        if (event.operation.target.type === "column") {
+        if (event.operation.target?.type === "column") {
           dragTargetRef.current = {
             group: event.operation.target.id,
           };
