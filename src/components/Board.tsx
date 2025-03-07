@@ -88,14 +88,14 @@ export const Board = (
             : tasks;
 
           return (
-            <Column key={column.id} id={column.id} title={column.title}>
+            <Column compact key={column.id} id={column.id} title={column.title}>
               {tasksForColumn?.map((task, index) => (
                 <Card
                   index={index}
                   key={task.id}
                   task={task}
                   groupBy={groupBy}
-                  small
+                  compact
                 />
               ))}
             </Column>

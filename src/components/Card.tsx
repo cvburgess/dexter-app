@@ -11,11 +11,11 @@ type CardProps = {
   task: TTask;
   index: number;
   groupBy?: EGroupBy;
-  small?: boolean;
+  compact?: boolean;
 };
 
 export const Card = (
-  { task, index, groupBy, small = false }: CardProps,
+  { task, index, groupBy, compact = false }: CardProps,
 ) => {
   const colors = getColors(task.priority);
 
@@ -34,18 +34,24 @@ export const Card = (
       className={classNames(
         "shadow-md rounded-lg p-4 border border-current/10",
         colors.main,
-        small ? "w-[10rem]" : "w-xs",
+        compact ? "w-[10rem]" : "w-xs",
       )}
       ref={ref}
     >
-      <div
-        className={classNames("flex items-center justify-start gap-2", {})}
-      >
-        {small ? null : <StatusButton status={task.status} />}
-        <p className="text-xs font-medium flex-grow">
+      <div className="flex flex-wrap items-center justify-start gap-2">
+        {compact ? null : <StatusButton status={task.status} />}
+        <p
+          className={classNames("text-xs font-medium", {
+            "flex-grow": !compact,
+            "w-full": compact,
+            "mb-2": compact,
+            "text-center": compact,
+            "text-pretty": compact,
+          })}
+        >
           {task.title}
         </p>
-        {small ? <StatusButton status={task.status} push /> : null}
+        {compact ? <StatusButton status={task.status} push /> : null}
         <ListButton list="🐶" />
         <DueDateButton dueOn={task.dueOn} inverseColors={colors.inverse} />
         <MoreButton />
