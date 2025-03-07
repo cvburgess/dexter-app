@@ -21,7 +21,7 @@ export const Column = (
   });
 
   return (
-    <div className="h-vh flex flex-col">
+    <div className="h-vh w-fit flex flex-col">
       <div
         className={classNames(
           "badge badge-lg p-5 mx-auto mb-4",
@@ -33,7 +33,7 @@ export const Column = (
         {title}
       </div>
       <div
-        className="flex-grow w-full flex flex-col gap-2"
+        className="flex flex-col gap-2"
         ref={ref}
         data-list-id={id}
       >
