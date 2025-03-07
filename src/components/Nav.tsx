@@ -20,17 +20,17 @@ const navItems = [
 
 export const Nav = () => (
   <nav
-    className="bg-base-300 overflow-hidden h-screen w-18"
+    className="bg-base-300 overflow-hidden h-screen w-18 py-4"
     aria-label="Main navigation"
   >
-    <div className="flex flex-col mt-4 gap-4 text-base-content h-full items-center">
+    <div className="flex flex-col gap-4 text-base-content h-full items-center">
       {navItems.map((item) => (
         <NavLink
           key={item.route}
           to={item.route}
           className={({ isActive }) =>
             classNames(
-              "bg-base-100 rounded-2xl shadow-md hover:shadow-lg transition-shadow flex items-center justify-center h-12 w-12",
+              "bg-base-100 rounded-2xl shadow-md hover:shadow-lg transition-shadow flex items-center justify-center size-12",
               {
                 "bg-primary text-primary-content": isActive,
                 "mt-auto": item.bottom,
