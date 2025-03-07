@@ -33,7 +33,7 @@ export const Column = (
         {title}
       </div>
       <div
-        className="flex flex-col gap-2"
+        className="flex flex-col flex-grow gap-2"
         ref={ref}
         data-list-id={id}
       >
