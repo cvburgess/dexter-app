@@ -29,6 +29,10 @@ type TDragEvent = {
         group: string;
       };
     };
+    target: {
+      id: string;
+      type: "column" | "task";
+    };
   };
 };
 
@@ -37,14 +41,21 @@ const defaultDragData = { index: undefined, group: undefined };
 export const Board = (
   { columns, groupBy, onTaskChange, tasks }: TBoardProps,
 ) => {
-  const dragRef = useRef<{ index?: string; group?: string }>(defaultDragData);
+  const dragSourceRef = useRef<{ index?: string; group?: string }>(
+    defaultDragData,
+  );
+  const dragTargetRef = useRef<{ index?: string; group?: string }>(
+    defaultDragData,
+  );
 
-  const resetDragRef = () => {
-    dragRef.current = defaultDragData;
+  const resetDragRefs = () => {
+    dragSourceRef.current = defaultDragData;
+    dragTargetRef.current = defaultDragData;
   };
 
   const diffDragEvents = (event: TDragEvent) => {
-    const start = dragRef.current;
+    const start = dragSourceRef.current;
+    const target = dragTargetRef.current;
     const end = event.operation.source.sortable;
 
     const changedProps: [string, number | string][] = [];
@@ -54,6 +65,8 @@ export const Board = (
 
     if (groupBy && start.group !== end.group) {
       changedProps.push([groupBy, end.group]);
+    } else if (groupBy && start.group !== target.group) {
+      changedProps.push([groupBy, target.group!]);
     }
 
     return changedProps.length ? Object.fromEntries(changedProps) : null;
@@ -63,7 +76,7 @@ export const Board = (
     <DragDropProvider
       // @ts-ignore types in library are incorrect
       onDragStart={(event: TDragEvent) => {
-        dragRef.current = {
+        dragSourceRef.current = {
           index: event.operation.source.sortable.index,
           group: event.operation.source.sortable.group,
         };
@@ -71,6 +84,7 @@ export const Board = (
       // @ts-ignore types in library are incorrect
       onDragEnd={(event: TDragEvent) => {
         const diff = diffDragEvents(event);
+        console.dir(diff);
         if (diff) {
           console.dir(diff);
           onTaskChange({
@@ -78,7 +92,15 @@ export const Board = (
             ...diff,
           });
         }
-        resetDragRef();
+        resetDragRefs();
+      }}
+      // @ts-ignore types in library are incorrect
+      onDragOver={(event: TDragEvent) => {
+        if (event.operation.target.type === "column") {
+          dragTargetRef.current = {
+            group: event.operation.target.id,
+          };
+        }
       }}
     >
       <div className="flex gap-4">

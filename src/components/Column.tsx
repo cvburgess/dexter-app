@@ -13,19 +13,20 @@ type TColumnProps = {
 export const Column = (
   { children, id, title, icon, compact = false }: TColumnProps,
 ) => {
-  const { ref } = useDroppable({
+  const { isDropTarget, ref } = useDroppable({
     id,
     type: "column",
     collisionPriority: CollisionPriority.Low,
-    accept: "item",
+    accept: "task",
   });
 
   return (
     <div className="h-vh flex flex-col">
       <div
         className={classNames(
-          "badge badge-lg badge-ghost p-5 mx-auto mb-4",
+          "badge badge-lg p-5 mx-auto mb-4",
           compact ? "w-[10rem]" : "w-xs",
+          isDropTarget ? "badge-info" : "badge-ghost",
         )}
       >
         {icon}
