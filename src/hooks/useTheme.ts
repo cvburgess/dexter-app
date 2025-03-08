@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { listen, TauriEvent } from "@tauri-apps/api/event";
 
-export function useTheme() {
+export const useTheme = () => {
   const [theme, setTheme] = useState(
     globalThis.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
@@ -33,4 +33,4 @@ export function useTheme() {
   }, []);
 
   return theme;
-}
+};

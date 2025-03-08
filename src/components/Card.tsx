@@ -1,9 +1,16 @@
 import { Draggable } from "@hello-pangea/dnd";
 import { Temporal } from "@js-temporal/polyfill";
-import { BellRinging, DotsThreeOutlineVertical } from "@phosphor-icons/react";
+import {
+  BellRinging,
+  DotsThreeOutlineVertical,
+  Smiley,
+} from "@phosphor-icons/react";
 import classNames from "classnames";
 
+import { useLists } from "../hooks/useLists.tsx";
+
 import { ETaskPriority, ETaskStatus, TTask } from "../api/tasks.ts";
+import { TList } from "../api/lists.ts";
 
 type CardProps = {
   task: TTask;
@@ -14,6 +21,7 @@ type CardProps = {
 export const Card = (
   { task, index, compact = false }: CardProps,
 ) => {
+  const [_, getListById] = useLists();
   const colors = getColors(task.priority);
 
   return (
@@ -50,7 +58,7 @@ export const Card = (
                 {task.title}
               </p>
               {compact ? <StatusButton status={task.status} push /> : null}
-              <ListButton list="🐶" />
+              <ListButton list={getListById(task.listId)} />
               <DueDateButton
                 dueOn={task.dueOn}
                 inverseColors={colors.inverse}
@@ -91,8 +99,10 @@ const TaskButton = (
   </button>
 );
 
-const ListButton = ({ list }: { list: string }) => (
-  <TaskButton>{list}</TaskButton>
+const ListButton = ({ list }: { list?: TList }) => (
+  <TaskButton>
+    {list ? list.emoji : <Smiley weight="thin" size={24} />}
+  </TaskButton>
 );
 
 const DueDateButton = (
