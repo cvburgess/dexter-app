@@ -30,9 +30,9 @@ export const Week = () => {
     //   queryClient.invalidateQueries({ queryKey: ["tasks"] });
     // },
     onSuccess: ([newTaskData]) => {
-      queryClient.setQueryData(["tasks"], (oldData) => {
+      queryClient.setQueryData(["tasks"], (oldData: TTask[]) => {
         // console.log("data", newTaskData);
-        return oldData.map((task) => {
+        return oldData.map((task: TTask) => {
           return (task.id === newTaskData.id) ? newTaskData : task;
         });
       });
@@ -40,21 +40,26 @@ export const Week = () => {
   });
 
   const today = Temporal.Now.plainDateISO();
-  const daysOfWeek = daysForWeekOfDate(today.add({ weeks: weeksOffset }));
+  const columns = makeColumnsForWeekOf(
+    today.add({ weeks: weeksOffset }),
+    tasks,
+  );
 
   return (
     <View className="flex">
       <Board
-        columns={daysOfWeek}
-        groupBy="scheduledFor"
-        onTaskChange={update}
-        tasks={tasks}
+        columns={columns}
+        onTaskChange={(id, _index, column) =>
+          update({ id, scheduledFor: column })}
       />
     </View>
   );
 };
 
-const daysForWeekOfDate = (date: Temporal.PlainDate): TColumn[] => {
+const makeColumnsForWeekOf = (
+  date: Temporal.PlainDate,
+  tasks: TTask[] | undefined = [],
+): TColumn[] => {
   const mostRecentMonday = date.subtract({ days: date.dayOfWeek - 1 });
 
   const dayNames = [
@@ -67,8 +72,13 @@ const daysForWeekOfDate = (date: Temporal.PlainDate): TColumn[] => {
     "sunday",
   ];
 
-  return dayNames.map((dayName, index) => ({
-    id: mostRecentMonday.add({ days: index }).toString(),
-    title: dayName,
-  }));
+  return dayNames.map((dayName, index) => {
+    const isoDate = mostRecentMonday.add({ days: index }).toString();
+
+    return {
+      id: isoDate,
+      title: dayName,
+      tasks: tasks?.filter((task: TTask) => task.scheduledFor === isoDate),
+    };
+  });
 };
