@@ -24,13 +24,21 @@ type CardProps = {
   onTaskUpdate?: (diff: Omit<TUpdateTask, "id">) => void;
 };
 
+type TOption = {
+  id: string | null;
+  title: string;
+  emoji: string;
+  isSelected: boolean;
+};
+
 export const Card = (
   { task, index, compact = false, onTaskUpdate }: CardProps,
 ) => {
   const [lists, { getListById }] = useLists();
   const colors = getColors(task.priority);
 
-  const listOptions = lists.map((list) => ({
+  const options = [{ id: null, title: "None", emoji: "🚫" }, ...lists];
+  const listOptions: TOption[] = options.map((list) => ({
     id: list.id,
     title: list.title,
     emoji: list.emoji,
@@ -95,19 +103,13 @@ const StatusButton = (
 ) => (
   <button
     type="button"
+    onClick={() => console.log("status clicked")}
     className={classNames(
       "w-5 h-5 rounded-full border focus:ring-2 focus:ring-offset-2 border-current/40 hover:bg-current/10",
       { "mr-auto": push },
     )}
   />
 );
-
-type TOption = {
-  id: string;
-  title: string;
-  emoji: string;
-  isSelected: boolean;
-};
 
 type TTaskButtonProps = {
   children: React.ReactNode;
@@ -119,7 +121,12 @@ type TTaskButtonProps = {
 const TaskButton = (
   { children, className, onTaskUpdate, options }: TTaskButtonProps,
 ) => (
-  <div className={classNames({ "dropdown dropdown-hover": options })}>
+  <div
+    className={classNames({
+      "dropdown dropdown-start dropdown-hover": options,
+      "dropdown-open": false,
+    })}
+  >
     <div
       tabIndex={0}
       role="button"
@@ -135,7 +142,7 @@ const TaskButton = (
       ? (
         <ul
           tabIndex={0}
-          className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+          className="dropdown-content menu bg-base-100 rounded-box w-52 p-2 shadow-sm"
         >
           {options.map((option) => (
             <li key={option.id}>

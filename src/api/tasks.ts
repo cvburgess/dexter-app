@@ -65,7 +65,7 @@ export const createTask = async (
 export type TUpdateTask = {
   id: string;
   dueOn?: string;
-  listId?: string;
+  listId?: string | null;
   priority?: ETaskPriority;
   scheduledFor?: string;
   status?: ETaskStatus;
