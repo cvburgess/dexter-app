@@ -1,15 +1,13 @@
 import { Droppable } from "@hello-pangea/dnd";
 import classNames from "classnames";
 
-import { TCreateTask } from "../api/tasks";
-
 type TColumnProps = {
   canCreateTasks?: boolean;
   children: React.ReactNode;
   id: string;
   title: string;
   icon?: string;
-  onTaskCreate?: (task: TCreateTask) => void;
+  onTaskCreate?: (title: string, column: string) => void;
   // compact?: boolean;
 };
 
@@ -31,7 +29,7 @@ export const Column = (
             className="input"
             onKeyDown={(e) => {
               if (e.key === "Enter" && e.currentTarget.value.trim()) {
-                onTaskCreate?.({ title: e.currentTarget.value.trim() });
+                onTaskCreate?.(e.currentTarget.value.trim(), id);
                 e.currentTarget.value = "";
               }
             }}
