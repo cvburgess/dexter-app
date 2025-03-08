@@ -24,7 +24,7 @@ export const Week = () => {
   );
 
   return (
-    <View className="flex">
+    <View>
       <Board
         canCreateTasks
         cardSize="compact"

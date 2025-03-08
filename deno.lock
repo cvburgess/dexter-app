@@ -2,7 +2,6 @@
   "version": "4",
   "specifiers": {
     "npm:@deno/vite-plugin@^1.0.4": "1.0.4_vite@6.0.3__lightningcss@1.29.1",
-    "npm:@dnd-kit/react@^0.0.9": "0.0.9_react@18.3.1_react-dom@18.3.1__react@18.3.1",
     "npm:@hello-pangea/dnd@^18.0.1": "18.0.1_react@18.3.1_react-dom@18.3.1__react@18.3.1_@types+react@18.3.18_redux@5.0.1",
     "npm:@js-temporal/polyfill@~0.4.4": "0.4.4",
     "npm:@phosphor-icons/react@^2.1.7": "2.1.7_react@18.3.1_react-dom@18.3.1__react@18.3.1",
@@ -182,57 +181,6 @@
         "vite@6.0.3_lightningcss@1.29.1"
       ]
     },
-    "@dnd-kit/abstract@0.0.9": {
-      "integrity": "sha512-4FjHPOREfJJfRu0clCAnYqYc8JNHQl6CL31FjLKR+1wER+YOGkb3s3JntsqvZost5Xm/G/Z4sQ3ouLdyYQ9KdQ==",
-      "dependencies": [
-        "@dnd-kit/geometry",
-        "@dnd-kit/state",
-        "tslib"
-      ]
-    },
-    "@dnd-kit/collision@0.0.9": {
-      "integrity": "sha512-8Brbcd0dM/y2yzg/6EI9O/SvsVAglx0fUDvqPSsXACewR+//OGno1GVKndh35GAVKqDxOgG3Q/fw+CVnMnFv6g==",
-      "dependencies": [
-        "@dnd-kit/abstract",
-        "@dnd-kit/geometry",
-        "tslib"
-      ]
-    },
-    "@dnd-kit/dom@0.0.9": {
-      "integrity": "sha512-nsDcL6MMdNfGOg0xp24c1xy/eNW7fO1uLU0AM2b1SFYJYsbXUMw6sQXq+2eHCQol/FixCoSbjMgjx9D8jQXb+w==",
-      "dependencies": [
-        "@dnd-kit/abstract",
-        "@dnd-kit/collision",
-        "@dnd-kit/geometry",
-        "@dnd-kit/state",
-        "tslib"
-      ]
-    },
-    "@dnd-kit/geometry@0.0.9": {
-      "integrity": "sha512-zqSY7vva+LGs9Y/c37GhD67q+boS27nCmyYYAohlZ29MGz66KwjpbSH5HNHa261kuq90KaaIVQQVHiZGjNfmOw==",
-      "dependencies": [
-        "@dnd-kit/state",
-        "tslib"
-      ]
-    },
-    "@dnd-kit/react@0.0.9_react@18.3.1_react-dom@18.3.1__react@18.3.1": {
-      "integrity": "sha512-a2ZUbVVyJwSf5gf0l6I10VqEj8EEe+O1W/q+rSR0fpjbxjwhLT0Gt+udwKZsg3yIKxmxJC4W6eHSS6feNca9aw==",
-      "dependencies": [
-        "@dnd-kit/abstract",
-        "@dnd-kit/dom",
-        "@dnd-kit/state",
-        "react",
-        "react-dom",
-        "tslib"
-      ]
-    },
-    "@dnd-kit/state@0.0.9": {
-      "integrity": "sha512-F43bOum8k/Rh1tfO3DiAUs/zw6KSv5IMm4PGKSPoU2tz+LW+37Kp37NlgwtLLDzx+z6R+6gILnJzE6Q5eVx7OQ==",
-      "dependencies": [
-        "@preact/signals-core",
-        "tslib"
-      ]
-    },
     "@esbuild/aix-ppc64@0.24.2": {
       "integrity": "sha512-thpVCb/rhxE/BnMLQ7GReQLLN8q9qbHmI55F4489/ByVg2aQaQ6kbcLb6FHkocZzQhxc4gx0sCk0tJkKBFzDhA=="
     },
@@ -377,9 +325,6 @@
     },
     "@pkgjs/parseargs@0.11.0": {
       "integrity": "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="
-    },
-    "@preact/signals-core@1.8.0": {
-      "integrity": "sha512-OBvUsRZqNmjzCZXWLxkZfhcgT+Fk8DDcT/8vD6a1xhDemodyy87UJRJfASMuSD8FaAIeGgGm85ydXhm7lr4fyA=="
     },
     "@rollup/rollup-android-arm-eabi@4.34.9": {
       "integrity": "sha512-qZdlImWXur0CFakn2BJ2znJOdqYZKiedEPEVNTBrpfPjc/YuTGcaYZcdmNFTkUj3DU0ZM/AElcM8Ybww3xVLzA=="
@@ -1376,7 +1321,6 @@
     "packageJson": {
       "dependencies": [
         "npm:@deno/vite-plugin@^1.0.4",
-        "npm:@dnd-kit/react@^0.0.9",
         "npm:@hello-pangea/dnd@^18.0.1",
         "npm:@js-temporal/polyfill@~0.4.4",
         "npm:@phosphor-icons/react@^2.1.7",
