@@ -4,7 +4,6 @@
     "npm:@deno/vite-plugin@^1.0.4": "1.0.4_vite@6.0.3__lightningcss@1.29.1",
     "npm:@emoji-mart/data@^1.2.1": "1.2.1",
     "npm:@emoji-mart/react@^1.1.1": "1.1.1_emoji-mart@5.6.0_react@18.3.1",
-    "npm:@ferrucc-io/emoji-picker@^0.0.44": "0.0.44_react@18.3.1_react-dom@18.3.1__react@18.3.1_tailwindcss@4.0.9_@types+react@18.3.18",
     "npm:@hello-pangea/dnd@^18.0.1": "18.0.1_react@18.3.1_react-dom@18.3.1__react@18.3.1_@types+react@18.3.18_redux@5.0.1",
     "npm:@js-temporal/polyfill@~0.4.4": "0.4.4",
     "npm:@phosphor-icons/react@^2.1.7": "2.1.7_react@18.3.1_react-dom@18.3.1__react@18.3.1",
@@ -23,7 +22,6 @@
     "npm:daisyui@5": "5.0.0",
     "npm:decamelize-keys@^2.0.1": "2.0.1",
     "npm:emoji-mart@^5.6.0": "5.6.0",
-    "npm:emoji-picker-react@^4.12.0": "4.12.0_react@18.3.1",
     "npm:react-dom@^18.3.1": "18.3.1_react@18.3.1",
     "npm:react-router@^7.2.0": "7.2.0_react@18.3.1_react-dom@18.3.1__react@18.3.1",
     "npm:react@^18.3.1": "18.3.1",
@@ -271,20 +269,6 @@
     "@esbuild/win32-x64@0.24.2": {
       "integrity": "sha512-7VTgWzgMGvup6aSqDPLiW5zHaxYJGTO4OokMjIlrCtf+VpEL+cXKtCvg723iguPYI5oaUNdS+/V7OU2gvXVWEg=="
     },
-    "@ferrucc-io/emoji-picker@0.0.44_react@18.3.1_react-dom@18.3.1__react@18.3.1_tailwindcss@4.0.9_@types+react@18.3.18": {
-      "integrity": "sha512-jMn4fSYQCc2Dlg5lE+X2LOLXDgzUDWXL/G5sBdv5auBDWNeGXtIpJYPhu/kItAeUTKfc+QWm8nwGRHWRiOn7ig==",
-      "dependencies": [
-        "@tanstack/react-virtual",
-        "clsx",
-        "jotai",
-        "node-emoji",
-        "react",
-        "react-dom",
-        "tailwind-merge",
-        "tailwindcss",
-        "unicode-emoji-json"
-      ]
-    },
     "@hello-pangea/dnd@18.0.1_react@18.3.1_react-dom@18.3.1__react@18.3.1_@types+react@18.3.18_redux@5.0.1": {
       "integrity": "sha512-xojVWG8s/TGrKT1fC8K2tIWeejJYTAeJuj36zM//yEm/ZrnZUSFGS15BpO+jGZT1ybWvyXmeDJwPYb4dhWlbZQ==",
       "dependencies": [
@@ -412,9 +396,6 @@
     "@rollup/rollup-win32-x64-msvc@4.34.9": {
       "integrity": "sha512-AyleYRPU7+rgkMWbEh71fQlrzRfeP6SyMnRf9XX4fCdDPAJumdSBqYEcWPMzVQ4ScAl7E4oFfK0GUVn77xSwbw=="
     },
-    "@sindresorhus/is@4.6.0": {
-      "integrity": "sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw=="
-    },
     "@supabase/auth-js@2.68.0": {
       "integrity": "sha512-odG7nb7aOmZPUXk6SwL2JchSsn36Ppx11i2yWMIc/meUO2B2HK9YwZHPK06utD9Ql9ke7JKDbwGin/8prHKxxQ==",
       "dependencies": [
@@ -541,17 +522,6 @@
         "@tanstack/query-core",
         "react"
       ]
-    },
-    "@tanstack/react-virtual@3.13.2_react@18.3.1_react-dom@18.3.1__react@18.3.1": {
-      "integrity": "sha512-LceSUgABBKF6HSsHK2ZqHzQ37IKV/jlaWbHm+NyTa3/WNb/JZVcThDuTainf+PixltOOcFCYXwxbLpOX9sCx+g==",
-      "dependencies": [
-        "@tanstack/virtual-core",
-        "react",
-        "react-dom"
-      ]
-    },
-    "@tanstack/virtual-core@3.13.2": {
-      "integrity": "sha512-Qzz4EgzMbO5gKrmqUondCjiHcuu4B1ftHb0pjCut661lXZdGoHeze9f/M8iwsK1t5LGR6aNuNGU7mxkowaW6RQ=="
     },
     "@tauri-apps/api@2.3.0": {
       "integrity": "sha512-33Z+0lX2wgZbx1SPFfqvzI6su63hCBkbzv+5NexeYjIx7WA9htdOKoRR7Dh3dJyltqS5/J8vQFyybiRoaL0hlA=="
@@ -748,17 +718,11 @@
     "caniuse-lite@1.0.30001702": {
       "integrity": "sha512-LoPe/D7zioC0REI5W73PeR1e1MLCipRGq/VkovJnd6Df+QVqT+vT33OXCp8QUd7kA7RZrHWxb1B36OQKI/0gOA=="
     },
-    "char-regex@1.0.2": {
-      "integrity": "sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw=="
-    },
     "chownr@3.0.0": {
       "integrity": "sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g=="
     },
     "classnames@2.5.1": {
       "integrity": "sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow=="
-    },
-    "clsx@2.1.1": {
-      "integrity": "sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA=="
     },
     "cmd-shim@7.0.0": {
       "integrity": "sha512-rtpaCbr164TPPh+zFdkWpCyZuKkjpAzODfaZCf/SVJZzJN+4bHQb/LP3Jzq5/+84um3XXY8r548XiWKSborwVw=="
@@ -831,21 +795,11 @@
     "emoji-mart@5.6.0": {
       "integrity": "sha512-eJp3QRe79pjwa+duv+n7+5YsNhRcMl812EcFVwrnRvYKoNPoQb5qxU8DG6Bgwji0akHdp6D4Ln6tYLG58MFSow=="
     },
-    "emoji-picker-react@4.12.0_react@18.3.1": {
-      "integrity": "sha512-q2c8UcZH0eRIMj41bj0k1akTjk69tsu+E7EzkW7giN66iltF6H9LQvQvw6ugscsxdC+1lmt3WZpQkkY65J95tg==",
-      "dependencies": [
-        "flairup",
-        "react"
-      ]
-    },
     "emoji-regex@8.0.0": {
       "integrity": "sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A=="
     },
     "emoji-regex@9.2.2": {
       "integrity": "sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg=="
-    },
-    "emojilib@2.4.0": {
-      "integrity": "sha512-5U0rVMU5Y2n2+ykNLQqMoqklN9ICBT/KsvC1Gz6vqHbz2AXXGkG+Pm5rMWk/8Vjrr/mY9985Hi8DYzn1F09Nyw=="
     },
     "enhanced-resolve@5.18.1": {
       "integrity": "sha512-ZSW3ma5GkcQBIpwZTSRAI8N71Uuwgs93IezB7mf7R60tC8ZbJideoDNKjHn2O9KIlx6rkGTTEk1xUCK2E1Y2Yg==",
@@ -893,9 +847,6 @@
         "node-domexception",
         "web-streams-polyfill"
       ]
-    },
-    "flairup@1.0.0": {
-      "integrity": "sha512-IKlE+pNvL2R+kVL1kEhUYqRxVqeFnjiIvHWDMLFXNaqyUdFXQM2wte44EfMYJNHkW16X991t2Zg8apKkhv7OBA=="
     },
     "foreground-child@3.3.1": {
       "integrity": "sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==",
@@ -958,13 +909,6 @@
     },
     "jiti@2.4.2": {
       "integrity": "sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A=="
-    },
-    "jotai@2.12.1_@types+react@18.3.18_react@18.3.1": {
-      "integrity": "sha512-VUW0nMPYIru5g89tdxwr9ftiVdc/nGV9jvHISN8Ucx+m1vI9dBeHemfqYzEuw5XSkmYjD/MEyApN9k6yrATsZQ==",
-      "dependencies": [
-        "@types/react",
-        "react"
-      ]
     },
     "js-tokens@4.0.0": {
       "integrity": "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ=="
@@ -1072,15 +1016,6 @@
     },
     "node-domexception@1.0.0": {
       "integrity": "sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ=="
-    },
-    "node-emoji@2.2.0": {
-      "integrity": "sha512-Z3lTE9pLaJF47NyMhd4ww1yFTAP8YhYI8SleJiHzM46Fgpm5cnNzSl9XfzFNqbaz+VlJrIj3fXQ4DeN1Rjm6cw==",
-      "dependencies": [
-        "@sindresorhus/is",
-        "char-regex",
-        "emojilib",
-        "skin-tone"
-      ]
     },
     "node-fetch@3.3.2": {
       "integrity": "sha512-dRB78srN/l6gqWulah9SrxeYnxeddIG30+GOqK/9OlLVyLg3HPnr6SqOWTWOXKRwC2eGYCkZ59NNuSgvSrpgOA==",
@@ -1232,12 +1167,6 @@
     "signal-exit@4.1.0": {
       "integrity": "sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw=="
     },
-    "skin-tone@2.0.0": {
-      "integrity": "sha512-kUMbT1oBJCpgrnKoSr0o6wPtvRWT9W9UKvGLwfJYO2WuahZRHOpEyL1ckyMGgMWh0UdpmaoFqKKD29WTomNEGA==",
-      "dependencies": [
-        "unicode-emoji-modifier-base"
-      ]
-    },
     "source-map-js@1.2.1": {
       "integrity": "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA=="
     },
@@ -1277,9 +1206,6 @@
         "node-fetch",
         "tar"
       ]
-    },
-    "tailwind-merge@2.6.0": {
-      "integrity": "sha512-P+Vu1qXfzediirmHOC3xKGAYeZtPcV9g76X+xg2FD4tYgR71ewMA35Y3sCz3zhiN/dwefRpJX0yBcgwi1fXNQA=="
     },
     "tailwindcss@4.0.9": {
       "integrity": "sha512-12laZu+fv1ONDRoNR9ipTOpUD7RN9essRVkX36sjxuRUInpN7hIiHN4lBd/SIFjbISvnXzp8h/hXzmU8SQQYhw=="
@@ -1321,12 +1247,6 @@
     },
     "undici-types@6.20.0": {
       "integrity": "sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg=="
-    },
-    "unicode-emoji-json@0.8.0": {
-      "integrity": "sha512-3wDXXvp6YGoKGhS2O2H7+V+bYduOBydN1lnI0uVfr1cIdY02uFFiEH1i3kE5CCE4l6UqbLKVmEFW9USxTAMD1g=="
-    },
-    "unicode-emoji-modifier-base@1.0.0": {
-      "integrity": "sha512-yLSH4py7oFH3oG/9K+XWrz1pSi3dfUrWEnInbxMfArOfc1+33BlGPQtLsOYwvdMy11AwUBetYuaRxSPqgkq+8g=="
     },
     "update-browserslist-db@1.1.3_browserslist@4.24.4": {
       "integrity": "sha512-UxhIZQ+QInVdunkDAaiazvvT/+fXL5Osr0JZlJulepYu6Jd7qJtDZjlur0emRlT71EN3ScPoE7gvsuIKKNavKw==",
@@ -1419,7 +1339,6 @@
         "npm:@deno/vite-plugin@^1.0.4",
         "npm:@emoji-mart/data@^1.2.1",
         "npm:@emoji-mart/react@^1.1.1",
-        "npm:@ferrucc-io/emoji-picker@^0.0.44",
         "npm:@hello-pangea/dnd@^18.0.1",
         "npm:@js-temporal/polyfill@~0.4.4",
         "npm:@phosphor-icons/react@^2.1.7",
@@ -1437,7 +1356,6 @@
         "npm:daisyui@5",
         "npm:decamelize-keys@^2.0.1",
         "npm:emoji-mart@^5.6.0",
-        "npm:emoji-picker-react@^4.12.0",
         "npm:react-dom@^18.3.1",
         "npm:react-router@^7.2.0",
         "npm:react@^18.3.1",
