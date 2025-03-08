@@ -1,28 +1,43 @@
 import { Droppable } from "@hello-pangea/dnd";
 import classNames from "classnames";
 
+import { TCreateTask } from "../api/tasks";
+
 type TColumnProps = {
+  canCreateTasks?: boolean;
   children: React.ReactNode;
   id: string;
   title: string;
   icon?: string;
-  compact?: boolean;
+  onTaskCreate?: (task: TCreateTask) => void;
+  // compact?: boolean;
 };
 
 export const Column = (
-  { children, id, title, icon, compact = false }: TColumnProps,
+  { canCreateTasks = false, children, id, title, icon, onTaskCreate }:
+    TColumnProps,
 ) => {
   return (
     <div className="h-vh w-fit flex flex-col">
-      <div
-        className={classNames(
-          "badge badge-lg p-5 mx-auto mb-4",
-          compact ? "w-[10rem]" : "w-xs",
-        )}
-      >
+      <div className="badge badge-lg p-5 mx-auto mb-4 w-full">
         {icon}
         {title}
       </div>
+      {canCreateTasks
+        ? (
+          <input
+            type="text"
+            placeholder="+"
+            className="input"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && e.currentTarget.value.trim()) {
+                onTaskCreate?.({ title: e.currentTarget.value.trim() });
+                e.currentTarget.value = "";
+              }
+            }}
+          />
+        )
+        : null}
       <Droppable droppableId={id} key={id}>
         {(provided, snapshot) => {
           return (

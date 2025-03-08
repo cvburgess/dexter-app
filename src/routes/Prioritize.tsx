@@ -5,9 +5,11 @@ import { View } from "../components/View.tsx";
 import { useAuth } from "../hooks/useAuth.tsx";
 
 import {
+  createTask,
   ETaskPriority,
   // createTask,
   getTasks,
+  TCreateTask,
   TTask,
   TUpdateTask,
   updateTask,
@@ -37,14 +39,31 @@ export const Prioritize = () => {
     },
   });
 
+  const { mutate: create } = useMutation<TTask[], Error, TCreateTask>({
+    mutationFn: (task) => createTask(supabase, task),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+    // onSuccess: ([newTaskData]) => {
+    //   queryClient.setQueryData(["tasks"], (oldData: TTask[]) => {
+    //     // console.log("data", newTaskData);
+    //     return oldData.map((task: TTask) => {
+    //       return (task.id === newTaskData.id) ? newTaskData : task;
+    //     });
+    //   });
+    // },
+  });
+
   const columns = makeColumns(tasks);
 
   return (
     <View>
       <Board
+        canCreateTasks
         columns={columns}
         onTaskChange={(id, _index, column) =>
           update({ id, priority: Number(column) as ETaskPriority })}
+        onTaskCreate={create}
       />
     </View>
   );

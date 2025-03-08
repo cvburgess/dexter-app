@@ -3,18 +3,20 @@ import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { Card } from "../components/Card.tsx";
 import { Column } from "../components/Column.tsx";
 
-import { TTask } from "../api/tasks.ts";
+import { TCreateTask, TTask } from "../api/tasks.ts";
 
 type TBoardProps = {
+  canCreateTasks?: boolean;
   cardSize?: "compact" | "normal";
   columns: TColumn[];
   groupBy?: EGroupBy;
   onTaskChange: (id: string, index: number, column: string) => void;
+  onTaskCreate?: (task: TCreateTask) => void;
   tasks?: TTask[];
 };
 
 export type TColumn = {
-  id: string | number;
+  id: string;
   title: string;
   tasks: TTask[];
 };
@@ -22,7 +24,13 @@ export type TColumn = {
 export type EGroupBy = "scheduledFor" | "listId" | "priority";
 
 export const Board = (
-  { cardSize = "normal", columns, onTaskChange }: TBoardProps,
+  {
+    canCreateTasks = false,
+    cardSize = "normal",
+    columns,
+    onTaskChange,
+    onTaskCreate,
+  }: TBoardProps,
 ) => {
   const onDragEnd = (result: DropResult<string>) => {
     if (!result.destination) return;
@@ -58,7 +66,14 @@ export const Board = (
       <div className="flex gap-4">
         {columns.map((column) => {
           return (
-            <Column compact key={column.id} id={column.id} title={column.title}>
+            <Column
+              // compact
+              canCreateTasks={canCreateTasks}
+              id={column.id}
+              key={column.id}
+              onTaskCreate={onTaskCreate}
+              title={column.title}
+            >
               {column.tasks?.map((task, index) => (
                 <Card
                   index={index}
