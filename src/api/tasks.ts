@@ -59,7 +59,7 @@ export const createTask = async (
     .select();
 
   if (error) throw error;
-  return data as TTask[];
+  return camelCase(data) as TTask[];
 };
 
 export type TUpdateTask = {
