@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "@emoji-mart/data": "^1.2.1",
+    "@emoji-mart/react": "^1.1.1",
+    "@ferrucc-io/emoji-picker": "^0.0.44",
     "@hello-pangea/dnd": "^18.0.1",
     "@js-temporal/polyfill": "^0.4.4",
     "@phosphor-icons/react": "^2.1.7",
@@ -12,6 +15,8 @@
     "classnames": "^2.5.1",
     "daisyui": "^5.0.0",
     "decamelize-keys": "^2.0.1",
+    "emoji-mart": "^5.6.0",
+    "emoji-picker-react": "^4.12.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^7.2.0",

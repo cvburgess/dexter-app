@@ -27,7 +27,7 @@ type CardProps = {
 export const Card = (
   { task, index, compact = false, onTaskUpdate }: CardProps,
 ) => {
-  const [lists, getListById] = useLists();
+  const [lists, { getListById }] = useLists();
   const colors = getColors(task.priority);
 
   const listOptions = lists.map((list) => ({
@@ -119,7 +119,7 @@ type TTaskButtonProps = {
 const TaskButton = (
   { children, className, onTaskUpdate, options }: TTaskButtonProps,
 ) => (
-  <div className={classNames({ "dropdown": options })}>
+  <div className={classNames({ "dropdown dropdown-hover": options })}>
     <div
       tabIndex={0}
       role="button"
