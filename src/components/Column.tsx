@@ -1,18 +1,19 @@
 import { Droppable } from "@hello-pangea/dnd";
 import { Plus } from "@phosphor-icons/react";
+import classNames from "classnames";
 
 type TColumnProps = {
   canCreateTasks?: boolean;
   children: React.ReactNode;
-  id: string;
-  title: string;
+  compact?: boolean;
   icon?: string;
+  id: string;
   onTaskCreate?: (title: string, column: string) => void;
-  // compact?: boolean;
+  title: string;
 };
 
 export const Column = (
-  { canCreateTasks = false, children, id, title, icon, onTaskCreate }:
+  { canCreateTasks = false, children, compact, id, title, icon, onTaskCreate }:
     TColumnProps,
 ) => {
   return (
@@ -25,6 +26,7 @@ export const Column = (
       <CreateTask
         enabled={canCreateTasks}
         columnId={id}
+        compact={compact}
         onTaskCreate={onTaskCreate}
       />
 
@@ -49,18 +51,26 @@ export const Column = (
 
 type TCreateTaskProps = {
   columnId: string;
+  compact?: boolean;
   enabled: boolean;
   onTaskCreate?: (title: string, column: string) => void;
 };
 
-const CreateTask = ({ columnId, enabled, onTaskCreate }: TCreateTaskProps) =>
+const CreateTask = (
+  { columnId, compact = false, enabled, onTaskCreate }: TCreateTaskProps,
+) =>
   enabled
     ? (
-      <label className="group input input-ghost mb-4 w-full rounded-lg p-4 h-auto bg-base-200 focus-within:bg-base-100 focus-within:outline-1 focus-within:outline-base-300">
+      <label
+        className={classNames(
+          "group input input-ghost mb-4 w-full rounded-lg p-4 h-auto bg-base-200",
+          "focus-within:bg-base-100 focus-within:outline-1 focus-within:outline-base-300",
+          compact ? "w-[10rem]" : "w-xs",
+        )}
+      >
         <Plus className="group-focus-within:hidden" />
         <input
           type="text"
-          className="peer"
           onKeyDown={(e) => {
             if (e.key === "Enter" && e.currentTarget.value.trim()) {
               onTaskCreate?.(e.currentTarget.value.trim(), columnId);

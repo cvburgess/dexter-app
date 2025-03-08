@@ -113,8 +113,8 @@ export const Board = (
         {columns.map((column) => {
           return (
             <Column
-              // compact
               canCreateTasks={canCreateTasks}
+              compact={cardSize === "compact"}
               id={column.id}
               key={column.id}
               onTaskCreate={onTaskCreate}
