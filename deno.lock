@@ -2,6 +2,8 @@
   "version": "4",
   "specifiers": {
     "npm:@deno/vite-plugin@^1.0.4": "1.0.4_vite@6.0.3__lightningcss@1.29.1",
+    "npm:@emoji-mart/data@^1.2.1": "1.2.1",
+    "npm:@emoji-mart/react@^1.1.1": "1.1.1_emoji-mart@5.6.0_react@18.3.1",
     "npm:@hello-pangea/dnd@^18.0.1": "18.0.1_react@18.3.1_react-dom@18.3.1__react@18.3.1_@types+react@18.3.18_redux@5.0.1",
     "npm:@js-temporal/polyfill@~0.4.4": "0.4.4",
     "npm:@phosphor-icons/react@^2.1.7": "2.1.7_react@18.3.1_react-dom@18.3.1__react@18.3.1",
@@ -19,6 +21,7 @@
     "npm:classnames@^2.5.1": "2.5.1",
     "npm:daisyui@5": "5.0.0",
     "npm:decamelize-keys@^2.0.1": "2.0.1",
+    "npm:emoji-mart@^5.6.0": "5.6.0",
     "npm:react-dom@^18.3.1": "18.3.1_react@18.3.1",
     "npm:react-router@^7.2.0": "7.2.0_react@18.3.1_react-dom@18.3.1__react@18.3.1",
     "npm:react@^18.3.1": "18.3.1",
@@ -179,6 +182,16 @@
       "integrity": "sha512-xg8YT8Wn2sGXSnJgiGTpBGX1Dov0c6fd1rAp8VsfrCUtyBRRWzwVMAnd3fQ4yq8h7LSVvJUxEFN4U421k/DQLA==",
       "dependencies": [
         "vite@6.0.3_lightningcss@1.29.1"
+      ]
+    },
+    "@emoji-mart/data@1.2.1": {
+      "integrity": "sha512-no2pQMWiBy6gpBEiqGeU77/bFejDqUTRY7KX+0+iur13op3bqUsXdnwoZs6Xb1zbv0gAj5VvS1PWoUUckSr5Dw=="
+    },
+    "@emoji-mart/react@1.1.1_emoji-mart@5.6.0_react@18.3.1": {
+      "integrity": "sha512-NMlFNeWgv1//uPsvLxvGQoIerPuVdXwK/EUek8OOkJ6wVOWPUizRBJU0hDqWZCOROVpfBgCemaC3m6jDOXi03g==",
+      "dependencies": [
+        "emoji-mart",
+        "react"
       ]
     },
     "@esbuild/aix-ppc64@0.24.2": {
@@ -779,6 +792,9 @@
     "electron-to-chromium@1.5.112": {
       "integrity": "sha512-oen93kVyqSb3l+ziUgzIOlWt/oOuy4zRmpwestMn4rhFWAoFJeFuCVte9F2fASjeZZo7l/Cif9TiyrdW4CwEMA=="
     },
+    "emoji-mart@5.6.0": {
+      "integrity": "sha512-eJp3QRe79pjwa+duv+n7+5YsNhRcMl812EcFVwrnRvYKoNPoQb5qxU8DG6Bgwji0akHdp6D4Ln6tYLG58MFSow=="
+    },
     "emoji-regex@8.0.0": {
       "integrity": "sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A=="
     },
@@ -1321,6 +1337,8 @@
     "packageJson": {
       "dependencies": [
         "npm:@deno/vite-plugin@^1.0.4",
+        "npm:@emoji-mart/data@^1.2.1",
+        "npm:@emoji-mart/react@^1.1.1",
         "npm:@hello-pangea/dnd@^18.0.1",
         "npm:@js-temporal/polyfill@~0.4.4",
         "npm:@phosphor-icons/react@^2.1.7",
@@ -1337,6 +1355,7 @@
         "npm:classnames@^2.5.1",
         "npm:daisyui@5",
         "npm:decamelize-keys@^2.0.1",
+        "npm:emoji-mart@^5.6.0",
         "npm:react-dom@^18.3.1",
         "npm:react-router@^7.2.0",
         "npm:react@^18.3.1",

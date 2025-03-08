@@ -1,20 +1,49 @@
 import { Draggable } from "@hello-pangea/dnd";
 import { Temporal } from "@js-temporal/polyfill";
-import { BellRinging, DotsThreeOutlineVertical } from "@phosphor-icons/react";
+import {
+  BellRinging,
+  DotsThreeOutlineVertical,
+  Smiley,
+} from "@phosphor-icons/react";
 import classNames from "classnames";
 
-import { ETaskPriority, ETaskStatus, TTask } from "../api/tasks.ts";
+import { useLists } from "../hooks/useLists.tsx";
+
+import {
+  ETaskPriority,
+  ETaskStatus,
+  TTask,
+  TUpdateTask,
+} from "../api/tasks.ts";
+import { TList } from "../api/lists.ts";
 
 type CardProps = {
   task: TTask;
   index: number;
   compact?: boolean;
+  onTaskUpdate?: (diff: Omit<TUpdateTask, "id">) => void;
+};
+
+type TOption = {
+  id: string | null;
+  title: string;
+  emoji: string;
+  isSelected: boolean;
 };
 
 export const Card = (
-  { task, index, compact = false }: CardProps,
+  { task, index, compact = false, onTaskUpdate }: CardProps,
 ) => {
+  const [lists, { getListById }] = useLists();
   const colors = getColors(task.priority);
+
+  const options = [{ id: null, title: "None", emoji: "🚫" }, ...lists];
+  const listOptions: TOption[] = options.map((list) => ({
+    id: list.id,
+    title: list.title,
+    emoji: list.emoji,
+    isSelected: list.id === task.listId,
+  }));
 
   return (
     <Draggable
@@ -50,7 +79,11 @@ export const Card = (
                 {task.title}
               </p>
               {compact ? <StatusButton status={task.status} push /> : null}
-              <ListButton list="🐶" />
+              <ListButton
+                list={getListById(task.listId)}
+                onTaskUpdate={onTaskUpdate}
+                options={listOptions}
+              />
               <DueDateButton
                 dueOn={task.dueOn}
                 inverseColors={colors.inverse}
@@ -70,6 +103,7 @@ const StatusButton = (
 ) => (
   <button
     type="button"
+    onClick={() => console.log("status clicked")}
     className={classNames(
       "w-5 h-5 rounded-full border focus:ring-2 focus:ring-offset-2 border-current/40 hover:bg-current/10",
       { "mr-auto": push },
@@ -77,22 +111,66 @@ const StatusButton = (
   />
 );
 
+type TTaskButtonProps = {
+  children: React.ReactNode;
+  className?: string;
+  onTaskUpdate?: (diff: Omit<TUpdateTask, "id">) => void;
+  options?: TOption[];
+};
+
 const TaskButton = (
-  { children, className }: { children: React.ReactNode; className?: string },
+  { children, className, onTaskUpdate, options }: TTaskButtonProps,
 ) => (
-  <button
-    type="button"
-    className={classNames(
-      "w-5 h-5 rounded-full outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10",
-      className,
-    )}
+  <div
+    className={classNames({
+      "dropdown dropdown-start dropdown-hover": options,
+      "dropdown-open": false,
+    })}
   >
-    {children}
-  </button>
+    <div
+      tabIndex={0}
+      role="button"
+      className={classNames(
+        "w-5 h-5 rounded-full outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10",
+        className,
+      )}
+    >
+      {children}
+    </div>
+
+    {options
+      ? (
+        <ul
+          tabIndex={0}
+          className="dropdown-content menu bg-base-100 rounded-box w-52 p-2 shadow-sm"
+        >
+          {options.map((option) => (
+            <li key={option.id}>
+              <a
+                onClick={() => onTaskUpdate!({ listId: option.id })}
+                className={classNames("flex items-center gap-2", {
+                  "bg-base-300": option.isSelected,
+                })}
+              >
+                <span>{option.emoji}</span>
+                <span>{option.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+      : null}
+  </div>
 );
 
-const ListButton = ({ list }: { list: string }) => (
-  <TaskButton>{list}</TaskButton>
+type TListButtonProps = Omit<TTaskButtonProps, "children"> & {
+  list?: TList;
+};
+
+const ListButton = ({ list, onTaskUpdate, options }: TListButtonProps) => (
+  <TaskButton options={options} onTaskUpdate={onTaskUpdate}>
+    {list ? list.emoji : <Smiley weight="thin" size={24} />}
+  </TaskButton>
 );
 
 const DueDateButton = (

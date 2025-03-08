@@ -66,7 +66,7 @@ export const Board = (
     // },
   });
 
-  const onTaskChange = (id: string, _index: number, column: string) => {
+  const onTaskMove = (id: string, _index: number, column: string) => {
     // groupBy is undefined when there is only one column
     // TODO: Should we support boards with one column?
     update(groupBy ? { id, [groupBy]: column } : { id });
@@ -89,7 +89,7 @@ export const Board = (
 
     if (source.droppableId !== destination.droppableId) {
       console.dir({ taskId, sourceColumn, destColumn });
-      onTaskChange(taskId, destIndex, destColumn);
+      onTaskMove(taskId, destIndex, destColumn);
     } else {
       // const column = columns[source.droppableId];
       // const copiedItems = [...column.items];
@@ -122,10 +122,12 @@ export const Board = (
             >
               {column.tasks?.map((task, index) => (
                 <Card
+                  compact={cardSize === "compact"}
                   index={index}
                   key={task.id}
+                  onTaskUpdate={(diff: Omit<TUpdateTask, "id">) =>
+                    update({ id: task.id, ...diff })}
                   task={task}
-                  compact={cardSize === "compact"}
                 />
               ))}
             </Column>
