@@ -6,6 +6,7 @@ import { Column } from "../components/Column.tsx";
 import { TTask } from "../api/tasks.ts";
 
 type TBoardProps = {
+  cardSize?: "compact" | "normal";
   columns: TColumn[];
   groupBy?: EGroupBy;
   onTaskChange: (id: string, index: number, column: string) => void;
@@ -13,7 +14,7 @@ type TBoardProps = {
 };
 
 export type TColumn = {
-  id: string;
+  id: string | number;
   title: string;
   tasks: TTask[];
 };
@@ -21,7 +22,7 @@ export type TColumn = {
 export type EGroupBy = "scheduledFor" | "listId" | "priority";
 
 export const Board = (
-  { columns, onTaskChange }: TBoardProps,
+  { cardSize = "normal", columns, onTaskChange }: TBoardProps,
 ) => {
   const onDragEnd = (result: DropResult<string>) => {
     if (!result.destination) return;
@@ -63,7 +64,7 @@ export const Board = (
                   index={index}
                   key={task.id}
                   task={task}
-                  compact
+                  compact={cardSize === "compact"}
                 />
               ))}
             </Column>

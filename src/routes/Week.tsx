@@ -48,6 +48,7 @@ export const Week = () => {
   return (
     <View className="flex">
       <Board
+        cardSize="compact"
         columns={columns}
         onTaskChange={(id, _index, column) =>
           update({ id, scheduledFor: column })}
