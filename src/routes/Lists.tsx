@@ -56,7 +56,8 @@ const CreateList = ({ onListCreate }: TCreateListProps) => {
           <EmojiPicker
             data={emojiData}
             maxFrequentRows={0}
-            onEmojiSelect={(emoji) => setEmoji(emoji.native)}
+            onEmojiSelect={(emoji: { native: string }) =>
+              setEmoji(emoji.native)}
             previewEmoji="dog"
           />
         </div>
