@@ -33,7 +33,7 @@ export const Card = (
             className={classNames(
               "shadow-md rounded-lg p-4 border border-current/10",
               colors.main,
-              compact ? "w-[10rem]" : "w-xs",
+              compact ? "w-40" : "w-80",
             )}
           >
             <div className="flex flex-wrap items-center justify-start gap-2">
