@@ -44,7 +44,6 @@ export const Board = (
     // },
     onSuccess: ([newTaskData]) => {
       queryClient.setQueryData(["tasks"], (oldData: TTask[]) => {
-        // console.log("data", newTaskData);
         return oldData.map((task: TTask) => {
           return (task.id === newTaskData.id) ? newTaskData : task;
         });

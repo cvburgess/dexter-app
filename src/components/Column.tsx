@@ -1,5 +1,4 @@
 import { Droppable } from "@hello-pangea/dnd";
-import classNames from "classnames";
 import { Plus } from "@phosphor-icons/react";
 
 type TColumnProps = {
@@ -30,14 +29,12 @@ export const Column = (
       />
 
       <Droppable droppableId={id} key={id}>
-        {(provided, snapshot) => {
+        {(provided) => {
           return (
             <div
               {...provided.droppableProps}
               ref={provided.innerRef}
-              className={classNames("flex flex-col flex-grow gap-2", {
-                "bg-primary": snapshot.isDraggingOver,
-              })}
+              className="flex flex-col flex-grow gap-2"
               data-list-id={id}
             >
               {children}

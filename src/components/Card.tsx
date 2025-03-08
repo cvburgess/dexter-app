@@ -22,7 +22,7 @@ export const Card = (
       draggableId={task.id}
       index={index}
     >
-      {(provided, snapshot) => {
+      {(provided) => {
         return (
           <div
             ref={provided.innerRef}
@@ -34,7 +34,6 @@ export const Card = (
               "shadow-md rounded-lg p-4 border border-current/10",
               colors.main,
               compact ? "w-[10rem]" : "w-xs",
-              { "bg-secondary": snapshot.isDragging },
             )}
           >
             <div className="flex flex-wrap items-center justify-start gap-2">
