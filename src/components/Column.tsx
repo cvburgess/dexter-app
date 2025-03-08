@@ -1,5 +1,6 @@
 import { Droppable } from "@hello-pangea/dnd";
 import classNames from "classnames";
+import { Plus } from "@phosphor-icons/react";
 
 type TColumnProps = {
   canCreateTasks?: boolean;
@@ -21,21 +22,13 @@ export const Column = (
         {icon}
         {title}
       </div>
-      {canCreateTasks
-        ? (
-          <input
-            type="text"
-            placeholder="+"
-            className="input"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && e.currentTarget.value.trim()) {
-                onTaskCreate?.(e.currentTarget.value.trim(), id);
-                e.currentTarget.value = "";
-              }
-            }}
-          />
-        )
-        : null}
+
+      <CreateTask
+        enabled={canCreateTasks}
+        columnId={id}
+        onTaskCreate={onTaskCreate}
+      />
+
       <Droppable droppableId={id} key={id}>
         {(provided, snapshot) => {
           return (
@@ -56,3 +49,28 @@ export const Column = (
     </div>
   );
 };
+
+type TCreateTaskProps = {
+  columnId: string;
+  enabled: boolean;
+  onTaskCreate?: (title: string, column: string) => void;
+};
+
+const CreateTask = ({ columnId, enabled, onTaskCreate }: TCreateTaskProps) =>
+  enabled
+    ? (
+      <label className="group input input-ghost mb-4 w-full rounded-lg p-4 h-auto bg-base-200 focus-within:bg-base-100 focus-within:outline-1 focus-within:outline-base-300">
+        <Plus className="group-focus-within:hidden" />
+        <input
+          type="text"
+          className="peer"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && e.currentTarget.value.trim()) {
+              onTaskCreate?.(e.currentTarget.value.trim(), columnId);
+              e.currentTarget.value = "";
+            }
+          }}
+        />
+      </label>
+    )
+    : null;

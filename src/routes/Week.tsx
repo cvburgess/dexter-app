@@ -25,7 +25,12 @@ export const Week = () => {
 
   return (
     <View className="flex">
-      <Board cardSize="compact" columns={columns} groupBy="scheduledFor" />
+      <Board
+        canCreateTasks
+        cardSize="compact"
+        columns={columns}
+        groupBy="scheduledFor"
+      />
     </View>
   );
 };
