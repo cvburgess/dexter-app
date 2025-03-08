@@ -1,22 +1,15 @@
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Temporal } from "@js-temporal/polyfill";
 
 import { Board, TColumn } from "../components/Board.tsx";
 import { View } from "../components/View.tsx";
 
 import { useAuth } from "../hooks/useAuth.tsx";
-import {
-  // createTask,
-  getTasks,
-  TTask,
-  TUpdateTask,
-  updateTask,
-} from "../api/tasks.ts";
+import { getTasks, TTask } from "../api/tasks.ts";
 
 export const Week = () => {
   const { supabase } = useAuth();
-  const queryClient = useQueryClient();
   const [weeksOffset, _setWeeksOffset] = useState<number>(0);
 
   const { data: tasks } = useQuery({
@@ -24,37 +17,28 @@ export const Week = () => {
     queryFn: () => getTasks(supabase),
   });
 
-  const { mutate: update } = useMutation<TTask[], Error, TUpdateTask>({
-    mutationFn: (diff) => updateTask(supabase, diff),
-    // onSuccess: () => {
-    //   queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    // },
-    onSuccess: ([newTaskData]) => {
-      queryClient.setQueryData(["tasks"], (oldData) => {
-        // console.log("data", newTaskData);
-        return oldData.map((task) => {
-          return (task.id === newTaskData.id) ? newTaskData : task;
-        });
-      });
-    },
-  });
-
   const today = Temporal.Now.plainDateISO();
-  const daysOfWeek = daysForWeekOfDate(today.add({ weeks: weeksOffset }));
+  const columns = makeColumnsForWeekOf(
+    today.add({ weeks: weeksOffset }),
+    tasks,
+  );
 
   return (
-    <View className="flex">
+    <View>
       <Board
-        columns={daysOfWeek}
+        canCreateTasks
+        cardSize="compact"
+        columns={columns}
         groupBy="scheduledFor"
-        onTaskChange={update}
-        tasks={tasks}
       />
     </View>
   );
 };
 
-const daysForWeekOfDate = (date: Temporal.PlainDate): TColumn[] => {
+const makeColumnsForWeekOf = (
+  date: Temporal.PlainDate,
+  tasks: TTask[] | undefined = [],
+): TColumn[] => {
   const mostRecentMonday = date.subtract({ days: date.dayOfWeek - 1 });
 
   const dayNames = [
@@ -67,8 +51,13 @@ const daysForWeekOfDate = (date: Temporal.PlainDate): TColumn[] => {
     "sunday",
   ];
 
-  return dayNames.map((dayName, index) => ({
-    id: mostRecentMonday.add({ days: index }).toString(),
-    title: dayName,
-  }));
+  return dayNames.map((dayName, index) => {
+    const isoDate = mostRecentMonday.add({ days: index }).toString();
+
+    return {
+      id: isoDate,
+      title: dayName,
+      tasks: tasks?.filter((task: TTask) => task.scheduledFor === isoDate),
+    };
+  });
 };

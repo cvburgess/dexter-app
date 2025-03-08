@@ -40,9 +40,18 @@ export const getTasks = async (supabase: SupabaseClient<Database>) => {
   return camelCase(data) as TTask[];
 };
 
+export type TCreateTask = {
+  dueOn?: string;
+  listId?: string;
+  priority?: ETaskPriority;
+  scheduledFor?: string;
+  status?: ETaskStatus;
+  title: string;
+};
+
 export const createTask = async (
   supabase: SupabaseClient<Database>,
-  task: TTask,
+  task: TCreateTask,
 ) => {
   const { data, error } = await supabase
     .from("tasks")
