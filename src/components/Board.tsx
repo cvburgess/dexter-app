@@ -1,129 +1,137 @@
-import { useRef } from "react";
-import { DragDropProvider } from "@dnd-kit/react";
+import { DragDropContext, DropResult } from "@hello-pangea/dnd";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Card } from "../components/Card.tsx";
 import { Column } from "../components/Column.tsx";
 
-import { TTask, TUpdateTask } from "../api/tasks.ts";
+import { useAuth } from "../hooks/useAuth.tsx";
+
+import {
+  createTask,
+  TCreateTask,
+  TTask,
+  TUpdateTask,
+  updateTask,
+} from "../api/tasks.ts";
 
 type TBoardProps = {
+  canCreateTasks?: boolean;
+  cardSize?: "compact" | "normal";
   columns: TColumn[];
   groupBy?: EGroupBy;
-  onTaskChange: (diff: TUpdateTask) => void;
   tasks?: TTask[];
 };
-
-export type EGroupBy = "scheduledFor" | "listId" | "priority";
 
 export type TColumn = {
   id: string;
   title: string;
+  tasks: TTask[];
 };
 
-type TDragEvent = {
-  operation: {
-    source: {
-      data: TTask;
-      sortable: {
-        index: string;
-        group: string;
-      };
-    };
-    target: {
-      id: string;
-      type: "column" | "task";
-    };
-  };
-};
-
-const defaultDragData = { index: undefined, group: undefined };
+export type EGroupBy = "scheduledFor" | "listId" | "priority";
 
 export const Board = (
-  { columns, groupBy, onTaskChange, tasks }: TBoardProps,
+  { canCreateTasks = false, cardSize = "normal", columns, groupBy }:
+    TBoardProps,
 ) => {
-  const dragSourceRef = useRef<{ index?: string; group?: string }>(
-    defaultDragData,
-  );
-  const dragTargetRef = useRef<{ index?: string; group?: string }>(
-    defaultDragData,
-  );
+  const { supabase } = useAuth();
+  const queryClient = useQueryClient();
 
-  const resetDragRefs = () => {
-    dragSourceRef.current = defaultDragData;
-    dragTargetRef.current = defaultDragData;
+  const { mutate: update } = useMutation<TTask[], Error, TUpdateTask>({
+    mutationFn: (diff) => updateTask(supabase, diff),
+    // onSuccess: () => {
+    //   queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    // },
+    onSuccess: ([newTaskData]) => {
+      queryClient.setQueryData(["tasks"], (oldData: TTask[]) => {
+        return oldData.map((task: TTask) => {
+          return (task.id === newTaskData.id) ? newTaskData : task;
+        });
+      });
+    },
+  });
+
+  const { mutate: create } = useMutation<TTask[], Error, TCreateTask>({
+    mutationFn: (task) => createTask(supabase, task),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+    // onSuccess: ([newTaskData]) => {
+    //   queryClient.setQueryData(["tasks"], (oldData: TTask[]) => {
+    //     // console.log("data", newTaskData);
+    //     return oldData.map((task: TTask) => {
+    //       return (task.id === newTaskData.id) ? newTaskData : task;
+    //     });
+    //   });
+    // },
+  });
+
+  const onTaskChange = (id: string, _index: number, column: string) => {
+    // groupBy is undefined when there is only one column
+    // TODO: Should we support boards with one column?
+    update(groupBy ? { id, [groupBy]: column } : { id });
   };
 
-  const diffDragEvents = (event: TDragEvent) => {
-    const start = dragSourceRef.current;
-    const target = dragTargetRef.current;
-    const end = event.operation.source.sortable;
+  const onTaskCreate = (title: string, column: string) => {
+    // groupBy is undefined when there is only one column
+    // TODO: Should we support boards with one column?
+    create(groupBy ? { title, [groupBy]: column } : { title });
+  };
 
-    const changedProps: [string, number | string][] = [];
+  const onDragEnd = (result: DropResult<string>) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
 
-    // TODO: Support for ordering items
-    // if (start.index !== end.index) changedProps.push(["index", end.index]);
+    const taskId = result.draggableId;
+    const sourceColumn = result.source.droppableId;
+    const destColumn = result.destination.droppableId;
+    const destIndex = result.destination.index;
 
-    if (groupBy && start.group !== end.group) {
-      changedProps.push([groupBy, end.group]);
-    } else if (groupBy && start.group !== target.group) {
-      changedProps.push([groupBy, target.group!]);
+    if (source.droppableId !== destination.droppableId) {
+      console.dir({ taskId, sourceColumn, destColumn });
+      onTaskChange(taskId, destIndex, destColumn);
+    } else {
+      // const column = columns[source.droppableId];
+      // const copiedItems = [...column.items];
+      // const [removed] = copiedItems.splice(source.index, 1);
+      // copiedItems.splice(destination.index, 0, removed);
+      // setColumns({
+      //   ...columns,
+      //   [source.droppableId]: {
+      //     ...column,
+      //     items: copiedItems,
+      //   },
+      // });
     }
-
-    return changedProps.length ? Object.fromEntries(changedProps) : null;
   };
 
   return (
-    <DragDropProvider
-      // @ts-ignore types in library are incorrect
-      onDragStart={(event: TDragEvent) => {
-        dragSourceRef.current = {
-          index: event.operation.source.sortable.index,
-          group: event.operation.source.sortable.group,
-        };
-      }}
-      // @ts-ignore types in library are incorrect
-      onDragEnd={(event: TDragEvent) => {
-        const diff = diffDragEvents(event);
-        console.dir(diff);
-        if (diff) {
-          console.dir(diff);
-          onTaskChange({
-            id: event.operation.source.data.id,
-            ...diff,
-          });
-        }
-        resetDragRefs();
-      }}
-      // @ts-ignore types in library are incorrect
-      onDragOver={(event: TDragEvent) => {
-        if (event.operation.target.type === "column") {
-          dragTargetRef.current = {
-            group: event.operation.target.id,
-          };
-        }
-      }}
+    <DragDropContext
+      onDragEnd={(result) => onDragEnd(result)}
     >
       <div className="flex gap-4">
         {columns.map((column) => {
-          const tasksForColumn = groupBy
-            ? tasks?.filter((task: TTask) => task[groupBy] === column.id)
-            : tasks;
-
           return (
-            <Column compact key={column.id} id={column.id} title={column.title}>
-              {tasksForColumn?.map((task, index) => (
+            <Column
+              // compact
+              canCreateTasks={canCreateTasks}
+              id={column.id}
+              key={column.id}
+              onTaskCreate={onTaskCreate}
+              title={column.title}
+            >
+              {column.tasks?.map((task, index) => (
                 <Card
                   index={index}
                   key={task.id}
                   task={task}
-                  groupBy={groupBy}
-                  compact
+                  compact={cardSize === "compact"}
                 />
               ))}
             </Column>
           );
         })}
       </div>
-    </DragDropProvider>
+    </DragDropContext>
   );
 };

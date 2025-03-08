@@ -2,7 +2,7 @@
   "version": "4",
   "specifiers": {
     "npm:@deno/vite-plugin@^1.0.4": "1.0.4_vite@6.0.3__lightningcss@1.29.1",
-    "npm:@dnd-kit/react@^0.0.9": "0.0.9_react@18.3.1_react-dom@18.3.1__react@18.3.1",
+    "npm:@hello-pangea/dnd@^18.0.1": "18.0.1_react@18.3.1_react-dom@18.3.1__react@18.3.1_@types+react@18.3.18_redux@5.0.1",
     "npm:@js-temporal/polyfill@~0.4.4": "0.4.4",
     "npm:@phosphor-icons/react@^2.1.7": "2.1.7_react@18.3.1_react-dom@18.3.1__react@18.3.1",
     "npm:@supabase/supabase-js@^2.49.1": "2.49.1",
@@ -142,6 +142,12 @@
         "@babel/helper-plugin-utils"
       ]
     },
+    "@babel/runtime@7.26.9": {
+      "integrity": "sha512-aA63XwOkcl4xxQa3HjPMqOP6LiK0ZDv3mUPYEFXkpHbaFjtGggE1A61FjFzJnB+p7/oy2gA8E+rcBNl/zC1tMg==",
+      "dependencies": [
+        "regenerator-runtime"
+      ]
+    },
     "@babel/template@7.26.9": {
       "integrity": "sha512-qyRplbeIpNZhmzOysF/wFMuP9sctmh2cFzRAZOn1YapxBsE1i9bJIY586R/WBLfLcmcBlM8ROBiQURnnNy+zfA==",
       "dependencies": [
@@ -173,57 +179,6 @@
       "integrity": "sha512-xg8YT8Wn2sGXSnJgiGTpBGX1Dov0c6fd1rAp8VsfrCUtyBRRWzwVMAnd3fQ4yq8h7LSVvJUxEFN4U421k/DQLA==",
       "dependencies": [
         "vite@6.0.3_lightningcss@1.29.1"
-      ]
-    },
-    "@dnd-kit/abstract@0.0.9": {
-      "integrity": "sha512-4FjHPOREfJJfRu0clCAnYqYc8JNHQl6CL31FjLKR+1wER+YOGkb3s3JntsqvZost5Xm/G/Z4sQ3ouLdyYQ9KdQ==",
-      "dependencies": [
-        "@dnd-kit/geometry",
-        "@dnd-kit/state",
-        "tslib"
-      ]
-    },
-    "@dnd-kit/collision@0.0.9": {
-      "integrity": "sha512-8Brbcd0dM/y2yzg/6EI9O/SvsVAglx0fUDvqPSsXACewR+//OGno1GVKndh35GAVKqDxOgG3Q/fw+CVnMnFv6g==",
-      "dependencies": [
-        "@dnd-kit/abstract",
-        "@dnd-kit/geometry",
-        "tslib"
-      ]
-    },
-    "@dnd-kit/dom@0.0.9": {
-      "integrity": "sha512-nsDcL6MMdNfGOg0xp24c1xy/eNW7fO1uLU0AM2b1SFYJYsbXUMw6sQXq+2eHCQol/FixCoSbjMgjx9D8jQXb+w==",
-      "dependencies": [
-        "@dnd-kit/abstract",
-        "@dnd-kit/collision",
-        "@dnd-kit/geometry",
-        "@dnd-kit/state",
-        "tslib"
-      ]
-    },
-    "@dnd-kit/geometry@0.0.9": {
-      "integrity": "sha512-zqSY7vva+LGs9Y/c37GhD67q+boS27nCmyYYAohlZ29MGz66KwjpbSH5HNHa261kuq90KaaIVQQVHiZGjNfmOw==",
-      "dependencies": [
-        "@dnd-kit/state",
-        "tslib"
-      ]
-    },
-    "@dnd-kit/react@0.0.9_react@18.3.1_react-dom@18.3.1__react@18.3.1": {
-      "integrity": "sha512-a2ZUbVVyJwSf5gf0l6I10VqEj8EEe+O1W/q+rSR0fpjbxjwhLT0Gt+udwKZsg3yIKxmxJC4W6eHSS6feNca9aw==",
-      "dependencies": [
-        "@dnd-kit/abstract",
-        "@dnd-kit/dom",
-        "@dnd-kit/state",
-        "react",
-        "react-dom",
-        "tslib"
-      ]
-    },
-    "@dnd-kit/state@0.0.9": {
-      "integrity": "sha512-F43bOum8k/Rh1tfO3DiAUs/zw6KSv5IMm4PGKSPoU2tz+LW+37Kp37NlgwtLLDzx+z6R+6gILnJzE6Q5eVx7OQ==",
-      "dependencies": [
-        "@preact/signals-core",
-        "tslib"
       ]
     },
     "@esbuild/aix-ppc64@0.24.2": {
@@ -301,6 +256,18 @@
     "@esbuild/win32-x64@0.24.2": {
       "integrity": "sha512-7VTgWzgMGvup6aSqDPLiW5zHaxYJGTO4OokMjIlrCtf+VpEL+cXKtCvg723iguPYI5oaUNdS+/V7OU2gvXVWEg=="
     },
+    "@hello-pangea/dnd@18.0.1_react@18.3.1_react-dom@18.3.1__react@18.3.1_@types+react@18.3.18_redux@5.0.1": {
+      "integrity": "sha512-xojVWG8s/TGrKT1fC8K2tIWeejJYTAeJuj36zM//yEm/ZrnZUSFGS15BpO+jGZT1ybWvyXmeDJwPYb4dhWlbZQ==",
+      "dependencies": [
+        "@babel/runtime",
+        "css-box-model",
+        "raf-schd",
+        "react",
+        "react-dom",
+        "react-redux",
+        "redux"
+      ]
+    },
     "@isaacs/cliui@8.0.2": {
       "integrity": "sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==",
       "dependencies": [
@@ -358,9 +325,6 @@
     },
     "@pkgjs/parseargs@0.11.0": {
       "integrity": "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="
-    },
-    "@preact/signals-core@1.8.0": {
-      "integrity": "sha512-OBvUsRZqNmjzCZXWLxkZfhcgT+Fk8DDcT/8vD6a1xhDemodyy87UJRJfASMuSD8FaAIeGgGm85ydXhm7lr4fyA=="
     },
     "@rollup/rollup-android-arm-eabi@4.34.9": {
       "integrity": "sha512-qZdlImWXur0CFakn2BJ2znJOdqYZKiedEPEVNTBrpfPjc/YuTGcaYZcdmNFTkUj3DU0ZM/AElcM8Ybww3xVLzA=="
@@ -660,6 +624,9 @@
         "csstype"
       ]
     },
+    "@types/use-sync-external-store@0.0.6": {
+      "integrity": "sha512-zFDAD+tlpf2r4asuHEj0XH6pY6i0g5NeAHPn+15wk3BV6JA69eERFXC1gyGThDkVa1zCyKr5jox1+2LbV/AMLg=="
+    },
     "@types/ws@8.5.14": {
       "integrity": "sha512-bd/YFLW+URhBzMXurx7lWByOu+xzU9+kb3RboOteXYDfW+tr+JZa99OyNmPINEGB/ahzKrEuc8rcv4gnpJmxTw==",
       "dependencies": [
@@ -768,6 +735,12 @@
         "path-key",
         "shebang-command",
         "which"
+      ]
+    },
+    "css-box-model@1.2.1": {
+      "integrity": "sha512-a7Vr4Q/kd/aw96bnJG332W9V9LkJO69JRcaCYDUqjp6/z0w6VcZjgAcTbgFxEPfBgdnAwlh3iwu+hLopa+flJw==",
+      "dependencies": [
+        "tiny-invariant"
       ]
     },
     "csstype@3.1.3": {
@@ -1072,12 +1045,25 @@
     "quick-lru@6.1.2": {
       "integrity": "sha512-AAFUA5O1d83pIHEhJwWCq/RQcRukCkn/NSm2QsTEMle5f2hP0ChI2+3Xb051PZCkLryI/Ir1MVKviT2FIloaTQ=="
     },
+    "raf-schd@4.0.3": {
+      "integrity": "sha512-tQkJl2GRWh83ui2DiPTJz9wEiMN20syf+5oKfB03yYP7ioZcJwsIK8FjrtLwH1m7C7e+Tt2yYBlrOpdT+dyeIQ=="
+    },
     "react-dom@18.3.1_react@18.3.1": {
       "integrity": "sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==",
       "dependencies": [
         "loose-envify",
         "react",
         "scheduler"
+      ]
+    },
+    "react-redux@9.2.0_@types+react@18.3.18_react@18.3.1_redux@5.0.1": {
+      "integrity": "sha512-ROY9fvHhwOD9ySfrF0wmvu//bKCQ6AeZZq1nJNtbDC+kk5DuSuNX/n6YWYF/SYy7bSba4D4FSz8DJeKY/S/r+g==",
+      "dependencies": [
+        "@types/react",
+        "@types/use-sync-external-store",
+        "react",
+        "redux",
+        "use-sync-external-store"
       ]
     },
     "react-refresh@0.14.2": {
@@ -1102,6 +1088,12 @@
     },
     "read-cmd-shim@5.0.0": {
       "integrity": "sha512-SEbJV7tohp3DAAILbEMPXavBjAnMN0tVnh4+9G8ihV4Pq3HYF9h8QNez9zkJ1ILkv9G2BjdzwctznGZXgu/HGw=="
+    },
+    "redux@5.0.1": {
+      "integrity": "sha512-M9/ELqF6fy8FwmkpnF0S3YKOqMyoWJ4+CS5Efg2ct3oY9daQvd/Pc71FpGZsVsbl3Cpb+IIcjBDUnnyBdQbq4w=="
+    },
+    "regenerator-runtime@0.14.1": {
+      "integrity": "sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw=="
     },
     "rimraf@5.0.10": {
       "integrity": "sha512-l0OE8wL34P4nJH/H2ffoaniAokM2qSmrtXHmlpvYr5AVVX8msAyW0l8NVJFDxlSK4u3Uh/f41cQheDVdnYijwQ==",
@@ -1216,6 +1208,9 @@
         "yallist@5.0.0"
       ]
     },
+    "tiny-invariant@1.3.3": {
+      "integrity": "sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg=="
+    },
     "tr46@0.0.3": {
       "integrity": "sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw=="
     },
@@ -1243,6 +1238,12 @@
         "browserslist",
         "escalade",
         "picocolors"
+      ]
+    },
+    "use-sync-external-store@1.4.0_react@18.3.1": {
+      "integrity": "sha512-9WXSPC5fMv61vaupRkCKCxsPxBocVnwakBEkMIHHpkTTg6icbJtg6jzgtLDm4bl3cSHAca52rYWih0k4K3PfHw==",
+      "dependencies": [
+        "react"
       ]
     },
     "vite@6.0.3": {
@@ -1320,7 +1321,7 @@
     "packageJson": {
       "dependencies": [
         "npm:@deno/vite-plugin@^1.0.4",
-        "npm:@dnd-kit/react@^0.0.9",
+        "npm:@hello-pangea/dnd@^18.0.1",
         "npm:@js-temporal/polyfill@~0.4.4",
         "npm:@phosphor-icons/react@^2.1.7",
         "npm:@supabase/supabase-js@^2.49.1",
