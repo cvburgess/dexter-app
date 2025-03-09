@@ -60,7 +60,7 @@ export const Card = (
             data-task-id={task.id}
             style={{ ...provided.draggableProps.style }}
             className={classNames(
-              "shadow-md rounded-lg p-4 border border-current/10",
+              "shadow-md rounded-box p-4 border border-current/10",
               colors.main,
               compact ? "w-40" : "w-80",
             )}
@@ -98,12 +98,11 @@ export const Card = (
 };
 
 const StatusButton = (
-  // deno-lint-ignore no-unused-vars
   { push = false, status }: { push?: boolean; status: ETaskStatus },
 ) => (
   <button
     type="button"
-    onClick={() => console.log("status clicked")}
+    onClick={() => console.log("status clicked", status)}
     className={classNames(
       "w-5 h-5 rounded-full border focus:ring-2 focus:ring-offset-2 border-current/40 hover:bg-current/10",
       { "mr-auto": push },

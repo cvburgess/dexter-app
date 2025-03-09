@@ -66,7 +66,7 @@ const CreateTask = (
     ? (
       <label
         className={classNames(
-          "group input input-ghost mb-4 w-full rounded-lg p-4 h-auto bg-base-200",
+          "group input input-ghost mb-4 w-full p-4 h-auto bg-base-200",
           "focus-within:bg-base-100 focus-within:outline-1 focus-within:outline-base-300",
         )}
       >

@@ -33,6 +33,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "icon": "tauri icon ./public/app-icon.png && rm -rf ./src-tauri/icons/android ./src-tauri/icons/ios && sudo rm -rfv /Library/Caches/com.apple.iconservices.store",
     "preview": "vite preview",
     "supabase:login": "supabase login",
     "supabase:types": "supabase gen types typescript --project-id \"isreileykodwkyedcewv\" --schema public > database.types.ts",
