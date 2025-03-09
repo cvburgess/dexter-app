@@ -95,10 +95,25 @@ const Calendar = ({ onChange, selectedDate }: TCalendarProps) => (
     // style={{ positionAnchor: "--rdp" } as React.CSSProperties}
   >
     <DayPicker
+      animate
       className="react-day-picker flex"
+      classNames={{
+        today: "bg-base-content text-base-100 rounded-field",
+        selected: "bg-base-300 text-base-content rounded-field",
+      }}
       mode="single"
-      selected={selectedDate ? new Date(selectedDate) : undefined}
       onSelect={(date) => onChange(date?.toISOString()?.split("T")[0] ?? null)}
+      selected={toDateTime(selectedDate)}
+      showOutsideDays
+      weekStartsOn={1}
     />
   </div>
 );
+
+// Helper function to correctly parse YYYY-MM-DD without timezone issues
+const toDateTime = (date: string | null) => {
+  if (!date) return undefined;
+
+  const [year, month, day] = date.split("-").map(Number);
+  return new Date(year, month - 1, day);
+};
