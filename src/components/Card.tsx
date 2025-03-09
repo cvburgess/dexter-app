@@ -139,6 +139,7 @@ export const Card = (
               <DueDateButton
                 dueOn={task.dueOn}
                 colors={colors}
+                onTaskUpdate={onTaskUpdate}
                 status={task.status}
               />
               <MoreButton />
@@ -195,12 +196,15 @@ const ListButton = (
   </ButtonWithPopover>
 );
 
+type TDueDateButtonProps = {
+  colors: Record<string, string>;
+  dueOn: string | null;
+  onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
+  status: ETaskStatus;
+};
+
 const DueDateButton = (
-  { dueOn, colors, status }: {
-    dueOn?: string;
-    colors: { overdue: string };
-    status: ETaskStatus;
-  },
+  { dueOn, colors, onTaskUpdate, status }: TDueDateButtonProps,
 ) => {
   const shouldShowCountdown = Boolean(dueOn) && status !== ETaskStatus.DONE &&
     status !== ETaskStatus.WONT_DO;
@@ -220,7 +224,8 @@ const DueDateButton = (
         "opacity-50": status === ETaskStatus.DONE ||
           status === ETaskStatus.WONT_DO,
       })}
-      onChange={(value) => console.log(value)}
+      onChange={(value) => onTaskUpdate({ dueOn: value })}
+      selectedDate={dueOn}
       variant="calendar"
     >
       {shouldShowCountdown ? daysUntilDue : <BellRinging />}

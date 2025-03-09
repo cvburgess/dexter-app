@@ -8,7 +8,7 @@ type TUseLists = [
   TList[],
   {
     createList: (list: TCreateList) => void;
-    getListById: (id?: string) => TList | undefined;
+    getListById: (id: string | null) => TList | undefined;
   },
 ];
 export const useLists = (): TUseLists => {
@@ -27,7 +27,7 @@ export const useLists = (): TUseLists => {
     },
   });
 
-  const getListById = (id?: string) => {
+  const getListById = (id: string | null) => {
     if (!id) return undefined;
     return lists?.find((list) => list.id === id);
   };
