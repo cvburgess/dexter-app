@@ -3,7 +3,7 @@ import { Temporal } from "@js-temporal/polyfill";
 import {
   BellRinging,
   CheckFat,
-  DotsThreeOutlineVertical,
+  // DotsThreeOutlineVertical,
   Smiley,
   SpinnerGap,
   X,
@@ -19,19 +19,20 @@ import {
   TUpdateTask,
 } from "../api/tasks.ts";
 import { TList } from "../api/lists.ts";
+import { ButtonWithPopover } from "./ButtonWithPopover.tsx";
 
 type CardProps = {
-  task: TTask;
-  index: number;
   compact?: boolean;
-  onTaskUpdate?: (diff: Omit<TUpdateTask, "id">) => void;
+  index: number;
+  onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
+  task: TTask;
 };
 
 type TOption = {
-  id: string | null;
-  title: string;
   emoji: string;
+  id: string | null;
   isSelected: boolean;
+  title: string;
 };
 
 export const Card = (
@@ -149,7 +150,9 @@ export const Card = (
   );
 };
 
-type TStatusButtonProps = Omit<TTaskButtonProps, "children"> & {
+type TStatusButtonProps = {
+  onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
+  options: TOption[];
   push?: boolean;
   status: ETaskStatus;
 };
@@ -157,93 +160,39 @@ type TStatusButtonProps = Omit<TTaskButtonProps, "children"> & {
 const StatusButton = (
   { onTaskUpdate, options, push = false, status }: TStatusButtonProps,
 ) => (
-  <TaskButton
-    onTaskUpdate={onTaskUpdate}
-    diffKey="status"
+  <ButtonWithPopover
     options={options}
-    push={push}
+    onChange={(value) => onTaskUpdate({ status: Number(value) as ETaskStatus })}
+    variant="menu"
+    wrapperClassName={push ? "mr-auto" : undefined}
   >
     {status === ETaskStatus.IN_PROGRESS ? <SpinnerGap /> : null}
     {status === ETaskStatus.DONE ? <CheckFat /> : null}
     {status === ETaskStatus.WONT_DO ? <X /> : null}
-  </TaskButton>
+  </ButtonWithPopover>
 );
 
-const buttonStyles =
-  "w-5 h-5 rounded-box outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10";
-
-type TTaskButtonProps = {
-  children: React.ReactNode;
-  className?: string;
-  diffKey?: string;
-  onTaskUpdate?: (diff: Omit<TUpdateTask, "id">) => void;
-  options?: TOption[];
-  push?: boolean;
-};
-
-const TaskButton = (
-  { children, className, diffKey, onTaskUpdate, options, push = false }:
-    TTaskButtonProps,
-) => (
-  <div
-    className={classNames({
-      "dropdown dropdown-start dropdown-hover": options,
-      "dropdown-open": false,
-      "mr-auto": push,
-    })}
-  >
-    <div
-      tabIndex={0}
-      role="button"
-      className={classNames(buttonStyles, className)}
-    >
-      {children}
-    </div>
-
-    {options
-      ? (
-        <ul
-          tabIndex={0}
-          className="dropdown-content menu bg-base-100 rounded-box w-52 p-2 shadow-sm text-base-content"
-        >
-          {options.map((option) => (
-            <li key={option.id}>
-              <a
-                onClick={() => onTaskUpdate!({ [diffKey!]: option.id })}
-                className={classNames("flex items-center gap-2", {
-                  "bg-base-300": option.isSelected,
-                })}
-              >
-                <span>{option.emoji}</span>
-                <span>{option.title}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      )
-      : null}
-  </div>
-);
-
-type TListButtonProps = Omit<TTaskButtonProps, "children"> & {
+type TListButtonProps = {
   list?: TList;
+  onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
+  options: TOption[];
   status: ETaskStatus;
 };
 
 const ListButton = (
   { list, onTaskUpdate, options, status }: TListButtonProps,
 ) => (
-  <TaskButton
-    className={classNames({
+  <ButtonWithPopover
+    buttonClassName={classNames({
       "opacity-50": status === ETaskStatus.DONE ||
         status === ETaskStatus.WONT_DO,
     })}
-    diffKey="listId"
+    onChange={(value) => onTaskUpdate({ listId: value })}
     options={options}
-    onTaskUpdate={onTaskUpdate}
+    variant="menu"
   >
     {list ? list.emoji : <Smiley weight="thin" size={24} />}
-  </TaskButton>
+  </ButtonWithPopover>
 );
 
 const DueDateButton = (
@@ -265,22 +214,26 @@ const DueDateButton = (
     daysUntilDue && daysUntilDue <= 1;
 
   return (
-    <button
-      type="button"
-      className={classNames(buttonStyles, "text-[.65rem]", {
+    <ButtonWithPopover
+      buttonClassName={classNames({
         [colors.overdue]: shouldWarnUser,
+        "opacity-50": status === ETaskStatus.DONE ||
+          status === ETaskStatus.WONT_DO,
       })}
+      onChange={(value) => console.log(value)}
+      variant="calendar"
     >
       {shouldShowCountdown ? daysUntilDue : <BellRinging />}
-    </button>
+    </ButtonWithPopover>
   );
 };
 
-const MoreButton = () => (
-  <TaskButton>
-    <DotsThreeOutlineVertical />
-  </TaskButton>
-);
+const MoreButton = () => null;
+// (
+// <TaskButton>
+//   <DotsThreeOutlineVertical />
+// </TaskButton>
+// );
 
 const cardColors = {
   [ETaskPriority.IMPORTANT_AND_URGENT]: {
