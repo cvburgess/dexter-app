@@ -12,7 +12,7 @@ export const useTheme = () => {
     // Initial theme detection
     const mediaQuery = globalThis.matchMedia("(prefers-color-scheme: dark)");
 
-    const lightTheme = "light";
+    const lightTheme = "dexter";
     const darkTheme = "dark";
     const updateTheme = (e: MediaQueryListEvent) =>
       setTheme(e.matches ? darkTheme : lightTheme);
