@@ -34,7 +34,7 @@ export const getTasks = async (supabase: SupabaseClient<Database>) => {
   const { data, error } = await supabase
     .from("tasks")
     .select("*")
-    .order("created_at");
+    .order("priority, status");
 
   if (error) throw error;
   return camelCase(data) as TTask[];
