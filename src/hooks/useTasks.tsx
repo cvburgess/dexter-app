@@ -36,16 +36,16 @@ export const useTasks = (): TUseTasks => {
 
   const { mutate: update } = useMutation<TTask[], Error, TUpdateTask>({
     mutationFn: (diff) => updateTask(supabase, diff),
-    // onSuccess: () => {
-    //   queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    // },
-    onSuccess: ([newTaskData]) => {
-      queryClient.setQueryData(["tasks"], (oldData: TTask[]) => {
-        return oldData.map((task: TTask) => {
-          return (task.id === newTaskData.id) ? newTaskData : task;
-        });
-      });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
+    // onSuccess: ([newTaskData]) => {
+    //   queryClient.setQueryData(["tasks"], (oldData: TTask[]) => {
+    //     return oldData.map((task: TTask) => {
+    //       return (task.id === newTaskData.id) ? newTaskData : task;
+    //     });
+    //   });
+    // },
   });
 
   return [tasks, { createTask: create, updateTask: update }];
