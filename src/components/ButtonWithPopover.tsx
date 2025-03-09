@@ -40,6 +40,10 @@ export const ButtonWithPopover = ({
         "w-5 h-5 rounded-box outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10",
         buttonClassName,
       )}
+      // popoverTarget={variant === "calendar" ? "rdp-popover" : undefined}
+      // style={variant === "calendar"
+      //   ? { anchorName: "--rdp" } as React.CSSProperties
+      //   : undefined}
     >
       {children}
     </div>
@@ -55,11 +59,11 @@ type TDropdownMenuProps = {
 };
 
 const popoverStyles =
-  "dropdown-content bg-base-100 rounded-box w-52 p-2 shadow-sm text-base-content";
+  "dropdown-content bg-base-100 rounded-box shadow-sm text-base-content";
 
 const DropdownMenu = ({ onChange, options }: TDropdownMenuProps) => (
   <ul
-    className={classNames(popoverStyles, "menu")}
+    className={classNames(popoverStyles, "menu p-2 min-w-52")}
     tabIndex={0}
   >
     {options.map((option) => (
@@ -84,12 +88,17 @@ type TCalendarProps = {
 };
 
 const Calendar = ({ onChange, selectedDate }: TCalendarProps) => (
-  <div className={popoverStyles} tabIndex={0}>
+  <div
+    className={classNames(popoverStyles, "")}
+    tabIndex={0}
+    // id="rdp-popover"
+    // style={{ positionAnchor: "--rdp" } as React.CSSProperties}
+  >
     <DayPicker
+      className="react-day-picker flex"
       mode="single"
       selected={selectedDate ? new Date(selectedDate) : undefined}
-      onSelect={(date) =>
-        onChange(date?.toISOString()?.split("T")[0] ?? null)}
+      onSelect={(date) => onChange(date?.toISOString()?.split("T")[0] ?? null)}
     />
   </div>
 );
