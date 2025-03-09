@@ -9,7 +9,7 @@ export type TTask = {
   // description?: string;
   dueOn?: string;
   listId?: string;
-  priority: ETaskPriority | null;
+  priority: ETaskPriority;
   scheduledFor?: string;
   status: ETaskStatus;
   // subtasks: Task[];
@@ -21,6 +21,7 @@ export enum ETaskPriority {
   URGENT,
   IMPORTANT,
   NEITHER,
+  UNPRIORITIZED,
 }
 
 export enum ETaskStatus {

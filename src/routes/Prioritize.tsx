@@ -23,6 +23,14 @@ export const Prioritize = () => {
 
 const makeColumns = (tasks: TTask[] | undefined = []): TColumn[] => [
   {
+    autoCollapse: true,
+    id: ETaskPriority.UNPRIORITIZED.toString(),
+    title: "Unprioritized",
+    tasks: tasks?.filter((task: TTask) =>
+      task.priority === ETaskPriority.UNPRIORITIZED
+    ),
+  },
+  {
     id: ETaskPriority.IMPORTANT_AND_URGENT.toString(),
     title: "Important and Urgent",
     tasks: tasks?.filter((task: TTask) =>

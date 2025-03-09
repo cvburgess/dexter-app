@@ -16,6 +16,7 @@ type TBoardProps = {
 };
 
 export type TColumn = {
+  autoCollapse?: boolean;
   id: string;
   title: string;
   tasks: TTask[];
@@ -74,6 +75,8 @@ export const Board = (
     >
       <div className="flex gap-4">
         {columns.map((column) => {
+          if (!column.tasks.length && column.autoCollapse) return null;
+
           return (
             <Column
               canCreateTasks={canCreateTasks}

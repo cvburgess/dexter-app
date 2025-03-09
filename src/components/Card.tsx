@@ -38,7 +38,7 @@ export const Card = (
   { task, index, compact = false, onTaskUpdate }: CardProps,
 ) => {
   const [lists, { getListById }] = useLists();
-  const colors = cardColors[task.priority ?? ETaskPriority.NEITHER];
+  const colors = cardColors[task.priority];
 
   const isComplete = task.status === ETaskStatus.DONE ||
     task.status === ETaskStatus.WONT_DO;
@@ -302,6 +302,12 @@ const cardColors = {
   },
 
   [ETaskPriority.NEITHER]: {
+    complete: "bg-base-3 hover:bg-base-10 text-base-content/25",
+    incomplete: "bg-base-100/80 hover:bg-base-100/90 text-base-content",
+    overdue: "bg-base-content hover:bg-base-content text-base-100",
+  },
+
+  [ETaskPriority.UNPRIORITIZED]: {
     complete: "bg-base-3 hover:bg-base-10 text-base-content/25",
     incomplete: "bg-base-100/80 hover:bg-base-100/90 text-base-content",
     overdue: "bg-base-content hover:bg-base-content text-base-100",
