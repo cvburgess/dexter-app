@@ -32,7 +32,7 @@ export const Nav = () => (
             classNames(
               "bg-base-100 rounded-box shadow-md hover:shadow-lg transition-shadow flex items-center justify-center size-12",
               {
-                "bg-primary text-primary-content": isActive,
+                "bg-base-content/80 text-base-100": isActive,
                 "mt-auto": item.bottom,
               },
             )}
