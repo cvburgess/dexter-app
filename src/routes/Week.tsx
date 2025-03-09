@@ -1,23 +1,18 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Temporal } from "@js-temporal/polyfill";
 
 import { Board, TColumn } from "../components/Board.tsx";
 import { View } from "../components/View.tsx";
 
-import { useAuth } from "../hooks/useAuth.tsx";
-import { getTasks, TTask } from "../api/tasks.ts";
+import { useTasks } from "../hooks/useTasks.tsx";
+import { TTask } from "../api/tasks.ts";
 
 export const Week = () => {
-  const { supabase } = useAuth();
   const [weeksOffset, _setWeeksOffset] = useState<number>(0);
-
-  const { data: tasks } = useQuery({
-    queryKey: ["tasks"],
-    queryFn: () => getTasks(supabase),
-  });
+  const [tasks] = useTasks();
 
   const today = Temporal.Now.plainDateISO();
+
   const columns = makeColumnsForWeekOf(
     today.add({ weeks: weeksOffset }),
     tasks,

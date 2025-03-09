@@ -1,24 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
 import { Temporal } from "@js-temporal/polyfill";
 
-// import { getTodos, postTodo } from "../my-api";
-// import { Card } from "../components/Card.tsx";
-// import { Column } from "../components/Column.tsx";
-import { View } from "../components/View.tsx";
-import { useAuth } from "../hooks/useAuth.tsx";
-import { getTasks } from "../api/tasks.ts";
 import { Board } from "../components/Board.tsx";
+import { View } from "../components/View.tsx";
+
+import { useTasks } from "../hooks/useTasks.tsx";
 
 export const Today = () => {
-  const { supabase } = useAuth();
-
-  const { isPending, data: tasks = [] } = useQuery({
-    queryKey: ["tasks"],
-    queryFn: () => getTasks(supabase),
-  });
+  const [tasks] = useTasks();
 
   const today = Temporal.Now.plainDateISO();
-  if (isPending) return <p>Loading...</p>;
 
   return (
     <View>
