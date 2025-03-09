@@ -40,10 +40,6 @@ export const ButtonWithPopover = ({
         "w-5 h-5 rounded-box outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10",
         buttonClassName,
       )}
-      // popoverTarget={variant === "calendar" ? "rdp-popover" : undefined}
-      // style={variant === "calendar"
-      //   ? { anchorName: "--rdp" } as React.CSSProperties
-      //   : undefined}
     >
       {children}
     </div>
@@ -89,13 +85,10 @@ type TCalendarProps = {
 
 const Calendar = ({ onChange, selectedDate }: TCalendarProps) => (
   <div
-    className={classNames(popoverStyles, "")}
+    className={classNames(popoverStyles)}
     tabIndex={0}
-    // id="rdp-popover"
-    // style={{ positionAnchor: "--rdp" } as React.CSSProperties}
   >
     <DayPicker
-      animate
       className="react-day-picker flex"
       classNames={{
         today: "bg-base-content text-base-100 rounded-field",
