@@ -169,6 +169,9 @@ const StatusButton = (
   </TaskButton>
 );
 
+const buttonStyles =
+  "w-5 h-5 rounded-box outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10";
+
 type TTaskButtonProps = {
   children: React.ReactNode;
   className?: string;
@@ -192,10 +195,7 @@ const TaskButton = (
     <div
       tabIndex={0}
       role="button"
-      className={classNames(
-        "w-5 h-5 rounded-box outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10",
-        className,
-      )}
+      className={classNames(buttonStyles, className)}
     >
       {children}
     </div>
@@ -253,26 +253,26 @@ const DueDateButton = (
     status: ETaskStatus;
   },
 ) => {
-  if (!dueOn || status === ETaskStatus.DONE || status === ETaskStatus.WONT_DO) {
-    return (
-      <TaskButton>
-        <BellRinging />
-      </TaskButton>
-    );
-  }
+  const shouldShowCountdown = Boolean(dueOn) && status !== ETaskStatus.DONE &&
+    status !== ETaskStatus.WONT_DO;
 
   const now = Temporal.Now.plainDateISO();
-  const dueDate = Temporal.PlainDate.from(dueOn);
-  const daysUntilDue = now.until(dueDate).days;
+
+  const daysUntilDue = Boolean(dueOn) &&
+    now.until(Temporal.PlainDate.from(dueOn!)).days;
+
+  const shouldWarnUser = shouldShowCountdown &&
+    daysUntilDue && daysUntilDue <= 1;
 
   return (
-    <TaskButton
-      className={classNames("text-[.65rem]", {
-        [colors.overdue]: daysUntilDue <= 1,
+    <button
+      type="button"
+      className={classNames(buttonStyles, "text-[.65rem]", {
+        [colors.overdue]: shouldWarnUser,
       })}
     >
-      {daysUntilDue}
-    </TaskButton>
+      {shouldShowCountdown ? daysUntilDue : <BellRinging />}
+    </button>
   );
 };
 
