@@ -1,25 +1,19 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import emojiData from "@emoji-mart/data" with { type: "json" };
 import EmojiPicker from "@emoji-mart/react";
 
 import { Board, TColumn } from "../components/Board.tsx";
 import { View } from "../components/View.tsx";
 
-import { useAuth } from "../hooks/useAuth.tsx";
 import { useLists } from "../hooks/useLists.tsx";
+import { useTasks } from "../hooks/useTasks.tsx";
 
 import { TCreateList, TList } from "../api/lists.ts";
-import { getTasks, TTask } from "../api/tasks.ts";
+import { TTask } from "../api/tasks.ts";
 
 export const Lists = () => {
-  const { supabase } = useAuth();
   const [lists, { createList }] = useLists();
-
-  const { data: tasks } = useQuery({
-    queryKey: ["tasks"],
-    queryFn: () => getTasks(supabase),
-  });
+  const [tasks] = useTasks();
 
   const columns = makeColumns(lists, tasks);
 
@@ -43,12 +37,12 @@ const CreateList = ({ onListCreate }: TCreateListProps) => {
   const [emoji, setEmoji] = useState<string>("🐶");
 
   return (
-    <div className="join w-80 shadow-sm rounded-lg h-[42px] min-w-80">
+    <div className="join w-80 shadow-sm rounded-[var(--radius-box)] h-[42px] min-w-80">
       <div className="dropdown">
         <div
           tabIndex={0}
           role="button"
-          className="btn rounded-l-lg join-item border-base-100 bg-base-100 h-full"
+          className="btn rounded-l-[var(--radius-box)] join-item border-base-100 bg-base-100 h-full shadow-none"
         >
           {emoji}
         </div>
@@ -63,7 +57,7 @@ const CreateList = ({ onListCreate }: TCreateListProps) => {
         </div>
       </div>
       <input
-        className="input join-item bg-base-100 border-base-100 focus:outline-none shadow-none focus:shadow-none rounded-r-lg h-full"
+        className="input join-item bg-base-100 border-base-100 focus:outline-none shadow-none focus:shadow-none rounded-r-[var(--radius-box)] h-full"
         placeholder="New List"
         type="text"
         onKeyDown={(e) => {

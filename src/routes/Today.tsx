@@ -1,32 +1,32 @@
-import { useQuery } from "@tanstack/react-query";
+import { Temporal } from "@js-temporal/polyfill";
 
-// import { getTodos, postTodo } from "../my-api";
-// import { Card } from "../components/Card.tsx";
-// import { Column } from "../components/Column.tsx";
+import { Board } from "../components/Board.tsx";
 import { View } from "../components/View.tsx";
-import { useAuth } from "../hooks/useAuth.tsx";
-import { getTasks } from "../api/tasks.ts";
+
+import { useTasks } from "../hooks/useTasks.tsx";
 
 export const Today = () => {
-  const { supabase } = useAuth();
+  const [tasks] = useTasks();
 
-  const { isPending, data: _tasks } = useQuery({
-    queryKey: ["tasks"],
-    queryFn: () => getTasks(supabase),
-  });
-
-  if (isPending) return <p>Loading...</p>;
+  const today = Temporal.Now.plainDateISO();
 
   return (
     <View>
-      Today
-      {
-        /* <Column id="today" title="Today">
-        {tasks?.map((task, index) => (
-          <Card index={index} key={task.id} task={task} />
-        ))}
-      </Column> */
-      }
+      <Board
+        canCreateTasks
+        columns={[{
+          id: today.toString(),
+          title: today.toLocaleString("en-US", {
+            weekday: "long",
+            month: "short",
+            day: "numeric",
+          }),
+          tasks: tasks?.filter((task) =>
+            task.scheduledFor === today.toString()
+          ),
+        }]}
+        groupBy="scheduledFor"
+      />
     </View>
   );
 };

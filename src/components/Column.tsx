@@ -20,7 +20,7 @@ export const Column = (
     <div
       className={classNames(
         "h-vh flex flex-col",
-        compact ? "min-w-40" : "min-w-80",
+        compact ? "min-w-40 w-40" : "min-w-80 w-80",
       )}
     >
       <div className="badge badge-lg p-5 mx-auto mb-4 w-full">

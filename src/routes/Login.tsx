@@ -65,7 +65,7 @@ export const Login = () => {
 
   return (
     <View className="flex items-center justify-center">
-      <div className="card w-full max-w-md bg-base-100 shadow-xl p-8 rounded-xl">
+      <div className="card w-full max-w-md bg-base-100 shadow-xl p-8 rounded-box">
         <div className="card-body">
           <h2 className="card-title text-2xl font-bold text-center mb-8 flex justify-center">
             {isLogin ? "Login" : "Sign Up"}
@@ -83,7 +83,7 @@ export const Login = () => {
           )}
 
           <button
-            className="btn btn-outline rounded-full"
+            className="btn btn-outline rounded-box"
             disabled={loading}
             onClick={handleGoogleLogin}
             type="button"
@@ -100,7 +100,7 @@ export const Login = () => {
               <input
                 type="email"
                 placeholder="Email"
-                className="input input-md w-full rounded-full px-6 pb-0.5"
+                className="input input-md w-full rounded-box px-6 pb-0.5"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -112,7 +112,7 @@ export const Login = () => {
               <input
                 type="password"
                 placeholder="Password"
-                className="input input-md w-full rounded-full px-6 pb-0.5"
+                className="input input-md w-full rounded-box px-6 pb-0.5"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -122,7 +122,7 @@ export const Login = () => {
             <div className="form-control mt-8">
               <button
                 type="submit"
-                className="btn btn-primary w-full rounded-full"
+                className="btn btn-primary w-full rounded-box"
                 disabled={loading}
               >
                 {loading

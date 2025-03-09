@@ -104,7 +104,7 @@ const StatusButton = (
     type="button"
     onClick={() => console.log("status clicked", status)}
     className={classNames(
-      "w-5 h-5 rounded-full border focus:ring-2 focus:ring-offset-2 border-current/40 hover:bg-current/10",
+      "w-5 h-5 rounded-box border focus:ring-2 focus:ring-offset-2 border-current/40 hover:bg-current/10",
       { "mr-auto": push },
     )}
   />
@@ -130,7 +130,7 @@ const TaskButton = (
       tabIndex={0}
       role="button"
       className={classNames(
-        "w-5 h-5 rounded-full outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10",
+        "w-5 h-5 rounded-box outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10",
         className,
       )}
     >

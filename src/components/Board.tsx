@@ -1,18 +1,11 @@
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Card } from "../components/Card.tsx";
 import { Column } from "../components/Column.tsx";
 
-import { useAuth } from "../hooks/useAuth.tsx";
+import { useTasks } from "../hooks/useTasks.tsx";
 
-import {
-  createTask,
-  TCreateTask,
-  TTask,
-  TUpdateTask,
-  updateTask,
-} from "../api/tasks.ts";
+import { TTask, TUpdateTask } from "../api/tasks.ts";
 
 type TBoardProps = {
   canCreateTasks?: boolean;
@@ -34,48 +27,18 @@ export const Board = (
   { canCreateTasks = false, cardSize = "normal", columns, groupBy }:
     TBoardProps,
 ) => {
-  const { supabase } = useAuth();
-  const queryClient = useQueryClient();
-
-  const { mutate: update } = useMutation<TTask[], Error, TUpdateTask>({
-    mutationFn: (diff) => updateTask(supabase, diff),
-    // onSuccess: () => {
-    //   queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    // },
-    onSuccess: ([newTaskData]) => {
-      queryClient.setQueryData(["tasks"], (oldData: TTask[]) => {
-        return oldData.map((task: TTask) => {
-          return (task.id === newTaskData.id) ? newTaskData : task;
-        });
-      });
-    },
-  });
-
-  const { mutate: create } = useMutation<TTask[], Error, TCreateTask>({
-    mutationFn: (task) => createTask(supabase, task),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    },
-    // onSuccess: ([newTaskData]) => {
-    //   queryClient.setQueryData(["tasks"], (oldData: TTask[]) => {
-    //     // console.log("data", newTaskData);
-    //     return oldData.map((task: TTask) => {
-    //       return (task.id === newTaskData.id) ? newTaskData : task;
-    //     });
-    //   });
-    // },
-  });
+  const [_, { createTask, updateTask }] = useTasks();
 
   const onTaskMove = (id: string, _index: number, column: string) => {
     // groupBy is undefined when there is only one column
     // TODO: Should we support boards with one column?
-    update(groupBy ? { id, [groupBy]: column } : { id });
+    updateTask(groupBy ? { id, [groupBy]: column } : { id });
   };
 
   const onTaskCreate = (title: string, column: string) => {
     // groupBy is undefined when there is only one column
     // TODO: Should we support boards with one column?
-    create(groupBy ? { title, [groupBy]: column } : { title });
+    createTask(groupBy ? { title, [groupBy]: column } : { title });
   };
 
   const onDragEnd = (result: DropResult<string>) => {
@@ -126,7 +89,7 @@ export const Board = (
                   index={index}
                   key={task.id}
                   onTaskUpdate={(diff: Omit<TUpdateTask, "id">) =>
-                    update({ id: task.id, ...diff })}
+                    updateTask({ id: task.id, ...diff })}
                   task={task}
                 />
               ))}

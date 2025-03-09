@@ -1,18 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
 import { Board, TColumn } from "../components/Board.tsx";
 import { View } from "../components/View.tsx";
 
-import { useAuth } from "../hooks/useAuth.tsx";
+import { useTasks } from "../hooks/useTasks.tsx";
 
-import { ETaskPriority, getTasks, TTask } from "../api/tasks.ts";
+import { ETaskPriority, TTask } from "../api/tasks.ts";
 
 export const Prioritize = () => {
-  const { supabase } = useAuth();
-
-  const { data: tasks } = useQuery({
-    queryKey: ["tasks"],
-    queryFn: () => getTasks(supabase),
-  });
+  const [tasks] = useTasks();
 
   const columns = makeColumns(tasks);
 
