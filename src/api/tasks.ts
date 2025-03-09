@@ -9,7 +9,7 @@ export type TTask = {
   // description?: string;
   dueOn?: string;
   listId?: string;
-  priority: ETaskPriority | null;
+  priority: ETaskPriority;
   scheduledFor?: string;
   status: ETaskStatus;
   // subtasks: Task[];
@@ -21,6 +21,7 @@ export enum ETaskPriority {
   URGENT,
   IMPORTANT,
   NEITHER,
+  UNPRIORITIZED,
 }
 
 export enum ETaskStatus {
@@ -34,7 +35,7 @@ export const getTasks = async (supabase: SupabaseClient<Database>) => {
   const { data, error } = await supabase
     .from("tasks")
     .select("*")
-    .order("created_at");
+    .order("status, priority");
 
   if (error) throw error;
   return camelCase(data) as TTask[];
