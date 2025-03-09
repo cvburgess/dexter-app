@@ -5,7 +5,7 @@ export const useTheme = () => {
   const [theme, setTheme] = useState(
     globalThis.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
-      : "light",
+      : "dexter",
   );
 
   useEffect(() => {
