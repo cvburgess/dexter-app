@@ -211,11 +211,13 @@ const DueDateButton = (
 
   const now = Temporal.Now.plainDateISO();
 
-  const daysUntilDue = Boolean(dueOn) &&
-    now.until(Temporal.PlainDate.from(dueOn!)).days;
+  const daysUntilDue = dueOn
+    ? now.until(Temporal.PlainDate.from(dueOn!)).days
+    : null;
 
   const shouldWarnUser = shouldShowCountdown &&
-    daysUntilDue && daysUntilDue <= 1;
+    daysUntilDue !== null &&
+    daysUntilDue <= 1;
 
   return (
     <ButtonWithPopover
