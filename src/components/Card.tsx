@@ -19,19 +19,20 @@ import {
   TUpdateTask,
 } from "../api/tasks.ts";
 import { TList } from "../api/lists.ts";
+import { ButtonWithPopover } from "./ButtonWithPopover.tsx";
 
 type CardProps = {
-  task: TTask;
-  index: number;
   compact?: boolean;
-  onTaskUpdate?: (diff: Omit<TUpdateTask, "id">) => void;
+  index: number;
+  onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
+  task: TTask;
 };
 
 type TOption = {
-  id: string | null;
-  title: string;
   emoji: string;
+  id: string | null;
   isSelected: boolean;
+  title: string;
 };
 
 export const Card = (
@@ -138,9 +139,13 @@ export const Card = (
               <DueDateButton
                 dueOn={task.dueOn}
                 colors={colors}
+                onTaskUpdate={onTaskUpdate}
                 status={task.status}
               />
-              <MoreButton />
+              <MoreButton
+                onTaskUpdate={onTaskUpdate}
+                scheduledFor={task.scheduledFor}
+              />
             </div>
           </div>
         );
@@ -149,7 +154,9 @@ export const Card = (
   );
 };
 
-type TStatusButtonProps = Omit<TTaskButtonProps, "children"> & {
+type TStatusButtonProps = {
+  onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
+  options: TOption[];
   push?: boolean;
   status: ETaskStatus;
 };
@@ -157,130 +164,136 @@ type TStatusButtonProps = Omit<TTaskButtonProps, "children"> & {
 const StatusButton = (
   { onTaskUpdate, options, push = false, status }: TStatusButtonProps,
 ) => (
-  <TaskButton
-    onTaskUpdate={onTaskUpdate}
-    diffKey="status"
+  <ButtonWithPopover
     options={options}
-    push={push}
+    onChange={(value) => onTaskUpdate({ status: Number(value) as ETaskStatus })}
+    variant="menu"
+    wrapperClassName={push ? "mr-auto" : undefined}
   >
     {status === ETaskStatus.IN_PROGRESS ? <SpinnerGap /> : null}
     {status === ETaskStatus.DONE ? <CheckFat /> : null}
     {status === ETaskStatus.WONT_DO ? <X /> : null}
-  </TaskButton>
+  </ButtonWithPopover>
 );
 
-type TTaskButtonProps = {
-  children: React.ReactNode;
-  className?: string;
-  diffKey?: string;
-  onTaskUpdate?: (diff: Omit<TUpdateTask, "id">) => void;
-  options?: TOption[];
-  push?: boolean;
-};
-
-const TaskButton = (
-  { children, className, diffKey, onTaskUpdate, options, push = false }:
-    TTaskButtonProps,
-) => (
-  <div
-    className={classNames({
-      "dropdown dropdown-start dropdown-hover": options,
-      "dropdown-open": false,
-      "mr-auto": push,
-    })}
-  >
-    <div
-      tabIndex={0}
-      role="button"
-      className={classNames(
-        "w-5 h-5 rounded-box outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10",
-        className,
-      )}
-    >
-      {children}
-    </div>
-
-    {options
-      ? (
-        <ul
-          tabIndex={0}
-          className="dropdown-content menu bg-base-100 rounded-box w-52 p-2 shadow-sm text-base-content"
-        >
-          {options.map((option) => (
-            <li key={option.id}>
-              <a
-                onClick={() => onTaskUpdate!({ [diffKey!]: option.id })}
-                className={classNames("flex items-center gap-2", {
-                  "bg-base-300": option.isSelected,
-                })}
-              >
-                <span>{option.emoji}</span>
-                <span>{option.title}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      )
-      : null}
-  </div>
-);
-
-type TListButtonProps = Omit<TTaskButtonProps, "children"> & {
+type TListButtonProps = {
   list?: TList;
+  onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
+  options: TOption[];
   status: ETaskStatus;
 };
 
 const ListButton = (
   { list, onTaskUpdate, options, status }: TListButtonProps,
 ) => (
-  <TaskButton
-    className={classNames({
+  <ButtonWithPopover
+    buttonClassName={classNames({
       "opacity-50": status === ETaskStatus.DONE ||
         status === ETaskStatus.WONT_DO,
     })}
-    diffKey="listId"
+    onChange={(value) => onTaskUpdate({ listId: value })}
     options={options}
-    onTaskUpdate={onTaskUpdate}
+    variant="menu"
   >
     {list ? list.emoji : <Smiley weight="thin" size={24} />}
-  </TaskButton>
+  </ButtonWithPopover>
 );
 
+type TDueDateButtonProps = {
+  colors: Record<string, string>;
+  dueOn: string | null;
+  onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
+  status: ETaskStatus;
+};
+
 const DueDateButton = (
-  { dueOn, colors, status }: {
-    dueOn?: string;
-    colors: { overdue: string };
-    status: ETaskStatus;
-  },
+  { dueOn, colors, onTaskUpdate, status }: TDueDateButtonProps,
 ) => {
-  if (!dueOn || status === ETaskStatus.DONE || status === ETaskStatus.WONT_DO) {
-    return (
-      <TaskButton>
-        <BellRinging />
-      </TaskButton>
-    );
-  }
+  const shouldShowCountdown = Boolean(dueOn) && status !== ETaskStatus.DONE &&
+    status !== ETaskStatus.WONT_DO;
 
   const now = Temporal.Now.plainDateISO();
-  const dueDate = Temporal.PlainDate.from(dueOn);
-  const daysUntilDue = now.until(dueDate).days;
+
+  const daysUntilDue = dueOn
+    ? now.until(Temporal.PlainDate.from(dueOn!)).days
+    : null;
+
+  const shouldWarnUser = shouldShowCountdown &&
+    daysUntilDue !== null &&
+    daysUntilDue <= 1;
 
   return (
-    <TaskButton
-      className={classNames("text-[.65rem]", {
-        [colors.overdue]: daysUntilDue <= 1,
+    <ButtonWithPopover
+      buttonClassName={classNames({
+        [colors.overdue]: shouldWarnUser,
+        "opacity-50": status === ETaskStatus.DONE ||
+          status === ETaskStatus.WONT_DO,
       })}
+      onChange={(value) => onTaskUpdate({ dueOn: value })}
+      selectedDate={dueOn}
+      variant="calendar"
     >
-      {daysUntilDue}
-    </TaskButton>
+      {shouldShowCountdown ? daysUntilDue : <BellRinging />}
+    </ButtonWithPopover>
   );
 };
 
-const MoreButton = () => (
-  <TaskButton>
-    <DotsThreeOutlineVertical />
-  </TaskButton>
-);
+type TMoreButtonProps = {
+  onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
+  scheduledFor: string | null;
+};
+
+const MoreButton = ({ onTaskUpdate, scheduledFor }: TMoreButtonProps) => {
+  const today = Temporal.Now.plainDateISO().toString();
+  const tomorrow = Temporal.Now.plainDateISO().add({ days: 1 }).toString();
+
+  const options: TOption[] = [
+    {
+      id: today,
+      title: "Today",
+      emoji: "☀️",
+      isSelected: scheduledFor === today,
+    },
+    {
+      id: tomorrow,
+      title: "Tomorrow",
+      emoji: "🔜",
+      isSelected: scheduledFor === tomorrow,
+    },
+  ];
+
+  if (scheduledFor) {
+    options.push({
+      id: null,
+      title: "Unschedule",
+      emoji: "🚫",
+      isSelected: false,
+    });
+
+    if (scheduledFor !== today && scheduledFor !== tomorrow) {
+      options.push({
+        id: scheduledFor,
+        title: Temporal.PlainDate.from(scheduledFor).toLocaleString(["en-us"], {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        }),
+        emoji: "📅",
+        isSelected: true,
+      });
+    }
+  }
+
+  return (
+    <ButtonWithPopover
+      onChange={(value) => onTaskUpdate({ scheduledFor: value })}
+      options={options}
+      variant="menu"
+    >
+      <DotsThreeOutlineVertical />
+    </ButtonWithPopover>
+  );
+};
 
 const cardColors = {
   [ETaskPriority.IMPORTANT_AND_URGENT]: {

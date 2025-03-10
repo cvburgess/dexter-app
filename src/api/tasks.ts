@@ -7,10 +7,10 @@ import { Database } from "./database.types.ts";
 export type TTask = {
   id: string;
   // description?: string;
-  dueOn?: string;
-  listId?: string;
+  dueOn: string | null;
+  listId: string | null;
   priority: ETaskPriority;
-  scheduledFor?: string;
+  scheduledFor: string | null;
   status: ETaskStatus;
   // subtasks: Task[];
   title: string;
@@ -42,10 +42,10 @@ export const getTasks = async (supabase: SupabaseClient<Database>) => {
 };
 
 export type TCreateTask = {
-  dueOn?: string;
-  listId?: string;
+  dueOn?: string | null;
+  listId?: string | null;
   priority?: ETaskPriority;
-  scheduledFor?: string;
+  scheduledFor?: string | null;
   status?: ETaskStatus;
   title: string;
 };
@@ -65,10 +65,10 @@ export const createTask = async (
 
 export type TUpdateTask = {
   id: string;
-  dueOn?: string;
+  dueOn?: string | null;
   listId?: string | null;
   priority?: ETaskPriority;
-  scheduledFor?: string;
+  scheduledFor?: string | null;
   status?: ETaskStatus;
   title?: string;
 };
