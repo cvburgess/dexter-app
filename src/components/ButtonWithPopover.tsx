@@ -37,7 +37,7 @@ export const ButtonWithPopover = ({
       tabIndex={0}
       role="button"
       className={classNames(
-        "w-5 h-5 rounded-box outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:bg-current/10",
+        "w-5 h-5 rounded-box outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:opacity-90",
         buttonClassName,
       )}
     >

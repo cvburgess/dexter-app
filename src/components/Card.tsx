@@ -125,30 +125,30 @@ const cardColors = {
   [ETaskPriority.IMPORTANT_AND_URGENT]: {
     complete: "bg-warning/3 hover:bg-warning/10 text-base-content/25",
     incomplete: "bg-warning/80 hover:bg-warning/90 text-warning-content",
-    overdue: "bg-warning-content hover:bg-warning-content/90 text-warning",
+    overdue: "bg-warning-content text-warning",
   },
 
   [ETaskPriority.URGENT]: {
     complete: "bg-error/3 hover:bg-error/10 text-base-content/25",
     incomplete: "bg-error/80 hover:bg-error/90 text-error-content",
-    overdue: "bg-error-content hover:bg-error-content/90 text-error",
+    overdue: "bg-error-content text-error",
   },
 
   [ETaskPriority.IMPORTANT]: {
     complete: "bg-info/3 hover:bg-info/10 text-base-content/25",
     incomplete: "bg-info/80 hover:bg-info/90 text-info-content",
-    overdue: "bg-info-content hover:bg-info-content/90 text-info",
+    overdue: "bg-info-content text-info",
   },
 
   [ETaskPriority.NEITHER]: {
-    complete: "bg-base-3 hover:bg-base-10 text-base-content/25",
+    complete: "bg-base-100/3 hover:bg-base-100/10 text-base-content/25",
     incomplete: "bg-base-100/80 hover:bg-base-100/90 text-base-content",
-    overdue: "bg-base-content hover:bg-base-content text-base-100",
+    overdue: "bg-base-content text-base-100",
   },
 
   [ETaskPriority.UNPRIORITIZED]: {
-    complete: "bg-base-3 hover:bg-base-10 text-base-content/25",
+    complete: "bg-base-100/3 hover:bg-base-100/10 text-base-content/25",
     incomplete: "bg-base-100/80 hover:bg-base-100/90 text-base-content",
-    overdue: "bg-base-content hover:bg-base-content text-base-100",
+    overdue: "bg-base-content text-base-100",
   },
 };
