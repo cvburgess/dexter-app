@@ -1,11 +1,11 @@
 import { DayPicker } from "react-day-picker";
 import classNames from "classnames";
 
-type TOption = {
-  id: string | null;
-  title: string;
+export type TOption = {
   emoji: string;
+  id: string | null;
   isSelected: boolean;
+  title: string;
 };
 
 type TButtonWithPopoverProps = {
