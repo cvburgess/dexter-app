@@ -3,7 +3,7 @@ import { Temporal } from "@js-temporal/polyfill";
 import {
   BellRinging,
   CheckFat,
-  // DotsThreeOutlineVertical,
+  DotsThreeOutlineVertical,
   Smiley,
   SpinnerGap,
   X,
@@ -142,7 +142,10 @@ export const Card = (
                 onTaskUpdate={onTaskUpdate}
                 status={task.status}
               />
-              <MoreButton />
+              <MoreButton
+                onTaskUpdate={onTaskUpdate}
+                scheduledFor={task.scheduledFor}
+              />
             </div>
           </div>
         );
@@ -235,12 +238,62 @@ const DueDateButton = (
   );
 };
 
-const MoreButton = () => null;
-// (
-// <TaskButton>
-//   <DotsThreeOutlineVertical />
-// </TaskButton>
-// );
+type TMoreButtonProps = {
+  onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
+  scheduledFor: string | null;
+};
+
+const MoreButton = ({ onTaskUpdate, scheduledFor }: TMoreButtonProps) => {
+  const today = Temporal.Now.plainDateISO().toString();
+  const tomorrow = Temporal.Now.plainDateISO().add({ days: 1 }).toString();
+
+  const options = [
+    {
+      id: today,
+      title: "Today",
+      emoji: "☀️",
+      isSelected: scheduledFor === today,
+    },
+    {
+      id: tomorrow,
+      title: "Tomorrow",
+      emoji: "🔜",
+      isSelected: scheduledFor === tomorrow,
+    },
+  ];
+
+  if (scheduledFor) {
+    options.push({
+      id: null,
+      title: "Unschedule",
+      emoji: "🚫",
+      isSelected: false,
+    });
+
+    if (scheduledFor !== today && scheduledFor !== tomorrow) {
+      options.push({
+        id: scheduledFor,
+        title: Temporal.PlainDate.from(scheduledFor).toLocaleString(["en-us"], {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        }),
+        emoji: "📅",
+        isSelected: true,
+      });
+    }
+  }
+
+  return (
+    <ButtonWithPopover
+      onChange={(value) => onTaskUpdate({ scheduledFor: value })}
+      options={options}
+      variant="menu"
+    >
+      <DotsThreeOutlineVertical />
+    </ButtonWithPopover>
+  );
+};
 
 const cardColors = {
   [ETaskPriority.IMPORTANT_AND_URGENT]: {
