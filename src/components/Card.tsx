@@ -247,7 +247,7 @@ const MoreButton = ({ onTaskUpdate, scheduledFor }: TMoreButtonProps) => {
   const today = Temporal.Now.plainDateISO().toString();
   const tomorrow = Temporal.Now.plainDateISO().add({ days: 1 }).toString();
 
-  const options = [
+  const options: TOption[] = [
     {
       id: today,
       title: "Today",
