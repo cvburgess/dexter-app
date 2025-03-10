@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Draggable } from "@hello-pangea/dnd";
 import classNames from "classnames";
 
@@ -23,6 +24,11 @@ type CardProps = {
 export const Card = (
   { task, index, compact = false, onTaskUpdate }: CardProps,
 ) => {
+  const [title, setTitle] = useState(task.title);
+  const updateTitle = () => {
+    if (title !== task.title) onTaskUpdate({ title });
+  };
+
   const colors = cardColors[task.priority];
 
   const isComplete = task.status === ETaskStatus.DONE ||
@@ -64,7 +70,19 @@ export const Card = (
                   "text-pretty": compact,
                 })}
               >
-                {task.title}
+                <input
+                  className="bg-transparent border-none p-0 focus:outline-none w-full"
+                  onBlur={() => updateTitle()}
+                  onChange={(e) => setTitle(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      updateTitle();
+                      (e.target as HTMLInputElement).blur(); // Unfocus the input
+                    }
+                  }}
+                  type="text"
+                  value={title}
+                />
               </p>
               {compact
                 ? (
