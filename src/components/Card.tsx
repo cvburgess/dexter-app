@@ -1,16 +1,12 @@
 import { Draggable } from "@hello-pangea/dnd";
 import { Temporal } from "@js-temporal/polyfill";
-import {
-  BellRinging,
-  DotsThreeOutlineVertical,
-  Smiley,
-} from "@phosphor-icons/react";
+import { DotsThreeOutlineVertical } from "@phosphor-icons/react";
 import classNames from "classnames";
 
-import { StatusButton } from "./StatusButton.tsx";
-
-import { useLists } from "../hooks/useLists.tsx";
 import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
+import { DueDateButton } from "./DueDateButton.tsx";
+import { ListButton } from "./ListButton.tsx";
+import { StatusButton } from "./StatusButton.tsx";
 
 import {
   ETaskPriority,
@@ -18,7 +14,6 @@ import {
   TTask,
   TUpdateTask,
 } from "../api/tasks.ts";
-import { TList } from "../api/lists.ts";
 
 type CardProps = {
   compact?: boolean;
@@ -30,21 +25,10 @@ type CardProps = {
 export const Card = (
   { task, index, compact = false, onTaskUpdate }: CardProps,
 ) => {
-  const [lists, { getListById }] = useLists();
   const colors = cardColors[task.priority];
 
   const isComplete = task.status === ETaskStatus.DONE ||
     task.status === ETaskStatus.WONT_DO;
-
-  const listOptions: TOption[] = [
-    { id: null, title: "None", emoji: "🚫" },
-    ...lists,
-  ].map((list) => ({
-    id: list.id,
-    title: list.title,
-    emoji: list.emoji,
-    isSelected: list.id === task.listId,
-  }));
 
   return (
     <Draggable
@@ -97,16 +81,14 @@ export const Card = (
                 ? (
                   <>
                     <ListButton
-                      list={getListById(task.listId)}
+                      listId={task.listId}
                       onTaskUpdate={onTaskUpdate}
-                      options={listOptions}
-                      status={task.status}
                     />
                     <DueDateButton
                       dueOn={task.dueOn}
-                      colors={colors}
+                      isComplete={isComplete}
                       onTaskUpdate={onTaskUpdate}
-                      status={task.status}
+                      overdueClasses={colors.overdue}
                     />
                     <MoreButton
                       onTaskUpdate={onTaskUpdate}
@@ -120,68 +102,6 @@ export const Card = (
         );
       }}
     </Draggable>
-  );
-};
-
-type TListButtonProps = {
-  list?: TList;
-  onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
-  options: TOption[];
-  status: ETaskStatus;
-};
-
-const ListButton = (
-  { list, onTaskUpdate, options, status }: TListButtonProps,
-) => (
-  <ButtonWithPopover
-    buttonClassName={classNames({
-      "opacity-50": status === ETaskStatus.DONE ||
-        status === ETaskStatus.WONT_DO,
-    })}
-    onChange={(value) => onTaskUpdate({ listId: value })}
-    options={options}
-    variant="menu"
-  >
-    {list ? list.emoji : <Smiley weight="thin" size={24} />}
-  </ButtonWithPopover>
-);
-
-type TDueDateButtonProps = {
-  colors: Record<string, string>;
-  dueOn: string | null;
-  onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
-  status: ETaskStatus;
-};
-
-const DueDateButton = (
-  { dueOn, colors, onTaskUpdate, status }: TDueDateButtonProps,
-) => {
-  const shouldShowCountdown = Boolean(dueOn) && status !== ETaskStatus.DONE &&
-    status !== ETaskStatus.WONT_DO;
-
-  const now = Temporal.Now.plainDateISO();
-
-  const daysUntilDue = dueOn
-    ? now.until(Temporal.PlainDate.from(dueOn!)).days
-    : null;
-
-  const shouldWarnUser = shouldShowCountdown &&
-    daysUntilDue !== null &&
-    daysUntilDue <= 1;
-
-  return (
-    <ButtonWithPopover
-      buttonClassName={classNames({
-        [colors.overdue]: shouldWarnUser,
-        "opacity-50": status === ETaskStatus.DONE ||
-          status === ETaskStatus.WONT_DO,
-      })}
-      onChange={(value) => onTaskUpdate({ dueOn: value })}
-      selectedDate={dueOn}
-      variant="calendar"
-    >
-      {shouldShowCountdown ? daysUntilDue : <BellRinging />}
-    </ButtonWithPopover>
   );
 };
 
