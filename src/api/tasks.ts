@@ -1,8 +1,8 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import camelCase from "camelcase-keys";
-import snakeCase from "decamelize-keys";
 
-import { Database } from "./database.types.ts";
+import { applyFilters, TQueryFilter } from "./applyFilters.ts";
+import { camelCase, snakeCase } from "../utils/changeCase.ts";
+import { Database, TablesInsert, TablesUpdate } from "./database.types.ts";
 
 export type TTask = {
   id: string;
@@ -11,7 +11,7 @@ export type TTask = {
   listId: string | null;
   priority: ETaskPriority;
   scheduledFor: string | null;
-  status: ETaskStatus;
+  status: ETaskStatus | ETaskStatus[];
   // subtasks: Task[];
   title: string;
 };
@@ -31,11 +31,16 @@ export enum ETaskStatus {
   WONT_DO,
 }
 
-export const getTasks = async (supabase: SupabaseClient<Database>) => {
-  const { data, error } = await supabase
-    .from("tasks")
-    .select("*")
-    .order("status, priority");
+export const getTasks = async (
+  supabase: SupabaseClient<Database>,
+  filters: TQueryFilter[],
+) => {
+  const query = supabase.from("tasks").select("*");
+
+  applyFilters(query, filters);
+  query.order("status, priority");
+
+  const { data, error } = await query;
 
   if (error) throw error;
   return camelCase(data) as TTask[];
@@ -56,7 +61,7 @@ export const createTask = async (
 ) => {
   const { data, error } = await supabase
     .from("tasks")
-    .insert(snakeCase(task))
+    .insert(snakeCase(task) as TablesInsert<"tasks">)
     .select();
 
   if (error) throw error;
@@ -79,7 +84,7 @@ export const updateTask = async (
 ) => {
   const { data, error } = await supabase
     .from("tasks")
-    .update(snakeCase(diff))
+    .update(snakeCase(diff) as TablesUpdate<"tasks">)
     .eq("id", id)
     .select();
 
