@@ -27,7 +27,7 @@ export const Today = () => {
         }]}
         groupBy="scheduledFor"
       />
-      <div className="fixed p-4 overflow-x-hidden overflow-y-scroll top-0 bottom-0 right-0 z-100 bg-amber-700 shadow-[-8px_0px_8px_0px_rgba(0,0,0,0.1)]">
+      <div className="fixed p-4 overflow-x-hidden overflow-y-scroll top-0 bottom-0 right-0 z-100 bg-base-100 shadow-[-8px_0px_8px_0px_rgba(0,0,0,0.1)]">
         <Column
           id="scheduledFor:null"
           tasks={unscheduledTasks}
