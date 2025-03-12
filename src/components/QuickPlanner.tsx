@@ -22,19 +22,30 @@ export const QuickPlanner = () => {
     <div
       className={classNames(
         "fixed top-0 bottom-0 right-0 z-100 flex transition-all duration-300 ease-in-out",
-        isOpen ? "" : "translate-x-78",
+        isOpen ? "" : "translate-x-79",
       )}
     >
       <div
-        className="self-center h-20 p-2 pr-1 bg-base-300 border-none text-xs rounded-l-[var(--radius-box)] z-10 shadow-[-4px_0px_4px_0px_rgba(0,0,0,0.05)]"
+        className="self-center h-20 p-1 bg-base-100 text-xs rounded-l-[var(--radius-box)] z-101 flex items-center justify-center border-2 border-base-300 border-r-base-100 mr-[-2px] text-base-300"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {isOpen ? <CaretRight /> : <CaretLeft />}
+        <label className="swap swap-rotate">
+          <CaretRight
+            size={18}
+            weight="bold"
+            className={classNames(isOpen ? "swap-off" : "swap-on")}
+          />
+          <CaretLeft
+            size={18}
+            weight="bold"
+            className={classNames(isOpen ? "swap-on" : "swap-off")}
+          />
+        </label>
       </div>
 
       <div
         className={classNames(
-          "p-4 overflow-x-hidden overflow-y-scroll bg-base-100 border-l-0 border-base-300",
+          "p-4 overflow-x-hidden overflow-y-scroll bg-base-100 border-l-2 border-base-300",
           { "shadow-[-4px_0px_4px_0px_rgba(0,0,0,0.05)]": isOpen },
         )}
       >
