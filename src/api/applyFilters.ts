@@ -5,14 +5,14 @@ export type TQueryFilter = [
   | "eq"
   | "gt"
   | "gte"
+  | "ilike"
+  | "in"
+  | "is"
+  | "like"
   | "lt"
   | "lte"
-  | "in"
   | "neq"
-  | "neqOrNull"
-  | "like"
-  | "ilike"
-  | "is"
+  | "or"
   | "textSearch",
   unknown,
 ];
@@ -24,12 +24,21 @@ export type TQueryFilter = [
 export const applyFilters = (query: any, filters: TQueryFilter[] = []) => {
   for (const [column, operation, value] of filters) {
     // neq does not count null values https://github.com/supabase/postgrest-js/pull/463
-    if (operation === "neqOrNull") {
-      query.or(
-        `${snakeCase(column)}.is.null,${snakeCase(column)}.neq.${value}`,
-      );
+    if (operation === "or") {
+      query.or(value);
     } else {
       query = query[operation](snakeCase(column) as string, value);
     }
   }
+};
+
+export const makeOrFilter = (filters: TQueryFilter[]): TQueryFilter => {
+  return [
+    "",
+    "or",
+    filters.map((filter) => {
+      const [column, operation, value] = filter;
+      return `${snakeCase(column)}.${operation}.${value}`;
+    }).join(","),
+  ];
 };

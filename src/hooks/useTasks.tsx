@@ -15,7 +15,7 @@ import {
 } from "../api/tasks.ts";
 
 import { useAuth } from "./useAuth.tsx";
-import { TQueryFilter } from "../api/applyFilters.ts";
+import { makeOrFilter, TQueryFilter } from "../api/applyFilters.ts";
 
 type TUseTasks = [TTask[], {
   createTask: (task: TCreateTask) => void;
@@ -107,7 +107,10 @@ export const taskFilters: Record<string, TQueryFilter[]> = {
   },
   get notToday(): TQueryFilter[] {
     return [
-      ["scheduledFor", "neqOrNull", today.toString()],
+      makeOrFilter([
+        ["scheduledFor", "neq", today.toString()],
+        ["scheduledFor", "is", null],
+      ]),
       ...this.incomplete,
     ];
   },
