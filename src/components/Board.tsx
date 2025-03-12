@@ -13,7 +13,7 @@ type TBoardProps = {
 
 export type TColumn = {
   autoCollapse?: boolean;
-  id: string;
+  id: string | null;
   title: string;
   tasks: TTask[];
 };

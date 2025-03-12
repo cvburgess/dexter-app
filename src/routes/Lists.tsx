@@ -3,7 +3,6 @@ import emojiData from "@emoji-mart/data" with { type: "json" };
 import EmojiPicker from "@emoji-mart/react";
 
 import { Board, TColumn } from "../components/Board.tsx";
-import { QuickPlanner } from "../components/QuickPlanner.tsx";
 import { View } from "../components/View.tsx";
 
 import { useLists } from "../hooks/useLists.tsx";
@@ -26,7 +25,6 @@ export const Lists = () => {
         groupBy="listId"
       />
       <CreateList onListCreate={createList} />
-      <QuickPlanner />
     </View>
   );
 };
@@ -73,11 +71,19 @@ const CreateList = ({ onListCreate }: TCreateListProps) => {
   );
 };
 
+type NoList = Omit<TList, "id"> & { id: null };
+
 const makeColumns = (
-  lists: TList[] | undefined = [],
+  lists: Array<TList | NoList> | undefined = [],
   tasks: TTask[] | undefined = [],
 ): TColumn[] =>
-  lists.map((list: TList) => ({
+  [...lists, {
+    createdAt: "",
+    id: null,
+    title: "No List",
+    emoji: "🚫",
+  }].map((list: TList | NoList) => ({
+    autoCollapse: list.id === null,
     id: list.id,
     title: list.title,
     emoji: list.emoji,
