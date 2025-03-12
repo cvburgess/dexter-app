@@ -1,12 +1,12 @@
 import { Board, TColumn } from "../components/Board.tsx";
 import { View } from "../components/View.tsx";
 
-import { useTasks } from "../hooks/useTasks.tsx";
+import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
 import { ETaskPriority, TTask } from "../api/tasks.ts";
 
 export const Prioritize = () => {
-  const [tasks] = useTasks();
+  const [tasks] = useTasks(taskFilters.incomplete);
 
   const columns = makeColumns(tasks);
 

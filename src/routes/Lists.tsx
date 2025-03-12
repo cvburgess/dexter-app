@@ -6,14 +6,14 @@ import { Board, TColumn } from "../components/Board.tsx";
 import { View } from "../components/View.tsx";
 
 import { useLists } from "../hooks/useLists.tsx";
-import { useTasks } from "../hooks/useTasks.tsx";
+import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
 import { TCreateList, TList } from "../api/lists.ts";
 import { TTask } from "../api/tasks.ts";
 
 export const Lists = () => {
   const [lists, { createList }] = useLists();
-  const [tasks] = useTasks();
+  const [tasks] = useTasks(taskFilters.incomplete);
 
   const columns = makeColumns(lists, tasks);
 

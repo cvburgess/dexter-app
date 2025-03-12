@@ -6,17 +6,25 @@ import { View } from "../components/View.tsx";
 
 import { useTasks } from "../hooks/useTasks.tsx";
 import { TTask } from "../api/tasks.ts";
+import { TQueryFilter } from "../api/applyFilters.ts";
 
 export const Week = () => {
   const [weeksOffset, _setWeeksOffset] = useState<number>(0);
-  const [tasks] = useTasks();
 
   const today = Temporal.Now.plainDateISO();
+  const mostRecentMonday = today
+    .add({ weeks: weeksOffset })
+    .subtract({ days: today.dayOfWeek - 1 });
+  const sunday = mostRecentMonday.add({ days: 6 });
 
-  const columns = makeColumnsForWeekOf(
-    today.add({ weeks: weeksOffset }),
-    tasks,
-  );
+  const filters: TQueryFilter[] = [
+    ["scheduledFor", "gte", mostRecentMonday.toString()],
+    ["scheduledFor", "lte", sunday.toString()],
+  ];
+
+  const [tasks] = useTasks(filters);
+
+  const columns = makeColumnsForWeekOf(mostRecentMonday, tasks);
 
   return (
     <View>
@@ -31,11 +39,9 @@ export const Week = () => {
 };
 
 const makeColumnsForWeekOf = (
-  date: Temporal.PlainDate,
-  tasks: TTask[] | undefined = [],
+  mostRecentMonday: Temporal.PlainDate,
+  tasks: TTask[],
 ): TColumn[] => {
-  const mostRecentMonday = date.subtract({ days: date.dayOfWeek - 1 });
-
   const dayNames = [
     "monday",
     "tuesday",
