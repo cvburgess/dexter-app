@@ -32,8 +32,9 @@ export const Board = (
     // column is prefixed with the property name
     // example: "scheduledFor:2022-01-01"
     const [prop, value] = column.split(":");
+    const nullableValue = (value === "null") ? null : value;
 
-    createTask({ title, [prop]: value });
+    createTask({ title, [prop]: nullableValue });
   };
 
   return (

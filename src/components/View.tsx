@@ -15,9 +15,10 @@ export const View = ({ children, className }: Props) => {
     // column is prefixed with the property name
     // example: "scheduledFor:2022-01-01"
     const [prop, value] = column.split(":");
+    const nullableValue = (value === "null") ? null : value;
 
     // TODO: support moving within a column with index
-    updateTask({ id, [prop]: value });
+    updateTask({ id, [prop]: nullableValue });
   };
 
   const onDragEnd = (result: DropResult<string>) => {
