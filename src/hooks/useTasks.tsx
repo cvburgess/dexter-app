@@ -23,7 +23,7 @@ type TUseTasks = [
   },
 ];
 
-export const useTasks = (where = []): TUseTasks => {
+export const useTasks = (where: TQueryFilter[] = []): TUseTasks => {
   const { supabase } = useAuth();
   const queryClient = useQueryClient();
 
