@@ -158,7 +158,7 @@ const cardColors = {
 
   [ETaskPriority.UNPRIORITIZED]: {
     complete: "bg-base-100/3 hover:bg-base-100/10 text-base-content/25",
-    incomplete: "bg-base-100/80 hover:bg-base-100/90 text-base-content",
+    incomplete: "bg-base-200/80 hover:bg-base-200/90 text-base-content",
     overdue: "bg-base-content text-base-100",
   },
 };
