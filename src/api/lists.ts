@@ -45,7 +45,7 @@ export type TUpdateList = {
   title?: string;
 };
 
-export const updateTask = async (
+export const updateList = async (
   supabase: SupabaseClient<Database>,
   { id, ...diff }: TUpdateList,
 ) => {
