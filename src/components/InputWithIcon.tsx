@@ -1,0 +1,17 @@
+import classNames from "classnames";
+
+type TInputWithIconProps = {
+  children: React.ReactNode;
+} & React.InputHTMLAttributes<HTMLInputElement>;
+
+export const InputWithIcon = ({ children, ...props }: TInputWithIconProps) => (
+  <label
+    className={classNames(
+      "group input input-ghost mb-4 w-full p-4 h-auto bg-base-200",
+      "focus-within:bg-base-100 focus-within:border-1 focus-within:border-base-300 focus-within:outline-none",
+    )}
+  >
+    {children}
+    <input {...props} />
+  </label>
+);

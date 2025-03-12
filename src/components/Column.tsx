@@ -3,6 +3,7 @@ import { Plus } from "@phosphor-icons/react";
 import classNames from "classnames";
 
 import { Card, ECardSize } from "./Card.tsx";
+import { InputWithIcon } from "./InputWithIcon.tsx";
 
 import { useTasks } from "../hooks/useTasks.tsx";
 
@@ -97,22 +98,16 @@ type TCreateTaskProps = {
 const CreateTask = ({ enabled, onTaskCreate }: TCreateTaskProps) =>
   enabled
     ? (
-      <label
-        className={classNames(
-          "group input input-ghost mb-4 w-full p-4 h-auto bg-base-200",
-          "focus-within:bg-base-100 focus-within:outline-1 focus-within:outline-base-300",
-        )}
+      <InputWithIcon
+        type="text"
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && e.currentTarget.value.trim()) {
+            onTaskCreate?.(e.currentTarget.value.trim());
+            e.currentTarget.value = "";
+          }
+        }}
       >
-        <Plus className="group-focus-within:hidden" />
-        <input
-          type="text"
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && e.currentTarget.value.trim()) {
-              onTaskCreate?.(e.currentTarget.value.trim());
-              e.currentTarget.value = "";
-            }
-          }}
-        />
-      </label>
+        <Plus />
+      </InputWithIcon>
     )
     : null;
