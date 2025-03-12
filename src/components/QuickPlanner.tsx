@@ -1,17 +1,17 @@
-import { useState } from "react";
+import // @ts-types="react"
+React, { useState } from "react";
 import { CaretLeft, CaretRight, MagnifyingGlass } from "@phosphor-icons/react";
+import classNames from "classnames";
 
 import { TTask } from "../api/tasks.ts";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
 import { Column } from "./Column.tsx";
 import { InputWithIcon } from "./InputWithIcon.tsx";
-import classNames from "classnames";
 
 export const QuickPlanner = () => {
   const [search, setSearch] = useState<string>("");
   const [filteredTasks] = useTasks(taskFilters.unscheduled);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const searchTasks = (tasks: TTask[]) =>
     tasks.filter((task): boolean =>
@@ -19,36 +19,8 @@ export const QuickPlanner = () => {
     );
 
   return (
-    <div
-      className={classNames(
-        "fixed top-0 bottom-0 right-0 z-100 flex transition-all duration-300 ease-in-out",
-        isOpen ? "" : "translate-x-79",
-      )}
-    >
-      <div
-        className="self-center h-20 p-1 bg-base-100 text-xs rounded-l-[var(--radius-box)] z-101 flex items-center justify-center border-2 border-base-300 border-r-base-100 mr-[-2px] text-base-300"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <label className="swap swap-rotate">
-          <CaretRight
-            size={18}
-            weight="bold"
-            className={classNames(isOpen ? "swap-off" : "swap-on")}
-          />
-          <CaretLeft
-            size={18}
-            weight="bold"
-            className={classNames(isOpen ? "swap-on" : "swap-off")}
-          />
-        </label>
-      </div>
-
-      <div
-        className={classNames(
-          "p-4 overflow-x-hidden overflow-y-scroll bg-base-100 border-l-2 border-base-300",
-          { "shadow-[-4px_0px_4px_0px_rgba(0,0,0,0.05)]": isOpen },
-        )}
-      >
+    <Drawer>
+      <div className="p-4 overflow-x-hidden overflow-y-scroll bg-base-100 border-l-2 border-base-300 shadow-[-4px_0px_4px_0px_rgba(0,0,0,0.05)]">
         <div className="join max-w-70">
           <div className="dropdown">
             <div
@@ -100,6 +72,38 @@ export const QuickPlanner = () => {
           tasks={searchTasks(filteredTasks)}
         />
       </div>
+    </Drawer>
+  );
+};
+
+const Drawer = ({ children }: { children: React.ReactNode }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  return (
+    <div
+      className={classNames(
+        "fixed top-0 bottom-0 right-0 z-100 flex transition-all duration-300 ease-in-out",
+        { "translate-x-79": isOpen },
+      )}
+    >
+      <div
+        className="self-center h-20 p-1 bg-base-100 text-xs rounded-l-[var(--radius-box)] z-101 flex items-center justify-center border-2 border-base-300 border-r-base-100 mr-[-2px] text-base-300"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <label className="swap swap-rotate">
+          <CaretRight
+            size={18}
+            weight="bold"
+            className={classNames(isOpen ? "swap-off" : "swap-on")}
+          />
+          <CaretLeft
+            size={18}
+            weight="bold"
+            className={classNames(isOpen ? "swap-on" : "swap-off")}
+          />
+        </label>
+      </div>
+      {children}
     </div>
   );
 };
