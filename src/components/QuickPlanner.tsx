@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MagnifyingGlass } from "@phosphor-icons/react";
+import { CaretLeft, CaretRight, MagnifyingGlass } from "@phosphor-icons/react";
 
 import { TTask } from "../api/tasks.ts";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
@@ -19,19 +19,23 @@ export const QuickPlanner = () => {
     );
 
   return (
-    <div className="fixed top-0 bottom-0 right-0 z-100 flex">
+    <div
+      className={classNames(
+        "fixed top-0 bottom-0 right-0 z-100 flex transition-all duration-300 ease-in-out",
+        isOpen ? "" : "translate-x-78",
+      )}
+    >
       <div
-        className="p-2 bg-base-300 border-none text-xs"
+        className="self-center h-20 p-2 pr-1 bg-base-300 border-none text-xs rounded-l-[var(--radius-box)] z-10 shadow-[-4px_0px_4px_0px_rgba(0,0,0,0.05)]"
         onClick={() => setIsOpen(!isOpen)}
-        style={{ alignSelf: "center" }}
       >
-        {isOpen ? ">" : "<"}
+        {isOpen ? <CaretRight /> : <CaretLeft />}
       </div>
 
       <div
         className={classNames(
-          "overflow-x-hidden overflow-y-scroll bg-base-100 shadow-[-8px_0px_8px_0px_rgba(0,0,0,0.1)] transition-all duration-3000",
-          isOpen ? "w-auto p-4" : "w-0 p-0",
+          "p-4 overflow-x-hidden overflow-y-scroll bg-base-100 border-l-0 border-base-300",
+          { "shadow-[-4px_0px_4px_0px_rgba(0,0,0,0.05)]": isOpen },
         )}
       >
         <div className="join max-w-70">
