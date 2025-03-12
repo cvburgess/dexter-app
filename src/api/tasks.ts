@@ -91,3 +91,28 @@ export const updateTask = async (
   if (error) throw error;
   return camelCase(data) as TTask[];
 };
+
+export const updateTasks = async (
+  supabase: SupabaseClient<Database>,
+  tasks: TUpdateTask[],
+) => {
+  const { data, error } = await supabase
+    .from("tasks")
+    .upsert(tasks.map((task) => snakeCase(task) as TablesUpdate<"tasks">))
+    .select();
+
+  if (error) throw error;
+  return camelCase(data) as TTask[];
+};
+
+export const deleteTask = async (
+  supabase: SupabaseClient<Database>,
+  id: string,
+) => {
+  const { error } = await supabase
+    .from("tasks")
+    .delete()
+    .eq("id", id);
+
+  if (error) throw error;
+};

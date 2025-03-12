@@ -58,3 +58,15 @@ export const updateTask = async (
   if (error) throw error;
   return camelCase(data) as TList[];
 };
+
+export const deleteList = async (
+  supabase: SupabaseClient<Database>,
+  id: string,
+) => {
+  const { error } = await supabase
+    .from("lists")
+    .delete()
+    .eq("id", id);
+
+  if (error) throw error;
+};
