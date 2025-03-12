@@ -6,13 +6,11 @@ import { Database, TablesInsert, TablesUpdate } from "./database.types.ts";
 
 export type TTask = {
   id: string;
-  // description?: string;
   dueOn: string | null;
   listId: string | null;
   priority: ETaskPriority;
   scheduledFor: string | null;
   status: ETaskStatus;
-  // subtasks: Task[];
   title: string;
 };
 

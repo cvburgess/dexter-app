@@ -1,5 +1,4 @@
-import // @ts-types="react"
-React, { useState } from "react";
+import { useState } from "react";
 import { CaretLeft, CaretRight, MagnifyingGlass } from "@phosphor-icons/react";
 import classNames from "classnames";
 

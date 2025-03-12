@@ -23,7 +23,6 @@ export type TQueryFilter = [
 // deno-lint-ignore no-explicit-any
 export const applyFilters = (query: any, filters: TQueryFilter[] = []) => {
   for (const [column, operation, value] of filters) {
-    // neq does not count null values https://github.com/supabase/postgrest-js/pull/463
     if (operation === "or") {
       query.or(value);
     } else {
