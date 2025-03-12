@@ -1,10 +1,11 @@
+import { ECardSize } from "./Card.tsx";
 import { Column } from "../components/Column.tsx";
 
 import { TTask } from "../api/tasks.ts";
 
 type TBoardProps = {
   canCreateTasks?: boolean;
-  cardSize?: "compact" | "normal";
+  cardSize?: ECardSize;
   columns: TColumn[];
   groupBy: EGroupBy;
   tasks?: TTask[];

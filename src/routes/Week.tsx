@@ -30,7 +30,7 @@ export const Week = () => {
     <View>
       <Board
         canCreateTasks
-        cardSize="compact"
+        cardSize="compact-w"
         columns={columns}
         groupBy="scheduledFor"
       />

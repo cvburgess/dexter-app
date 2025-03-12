@@ -16,14 +16,16 @@ import {
   TUpdateTask,
 } from "../api/tasks.ts";
 
+export type ECardSize = "normal" | "compact-h" | "compact-w";
+
 type CardProps = {
-  compact?: boolean;
+  cardSize?: ECardSize;
   index: number;
   task: TTask;
 };
 
 export const Card = (
-  { task, index, compact = false }: CardProps,
+  { cardSize = "normal", task, index }: CardProps,
 ) => {
   const [isEditing, setIsEditing] = useState(false);
   const [_, { updateTask }] = useTasks();
@@ -40,6 +42,8 @@ export const Card = (
 
   const isComplete = task.status === ETaskStatus.DONE ||
     task.status === ETaskStatus.WONT_DO;
+
+  const shouldShowButtons = cardSize !== "compact-h" && !isComplete;
 
   return (
     <Draggable
@@ -58,15 +62,15 @@ export const Card = (
             className={classNames(
               "shadow-md rounded-box p-4 border border-current/10",
               isComplete ? colors.complete : colors.incomplete,
-              compact ? "w-40" : "w-70",
+              cardSize === "compact-w" ? "w-40" : "w-70",
             )}
           >
             <div
               className={classNames("flex items-center justify-start gap-2", {
-                "flex-wrap": compact,
+                "flex-wrap": cardSize === "compact-w",
               })}
             >
-              {compact ? null : (
+              {cardSize === "compact-w" ? null : (
                 <StatusButton
                   onTaskUpdate={onTaskUpdate}
                   status={task.status}
@@ -77,8 +81,8 @@ export const Card = (
                   "text-xs font-medium focus:outline-none",
                   isEditing ? "cursor-text" : "cursor-default",
                   {
-                    "flex-grow": !compact,
-                    "w-full mb-2 text-center text-pretty": compact,
+                    "flex-grow": cardSize !== "compact-w",
+                    "w-full mb-2 text-center": cardSize === "compact-w",
                   },
                 )}
                 contentEditable={isEditing}
@@ -94,7 +98,7 @@ export const Card = (
               >
                 {task.title}
               </p>
-              {compact
+              {cardSize === "compact-w"
                 ? (
                   <StatusButton
                     onTaskUpdate={onTaskUpdate}
@@ -103,7 +107,7 @@ export const Card = (
                   />
                 )
                 : null}
-              {!isComplete
+              {shouldShowButtons
                 ? (
                   <>
                     <ListButton

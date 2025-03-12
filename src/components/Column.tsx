@@ -2,7 +2,7 @@ import { Droppable } from "@hello-pangea/dnd";
 import { Plus } from "@phosphor-icons/react";
 import classNames from "classnames";
 
-import { Card } from "./Card.tsx";
+import { Card, ECardSize } from "./Card.tsx";
 
 import { useTasks } from "../hooks/useTasks.tsx";
 
@@ -10,7 +10,7 @@ import { TTask } from "../api/tasks.ts";
 
 type TColumnProps = {
   canCreateTasks?: boolean;
-  cardSize?: "compact" | "normal";
+  cardSize?: ECardSize;
   icon?: string;
   id: string;
   tasks: TTask[];
@@ -40,7 +40,7 @@ export const Column = ({
     <div
       className={classNames(
         "h-vh flex flex-col",
-        cardSize === "compact" ? "min-w-40 w-40" : "min-w-70 w-70",
+        cardSize === "compact-w" ? "min-w-40 w-40" : "min-w-70 w-70",
       )}
     >
       <ColumnTitle title={title} icon={icon} />
@@ -62,7 +62,7 @@ export const Column = ({
             >
               {tasks?.map((task, index) => (
                 <Card
-                  compact={cardSize === "compact"}
+                  cardSize={cardSize}
                   index={index}
                   key={task.id}
                   task={task}
