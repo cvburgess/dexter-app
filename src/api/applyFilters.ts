@@ -9,6 +9,7 @@ export type TQueryFilter = [
   | "lte"
   | "in"
   | "neq"
+  | "neqOrNull"
   | "like"
   | "ilike"
   | "is"
@@ -22,6 +23,13 @@ export type TQueryFilter = [
 // deno-lint-ignore no-explicit-any
 export const applyFilters = (query: any, filters: TQueryFilter[] = []) => {
   for (const [column, operation, value] of filters) {
-    query = query[operation](snakeCase(column) as string, value);
+    // neq does not count null values https://github.com/supabase/postgrest-js/pull/463
+    if (operation === "neqOrNull") {
+      query.or(
+        `${snakeCase(column)}.is.null,${snakeCase(column)}.neq.${value}`,
+      );
+    } else {
+      query = query[operation](snakeCase(column) as string, value);
+    }
   }
 };

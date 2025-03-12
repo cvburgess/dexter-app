@@ -86,6 +86,13 @@ export const taskFilters: Record<string, TQueryFilter[]> = {
       ...this.incomplete,
     ];
   },
+  get dueSoon(): TQueryFilter[] {
+    return [
+      ["dueOn", "gte", today.toString()],
+      ["dueOn", "gte", today.add({ days: 6 }).toString()],
+      ...this.incomplete,
+    ];
+  },
   get unscheduled(): TQueryFilter[] {
     return [
       ["scheduledFor", "is", null],
@@ -95,6 +102,12 @@ export const taskFilters: Record<string, TQueryFilter[]> = {
   get leftBehind(): TQueryFilter[] {
     return [
       ["scheduledFor", "lt", today.toString()],
+      ...this.incomplete,
+    ];
+  },
+  get notToday(): TQueryFilter[] {
+    return [
+      ["scheduledFor", "neqOrNull", today.toString()],
       ...this.incomplete,
     ];
   },

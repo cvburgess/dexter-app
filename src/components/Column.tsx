@@ -106,6 +106,7 @@ const CreateTask = ({ enabled, onTaskCreate }: TCreateTaskProps) =>
             e.currentTarget.value = "";
           }
         }}
+        wrapperClassName="mb-4"
       >
         <Plus />
       </InputWithIcon>

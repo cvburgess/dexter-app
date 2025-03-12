@@ -26,7 +26,7 @@ export const Today = () => {
         }]}
         groupBy="scheduledFor"
       />
-      <QuickPlanner />
+      <QuickPlanner baseFilters={taskFilters.notToday} />
     </View>
   );
 };
