@@ -2,25 +2,45 @@ import { Droppable } from "@hello-pangea/dnd";
 import { Plus } from "@phosphor-icons/react";
 import classNames from "classnames";
 
+import { Card } from "./Card.tsx";
+
+import { useTasks } from "../hooks/useTasks.tsx";
+
+import { TTask } from "../api/tasks.ts";
+
 type TColumnProps = {
   canCreateTasks?: boolean;
-  children: React.ReactNode;
-  compact?: boolean;
+  cardSize?: "compact" | "normal";
   icon?: string;
   id: string;
-  onTaskCreate?: (title: string, column: string) => void;
+  tasks: TTask[];
   title: string;
 };
 
-export const Column = (
-  { canCreateTasks = false, children, compact, id, title, icon, onTaskCreate }:
-    TColumnProps,
-) => {
+export const Column = ({
+  cardSize = "normal",
+  canCreateTasks = false,
+  id,
+  title,
+  icon,
+  tasks = [],
+}: TColumnProps) => {
+  const [_, { createTask }] = useTasks();
+
+  const onTaskCreate = (title: string, column: string) => {
+    // column is prefixed with the property name
+    // example: "scheduledFor:2022-01-01"
+    const [prop, value] = column.split(":");
+    const nullableValue = (value === "null") ? null : value;
+
+    createTask({ title, [prop]: nullableValue });
+  };
+
   return (
     <div
       className={classNames(
         "h-vh flex flex-col",
-        compact ? "min-w-40 w-40" : "min-w-70 w-70",
+        cardSize === "compact" ? "min-w-40 w-40" : "min-w-70 w-70",
       )}
     >
       <div className="badge badge-lg p-5 mx-auto mb-4 w-full">
@@ -43,7 +63,14 @@ export const Column = (
               className="flex flex-col flex-grow gap-2"
               data-list-id={id}
             >
-              {children}
+              {tasks?.map((task, index) => (
+                <Card
+                  compact={cardSize === "compact"}
+                  index={index}
+                  key={task.id}
+                  task={task}
+                />
+              ))}
               {provided.placeholder}
             </div>
           );

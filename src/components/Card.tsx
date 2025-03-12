@@ -7,6 +7,8 @@ import { ListButton } from "./ListButton.tsx";
 import { MoreButton } from "./MoreButton.tsx";
 import { StatusButton } from "./StatusButton.tsx";
 
+import { useTasks } from "../hooks/useTasks.tsx";
+
 import {
   ETaskPriority,
   ETaskStatus,
@@ -17,14 +19,18 @@ import {
 type CardProps = {
   compact?: boolean;
   index: number;
-  onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
   task: TTask;
 };
 
 export const Card = (
-  { task, index, compact = false, onTaskUpdate }: CardProps,
+  { task, index, compact = false }: CardProps,
 ) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [_, { updateTask }] = useTasks();
+
+  const onTaskUpdate = (diff: Omit<TUpdateTask, "id">) =>
+    updateTask({ id: task.id, ...diff });
+
   const updateTitle = (title: string) => {
     if (title !== task.title) onTaskUpdate({ title });
     setIsEditing(false);
