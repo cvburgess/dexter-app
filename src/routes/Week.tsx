@@ -24,6 +24,7 @@ export const Week = () => {
       makeOrFilter([
         ["scheduledFor", "lt", mostRecentMonday.toString()],
         ["scheduledFor", "gt", sunday.toString()],
+        ["scheduledFor", "is", null],
       ]),
       ...taskFilters.incomplete,
     ],
