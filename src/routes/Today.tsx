@@ -13,7 +13,7 @@ export const Today = () => {
   const today = Temporal.Now.plainDateISO();
 
   return (
-    <View className="flex">
+    <View>
       <Board
         canCreateTasks
         columns={[{
@@ -27,11 +27,10 @@ export const Today = () => {
         }]}
         groupBy="scheduledFor"
       />
-      <div className="w-[200px] bg-amber-700 ml-auto shadow-[-4px_0px_8px_rgba(0,0,0,0.2)]">
+      <div className="fixed w-[200px] overflow-x-hidden overflow-y-scroll top-0 bottom-0 right-0 z-100 bg-amber-700 shadow-[4px_0px_8px_rgba(0,0,0,0.2)]">
         <Column
           id="scheduledFor:null"
           tasks={unscheduledTasks}
-          title="Unscheduled"
         />
       </div>
     </View>

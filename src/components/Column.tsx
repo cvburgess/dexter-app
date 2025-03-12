@@ -14,7 +14,7 @@ type TColumnProps = {
   icon?: string;
   id: string;
   tasks: TTask[];
-  title: string;
+  title?: string;
 };
 
 export const Column = ({
@@ -27,13 +27,13 @@ export const Column = ({
 }: TColumnProps) => {
   const [_, { createTask }] = useTasks();
 
-  const onTaskCreate = (title: string, column: string) => {
+  const onTaskCreate = (taskTitle: string) => {
     // column is prefixed with the property name
     // example: "scheduledFor:2022-01-01"
-    const [prop, value] = column.split(":");
+    const [prop, value] = id.split(":");
     const nullableValue = (value === "null") ? null : value;
 
-    createTask({ title, [prop]: nullableValue });
+    createTask({ title: taskTitle, [prop]: nullableValue });
   };
 
   return (
@@ -43,10 +43,7 @@ export const Column = ({
         cardSize === "compact" ? "min-w-40 w-40" : "min-w-70 w-70",
       )}
     >
-      <div className="badge badge-lg p-5 mx-auto mb-4 w-full">
-        {icon}
-        {title}
-      </div>
+      <ColumnTitle title={title} icon={icon} />
 
       <CreateTask
         enabled={canCreateTasks}
@@ -80,15 +77,24 @@ export const Column = ({
   );
 };
 
+const ColumnTitle = ({ title, icon }: { title?: string; icon?: string }) => {
+  if (!title) return null;
+
+  return (
+    <div className="badge badge-lg p-5 mx-auto mb-4 w-full">
+      {icon}
+      {title}
+    </div>
+  );
+};
+
 type TCreateTaskProps = {
   columnId: string;
   enabled: boolean;
-  onTaskCreate?: (title: string, column: string) => void;
+  onTaskCreate?: (title: string) => void;
 };
 
-const CreateTask = (
-  { columnId, enabled, onTaskCreate }: TCreateTaskProps,
-) =>
+const CreateTask = ({ enabled, onTaskCreate }: TCreateTaskProps) =>
   enabled
     ? (
       <label
@@ -102,7 +108,7 @@ const CreateTask = (
           type="text"
           onKeyDown={(e) => {
             if (e.key === "Enter" && e.currentTarget.value.trim()) {
-              onTaskCreate?.(e.currentTarget.value.trim(), columnId);
+              onTaskCreate?.(e.currentTarget.value.trim());
               e.currentTarget.value = "";
             }
           }}
