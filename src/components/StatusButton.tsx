@@ -1,4 +1,4 @@
-import { CheckFat, SpinnerGap, X } from "@phosphor-icons/react";
+import { Check, SpinnerGap, X } from "@phosphor-icons/react";
 
 import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
 
@@ -62,7 +62,7 @@ const iconForStatus = (status: ETaskStatus) => {
       return <SpinnerGap />;
 
     case ETaskStatus.DONE:
-      return <CheckFat />;
+      return <Check />;
 
     case ETaskStatus.WONT_DO:
       return <X />;
