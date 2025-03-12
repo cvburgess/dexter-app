@@ -45,7 +45,7 @@ export type TUpdateList = {
   title?: string;
 };
 
-export const updateTask = async (
+export const updateList = async (
   supabase: SupabaseClient<Database>,
   { id, ...diff }: TUpdateList,
 ) => {
@@ -57,4 +57,16 @@ export const updateTask = async (
 
   if (error) throw error;
   return camelCase(data) as TList[];
+};
+
+export const deleteList = async (
+  supabase: SupabaseClient<Database>,
+  id: string,
+) => {
+  const { error } = await supabase
+    .from("lists")
+    .delete()
+    .eq("id", id);
+
+  if (error) throw error;
 };

@@ -7,6 +7,8 @@ import { ListButton } from "./ListButton.tsx";
 import { MoreButton } from "./MoreButton.tsx";
 import { StatusButton } from "./StatusButton.tsx";
 
+import { useTasks } from "../hooks/useTasks.tsx";
+
 import {
   ETaskPriority,
   ETaskStatus,
@@ -14,25 +16,34 @@ import {
   TUpdateTask,
 } from "../api/tasks.ts";
 
+export type ECardSize = "normal" | "compact-h" | "compact-w";
+
 type CardProps = {
-  compact?: boolean;
+  cardSize?: ECardSize;
   index: number;
-  onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
   task: TTask;
 };
 
 export const Card = (
-  { task, index, compact = false, onTaskUpdate }: CardProps,
+  { cardSize = "normal", task, index }: CardProps,
 ) => {
-  const [title, setTitle] = useState(task.title);
-  const updateTitle = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [_, { updateTask }] = useTasks();
+
+  const onTaskUpdate = (diff: Omit<TUpdateTask, "id">) =>
+    updateTask({ id: task.id, ...diff });
+
+  const updateTitle = (title: string) => {
     if (title !== task.title) onTaskUpdate({ title });
+    setIsEditing(false);
   };
 
   const colors = cardColors[task.priority];
 
   const isComplete = task.status === ETaskStatus.DONE ||
     task.status === ETaskStatus.WONT_DO;
+
+  const shouldShowButtons = cardSize !== "compact-h" && !isComplete;
 
   return (
     <Draggable
@@ -51,40 +62,43 @@ export const Card = (
             className={classNames(
               "shadow-md rounded-box p-4 border border-current/10",
               isComplete ? colors.complete : colors.incomplete,
-              compact ? "w-40" : "w-80",
+              cardSize === "compact-w" ? "w-40" : "w-70",
             )}
           >
-            <div className="flex flex-wrap items-center justify-start gap-2">
-              {compact ? null : (
+            <div
+              className={classNames("flex items-center justify-start gap-2", {
+                "flex-wrap": cardSize === "compact-w",
+              })}
+            >
+              {cardSize === "compact-w" ? null : (
                 <StatusButton
                   onTaskUpdate={onTaskUpdate}
                   status={task.status}
                 />
               )}
               <p
-                className={classNames("text-xs font-medium", {
-                  "flex-grow": !compact,
-                  "w-full": compact,
-                  "mb-2": compact,
-                  "text-center": compact,
-                  "text-pretty": compact,
-                })}
+                className={classNames(
+                  "text-xs font-medium focus:outline-none",
+                  isEditing ? "cursor-text" : "cursor-default",
+                  {
+                    "flex-grow": cardSize !== "compact-w",
+                    "w-full mb-2 text-center": cardSize === "compact-w",
+                  },
+                )}
+                contentEditable={isEditing}
+                onClick={() => setIsEditing(true)}
+                onBlur={(e) => updateTitle(e.currentTarget.innerText)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    updateTitle(e.currentTarget.innerText);
+                    (e.target as HTMLParagraphElement).blur(); // Unfocus the input
+                  }
+                }}
+                suppressContentEditableWarning
               >
-                <input
-                  className="bg-transparent border-none p-0 focus:outline-none w-full"
-                  onBlur={() => updateTitle()}
-                  onChange={(e) => setTitle(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      updateTitle();
-                      (e.target as HTMLInputElement).blur(); // Unfocus the input
-                    }
-                  }}
-                  type="text"
-                  value={title}
-                />
+                {task.title}
               </p>
-              {compact
+              {cardSize === "compact-w"
                 ? (
                   <StatusButton
                     onTaskUpdate={onTaskUpdate}
@@ -93,7 +107,7 @@ export const Card = (
                   />
                 )
                 : null}
-              {!isComplete
+              {shouldShowButtons
                 ? (
                   <>
                     <ListButton
@@ -148,7 +162,7 @@ const cardColors = {
 
   [ETaskPriority.UNPRIORITIZED]: {
     complete: "bg-base-100/3 hover:bg-base-100/10 text-base-content/25",
-    incomplete: "bg-base-100/80 hover:bg-base-100/90 text-base-content",
-    overdue: "bg-base-content text-base-100",
+    incomplete: "bg-neutral/80 hover:bg-neutral/90 text-neutral-content",
+    overdue: "bg-neutral-content text-neutral",
   },
 };

@@ -2,27 +2,34 @@ import { useState } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 
 import { Board, TColumn } from "../components/Board.tsx";
+import { QuickPlanner } from "../components/QuickPlanner.tsx";
 import { View } from "../components/View.tsx";
 
-import { useTasks } from "../hooks/useTasks.tsx";
+import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 import { TTask } from "../api/tasks.ts";
-import { TQueryFilter } from "../api/applyFilters.ts";
+import { makeOrFilter, TQueryFilter } from "../api/applyFilters.ts";
+import { weekStartEnd } from "../utils/weekStartEnd.ts";
 
 export const Week = () => {
   const [weeksOffset, _setWeeksOffset] = useState<number>(0);
 
-  const today = Temporal.Now.plainDateISO();
-  const mostRecentMonday = today
-    .add({ weeks: weeksOffset })
-    .subtract({ days: today.dayOfWeek - 1 });
-  const sunday = mostRecentMonday.add({ days: 6 });
+  const { mostRecentMonday, sunday } = weekStartEnd(weeksOffset);
 
-  const filters: TQueryFilter[] = [
-    ["scheduledFor", "gte", mostRecentMonday.toString()],
-    ["scheduledFor", "lte", sunday.toString()],
-  ];
+  const filters: Record<string, TQueryFilter[]> = {
+    thisWeek: [
+      ["scheduledFor", "gte", mostRecentMonday.toString()],
+      ["scheduledFor", "lte", sunday.toString()],
+    ],
+    notThisWeek: [
+      makeOrFilter([
+        ["scheduledFor", "lt", mostRecentMonday.toString()],
+        ["scheduledFor", "gt", sunday.toString()],
+      ]),
+      ...taskFilters.incomplete,
+    ],
+  };
 
-  const [tasks] = useTasks(filters);
+  const [tasks] = useTasks(filters.thisWeek);
 
   const columns = makeColumnsForWeekOf(mostRecentMonday, tasks);
 
@@ -30,10 +37,11 @@ export const Week = () => {
     <View>
       <Board
         canCreateTasks
-        cardSize="compact"
+        cardSize="compact-w"
         columns={columns}
         groupBy="scheduledFor"
       />
+      <QuickPlanner baseFilters={filters.notThisWeek} />
     </View>
   );
 };

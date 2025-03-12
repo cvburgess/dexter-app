@@ -1,16 +1,24 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { createList, getLists, TCreateList, TList } from "../api/lists.ts";
+import {
+  createList,
+  deleteList,
+  getLists,
+  TCreateList,
+  TList,
+  TUpdateList,
+  updateList,
+} from "../api/lists.ts";
 
 import { useAuth } from "./useAuth.tsx";
 
-type TUseLists = [
-  TList[],
-  {
-    createList: (list: TCreateList) => void;
-    getListById: (id: string | null) => TList | undefined;
-  },
-];
+type TUseLists = [TList[], {
+  createList: (list: TCreateList) => void;
+  deleteList: (id: string) => void;
+  getListById: (id: string | null) => TList | undefined;
+  updateList: (list: TUpdateList) => void;
+}];
+
 export const useLists = (): TUseLists => {
   const { supabase } = useAuth();
   const queryClient = useQueryClient();
@@ -27,10 +35,29 @@ export const useLists = (): TUseLists => {
     },
   });
 
+  const { mutate: update } = useMutation<TList[], Error, TUpdateList>({
+    mutationFn: (diff) => updateList(supabase, diff),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lists"] });
+    },
+  });
+
+  const { mutate: remove } = useMutation<void, Error, string>({
+    mutationFn: (id) => deleteList(supabase, id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lists"] });
+    },
+  });
+
   const getListById = (id: string | null) => {
     if (!id) return undefined;
     return lists?.find((list) => list.id === id);
   };
 
-  return [lists, { createList: create, getListById }];
+  return [lists, {
+    createList: create,
+    deleteList: remove,
+    getListById,
+    updateList: update,
+  }];
 };

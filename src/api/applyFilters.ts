@@ -5,13 +5,14 @@ export type TQueryFilter = [
   | "eq"
   | "gt"
   | "gte"
+  | "ilike"
+  | "in"
+  | "is"
+  | "like"
   | "lt"
   | "lte"
-  | "in"
   | "neq"
-  | "like"
-  | "ilike"
-  | "is"
+  | "or"
   | "textSearch",
   unknown,
 ];
@@ -22,6 +23,21 @@ export type TQueryFilter = [
 // deno-lint-ignore no-explicit-any
 export const applyFilters = (query: any, filters: TQueryFilter[] = []) => {
   for (const [column, operation, value] of filters) {
-    query = query[operation](snakeCase(column) as string, value);
+    if (operation === "or") {
+      query.or(value);
+    } else {
+      query = query[operation](snakeCase(column) as string, value);
+    }
   }
+};
+
+export const makeOrFilter = (filters: TQueryFilter[]): TQueryFilter => {
+  return [
+    "",
+    "or",
+    filters.map((filter) => {
+      const [column, operation, value] = filter;
+      return `${snakeCase(column)}.${operation}.${value}`;
+    }).join(","),
+  ];
 };

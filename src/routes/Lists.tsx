@@ -37,7 +37,7 @@ const CreateList = ({ onListCreate }: TCreateListProps) => {
   const [emoji, setEmoji] = useState<string>("🐶");
 
   return (
-    <div className="join w-80 shadow-sm rounded-[var(--radius-box)] h-[42px] min-w-80">
+    <div className="join w-70 min-w-70 h-[42px] shadow-sm rounded-[var(--radius-box)]">
       <div className="dropdown">
         <div
           tabIndex={0}
@@ -71,11 +71,19 @@ const CreateList = ({ onListCreate }: TCreateListProps) => {
   );
 };
 
+type NoList = Omit<TList, "id"> & { id: null };
+
 const makeColumns = (
-  lists: TList[] | undefined = [],
+  lists: Array<TList | NoList> | undefined = [],
   tasks: TTask[] | undefined = [],
 ): TColumn[] =>
-  lists.map((list: TList) => ({
+  [...lists, {
+    createdAt: "",
+    id: null,
+    title: "No List",
+    emoji: "🚫",
+  }].map((list: TList | NoList) => ({
+    autoCollapse: list.id === null,
     id: list.id,
     title: list.title,
     emoji: list.emoji,
