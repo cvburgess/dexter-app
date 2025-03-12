@@ -9,7 +9,7 @@ import { InputWithIcon } from "./InputWithIcon.tsx";
 
 export const QuickPlanner = () => {
   const [search, setSearch] = useState<string>("");
-  const [unscheduledTasks] = useTasks(taskFilters.unscheduled);
+  const [filteredTasks] = useTasks(taskFilters.unscheduled);
 
   const searchTasks = (tasks: TTask[]) =>
     tasks.filter((task): boolean =>
@@ -23,19 +23,31 @@ export const QuickPlanner = () => {
           <div
             tabIndex={0}
             role="button"
-            className="btn join-item p-4 h-[51px] bg-base-300"
+            className="btn join-item p-4 h-[51px] bg-base-300 border-none text-xs"
           >
-            Filter
+            Unscheduled
           </div>
           <ul
             tabIndex={0}
             className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
           >
             <li>
-              <a>Item 1</a>
+              <a className="bg-base-300">
+                <span>📆</span>
+                <span>Unscheduled</span>
+              </a>
             </li>
             <li>
-              <a>Item 2</a>
+              <a>
+                <span>⌛</span>
+                <span>Overdue</span>
+              </a>
+            </li>
+            <li>
+              <a>
+                <span>⏳</span>
+                <span>Due soon</span>
+              </a>
             </li>
           </ul>
         </div>
@@ -54,7 +66,7 @@ export const QuickPlanner = () => {
       <Column
         // cardSize="compact-h"
         id="scheduledFor:null"
-        tasks={searchTasks(unscheduledTasks)}
+        tasks={searchTasks(filteredTasks)}
       />
     </div>
   );
