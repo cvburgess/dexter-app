@@ -83,7 +83,7 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
     <div
       className={classNames(
         "fixed top-0 bottom-0 right-0 z-100 flex transition-all duration-300 ease-in-out",
-        { "translate-x-79": isOpen },
+        { "translate-x-79": !isOpen },
       )}
     >
       <div
@@ -94,12 +94,12 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
           <CaretRight
             size={18}
             weight="bold"
-            className={classNames(isOpen ? "swap-off" : "swap-on")}
+            className={classNames(isOpen ? "swap-on" : "swap-off")}
           />
           <CaretLeft
             size={18}
             weight="bold"
-            className={classNames(isOpen ? "swap-on" : "swap-off")}
+            className={classNames(isOpen ? "swap-off" : "swap-on")}
           />
         </label>
       </div>
