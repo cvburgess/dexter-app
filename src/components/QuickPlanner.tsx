@@ -126,9 +126,16 @@ const makeFilters = (selectedFilter: string) => [
     isSelected: selectedFilter === "all",
   },
   {
+    id: "leftBehind",
+    title: "Left Behind",
+    icon: "📆",
+    filters: taskFilters.leftBehind,
+    isSelected: selectedFilter === "leftBehind",
+  },
+  {
     id: "unscheduled",
     title: "Unscheduled",
-    icon: "📆",
+    icon: "🗓️",
     filters: taskFilters.unscheduled,
     isSelected: selectedFilter === "unscheduled",
   },
