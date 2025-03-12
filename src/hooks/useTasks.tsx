@@ -69,8 +69,10 @@ export const useTasks = (where: TQueryFilter[] = []): TUseTasks => {
   }];
 };
 
+const today = Temporal.Now.plainDateISO();
+
 export const taskFilters: Record<string, TQueryFilter[]> = {
-  today: [["scheduledFor", "eq", Temporal.Now.plainDateISO().toString()]],
+  today: [["scheduledFor", "eq", today.toString()]],
   incomplete: [["status", "in", [ETaskStatus.TODO, ETaskStatus.IN_PROGRESS]]],
   get unprioritized(): TQueryFilter[] {
     return [
@@ -80,7 +82,19 @@ export const taskFilters: Record<string, TQueryFilter[]> = {
   },
   get overdue(): TQueryFilter[] {
     return [
-      ["dueOn", "lt", Temporal.Now.plainDateISO().toString()],
+      ["dueOn", "lt", today.toString()],
+      ...this.incomplete,
+    ];
+  },
+  get unscheduled(): TQueryFilter[] {
+    return [
+      ["scheduledFor", "is", null],
+      ...this.incomplete,
+    ];
+  },
+  get leftBehind(): TQueryFilter[] {
+    return [
+      ["scheduledFor", "lt", today.toString()],
       ...this.incomplete,
     ];
   },
