@@ -11,7 +11,7 @@ export type TTask = {
   listId: string | null;
   priority: ETaskPriority;
   scheduledFor: string | null;
-  status: ETaskStatus | ETaskStatus[];
+  status: ETaskStatus;
   // subtasks: Task[];
   title: string;
 };
