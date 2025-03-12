@@ -12,13 +12,12 @@ export const View = ({ children, className }: Props) => {
   const [_, { updateTask }] = useTasks();
 
   const onTaskMove = (id: string, _index: number, column: string) => {
-    // column is usually (but not always) prefixed with the property name
+    // column is prefixed with the property name
     // example: "scheduledFor:2022-01-01"
-    const parts = column.split(":");
-    const isPrefixed = parts.length === 2;
+    const [prop, value] = column.split(":");
 
     // TODO: support moving within a column with index
-    updateTask(isPrefixed ? { id, [parts[0]]: parts[1] } : { id });
+    updateTask({ id, [prop]: value });
   };
 
   const onDragEnd = (result: DropResult<string>) => {

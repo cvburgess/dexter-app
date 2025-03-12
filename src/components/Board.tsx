@@ -9,7 +9,7 @@ type TBoardProps = {
   canCreateTasks?: boolean;
   cardSize?: "compact" | "normal";
   columns: TColumn[];
-  groupBy?: EGroupBy;
+  groupBy: EGroupBy;
   tasks?: TTask[];
 };
 
@@ -29,9 +29,11 @@ export const Board = (
   const [_, { createTask, updateTask }] = useTasks();
 
   const onTaskCreate = (title: string, column: string) => {
-    // groupBy is undefined when there is only one column
-    // TODO: Should we support boards with one column?
-    createTask(groupBy ? { title, [groupBy]: column } : { title });
+    // column is prefixed with the property name
+    // example: "scheduledFor:2022-01-01"
+    const [prop, value] = column.split(":");
+
+    createTask({ title, [prop]: value });
   };
 
   return (
