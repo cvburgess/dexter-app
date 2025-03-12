@@ -3,6 +3,7 @@ import emojiData from "@emoji-mart/data" with { type: "json" };
 import EmojiPicker from "@emoji-mart/react";
 
 import { Board, TColumn } from "../components/Board.tsx";
+import { QuickPlanner } from "../components/QuickPlanner.tsx";
 import { View } from "../components/View.tsx";
 
 import { useLists } from "../hooks/useLists.tsx";
@@ -25,6 +26,7 @@ export const Lists = () => {
         groupBy="listId"
       />
       <CreateList onListCreate={createList} />
+      <QuickPlanner />
     </View>
   );
 };

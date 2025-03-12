@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 
 import { Board, TColumn } from "../components/Board.tsx";
+import { QuickPlanner } from "../components/QuickPlanner.tsx";
 import { View } from "../components/View.tsx";
 
 import { useTasks } from "../hooks/useTasks.tsx";
@@ -34,6 +35,7 @@ export const Week = () => {
         columns={columns}
         groupBy="scheduledFor"
       />
+      <QuickPlanner />
     </View>
   );
 };
