@@ -24,9 +24,10 @@ type CardProps = {
 export const Card = (
   { task, index, compact = false, onTaskUpdate }: CardProps,
 ) => {
-  const [title, setTitle] = useState(task.title);
-  const updateTitle = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const updateTitle = (title: string) => {
     if (title !== task.title) onTaskUpdate({ title });
+    setIsEditing(false);
   };
 
   const colors = cardColors[task.priority];
@@ -54,7 +55,11 @@ export const Card = (
               compact ? "w-40" : "w-80",
             )}
           >
-            <div className="flex flex-wrap items-center justify-start gap-2">
+            <div
+              className={classNames("flex items-center justify-start gap-2", {
+                "flex-wrap": compact,
+              })}
+            >
               {compact ? null : (
                 <StatusButton
                   onTaskUpdate={onTaskUpdate}
@@ -62,27 +67,26 @@ export const Card = (
                 />
               )}
               <p
-                className={classNames("text-xs font-medium", {
-                  "flex-grow": !compact,
-                  "w-full": compact,
-                  "mb-2": compact,
-                  "text-center": compact,
-                  "text-pretty": compact,
-                })}
+                className={classNames(
+                  "text-xs font-medium focus:outline-none",
+                  isEditing ? "cursor-text" : "cursor-default",
+                  {
+                    "flex-grow": !compact,
+                    "w-full mb-2 text-center text-pretty": compact,
+                  },
+                )}
+                contentEditable={isEditing}
+                onClick={() => setIsEditing(true)}
+                onBlur={(e) => updateTitle(e.currentTarget.innerText)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    updateTitle(e.currentTarget.innerText);
+                    (e.target as HTMLParagraphElement).blur(); // Unfocus the input
+                  }
+                }}
+                suppressContentEditableWarning
               >
-                <input
-                  className="bg-transparent border-none p-0 focus:outline-none w-full"
-                  onBlur={() => updateTitle()}
-                  onChange={(e) => setTitle(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      updateTitle();
-                      (e.target as HTMLInputElement).blur(); // Unfocus the input
-                    }
-                  }}
-                  type="text"
-                  value={title}
-                />
+                {task.title}
               </p>
               {compact
                 ? (
