@@ -87,7 +87,7 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
       )}
     >
       <div
-        className="self-center h-20 p-1 bg-base-100 text-xs rounded-l-[var(--radius-box)] z-101 flex items-center justify-center border-2 border-base-300 border-r-base-100 mr-[-2px] text-base-300"
+        className="self-center h-20 p-1 bg-base-100 text-xs rounded-l-[var(--radius-box)] z-101 flex items-center justify-center border-2 border-base-300 border-r-base-100 mr-[-2px] text-base-content/40"
         onClick={() => setIsOpen(!isOpen)}
       >
         <label className="swap swap-rotate">
