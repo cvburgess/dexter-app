@@ -8,15 +8,17 @@ type Props = {
   className?: string;
 };
 
-const groupBy = "scheduledFor";
-
 export const View = ({ children, className }: Props) => {
   const [_, { updateTask }] = useTasks();
 
   const onTaskMove = (id: string, _index: number, column: string) => {
-    // groupBy is undefined when there is only one column
-    // TODO: Should we support boards with one column?
-    updateTask(groupBy ? { id, [groupBy]: column } : { id });
+    // column is usually (but not always) prefixed with the property name
+    // example: "scheduledFor:2022-01-01"
+    const parts = column.split(":");
+    const isPrefixed = parts.length === 2;
+
+    // TODO: support moving within a column with index
+    updateTask(isPrefixed ? { id, [parts[0]]: parts[1] } : { id });
   };
 
   const onDragEnd = (result: DropResult<string>) => {

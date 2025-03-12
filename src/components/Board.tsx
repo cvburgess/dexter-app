@@ -43,7 +43,7 @@ export const Board = (
           <Column
             canCreateTasks={canCreateTasks}
             compact={cardSize === "compact"}
-            id={column.id}
+            id={`${groupBy}:${column.id}`}
             key={column.id}
             onTaskCreate={onTaskCreate}
             title={column.title}
