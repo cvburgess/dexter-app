@@ -23,8 +23,8 @@ export enum ETaskPriority {
 }
 
 export enum ETaskStatus {
-  TODO,
   IN_PROGRESS,
+  TODO,
   DONE,
   WONT_DO,
 }
