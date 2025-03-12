@@ -37,7 +37,7 @@ const CreateList = ({ onListCreate }: TCreateListProps) => {
   const [emoji, setEmoji] = useState<string>("🐶");
 
   return (
-    <div className="join w-80 shadow-sm rounded-[var(--radius-box)] h-[42px] min-w-80">
+    <div className="join w-70 min-w-70 h-[42px] shadow-sm rounded-[var(--radius-box)]">
       <div className="dropdown">
         <div
           tabIndex={0}

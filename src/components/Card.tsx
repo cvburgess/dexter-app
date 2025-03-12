@@ -52,7 +52,7 @@ export const Card = (
             className={classNames(
               "shadow-md rounded-box p-4 border border-current/10",
               isComplete ? colors.complete : colors.incomplete,
-              compact ? "w-40" : "w-80",
+              compact ? "w-40" : "w-70",
             )}
           >
             <div
