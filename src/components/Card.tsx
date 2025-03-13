@@ -122,7 +122,7 @@ export const Card = (
                     />
                     <MoreButton
                       onTaskUpdate={onTaskUpdate}
-                      scheduledFor={task.scheduledFor}
+                      task={task}
                     />
                   </>
                 )

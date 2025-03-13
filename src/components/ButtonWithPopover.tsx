@@ -1,18 +1,18 @@
 import { DayPicker } from "react-day-picker";
 import classNames from "classnames";
 
-type TOnChange = (id: string | null) => void;
+export type TOnChange = (id: string | number | null) => void;
 
 export type TOption = {
-  emoji: string;
-  id: string | null;
+  emoji?: string;
+  id: string | number | null;
   isSelected: boolean;
   title: string;
 };
 
 export type TSegmentedOption = {
   title: string;
-  options: Array<TOption & { onChange: TOnChange }>;
+  options: Array<TOption & { onChange: () => void }>;
 };
 
 type TCommonProps = {
@@ -61,11 +61,11 @@ export const ButtonWithPopover = ({
     {props.variant === "menu"
       ? <DropdownMenu onChange={props.onChange} options={props.options} />
       : null}
-    {
-      /* {props.variant === "segmentedMenu"
+
+    {props.variant === "segmentedMenu"
       ? <SegmentedMenu options={props.options} />
-      : null} */
-    }
+      : null}
+
     {props.variant === "calendar"
       ? (
         <Calendar
@@ -98,10 +98,38 @@ const DropdownMenu = ({ onChange, options }: TDropdownMenuProps) => (
             "bg-base-300": option.isSelected,
           })}
         >
-          <span>{option.emoji}</span>
+          {option.emoji ? <span>{option.emoji}</span> : null}
           <span>{option.title}</span>
         </a>
       </li>
+    ))}
+  </ul>
+);
+
+const SegmentedMenu = ({ options }: { options: TSegmentedOption[] }) => (
+  <ul
+    className={classNames(popoverStyles, "menu p-2 min-w-52")}
+    tabIndex={0}
+  >
+    {options.map((segment) => (
+      <>
+        <div className="divider divider-start" key={segment.title}>
+          {segment.title}
+        </div>
+        {segment.options.map((option) => (
+          <li key={option.id}>
+            <a
+              onClick={option.onChange}
+              className={classNames("flex items-center gap-2", {
+                "bg-base-300": option.isSelected,
+              })}
+            >
+              {option.emoji ? <span>{option.emoji}</span> : null}
+              <span>{option.title}</span>
+            </a>
+          </li>
+        ))}
+      </>
     ))}
   </ul>
 );

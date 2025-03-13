@@ -1,26 +1,35 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { DotsThreeOutlineVertical } from "@phosphor-icons/react";
 
-import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
+import {
+  ButtonWithPopover,
+  TOnChange,
+  TOption,
+  TSegmentedOption,
+} from "./ButtonWithPopover.tsx";
 
-import { TUpdateTask } from "../api/tasks.ts";
+import { ETaskPriority, TTask, TUpdateTask } from "../api/tasks.ts";
 
 type TMoreButtonProps = {
   onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
-  scheduledFor: string | null;
+  task: TTask;
 };
 
-export const MoreButton = (
-  { onTaskUpdate, scheduledFor }: TMoreButtonProps,
-) => {
-  const options = optionsForScheduling(scheduledFor);
+export const MoreButton = ({ onTaskUpdate, task }: TMoreButtonProps) => {
+  const schedulingOptions = optionsForScheduling(
+    task.scheduledFor,
+    (scheduledFor) => onTaskUpdate({ scheduledFor }),
+  );
+  const priorityOptions = optionsForPriority(
+    task.priority,
+    (priority) => onTaskUpdate({ priority }),
+  );
 
   return (
     <ButtonWithPopover
       buttonVariant="round"
-      onChange={(value) => onTaskUpdate({ scheduledFor: value })}
-      options={options}
-      variant="menu"
+      options={[schedulingOptions, priorityOptions]}
+      variant="segmentedMenu"
       wrapperClassName="dropdown-hover"
     >
       <DotsThreeOutlineVertical />
@@ -28,22 +37,65 @@ export const MoreButton = (
   );
 };
 
-const optionsForScheduling = (scheduledFor: string | null): TOption[] => {
+const optionsForPriority = (
+  priority: ETaskPriority,
+  onChange: TOnChange,
+): TSegmentedOption => {
+  const options: Array<TOption & { onChange: () => void }> = [
+    {
+      id: ETaskPriority.IMPORTANT_AND_URGENT,
+      isSelected: priority === ETaskPriority.IMPORTANT_AND_URGENT,
+      onChange: () => onChange(ETaskPriority.IMPORTANT_AND_URGENT),
+      title: "Important & Urgent",
+    },
+    {
+      id: ETaskPriority.URGENT,
+      isSelected: priority === ETaskPriority.URGENT,
+      onChange: () => onChange(ETaskPriority.URGENT),
+      title: "Urgent",
+    },
+    {
+      id: ETaskPriority.IMPORTANT,
+      isSelected: priority === ETaskPriority.IMPORTANT,
+      onChange: () => onChange(ETaskPriority.IMPORTANT),
+      title: "Important",
+    },
+    {
+      id: ETaskPriority.NEITHER,
+      isSelected: priority === ETaskPriority.NEITHER,
+      onChange: () => onChange(ETaskPriority.NEITHER),
+      title: "Neither",
+    },
+    {
+      id: ETaskPriority.UNPRIORITIZED,
+      isSelected: priority === ETaskPriority.UNPRIORITIZED,
+      onChange: () => onChange(ETaskPriority.UNPRIORITIZED),
+      title: "Unprioritized",
+    },
+  ];
+
+  return { title: "Priority", options };
+};
+
+const optionsForScheduling = (
+  scheduledFor: string | null,
+  onChange: TOnChange,
+): TSegmentedOption => {
   const today = Temporal.Now.plainDateISO().toString();
   const tomorrow = Temporal.Now.plainDateISO().add({ days: 1 }).toString();
 
-  const options: TOption[] = [
+  const options: Array<TOption & { onChange: () => void }> = [
     {
       id: today,
-      title: "Today",
-      emoji: "☀️",
       isSelected: scheduledFor === today,
+      onChange: () => onChange(today),
+      title: "Today",
     },
     {
       id: tomorrow,
-      title: "Tomorrow",
-      emoji: "🔜",
       isSelected: scheduledFor === tomorrow,
+      onChange: () => onChange(tomorrow),
+      title: "Tomorrow",
     },
   ];
 
@@ -51,23 +103,23 @@ const optionsForScheduling = (scheduledFor: string | null): TOption[] => {
     if (scheduledFor !== today && scheduledFor !== tomorrow) {
       options.push({
         id: scheduledFor,
+        isSelected: true,
+        onChange: () => {},
         title: Temporal.PlainDate.from(scheduledFor).toLocaleString(["en-us"], {
           month: "short",
           day: "numeric",
           year: "numeric",
         }),
-        emoji: "📅",
-        isSelected: true,
       });
     }
 
     options.push({
       id: null,
-      title: "Unschedule",
-      emoji: "🚫",
       isSelected: false,
+      onChange: () => onChange(null),
+      title: "Unschedule",
     });
   }
 
-  return options;
+  return { title: "Schedule", options };
 };
