@@ -17,9 +17,11 @@ export const MoreButton = (
 
   return (
     <ButtonWithPopover
+      buttonVariant="round"
       onChange={(value) => onTaskUpdate({ scheduledFor: value })}
       options={options}
       variant="menu"
+      wrapperClassName="dropdown-hover"
     >
       <DotsThreeOutlineVertical />
     </ButtonWithPopover>

@@ -10,6 +10,7 @@ export type TOption = {
 
 type TButtonWithPopoverProps = {
   buttonClassName?: string;
+  buttonVariant: "round" | "left-join";
   children: React.ReactNode;
   onChange: (id: string | null) => void;
   options?: TOption[];
@@ -18,8 +19,14 @@ type TButtonWithPopoverProps = {
   wrapperClassName?: string;
 };
 
+const roundButtonClasses =
+  "w-5 h-5 rounded-box outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:opacity-90";
+const leftJoinButtonClasses =
+  "btn join-item p-4 h-[51px] min-w-20 bg-base-300 border-none text-xs";
+
 export const ButtonWithPopover = ({
   buttonClassName,
+  buttonVariant,
   children,
   onChange,
   options = [],
@@ -29,7 +36,7 @@ export const ButtonWithPopover = ({
 }: TButtonWithPopoverProps) => (
   <div
     className={classNames(
-      "dropdown dropdown-start dropdown-hover",
+      "dropdown dropdown-start",
       wrapperClassName,
     )}
   >
@@ -37,7 +44,8 @@ export const ButtonWithPopover = ({
       tabIndex={0}
       role="button"
       className={classNames(
-        "w-5 h-5 rounded-box outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:opacity-90",
+        { [roundButtonClasses]: buttonVariant === "round" },
+        { [leftJoinButtonClasses]: buttonVariant === "left-join" },
         buttonClassName,
       )}
     >
