@@ -12,21 +12,22 @@ export type TOption = {
 
 export type TSegmentedOption = {
   title: string;
-  options: TOption & { onChange: TOnChange }[];
+  options: Array<TOption & { onChange: TOnChange }>;
 };
 
-type TButtonWithPopoverProps =
-  & {
-    buttonClassName?: string;
-    buttonVariant: "round" | "left-join";
-    children: React.ReactNode;
-    wrapperClassName?: string;
-  }
-  & (
-    | { variant: "calendar"; onChange: TOnChange; selectedDate?: string | null }
-    | { variant: "menu"; onChange: TOnChange; options: TOption[] }
-    | { variant: "segmentedMenu"; options: TSegmentedOption[] }
-  );
+type TCommonProps = {
+  buttonClassName?: string;
+  buttonVariant: "round" | "left-join";
+  children: React.ReactNode;
+  wrapperClassName?: string;
+};
+
+type TConditionalProps =
+  | { variant: "calendar"; onChange: TOnChange; selectedDate?: string | null }
+  | { variant: "menu"; onChange: TOnChange; options: TOption[] }
+  | { variant: "segmentedMenu"; options: TSegmentedOption[] };
+
+type TButtonWithPopoverProps = TCommonProps & TConditionalProps;
 
 const roundButtonClasses =
   "w-5 h-5 rounded-box outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:opacity-90";
@@ -37,7 +38,6 @@ export const ButtonWithPopover = ({
   buttonClassName,
   buttonVariant,
   children,
-  variant,
   wrapperClassName,
   ...props
 }: TButtonWithPopoverProps) => (
@@ -58,15 +58,15 @@ export const ButtonWithPopover = ({
     >
       {children}
     </div>
-    {variant === "menu" && "onChange" in props
+    {props.variant === "menu"
       ? <DropdownMenu onChange={props.onChange} options={props.options} />
       : null}
     {
-      /* {variant === "segmented" && "options" in props
+      /* {props.variant === "segmentedMenu"
       ? <SegmentedMenu options={props.options} />
       : null} */
     }
-    {variant === "calendar" && "onChange" in props
+    {props.variant === "calendar"
       ? (
         <Calendar
           onChange={props.onChange}
