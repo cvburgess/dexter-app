@@ -33,6 +33,7 @@ export const MoreButton = (
       id: "delete",
       title: "Delete",
       onChange: onTaskDelete,
+      isDangerous: true,
       isSelected: false,
     }],
   };

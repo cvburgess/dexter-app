@@ -13,7 +13,12 @@ export type TOption = {
 
 export type TSegmentedOption = {
   title: string;
-  options: Array<TOption & { onChange: () => void }>;
+  options: Array<
+    TOption & {
+      isDangerous?: boolean;
+      onChange: () => void;
+    }
+  >;
 };
 
 type TCommonProps = {
@@ -129,7 +134,11 @@ const SegmentedMenu = ({ options }: { options: TSegmentedOption[] }) => (
               })}
             >
               {option.emoji ? <span>{option.emoji}</span> : null}
-              <span>{option.title}</span>
+              <span
+                className={classNames({ "text-red-600": option.isDangerous })}
+              >
+                {option.title}
+              </span>
             </a>
           </li>
         ))}
