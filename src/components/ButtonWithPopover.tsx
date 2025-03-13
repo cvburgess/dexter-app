@@ -156,7 +156,7 @@ const daySize = "30px";
 
 const Calendar = ({ onChange, selectedDate }: TCalendarProps) => (
   <div
-    className={classNames(popoverStyles)} //, "scale-75")}
+    className={classNames(popoverStyles)}
     tabIndex={0}
   >
     <DayPicker
