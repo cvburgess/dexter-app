@@ -36,7 +36,7 @@ export const QuickPlanner = ({ baseFilters = [] }: TQuickPlannerProps) => {
           <div className="join max-w-70">
             <ButtonWithPopover
               buttonVariant="left-join"
-              onChange={(id) => setSelectedFilter(id!)}
+              onChange={(id) => setSelectedFilter(id as string)}
               options={options}
               variant="menu"
             >

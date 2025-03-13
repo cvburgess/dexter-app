@@ -1,7 +1,7 @@
 import { DayPicker } from "react-day-picker";
 import classNames from "classnames";
 
-export type TOnChange = (id: string | number | null) => void;
+export type TOnChange<T> = (id: T) => void;
 
 export type TOption = {
   emoji?: string;
@@ -23,8 +23,16 @@ type TCommonProps = {
 };
 
 type TConditionalProps =
-  | { variant: "calendar"; onChange: TOnChange; selectedDate?: string | null }
-  | { variant: "menu"; onChange: TOnChange; options: TOption[] }
+  | {
+    variant: "calendar";
+    onChange: TOnChange<string | null>;
+    selectedDate?: string | null;
+  }
+  | {
+    variant: "menu";
+    onChange: TOnChange<string | number | null>;
+    options: TOption[];
+  }
   | { variant: "segmentedMenu"; options: TSegmentedOption[] };
 
 type TButtonWithPopoverProps = TCommonProps & TConditionalProps;
@@ -41,12 +49,7 @@ export const ButtonWithPopover = ({
   wrapperClassName,
   ...props
 }: TButtonWithPopoverProps) => (
-  <div
-    className={classNames(
-      "dropdown dropdown-start",
-      wrapperClassName,
-    )}
-  >
+  <div className={classNames("dropdown", wrapperClassName)}>
     <div
       tabIndex={0}
       role="button"
@@ -78,7 +81,7 @@ export const ButtonWithPopover = ({
 );
 
 type TDropdownMenuProps = {
-  onChange: (id: string | null) => void;
+  onChange: TOnChange<string | number | null>;
   options: TOption[];
 };
 
@@ -135,7 +138,7 @@ const SegmentedMenu = ({ options }: { options: TSegmentedOption[] }) => (
 );
 
 type TCalendarProps = {
-  onChange: (date: string | null) => void;
+  onChange: TOnChange<string | null>;
   selectedDate: string | null;
 };
 

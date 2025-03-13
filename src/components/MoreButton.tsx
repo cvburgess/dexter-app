@@ -11,24 +11,36 @@ import {
 import { ETaskPriority, TTask, TUpdateTask } from "../api/tasks.ts";
 
 type TMoreButtonProps = {
+  onTaskDelete: () => void;
   onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
   task: TTask;
 };
 
-export const MoreButton = ({ onTaskUpdate, task }: TMoreButtonProps) => {
+export const MoreButton = (
+  { onTaskDelete, onTaskUpdate, task }: TMoreButtonProps,
+) => {
   const schedulingOptions = optionsForScheduling(
     task.scheduledFor,
-    (scheduledFor) => onTaskUpdate({ scheduledFor }),
+    (scheduledFor: string | null) => onTaskUpdate({ scheduledFor }),
   );
   const priorityOptions = optionsForPriority(
     task.priority,
     (priority) => onTaskUpdate({ priority }),
   );
+  const otherOptions: TSegmentedOption = {
+    title: "Other",
+    options: [{
+      id: "delete",
+      title: "Delete",
+      onChange: onTaskDelete,
+      isSelected: false,
+    }],
+  };
 
   return (
     <ButtonWithPopover
       buttonVariant="round"
-      options={[schedulingOptions, priorityOptions]}
+      options={[schedulingOptions, priorityOptions, otherOptions]}
       variant="segmentedMenu"
       wrapperClassName="dropdown-hover"
     >
@@ -39,7 +51,7 @@ export const MoreButton = ({ onTaskUpdate, task }: TMoreButtonProps) => {
 
 const optionsForPriority = (
   priority: ETaskPriority,
-  onChange: TOnChange,
+  onChange: TOnChange<ETaskPriority>,
 ): TSegmentedOption => {
   const options: Array<TOption & { onChange: () => void }> = [
     {
@@ -79,7 +91,7 @@ const optionsForPriority = (
 
 const optionsForScheduling = (
   scheduledFor: string | null,
-  onChange: TOnChange,
+  onChange: TOnChange<string | null>,
 ): TSegmentedOption => {
   const today = Temporal.Now.plainDateISO().toString();
   const tomorrow = Temporal.Now.plainDateISO().add({ days: 1 }).toString();
