@@ -1,6 +1,8 @@
 import { DayPicker } from "react-day-picker";
 import classNames from "classnames";
 
+type TOnChange = (id: string | null) => void;
+
 export type TOption = {
   emoji: string;
   id: string | null;
@@ -8,16 +10,23 @@ export type TOption = {
   title: string;
 };
 
-type TButtonWithPopoverProps = {
-  buttonClassName?: string;
-  buttonVariant: "round" | "left-join";
-  children: React.ReactNode;
-  onChange: (id: string | null) => void;
-  options?: TOption[];
-  selectedDate?: string | null;
-  variant: "menu" | "calendar";
-  wrapperClassName?: string;
+export type TSegmentedOption = {
+  title: string;
+  options: TOption & { onChange: TOnChange }[];
 };
+
+type TButtonWithPopoverProps =
+  & {
+    buttonClassName?: string;
+    buttonVariant: "round" | "left-join";
+    children: React.ReactNode;
+    wrapperClassName?: string;
+  }
+  & (
+    | { variant: "calendar"; onChange: TOnChange; selectedDate?: string | null }
+    | { variant: "menu"; onChange: TOnChange; options: TOption[] }
+    | { variant: "segmentedMenu"; options: TSegmentedOption[] }
+  );
 
 const roundButtonClasses =
   "w-5 h-5 rounded-box outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:opacity-90";
@@ -28,11 +37,9 @@ export const ButtonWithPopover = ({
   buttonClassName,
   buttonVariant,
   children,
-  onChange,
-  options = [],
-  selectedDate = null,
   variant,
   wrapperClassName,
+  ...props
 }: TButtonWithPopoverProps) => (
   <div
     className={classNames(
@@ -51,9 +58,22 @@ export const ButtonWithPopover = ({
     >
       {children}
     </div>
-    {variant === "menu"
-      ? <DropdownMenu onChange={onChange} options={options} />
-      : <Calendar onChange={onChange} selectedDate={selectedDate} />}
+    {variant === "menu" && "onChange" in props
+      ? <DropdownMenu onChange={props.onChange} options={props.options} />
+      : null}
+    {
+      /* {variant === "segmented" && "options" in props
+      ? <SegmentedMenu options={props.options} />
+      : null} */
+    }
+    {variant === "calendar" && "onChange" in props
+      ? (
+        <Calendar
+          onChange={props.onChange}
+          selectedDate={props.selectedDate || null}
+        />
+      )
+      : null}
   </div>
 );
 

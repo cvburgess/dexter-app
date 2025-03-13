@@ -2,7 +2,7 @@ import { useState } from "react";
 import { CaretLeft, CaretRight, MagnifyingGlass } from "@phosphor-icons/react";
 import classNames from "classnames";
 
-import { ButtonWithPopover } from "./ButtonWithPopover.tsx";
+import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
 import { Column } from "./Column.tsx";
 import { InputWithIcon } from "./InputWithIcon.tsx";
 
@@ -17,11 +17,14 @@ type TQuickPlannerProps = {
 export const QuickPlanner = ({ baseFilters = [] }: TQuickPlannerProps) => {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
 
-  const options = makeFilterOptions(selectedFilter);
+  const options = makeFilterOptions(selectedFilter, setSelectedFilter);
   const selected = options.find((option) => option.isSelected)!;
+  const activeFilters = selectedFilter === "all"
+    ? []
+    : taskFilters[selectedFilter];
 
   const [search, setSearch] = useState<string>("");
-  const [filteredTasks] = useTasks([...baseFilters, ...selected.filters]);
+  const [filteredTasks] = useTasks([...baseFilters, ...activeFilters]);
 
   const searchTasks = (tasks: TTask[]) =>
     tasks.filter((task): boolean =>
@@ -36,7 +39,6 @@ export const QuickPlanner = ({ baseFilters = [] }: TQuickPlannerProps) => {
             <ButtonWithPopover
               buttonVariant="left-join"
               options={options}
-              onChange={(id) => setSelectedFilter(id!)}
               variant="menu"
             >
               {selected.title}
@@ -98,40 +100,43 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const makeFilterOptions = (selectedFilter: string) => [
+const makeFilterOptions = (
+  selectedFilter: string,
+  setSelectedFilter: (value: string) => void,
+): TOption[] => [
   {
-    id: "all",
+    id: "setSelectedFilter",
+    onClick: () => setSelectedFilter("all"),
     title: "All",
     emoji: "📥",
-    filters: [],
     isSelected: selectedFilter === "all",
   },
   {
     id: "leftBehind",
+    onClick: () => setSelectedFilter("leftBehind"),
     title: "Left Behind",
     emoji: "📆",
-    filters: taskFilters.leftBehind,
     isSelected: selectedFilter === "leftBehind",
   },
   {
     id: "unscheduled",
+    onClick: () => setSelectedFilter("unscheduled"),
     title: "Unscheduled",
     emoji: "🗓️",
-    filters: taskFilters.unscheduled,
     isSelected: selectedFilter === "unscheduled",
   },
   {
     id: "overdue",
+    onClick: () => setSelectedFilter("overdue"),
     title: "Overdue",
     emoji: "⌛",
-    filters: taskFilters.overdue,
     isSelected: selectedFilter === "overdue",
   },
   {
     id: "dueSoon",
+    onClick: () => setSelectedFilter("dueSoon"),
     title: "Due Soon",
     emoji: "⏳",
-    filters: taskFilters.dueSoon,
     isSelected: selectedFilter === "dueSoon",
   },
 ];
