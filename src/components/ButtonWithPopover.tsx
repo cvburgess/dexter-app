@@ -143,21 +143,29 @@ type TCalendarProps = {
   selectedDate: string | null;
 };
 
+const daySize = "30px";
+
 const Calendar = ({ onChange, selectedDate }: TCalendarProps) => (
   <div
-    className={classNames(popoverStyles)}
+    className={classNames(popoverStyles)} //, "scale-75")}
     tabIndex={0}
   >
     <DayPicker
       className="react-day-picker flex"
       classNames={{
-        today: "bg-base-content text-base-100 rounded-field",
-        selected: "bg-base-300 text-base-content rounded-field",
+        outside: "text-base-content/30",
+        today: "outline-1 outline-primary rounded-field",
+        selected: "bg-base-300 text-current rounded-field",
       }}
       mode="single"
       onSelect={(date) => onChange(date?.toISOString()?.split("T")[0] ?? null)}
       selected={toDateTime(selectedDate)}
       showOutsideDays
+      styles={{
+        week: { height: daySize },
+        day: { width: daySize, height: daySize },
+        day_button: { width: daySize, height: daySize },
+      }}
       weekStartsOn={1}
     />
   </div>
