@@ -35,7 +35,7 @@ export const DueDateButton = (
       onChange={(value) => onTaskUpdate({ dueOn: value })}
       selectedDate={dueOn}
       variant="calendar"
-      wrapperClassName="dropdown-hover"
+      wrapperClassName="dropdown-center dropdown-hover"
     >
       {shouldShowCountdown ? daysUntilDue : <BellRinging />}
     </ButtonWithPopover>

@@ -112,15 +112,15 @@ export const Card = (
               {shouldShowButtons
                 ? (
                   <>
-                    <ListButton
-                      listId={task.listId}
-                      onTaskUpdate={onTaskUpdate}
-                    />
                     <DueDateButton
                       dueOn={task.dueOn}
                       isComplete={isComplete}
                       onTaskUpdate={onTaskUpdate}
                       overdueClasses={colors.overdue}
+                    />
+                    <ListButton
+                      listId={task.listId}
+                      onTaskUpdate={onTaskUpdate}
                     />
                     <MoreButton
                       onTaskDelete={onTaskDelete}

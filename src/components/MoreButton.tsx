@@ -42,7 +42,7 @@ export const MoreButton = (
       buttonVariant="round"
       options={[schedulingOptions, priorityOptions, otherOptions]}
       variant="segmentedMenu"
-      wrapperClassName="dropdown-hover"
+      wrapperClassName="dropdown-end dropdown-hover"
     >
       <DotsThreeOutlineVertical />
     </ButtonWithPopover>
