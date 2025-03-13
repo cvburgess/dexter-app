@@ -44,7 +44,7 @@ type TConditionalProps =
 type TButtonWithPopoverProps = TCommonProps & TConditionalProps;
 
 const roundButtonClasses =
-  "w-5 h-5 rounded-box outline focus:ring-2 focus:ring-offset-2 flex items-center justify-center text-xs outline-current/40 hover:opacity-90";
+  "w-5 h-5 rounded-box outline outline-current/25 flex items-center justify-center text-xs hover:opacity-90";
 const leftJoinButtonClasses =
   "btn join-item p-4 h-[51px] min-w-20 bg-base-300 border-none text-xs";
 
