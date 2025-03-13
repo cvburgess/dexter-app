@@ -28,7 +28,9 @@ export const Card = (
   { cardSize = "normal", task, index }: CardProps,
 ) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [_, { updateTask }] = useTasks();
+  const [_, { deleteTask, updateTask }] = useTasks();
+
+  const onTaskDelete = () => deleteTask(task.id);
 
   const onTaskUpdate = (diff: Omit<TUpdateTask, "id">) =>
     updateTask({ id: task.id, ...diff });
@@ -110,19 +112,20 @@ export const Card = (
               {shouldShowButtons
                 ? (
                   <>
-                    <ListButton
-                      listId={task.listId}
-                      onTaskUpdate={onTaskUpdate}
-                    />
                     <DueDateButton
                       dueOn={task.dueOn}
                       isComplete={isComplete}
                       onTaskUpdate={onTaskUpdate}
                       overdueClasses={colors.overdue}
                     />
-                    <MoreButton
+                    <ListButton
+                      listId={task.listId}
                       onTaskUpdate={onTaskUpdate}
-                      scheduledFor={task.scheduledFor}
+                    />
+                    <MoreButton
+                      onTaskDelete={onTaskDelete}
+                      onTaskUpdate={onTaskUpdate}
+                      task={task}
                     />
                   </>
                 )

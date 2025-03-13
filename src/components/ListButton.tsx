@@ -21,9 +21,11 @@ export const ListButton = ({ onTaskUpdate, listId }: TListButtonProps) => {
 
   return (
     <ButtonWithPopover
+      buttonVariant="round"
       onChange={(value) => onTaskUpdate({ listId: value })}
       options={options}
       variant="menu"
+      wrapperClassName="dropdown-center dropdown-hover"
     >
       {selectedList ? selectedList.emoji : <Smiley weight="thin" size={24} />}
     </ButtonWithPopover>

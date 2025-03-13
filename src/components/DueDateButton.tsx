@@ -31,9 +31,11 @@ export const DueDateButton = (
   return (
     <ButtonWithPopover
       buttonClassName={classNames({ [overdueClasses]: shouldWarnUser })}
+      buttonVariant="round"
       onChange={(value) => onTaskUpdate({ dueOn: value })}
       selectedDate={dueOn}
       variant="calendar"
+      wrapperClassName="dropdown-center dropdown-hover"
     >
       {shouldShowCountdown ? daysUntilDue : <BellRinging />}
     </ButtonWithPopover>

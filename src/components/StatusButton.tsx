@@ -1,4 +1,5 @@
 import { Check, SpinnerGap, X } from "@phosphor-icons/react";
+import classNames from "classnames";
 
 import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
 
@@ -18,11 +19,12 @@ export const StatusButton = (
 
   return (
     <ButtonWithPopover
+      buttonVariant="round"
       options={options}
       onChange={(value) =>
         onTaskUpdate({ status: Number(value) as ETaskStatus })}
       variant="menu"
-      wrapperClassName={className}
+      wrapperClassName={classNames("dropdown-hover", className)}
     >
       {icon}
     </ButtonWithPopover>

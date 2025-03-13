@@ -2,12 +2,13 @@ import { useState } from "react";
 import { CaretLeft, CaretRight, MagnifyingGlass } from "@phosphor-icons/react";
 import classNames from "classnames";
 
+import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
+import { Column } from "./Column.tsx";
+import { InputWithIcon } from "./InputWithIcon.tsx";
+
 import { TTask } from "../api/tasks.ts";
 import { TQueryFilter } from "../api/applyFilters.ts";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
-
-import { Column } from "./Column.tsx";
-import { InputWithIcon } from "./InputWithIcon.tsx";
 
 type TQuickPlannerProps = {
   baseFilters?: TQueryFilter[];
@@ -16,11 +17,12 @@ type TQuickPlannerProps = {
 export const QuickPlanner = ({ baseFilters = [] }: TQuickPlannerProps) => {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
 
-  const filters = makeFilters(selectedFilter);
-  const selected = filters.find((filter) => filter.isSelected)!;
+  const options = makeFilterOptions(selectedFilter);
+  const selected = options.find((option) => option.isSelected)!;
+  const activeFilters = taskFilters?.[selectedFilter] ?? [];
 
   const [search, setSearch] = useState<string>("");
-  const [filteredTasks] = useTasks([...baseFilters, ...selected.filters]);
+  const [filteredTasks] = useTasks([...baseFilters, ...activeFilters]);
 
   const searchTasks = (tasks: TTask[]) =>
     tasks.filter((task): boolean =>
@@ -32,33 +34,14 @@ export const QuickPlanner = ({ baseFilters = [] }: TQuickPlannerProps) => {
       <div className="overflow-x-hidden overflow-y-scroll bg-base-100 border-l-2 border-base-300 shadow-[-4px_0px_4px_0px_rgba(0,0,0,0.05)]">
         <div className="p-4 sticky top-0 z-10 bg-base-100">
           <div className="join max-w-70">
-            <div className="dropdown">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn join-item p-4 h-[51px] min-w-20 bg-base-300 border-none text-xs"
-              >
-                {selected.title}
-              </div>
-              <ul
-                tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-1 w-70 p-2 shadow-sm text-base-content"
-              >
-                {filters.map((option, index) => (
-                  <li key={index}>
-                    <a
-                      className={classNames("flex items-center gap-2", {
-                        "bg-base-300": option.isSelected,
-                      })}
-                      onClick={() => setSelectedFilter(option.id)}
-                    >
-                      <span>{option.icon}</span>
-                      <span>{option.title}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <ButtonWithPopover
+              buttonVariant="left-join"
+              onChange={(id) => setSelectedFilter(id as string)}
+              options={options}
+              variant="menu"
+            >
+              {selected.title}
+            </ButtonWithPopover>
 
             <InputWithIcon
               // className="join-item"
@@ -116,40 +99,35 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const makeFilters = (selectedFilter: string) => [
+const makeFilterOptions = (selectedFilter: string): TOption[] => [
   {
     id: "all",
     title: "All",
-    icon: "📥",
-    filters: [],
+    emoji: "📥",
     isSelected: selectedFilter === "all",
   },
   {
     id: "leftBehind",
     title: "Left Behind",
-    icon: "📆",
-    filters: taskFilters.leftBehind,
+    emoji: "📆",
     isSelected: selectedFilter === "leftBehind",
   },
   {
     id: "unscheduled",
     title: "Unscheduled",
-    icon: "🗓️",
-    filters: taskFilters.unscheduled,
+    emoji: "🗓️",
     isSelected: selectedFilter === "unscheduled",
   },
   {
     id: "overdue",
     title: "Overdue",
-    icon: "⌛",
-    filters: taskFilters.overdue,
+    emoji: "⌛",
     isSelected: selectedFilter === "overdue",
   },
   {
     id: "dueSoon",
     title: "Due Soon",
-    icon: "⏳",
-    filters: taskFilters.dueSoon,
+    emoji: "⏳",
     isSelected: selectedFilter === "dueSoon",
   },
 ];
