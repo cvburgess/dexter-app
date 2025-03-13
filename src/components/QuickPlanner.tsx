@@ -85,12 +85,12 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
           <CaretRight
             size={18}
             weight="bold"
-            className={classNames(isOpen ? "swap-on" : "swap-off")}
+            className={classNames(isOpen ? "swap-off" : "swap-on")}
           />
           <CaretLeft
             size={18}
             weight="bold"
-            className={classNames(isOpen ? "swap-off" : "swap-on")}
+            className={classNames(isOpen ? "swap-on" : "swap-off")}
           />
         </label>
       </div>
