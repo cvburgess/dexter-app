@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { DayPicker } from "react-day-picker";
 import classNames from "classnames";
 
@@ -115,8 +116,8 @@ const SegmentedMenu = ({ options }: { options: TSegmentedOption[] }) => (
     tabIndex={0}
   >
     {options.map((segment) => (
-      <>
-        <div className="divider divider-start" key={segment.title}>
+      <Fragment key={segment.title}>
+        <div className="divider divider-start">
           {segment.title}
         </div>
         {segment.options.map((option) => (
@@ -132,7 +133,7 @@ const SegmentedMenu = ({ options }: { options: TSegmentedOption[] }) => (
             </a>
           </li>
         ))}
-      </>
+      </Fragment>
     ))}
   </ul>
 );
