@@ -45,6 +45,9 @@ export const Column = ({
       )}
     >
       <ColumnTitle title={title} icon={icon} />
+      <div className="sticky top-0 z-10 bg-base-100">
+        <ColumnTitle title={title} icon={icon} />
+      </div>
 
       <CreateTask
         enabled={canCreateTasks}
@@ -58,7 +61,7 @@ export const Column = ({
             <div
               {...provided.droppableProps}
               ref={provided.innerRef}
-              className="flex flex-col flex-grow gap-2"
+              className="flex flex-col flex-grow gap-2 last:mb-4"
               data-list-id={id}
             >
               {tasks?.map((task, index) => (
