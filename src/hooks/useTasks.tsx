@@ -89,7 +89,7 @@ export const taskFilters: Record<string, TQueryFilter[]> = {
   get dueSoon(): TQueryFilter[] {
     return [
       ["dueOn", "gte", today.toString()],
-      ["dueOn", "gte", today.add({ days: 6 }).toString()],
+      ["dueOn", "lte", today.add({ days: 6 }).toString()],
       ...this.incomplete,
     ];
   },
