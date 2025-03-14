@@ -44,7 +44,6 @@ export const Column = ({
         cardSize === "compact-w" ? "min-w-40 w-40" : "min-w-70 w-70",
       )}
     >
-      <ColumnTitle title={title} icon={icon} />
       <div className="sticky top-0 z-10 bg-base-100">
         <ColumnTitle title={title} icon={icon} />
       </div>
