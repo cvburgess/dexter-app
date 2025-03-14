@@ -3,9 +3,6 @@ import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 
 import { ButtonWithPopover } from "../components/ButtonWithPopover.tsx";
 
-const wrapperStyles =
-  "flex items-center p-4 pb-0 sticky top-0 left-0 z-20 bg-base-100";
-
 type TDayNavProps = {
   date: Temporal.PlainDate;
   setDate: (date: Temporal.PlainDate) => void;
@@ -13,7 +10,10 @@ type TDayNavProps = {
 
 export const DayNav = ({ date, setDate }: TDayNavProps) => {
   return (
-    <div className={wrapperStyles}>
+    <Toolbar
+      onClickNext={() => setDate(date.add({ days: 1 }))}
+      onClickPrevious={() => setDate(date.subtract({ days: 1 }))}
+    >
       {date.toString() === Temporal.Now.plainDateISO().toString()
         ? (
           <ButtonWithPopover
@@ -36,16 +36,7 @@ export const DayNav = ({ date, setDate }: TDayNavProps) => {
             {formatDate(date)}
           </div>
         )}
-
-      <ArrowButton
-        onClick={() => setDate(date.subtract({ days: 1 }))}
-        variant="previous"
-      />
-      <ArrowButton
-        onClick={() => setDate(date.add({ days: 1 }))}
-        variant="next"
-      />
-    </div>
+    </Toolbar>
   );
 };
 
@@ -59,20 +50,36 @@ export const WeekNav = ({ weeksOffset, setWeeksOffset }: TWeekNavProps) => {
   const offsetDate = today.add({ weeks: weeksOffset });
 
   return (
-    <div className={wrapperStyles}>
+    <Toolbar
+      onClickNext={() => setWeeksOffset(weeksOffset + 1)}
+      onClickPrevious={() => setWeeksOffset(weeksOffset - 1)}
+    >
       <div
         className="btn btn-ghost mr-auto"
         onClick={() => setWeeksOffset(0)}
       >
         Week {offsetDate.weekOfYear}, {offsetDate.year}
       </div>
+    </Toolbar>
+  );
+};
 
+type TToolbarProps = {
+  children: React.ReactNode;
+  onClickNext: () => void;
+  onClickPrevious: () => void;
+};
+
+const Toolbar = ({ children, onClickNext, onClickPrevious }: TToolbarProps) => {
+  return (
+    <div className="flex items-center p-4 pb-0 sticky top-0 left-0 z-20 bg-base-100">
+      {children}
       <ArrowButton
-        onClick={() => setWeeksOffset(weeksOffset - 1)}
+        onClick={onClickNext}
         variant="previous"
       />
       <ArrowButton
-        onClick={() => setWeeksOffset(weeksOffset + 1)}
+        onClick={onClickPrevious}
         variant="next"
       />
     </div>
