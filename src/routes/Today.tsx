@@ -12,11 +12,13 @@ export const Today = () => {
   const [date, setDate] = useState<Temporal.PlainDate>(
     Temporal.Now.plainDateISO(),
   );
+
   const [tasks] = useTasks([["scheduledFor", "eq", date.toString()]]);
 
   return (
     <View className="flex-col">
       <DayNav date={date} setDate={setDate} />
+
       <Board
         canCreateTasks
         columns={[{
