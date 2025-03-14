@@ -96,7 +96,10 @@ const popoverStyles =
 
 const DropdownMenu = ({ onChange, options }: TDropdownMenuProps) => (
   <ul
-    className={classNames(popoverStyles, "menu p-2 min-w-52")}
+    className={classNames(
+      popoverStyles,
+      "menu p-2 min-w-52 border-1 border-base-200",
+    )}
     tabIndex={0}
   >
     {options.map((option) => (
@@ -117,7 +120,10 @@ const DropdownMenu = ({ onChange, options }: TDropdownMenuProps) => (
 
 const SegmentedMenu = ({ options }: { options: TSegmentedOption[] }) => (
   <ul
-    className={classNames(popoverStyles, "menu p-2 min-w-52")}
+    className={classNames(
+      popoverStyles,
+      "menu p-2 min-w-52 border-1 border-base-200",
+    )}
     tabIndex={0}
   >
     {options.map((segment) => (
