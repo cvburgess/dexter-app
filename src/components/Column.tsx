@@ -42,7 +42,7 @@ export const Column = ({
   return (
     <div
       className={classNames(
-        "max-h-screen flex flex-col",
+        "max-h-screen min-h-screen flex flex-col",
         cardSize === "compact-w" ? "min-w-40 w-40" : "min-w-70 w-70",
       )}
       ref={(el) => {
