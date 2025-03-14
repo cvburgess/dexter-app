@@ -27,7 +27,7 @@
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
-    "supabase": "^2.15.8",
+    "supabase": "^2.19.7",
     "typescript": "~5.6.2",
     "vite": "6.0.3"
   },
@@ -37,8 +37,8 @@
     "git:prune": "git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D",
     "icon": "tauri icon ./public/app-icon.png && rm -rf ./src-tauri/icons/android ./src-tauri/icons/ios && sudo rm -rfv /Library/Caches/com.apple.iconservices.store",
     "preview": "vite preview",
-    "supabase:login": "supabase login",
-    "supabase:types": "supabase gen types typescript --project-id \"isreileykodwkyedcewv\" --schema public > database.types.ts",
+    "supabase:login": "npx supabase login",
+    "supabase:types": "npx supabase gen types typescript --project-id \"isreileykodwkyedcewv\" --schema public > ./src/api/database.types.ts",
     "tauri": "tauri"
   }
 }
