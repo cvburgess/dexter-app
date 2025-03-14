@@ -59,11 +59,10 @@ export const ButtonWithPopover = ({
     <div
       tabIndex={0}
       role="button"
-      className={classNames(
-        { [roundButtonClasses]: buttonVariant === "round" },
-        { [leftJoinButtonClasses]: buttonVariant === "left-join" },
-        buttonClassName,
-      )}
+      className={classNames("cursor-pointer", {
+        [roundButtonClasses]: buttonVariant === "round",
+        [leftJoinButtonClasses]: buttonVariant === "left-join",
+      }, buttonClassName)}
     >
       {children}
     </div>
@@ -166,7 +165,7 @@ const Calendar = ({ onChange, selectedDate }: TCalendarProps) => (
     tabIndex={0}
   >
     <DayPicker
-      className="react-day-picker flex"
+      className="react-day-picker flex cursor-pointer"
       classNames={{
         outside: "text-base-content/30",
         today: "outline-1 outline-primary rounded-field",
