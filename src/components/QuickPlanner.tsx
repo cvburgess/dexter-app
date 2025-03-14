@@ -60,6 +60,7 @@ export const QuickPlanner = ({ baseFilters = [] }: TQuickPlannerProps) => {
             // cardSize="compact-h"
             id="scheduledFor:null"
             tasks={searchTasks(filteredTasks)}
+            topSpacing="top-0"
           />
         </div>
       </div>

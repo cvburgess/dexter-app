@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 
 import { Board, TColumn } from "../components/Board.tsx";
-import { WeekNav } from "../components/WeekNav.tsx";
+import { WeekNav } from "../components/DateNav.tsx";
 import { QuickPlanner } from "../components/QuickPlanner.tsx";
 import { View } from "../components/View.tsx";
 
@@ -43,6 +43,7 @@ export const Week = () => {
         cardSize="compact-w"
         columns={columns}
         groupBy="scheduledFor"
+        topSpacing="top-14"
       />
       <QuickPlanner baseFilters={filters.notThisWeek} />
     </View>

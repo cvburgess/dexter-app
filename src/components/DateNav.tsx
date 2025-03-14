@@ -3,14 +3,17 @@ import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 
 import { ButtonWithPopover } from "../components/ButtonWithPopover.tsx";
 
-type TDateNavProps = {
+const wrapperStyles =
+  "flex items-center justify-center p-4 pb-0 sticky top-0 left-0 z-20 bg-base-100";
+
+type TDayNavProps = {
   date: Temporal.PlainDate;
   setDate: (date: Temporal.PlainDate) => void;
 };
 
-export const DateNav = ({ date, setDate }: TDateNavProps) => {
+export const DayNav = ({ date, setDate }: TDayNavProps) => {
   return (
-    <div className="flex items-center justify-center p-4 pb-0 w-full">
+    <div className={wrapperStyles}>
       <div
         className="btn btn-ghost"
         onClick={() => setDate(date.subtract({ days: 1 }))}
@@ -44,6 +47,38 @@ export const DateNav = ({ date, setDate }: TDateNavProps) => {
       <div
         className="btn btn-ghost"
         onClick={() => setDate(date.add({ days: 1 }))}
+      >
+        <CaretRight />
+      </div>
+    </div>
+  );
+};
+
+type TWeekNavProps = {
+  weeksOffset: number;
+  setWeeksOffset: (value: number) => void;
+};
+
+export const WeekNav = ({ weeksOffset, setWeeksOffset }: TWeekNavProps) => {
+  return (
+    <div className={wrapperStyles}>
+      <div
+        className="btn btn-ghost"
+        onClick={() => setWeeksOffset(weeksOffset - 1)}
+      >
+        <CaretLeft />
+      </div>
+
+      <div
+        className="btn btn-ghost min-w-50"
+        onClick={() => setWeeksOffset(0)}
+      >
+        Week {weeksOffset + 20}, 2025
+      </div>
+
+      <div
+        className="btn btn-ghost"
+        onClick={() => setWeeksOffset(weeksOffset + 1)}
       >
         <CaretRight />
       </div>

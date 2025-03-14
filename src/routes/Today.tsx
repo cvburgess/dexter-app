@@ -6,7 +6,7 @@ import { View } from "../components/View.tsx";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 import { QuickPlanner } from "../components/QuickPlanner.tsx";
-import { DateNav } from "../components/DateNav.tsx";
+import { DayNav } from "../components/DateNav.tsx";
 
 export const Today = () => {
   const [date, setDate] = useState<Temporal.PlainDate>(
@@ -16,7 +16,7 @@ export const Today = () => {
 
   return (
     <View className="flex-col">
-      <DateNav date={date} setDate={setDate} />
+      <DayNav date={date} setDate={setDate} />
       <Board
         canCreateTasks
         columns={[{
@@ -24,6 +24,7 @@ export const Today = () => {
           tasks: tasks,
         }]}
         groupBy="scheduledFor"
+        topSpacing="top-14"
       />
 
       <QuickPlanner baseFilters={taskFilters.notToday} />
