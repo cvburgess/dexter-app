@@ -14,17 +14,19 @@ type TColumnProps = {
   cardSize?: ECardSize;
   icon?: string;
   id: string;
+  shouldScrollUntilVisible?: boolean;
   tasks: TTask[];
   title?: string;
 };
 
 export const Column = ({
-  cardSize = "normal",
   canCreateTasks = false,
-  id,
-  title,
+  cardSize = "normal",
   icon,
+  id,
+  shouldScrollUntilVisible = false,
   tasks = [],
+  title,
 }: TColumnProps) => {
   const [_, { createTask }] = useTasks();
 
@@ -43,6 +45,11 @@ export const Column = ({
         "max-h-screen flex flex-col",
         cardSize === "compact-w" ? "min-w-40 w-40" : "min-w-70 w-70",
       )}
+      ref={(el) => {
+        if (shouldScrollUntilVisible && el) {
+          el.scrollIntoView({ behavior: "smooth", inline: "center" });
+        }
+      }}
     >
       <div
         className={classNames({
