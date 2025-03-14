@@ -14,12 +14,10 @@ type TDayNavProps = {
 export const DayNav = ({ date, setDate }: TDayNavProps) => {
   return (
     <div className={wrapperStyles}>
-      <div
-        className="btn btn-ghost"
+      <ArrowButton
         onClick={() => setDate(date.subtract({ days: 1 }))}
-      >
-        <CaretLeft />
-      </div>
+        variant="previous"
+      />
 
       {date.toString() === Temporal.Now.plainDateISO().toString()
         ? (
@@ -44,12 +42,10 @@ export const DayNav = ({ date, setDate }: TDayNavProps) => {
           </div>
         )}
 
-      <div
-        className="btn btn-ghost"
+      <ArrowButton
         onClick={() => setDate(date.add({ days: 1 }))}
-      >
-        <CaretRight />
-      </div>
+        variant="next"
+      />
     </div>
   );
 };
@@ -65,12 +61,10 @@ export const WeekNav = ({ weeksOffset, setWeeksOffset }: TWeekNavProps) => {
 
   return (
     <div className={wrapperStyles}>
-      <div
-        className="btn btn-ghost"
+      <ArrowButton
         onClick={() => setWeeksOffset(weeksOffset - 1)}
-      >
-        <CaretLeft />
-      </div>
+        variant="previous"
+      />
 
       <div
         className="btn btn-ghost min-w-50"
@@ -79,15 +73,27 @@ export const WeekNav = ({ weeksOffset, setWeeksOffset }: TWeekNavProps) => {
         Week {offsetDate.weekOfYear}, {offsetDate.year}
       </div>
 
-      <div
-        className="btn btn-ghost"
+      <ArrowButton
         onClick={() => setWeeksOffset(weeksOffset + 1)}
-      >
-        <CaretRight />
-      </div>
+        variant="next"
+      />
     </div>
   );
 };
+
+type TArrowButtonProps = {
+  onClick: () => void;
+  variant: "previous" | "next";
+};
+
+const ArrowButton = ({ onClick, variant }: TArrowButtonProps) => (
+  <div
+    className="btn btn-ghost"
+    onClick={onClick}
+  >
+    {variant === "previous" ? <CaretLeft /> : <CaretRight />}
+  </div>
+);
 
 const getRelativeDay = (date: Temporal.PlainDate) => {
   const today = Temporal.Now.plainDateISO();
