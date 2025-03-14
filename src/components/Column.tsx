@@ -44,13 +44,19 @@ export const Column = ({
         cardSize === "compact-w" ? "min-w-40 w-40" : "min-w-70 w-70",
       )}
     >
-      <ColumnTitle title={title} icon={icon} />
+      <div
+        className={classNames({
+          "sticky top-0 z-10 bg-base-100 pt-4": (title || canCreateTasks),
+        })}
+      >
+        <ColumnTitle title={title} icon={icon} />
 
-      <CreateTask
-        enabled={canCreateTasks}
-        columnId={id}
-        onTaskCreate={onTaskCreate}
-      />
+        <CreateTask
+          enabled={canCreateTasks}
+          columnId={id}
+          onTaskCreate={onTaskCreate}
+        />
+      </div>
 
       <Droppable droppableId={id} key={id}>
         {(provided) => {
@@ -83,11 +89,9 @@ const ColumnTitle = ({ title, icon }: { title?: string; icon?: string }) => {
   if (!title) return null;
 
   return (
-    <div className="sticky top-0 z-10 bg-base-100 pt-4">
-      <div className="badge badge-lg p-5 mx-auto mb-4 w-full">
-        {icon}
-        {title}
-      </div>
+    <div className="badge badge-lg p-5 mx-auto mb-4 w-full">
+      {icon}
+      {title}
     </div>
   );
 };

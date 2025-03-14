@@ -55,7 +55,7 @@ export const QuickPlanner = ({ baseFilters = [] }: TQuickPlannerProps) => {
             </InputWithIcon>
           </div>
         </div>
-        <div className="p-4 pt-0">
+        <div className="px-4">
           <Column
             // cardSize="compact-h"
             id="scheduledFor:null"
