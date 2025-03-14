@@ -6,7 +6,6 @@ import { ButtonWithPopover } from "../components/ButtonWithPopover.tsx";
 type TDateNavProps = {
   date: Temporal.PlainDate;
   setDate: (date: Temporal.PlainDate) => void;
-  mode: "days" | "weeks";
 };
 
 export const DateNav = ({ date, setDate }: TDateNavProps) => {

@@ -16,7 +16,7 @@ export const Today = () => {
 
   return (
     <View className="flex-col">
-      <DateNav date={date} setDate={setDate} mode="days" />
+      <DateNav date={date} setDate={setDate} />
       <Board
         canCreateTasks
         columns={[{
