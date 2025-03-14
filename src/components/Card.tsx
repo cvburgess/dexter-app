@@ -147,16 +147,16 @@ const cardColors = {
     overdue: "bg-warning-content text-warning",
   },
 
-  [ETaskPriority.URGENT]: {
-    complete: "bg-error/3 hover:bg-error/10 text-base-content/25",
-    incomplete: "bg-error/80 hover:bg-error/90 text-error-content",
-    overdue: "bg-error-content text-error",
-  },
-
   [ETaskPriority.IMPORTANT]: {
     complete: "bg-info/3 hover:bg-info/10 text-base-content/25",
     incomplete: "bg-info/80 hover:bg-info/90 text-info-content",
     overdue: "bg-info-content text-info",
+  },
+
+  [ETaskPriority.URGENT]: {
+    complete: "bg-error/3 hover:bg-error/10 text-base-content/25",
+    incomplete: "bg-error/80 hover:bg-error/90 text-error-content",
+    overdue: "bg-error-content text-error",
   },
 
   [ETaskPriority.NEITHER]: {

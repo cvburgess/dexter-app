@@ -62,28 +62,22 @@ const optionsForPriority = (
       title: "Important & Urgent",
     },
     {
-      id: ETaskPriority.URGENT,
-      isSelected: priority === ETaskPriority.URGENT,
-      onChange: () => onChange(ETaskPriority.URGENT),
-      title: "Urgent",
-    },
-    {
       id: ETaskPriority.IMPORTANT,
       isSelected: priority === ETaskPriority.IMPORTANT,
       onChange: () => onChange(ETaskPriority.IMPORTANT),
       title: "Important",
     },
     {
+      id: ETaskPriority.URGENT,
+      isSelected: priority === ETaskPriority.URGENT,
+      onChange: () => onChange(ETaskPriority.URGENT),
+      title: "Urgent",
+    },
+    {
       id: ETaskPriority.NEITHER,
       isSelected: priority === ETaskPriority.NEITHER,
       onChange: () => onChange(ETaskPriority.NEITHER),
       title: "Neither",
-    },
-    {
-      id: ETaskPriority.UNPRIORITIZED,
-      isSelected: priority === ETaskPriority.UNPRIORITIZED,
-      onChange: () => onChange(ETaskPriority.UNPRIORITIZED),
-      title: "Unprioritized",
     },
   ];
 
