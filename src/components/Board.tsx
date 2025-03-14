@@ -14,6 +14,7 @@ type TBoardProps = {
 export type TColumn = {
   autoCollapse?: boolean;
   id: string | null;
+  isActive?: boolean;
   title: string;
   tasks: TTask[];
 };
@@ -24,7 +25,7 @@ export const Board = (
   { canCreateTasks = false, cardSize = "normal", columns, groupBy }:
     TBoardProps,
 ) => (
-  <div className="flex gap-4">
+  <div className="flex gap-4 px-4">
     {columns.map((column) => {
       if (!column.tasks.length && column.autoCollapse) return null;
 
@@ -34,6 +35,7 @@ export const Board = (
           canCreateTasks={canCreateTasks}
           id={`${groupBy}:${column.id}`}
           key={column.id}
+          isActive={column.isActive}
           tasks={column.tasks}
           title={column.title}
         />

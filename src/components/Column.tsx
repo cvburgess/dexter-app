@@ -14,17 +14,19 @@ type TColumnProps = {
   cardSize?: ECardSize;
   icon?: string;
   id: string;
+  isActive?: boolean;
   tasks: TTask[];
   title?: string;
 };
 
 export const Column = ({
-  cardSize = "normal",
   canCreateTasks = false,
-  id,
-  title,
+  cardSize = "normal",
   icon,
+  id,
+  isActive = false,
   tasks = [],
+  title,
 }: TColumnProps) => {
   const [_, { createTask }] = useTasks();
 
@@ -40,17 +42,28 @@ export const Column = ({
   return (
     <div
       className={classNames(
-        "h-vh flex flex-col",
+        "max-h-screen flex flex-col",
         cardSize === "compact-w" ? "min-w-40 w-40" : "min-w-70 w-70",
       )}
+      ref={(el) => {
+        if (isActive && el) {
+          el.scrollIntoView({ behavior: "smooth", inline: "center" });
+        }
+      }}
     >
-      <ColumnTitle title={title} icon={icon} />
+      <div
+        className={classNames({
+          "sticky top-0 z-10 bg-base-100 pt-4": (title || canCreateTasks),
+        })}
+      >
+        <ColumnTitle icon={icon} isActive={isActive} title={title} />
 
-      <CreateTask
-        enabled={canCreateTasks}
-        columnId={id}
-        onTaskCreate={onTaskCreate}
-      />
+        <CreateTask
+          enabled={canCreateTasks}
+          columnId={id}
+          onTaskCreate={onTaskCreate}
+        />
+      </div>
 
       <Droppable droppableId={id} key={id}>
         {(provided) => {
@@ -64,6 +77,7 @@ export const Column = ({
               {tasks?.map((task, index) => (
                 <Card
                   cardSize={cardSize}
+                  className={classNames({ "mb-4": index === tasks.length - 1 })}
                   index={index}
                   key={task.id}
                   task={task}
@@ -78,11 +92,21 @@ export const Column = ({
   );
 };
 
-const ColumnTitle = ({ title, icon }: { title?: string; icon?: string }) => {
+type TColumnTitleProps = {
+  title?: string;
+  icon?: string;
+  isActive?: boolean;
+};
+
+const ColumnTitle = ({ title, icon, isActive }: TColumnTitleProps) => {
   if (!title) return null;
 
   return (
-    <div className="badge badge-lg p-5 mx-auto mb-4 w-full">
+    <div
+      className={classNames("badge badge-lg p-5 mx-auto mb-4 w-full", {
+        "bg-base-content/80 text-base-100": isActive,
+      })}
+    >
       {icon}
       {title}
     </div>

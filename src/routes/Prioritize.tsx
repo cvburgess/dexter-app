@@ -38,17 +38,17 @@ const makeColumns = (tasks: TTask[] | undefined = []): TColumn[] => [
     ),
   },
   {
-    id: ETaskPriority.URGENT.toString(),
-    title: "Urgent",
-    tasks: tasks?.filter((task: TTask) =>
-      task.priority === ETaskPriority.URGENT
-    ),
-  },
-  {
     id: ETaskPriority.IMPORTANT.toString(),
     title: "Important",
     tasks: tasks?.filter((task: TTask) =>
       task.priority === ETaskPriority.IMPORTANT
+    ),
+  },
+  {
+    id: ETaskPriority.URGENT.toString(),
+    title: "Urgent",
+    tasks: tasks?.filter((task: TTask) =>
+      task.priority === ETaskPriority.URGENT
     ),
   },
   {

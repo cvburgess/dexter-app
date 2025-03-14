@@ -59,11 +59,10 @@ export const ButtonWithPopover = ({
     <div
       tabIndex={0}
       role="button"
-      className={classNames(
-        { [roundButtonClasses]: buttonVariant === "round" },
-        { [leftJoinButtonClasses]: buttonVariant === "left-join" },
-        buttonClassName,
-      )}
+      className={classNames("cursor-pointer", {
+        [roundButtonClasses]: buttonVariant === "round",
+        [leftJoinButtonClasses]: buttonVariant === "left-join",
+      }, buttonClassName)}
     >
       {children}
     </div>
@@ -96,7 +95,10 @@ const popoverStyles =
 
 const DropdownMenu = ({ onChange, options }: TDropdownMenuProps) => (
   <ul
-    className={classNames(popoverStyles, "menu p-2 min-w-52")}
+    className={classNames(
+      popoverStyles,
+      "menu p-2 min-w-52 border-1 border-base-200",
+    )}
     tabIndex={0}
   >
     {options.map((option) => (
@@ -117,7 +119,10 @@ const DropdownMenu = ({ onChange, options }: TDropdownMenuProps) => (
 
 const SegmentedMenu = ({ options }: { options: TSegmentedOption[] }) => (
   <ul
-    className={classNames(popoverStyles, "menu p-2 min-w-52")}
+    className={classNames(
+      popoverStyles,
+      "menu p-2 min-w-52 border-1 border-base-200",
+    )}
     tabIndex={0}
   >
     {options.map((segment) => (
@@ -160,7 +165,7 @@ const Calendar = ({ onChange, selectedDate }: TCalendarProps) => (
     tabIndex={0}
   >
     <DayPicker
-      className="react-day-picker flex"
+      className="react-day-picker flex cursor-pointer"
       classNames={{
         outside: "text-base-content/30",
         today: "outline-1 outline-primary rounded-field",

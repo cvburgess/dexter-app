@@ -20,12 +20,13 @@ export type ECardSize = "normal" | "compact-h" | "compact-w";
 
 type CardProps = {
   cardSize?: ECardSize;
+  className?: string;
   index: number;
   task: TTask;
 };
 
 export const Card = (
-  { cardSize = "normal", task, index }: CardProps,
+  { cardSize = "normal", className, task, index }: CardProps,
 ) => {
   const [isEditing, setIsEditing] = useState(false);
   const [_, { deleteTask, updateTask }] = useTasks();
@@ -65,6 +66,7 @@ export const Card = (
               "shadow-md rounded-box p-4 border border-current/10",
               isComplete ? colors.complete : colors.incomplete,
               cardSize === "compact-w" ? "w-40" : "w-70",
+              className,
             )}
           >
             <div
@@ -145,26 +147,26 @@ const cardColors = {
     overdue: "bg-warning-content text-warning",
   },
 
-  [ETaskPriority.URGENT]: {
-    complete: "bg-error/3 hover:bg-error/10 text-base-content/25",
-    incomplete: "bg-error/80 hover:bg-error/90 text-error-content",
-    overdue: "bg-error-content text-error",
-  },
-
   [ETaskPriority.IMPORTANT]: {
     complete: "bg-info/3 hover:bg-info/10 text-base-content/25",
     incomplete: "bg-info/80 hover:bg-info/90 text-info-content",
     overdue: "bg-info-content text-info",
   },
 
+  [ETaskPriority.URGENT]: {
+    complete: "bg-error/3 hover:bg-error/10 text-base-content/25",
+    incomplete: "bg-error/80 hover:bg-error/90 text-error-content",
+    overdue: "bg-error-content text-error",
+  },
+
   [ETaskPriority.NEITHER]: {
-    complete: "bg-base-100/3 hover:bg-base-100/10 text-base-content/25",
+    complete: "bg-base-100/50 hover:bg-base-100/3 text-base-content/25",
     incomplete: "bg-base-100/80 hover:bg-base-100/90 text-base-content",
     overdue: "bg-base-content text-base-100",
   },
 
   [ETaskPriority.UNPRIORITIZED]: {
-    complete: "bg-base-100/3 hover:bg-base-100/10 text-base-content/25",
+    complete: "bg-neutral/3 hover:bg-neutral/10 text-base-content/25",
     incomplete: "bg-neutral/80 hover:bg-neutral/90 text-neutral-content",
     overdue: "bg-neutral-content text-neutral",
   },
