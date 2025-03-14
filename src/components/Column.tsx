@@ -14,7 +14,7 @@ type TColumnProps = {
   cardSize?: ECardSize;
   icon?: string;
   id: string;
-  shouldScrollUntilVisible?: boolean;
+  isActive?: boolean;
   tasks: TTask[];
   title?: string;
 };
@@ -24,7 +24,7 @@ export const Column = ({
   cardSize = "normal",
   icon,
   id,
-  shouldScrollUntilVisible = false,
+  isActive = false,
   tasks = [],
   title,
 }: TColumnProps) => {
@@ -46,7 +46,7 @@ export const Column = ({
         cardSize === "compact-w" ? "min-w-40 w-40" : "min-w-70 w-70",
       )}
       ref={(el) => {
-        if (shouldScrollUntilVisible && el) {
+        if (isActive && el) {
           el.scrollIntoView({ behavior: "smooth", inline: "center" });
         }
       }}
@@ -56,7 +56,7 @@ export const Column = ({
           "sticky top-0 z-10 bg-base-100 pt-4": (title || canCreateTasks),
         })}
       >
-        <ColumnTitle title={title} icon={icon} />
+        <ColumnTitle icon={icon} isActive={isActive} title={title} />
 
         <CreateTask
           enabled={canCreateTasks}
@@ -92,11 +92,21 @@ export const Column = ({
   );
 };
 
-const ColumnTitle = ({ title, icon }: { title?: string; icon?: string }) => {
+type TColumnTitleProps = {
+  title?: string;
+  icon?: string;
+  isActive?: boolean;
+};
+
+const ColumnTitle = ({ title, icon, isActive }: TColumnTitleProps) => {
   if (!title) return null;
 
   return (
-    <div className="badge badge-lg p-5 mx-auto mb-4 w-full">
+    <div
+      className={classNames("badge badge-lg p-5 mx-auto mb-4 w-full", {
+        "bg-base-content/80 text-base-100": isActive,
+      })}
+    >
       {icon}
       {title}
     </div>

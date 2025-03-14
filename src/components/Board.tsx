@@ -14,7 +14,7 @@ type TBoardProps = {
 export type TColumn = {
   autoCollapse?: boolean;
   id: string | null;
-  shouldScrollUntilVisible?: boolean;
+  isActive?: boolean;
   title: string;
   tasks: TTask[];
 };
@@ -35,7 +35,7 @@ export const Board = (
           canCreateTasks={canCreateTasks}
           id={`${groupBy}:${column.id}`}
           key={column.id}
-          shouldScrollUntilVisible={column.shouldScrollUntilVisible}
+          isActive={column.isActive}
           tasks={column.tasks}
           title={column.title}
         />

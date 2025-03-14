@@ -66,8 +66,7 @@ const makeColumnsForWeekOf = (
 
     return {
       id: isoDate,
-      shouldScrollUntilVisible:
-        isoDate === Temporal.Now.plainDateISO().toString(),
+      isActive: isoDate === Temporal.Now.plainDateISO().toString(),
       title: dayName,
       tasks: tasks?.filter((task: TTask) => task.scheduledFor === isoDate),
     };
