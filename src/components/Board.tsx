@@ -15,7 +15,7 @@ export type TColumn = {
   autoCollapse?: boolean;
   id: string | null;
   isActive?: boolean;
-  title: string;
+  title?: string;
   tasks: TTask[];
 };
 
