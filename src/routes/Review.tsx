@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 import { Temporal } from "@js-temporal/polyfill";
 
 import { DayNav } from "../components/Toolbar.tsx";
 import { View } from "../components/View.tsx";
 
+import { Json } from "../api/database.types.ts";
+import { TJournalPrompt, TUpsertDay } from "../api/days.ts";
 import { useTasks } from "../hooks/useTasks.tsx";
+import { useDays } from "../hooks/useDays.tsx";
 
 export const Review = () => {
   const [date, setDate] = useState<Temporal.PlainDate>(
@@ -12,6 +16,7 @@ export const Review = () => {
   );
 
   const [_tasks] = useTasks([["scheduledFor", "eq", date.toString()]]);
+  const [{ prompts }, { upsertDay }] = useDays(date.toString());
 
   return (
     <View className="flex-col">
@@ -23,12 +28,8 @@ export const Review = () => {
           subtitle="Take a deep breath and check in with yourself"
         >
           <Journal
-            prompts={[
-              { prompt: "Yesterday's highlight", response: "" },
-              { prompt: "Today I am grateful for", response: "" },
-              { prompt: "Today I am excited for", response: "" },
-              { prompt: "What matters most today", response: "" },
-            ]}
+            prompts={prompts as TJournalPrompt[]}
+            upsertDay={upsertDay}
           />
         </CarouselItem>
         <CarouselItem
@@ -66,23 +67,52 @@ const CarouselItem = ({ children, subtitle, title }: TCarouselItemProps) => (
   </div>
 );
 
-type JournalPrompt = {
-  prompt: string;
-  response: string;
+type TJournalProps = {
+  prompts: TJournalPrompt[];
+  upsertDay: (diff: Omit<TUpsertDay, "date">) => void;
 };
 
-const Journal = ({ prompts }: { prompts: JournalPrompt[] }) => (
-  prompts.map(({ prompt, response }) => (
-    <div key={prompt} className="flex flex-col w-full space-y-4 mt-4">
+const Journal = ({ prompts, upsertDay }: TJournalProps) => {
+  return prompts.map(({ prompt, response }, index) => (
+    <div key={index} className="flex flex-col w-full space-y-4 mt-4">
       <label className="text-md font-bold text-center opacity-80">
         {prompt}
       </label>
-      <input
-        className="w-full border-b-1 border-base-300 focus:outline-0 text-center text-xs"
-        value={response}
-        // onChange={(e) =>
-        //   console.log(e.target.value)}
+      <ResponseInput
+        response={response}
+        onChange={(newResponse) => {
+          const diff = [...prompts];
+          diff[index].response = newResponse;
+          upsertDay({ prompts: diff as Json[] });
+        }}
       />
     </div>
-  ))
-);
+  ));
+};
+
+type TResponseInputProps = {
+  response: string;
+  onChange: (newResponse: string) => void;
+};
+
+const ResponseInput = ({ response, onChange }: TResponseInputProps) => {
+  const [newResponse, setNewResponse] = useState<string>(response);
+  const [debounced] = useDebounce(newResponse, 1000);
+
+  // When props reflow into the component, update local state
+  useEffect(() => {
+    setNewResponse(response);
+  }, [response]);
+
+  useEffect(() => {
+    if (debounced !== response) onChange(debounced);
+  }, [debounced]);
+
+  return (
+    <input
+      className="w-full border-b-1 border-base-300 focus:outline-0 text-center text-xs"
+      value={newResponse}
+      onChange={(e) => setNewResponse(e.target.value)}
+    />
+  );
+};

@@ -26,10 +26,10 @@
     "npm:react-dom@^18.3.1": "18.3.1_react@18.3.1",
     "npm:react-router@^7.2.0": "7.2.0_react@18.3.1_react-dom@18.3.1__react@18.3.1",
     "npm:react@^18.3.1": "18.3.1",
-    "npm:supabase@2.15.8": "2.15.8",
-    "npm:supabase@^2.15.8": "2.15.8",
+    "npm:supabase@^2.19.7": "2.19.7",
     "npm:tailwindcss@^4.0.9": "4.0.9",
     "npm:typescript@~5.6.2": "5.6.3",
+    "npm:use-debounce@^10.0.4": "10.0.4_react@18.3.1",
     "npm:vite@6.0.3": "6.0.3_lightningcss@1.29.1"
   },
   "npm": {
@@ -1217,8 +1217,8 @@
         "ansi-regex@6.1.0"
       ]
     },
-    "supabase@2.15.8": {
-      "integrity": "sha512-yY4kVpdd7x9u5QqTW/8zUXIrMgdkBDGqQwkDugBLe8uoFdH9tVZKt0L5RmuM21RJ0MEQkby2sQrTfiXvgGyx9w==",
+    "supabase@2.19.7": {
+      "integrity": "sha512-+Qu5xHvk/CnAHb5iDpCWCX0SdwFR5smpTG6VUSTw/T8WxCDDQsIb2mui2pu18wqKOZ0NLs/ZTDDb2+yPejTRBQ==",
       "dependencies": [
         "bin-links",
         "https-proxy-agent",
@@ -1273,6 +1273,12 @@
         "browserslist",
         "escalade",
         "picocolors"
+      ]
+    },
+    "use-debounce@10.0.4_react@18.3.1": {
+      "integrity": "sha512-6Cf7Yr7Wk7Kdv77nnJMf6de4HuDE4dTxKij+RqE9rufDsI6zsbjyAxcH5y2ueJCQAnfgKbzXbZHYlkFwmBlWkw==",
+      "dependencies": [
+        "react"
       ]
     },
     "use-sync-external-store@1.4.0_react@18.3.1": {
@@ -1379,9 +1385,10 @@
         "npm:react-dom@^18.3.1",
         "npm:react-router@^7.2.0",
         "npm:react@^18.3.1",
-        "npm:supabase@^2.15.8",
+        "npm:supabase@^2.19.7",
         "npm:tailwindcss@^4.0.9",
         "npm:typescript@~5.6.2",
+        "npm:use-debounce@^10.0.4",
         "npm:vite@6.0.3"
       ]
     }

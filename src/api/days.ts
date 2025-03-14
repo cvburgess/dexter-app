@@ -2,10 +2,15 @@ import { SupabaseClient } from "@supabase/supabase-js";
 
 import { Database, Json } from "./database.types.ts";
 
+export type TJournalPrompt = {
+  prompt: string;
+  response: string;
+};
+
 export type TDay = {
   date: string;
   notes: string;
-  prompts: Json;
+  prompts: Json[];
 };
 
 export const getDay = async (
@@ -22,13 +27,19 @@ export const getDay = async (
   return data[0] as TDay;
 };
 
+export type TUpsertDay = {
+  date: string;
+  notes?: string;
+  prompts?: Json[];
+};
+
 export const upsertDay = async (
   supabase: SupabaseClient<Database>,
-  day: TDay,
+  diff: TUpsertDay,
 ) => {
   const { data, error } = await supabase
     .from("days")
-    .upsert(day)
+    .upsert(diff)
     .select();
 
   if (error) throw error;
