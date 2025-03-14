@@ -75,11 +75,11 @@ const Toolbar = ({ children, onClickNext, onClickPrevious }: TToolbarProps) => {
     <div className="flex items-center p-4 pb-0 sticky top-0 left-0 z-20 bg-base-100">
       {children}
       <ArrowButton
-        onClick={onClickNext}
+        onClick={onClickPrevious}
         variant="previous"
       />
       <ArrowButton
-        onClick={onClickPrevious}
+        onClick={onClickNext}
         variant="next"
       />
     </div>

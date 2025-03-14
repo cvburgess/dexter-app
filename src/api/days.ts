@@ -1,6 +1,6 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 
-import { Database, Json } from "./database.types.ts";
+import { Database } from "./database.types.ts";
 
 export type TJournalPrompt = {
   prompt: string;
@@ -10,7 +10,7 @@ export type TJournalPrompt = {
 export type TDay = {
   date: string;
   notes: string;
-  prompts: Json[];
+  prompts: TJournalPrompt[];
 };
 
 export const getDay = async (
@@ -24,13 +24,13 @@ export const getDay = async (
     .limit(1);
 
   if (error) throw error;
-  return data[0] as TDay;
+  return data[0] as unknown as TDay;
 };
 
 export type TUpsertDay = {
   date: string;
   notes?: string;
-  prompts?: Json[];
+  prompts?: TJournalPrompt[];
 };
 
 export const upsertDay = async (
@@ -43,5 +43,5 @@ export const upsertDay = async (
     .select();
 
   if (error) throw error;
-  return data[0] as TDay;
+  return data[0] as unknown as TDay;
 };

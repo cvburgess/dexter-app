@@ -1,10 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getDay, TDay, TUpsertDay, upsertDay } from "../api/days.ts";
+import {
+  getDay,
+  TDay,
+  TJournalPrompt,
+  TUpsertDay,
+  upsertDay,
+} from "../api/days.ts";
 
 import { useAuth } from "./useAuth.tsx";
 
-type TUseDays = [TDay, {
+type TUseDays = [TDay & { prompts: TJournalPrompt[] }, {
   upsertDay: (diff: Omit<TUpsertDay, "date">) => void;
 }];
 
@@ -23,12 +29,10 @@ export const useDays = (date: string): TUseDays => {
     ],
   };
 
-  const { data: day } = useQuery({
+  const { data: day = defaultDay } = useQuery({
     queryKey: ["days", `day-${date}`],
     queryFn: () => getDay(supabase, date),
   });
-
-  console.dir(day?.prompts);
 
   const { mutate: upsert } = useMutation<TDay, Error, Omit<TUpsertDay, "date">>(
     {
@@ -39,5 +43,5 @@ export const useDays = (date: string): TUseDays => {
     },
   );
 
-  return [day || defaultDay, { upsertDay: upsert }];
+  return [day, { upsertDay: upsert }];
 };
