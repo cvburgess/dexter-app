@@ -60,6 +60,9 @@ type TWeekNavProps = {
 };
 
 export const WeekNav = ({ weeksOffset, setWeeksOffset }: TWeekNavProps) => {
+  const today = Temporal.Now.plainDateISO();
+  const offsetDate = today.add({ weeks: weeksOffset });
+
   return (
     <div className={wrapperStyles}>
       <div
@@ -73,7 +76,7 @@ export const WeekNav = ({ weeksOffset, setWeeksOffset }: TWeekNavProps) => {
         className="btn btn-ghost min-w-50"
         onClick={() => setWeeksOffset(0)}
       >
-        Week {weeksOffset + 20}, 2025
+        Week {offsetDate.weekOfYear}, {offsetDate.year}
       </div>
 
       <div
