@@ -23,7 +23,7 @@ export type TSegmentedOption = {
 
 type TCommonProps = {
   buttonClassName?: string;
-  buttonVariant: "round" | "left-join";
+  buttonVariant: "round" | "left-join" | "none";
   children: React.ReactNode;
   wrapperClassName?: string;
 };

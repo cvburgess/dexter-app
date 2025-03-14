@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 
 import { Board, TColumn } from "../components/Board.tsx";
+import { WeekNav } from "../components/DateNav.tsx";
 import { QuickPlanner } from "../components/QuickPlanner.tsx";
 import { View } from "../components/View.tsx";
 
@@ -11,7 +12,7 @@ import { makeOrFilter, TQueryFilter } from "../api/applyFilters.ts";
 import { weekStartEnd } from "../utils/weekStartEnd.ts";
 
 export const Week = () => {
-  const [weeksOffset, _setWeeksOffset] = useState<number>(0);
+  const [weeksOffset, setWeeksOffset] = useState<number>(0);
 
   const { mostRecentMonday, sunday } = weekStartEnd(weeksOffset);
 
@@ -35,12 +36,14 @@ export const Week = () => {
   const columns = makeColumnsForWeekOf(mostRecentMonday, tasks);
 
   return (
-    <View>
+    <View className="flex-col">
+      <WeekNav weeksOffset={weeksOffset} setWeeksOffset={setWeeksOffset} />
       <Board
         canCreateTasks
         cardSize="compact-w"
         columns={columns}
         groupBy="scheduledFor"
+        topSpacing="top-14"
       />
       <QuickPlanner baseFilters={filters.notThisWeek} />
     </View>

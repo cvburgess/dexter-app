@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 
 import { Board } from "../components/Board.tsx";
@@ -5,27 +6,27 @@ import { View } from "../components/View.tsx";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 import { QuickPlanner } from "../components/QuickPlanner.tsx";
+import { DayNav } from "../components/DateNav.tsx";
 
 export const Today = () => {
-  const [todaysTasks] = useTasks(taskFilters.today);
-
-  const today = Temporal.Now.plainDateISO();
+  const [date, setDate] = useState<Temporal.PlainDate>(
+    Temporal.Now.plainDateISO(),
+  );
+  const [tasks] = useTasks([["scheduledFor", "eq", date.toString()]]);
 
   return (
-    <View>
+    <View className="flex-col">
+      <DayNav date={date} setDate={setDate} />
       <Board
         canCreateTasks
         columns={[{
-          id: today.toString(),
-          tasks: todaysTasks,
-          title: today.toLocaleString("en-US", {
-            weekday: "long",
-            month: "short",
-            day: "numeric",
-          }),
+          id: date.toString(),
+          tasks: tasks,
         }]}
         groupBy="scheduledFor"
+        topSpacing="top-14"
       />
+
       <QuickPlanner baseFilters={taskFilters.notToday} />
     </View>
   );

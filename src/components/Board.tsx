@@ -9,21 +9,27 @@ type TBoardProps = {
   columns: TColumn[];
   groupBy: EGroupBy;
   tasks?: TTask[];
+  topSpacing?: "top-0" | "top-14";
 };
 
 export type TColumn = {
   autoCollapse?: boolean;
   id: string | null;
   isActive?: boolean;
-  title: string;
+  title?: string;
   tasks: TTask[];
 };
 
 export type EGroupBy = "scheduledFor" | "listId" | "priority";
 
 export const Board = (
-  { canCreateTasks = false, cardSize = "normal", columns, groupBy }:
-    TBoardProps,
+  {
+    canCreateTasks = false,
+    cardSize = "normal",
+    columns,
+    groupBy,
+    topSpacing = "top-0",
+  }: TBoardProps,
 ) => (
   <div className="flex gap-4 px-4">
     {columns.map((column) => {
@@ -38,6 +44,7 @@ export const Board = (
           isActive={column.isActive}
           tasks={column.tasks}
           title={column.title}
+          topSpacing={topSpacing}
         />
       );
     })}

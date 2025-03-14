@@ -17,6 +17,7 @@ type TColumnProps = {
   isActive?: boolean;
   tasks: TTask[];
   title?: string;
+  topSpacing: "top-0" | "top-14";
 };
 
 export const Column = ({
@@ -27,6 +28,7 @@ export const Column = ({
   isActive = false,
   tasks = [],
   title,
+  topSpacing,
 }: TColumnProps) => {
   const [_, { createTask }] = useTasks();
 
@@ -42,7 +44,7 @@ export const Column = ({
   return (
     <div
       className={classNames(
-        "max-h-screen flex flex-col",
+        "max-h-screen min-h-screen flex flex-col",
         cardSize === "compact-w" ? "min-w-40 w-40" : "min-w-70 w-70",
       )}
       ref={(el) => {
@@ -52,8 +54,8 @@ export const Column = ({
       }}
     >
       <div
-        className={classNames({
-          "sticky top-0 z-10 bg-base-100 pt-4": (title || canCreateTasks),
+        className={classNames(topSpacing, {
+          "sticky z-10 bg-base-100 pt-4": (title || canCreateTasks),
         })}
       >
         <ColumnTitle icon={icon} isActive={isActive} title={title} />

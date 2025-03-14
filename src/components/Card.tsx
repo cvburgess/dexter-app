@@ -63,7 +63,7 @@ export const Card = (
             data-task-id={task.id}
             style={{ ...provided.draggableProps.style }}
             className={classNames(
-              "shadow-md rounded-box p-4 border border-current/10",
+              "shadow-xs rounded-box p-4 border border-current/10",
               isComplete ? colors.complete : colors.incomplete,
               cardSize === "compact-w" ? "w-40" : "w-70",
               className,
