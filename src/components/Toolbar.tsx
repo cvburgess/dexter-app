@@ -1,7 +1,7 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 
-import { ButtonWithPopover } from "../components/ButtonWithPopover.tsx";
+import { ButtonWithPopover } from "./ButtonWithPopover.tsx";
 
 type TDayNavProps = {
   date: Temporal.PlainDate;

@@ -6,7 +6,7 @@ import { View } from "../components/View.tsx";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 import { QuickPlanner } from "../components/QuickPlanner.tsx";
-import { DayNav } from "../components/DateNav.tsx";
+import { DayNav } from "../components/Toolbar.tsx";
 
 export const Today = () => {
   const [date, setDate] = useState<Temporal.PlainDate>(
