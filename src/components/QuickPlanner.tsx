@@ -31,7 +31,7 @@ export const QuickPlanner = ({ baseFilters = [] }: TQuickPlannerProps) => {
 
   return (
     <Drawer>
-      <div className="overflow-x-hidden overflow-y-scroll bg-base-100 border-l-2 border-base-300 shadow-[-4px_0px_4px_0px_rgba(0,0,0,0.05)]">
+      <div className="overflow-x-hidden overflow-y-scroll bg-base-100 border-l-2 border-base-300 shadow-[-4px_0px_4px_0px_rgba(0,0,0,0.05)] no-scrollbar">
         <div className="p-4 sticky top-0 z-10 bg-base-100">
           <div className="join max-w-70">
             <ButtonWithPopover

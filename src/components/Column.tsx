@@ -40,11 +40,11 @@ export const Column = ({
   return (
     <div
       className={classNames(
-        "h-vh flex flex-col",
+        "max-h-screen flex flex-col",
         cardSize === "compact-w" ? "min-w-40 w-40" : "min-w-70 w-70",
       )}
     >
-      <div className="sticky top-0 z-10 bg-base-100">
+      <div className="sticky top-0 z-10 bg-base-100 pt-4">
         <ColumnTitle title={title} icon={icon} />
       </div>
 
@@ -60,12 +60,13 @@ export const Column = ({
             <div
               {...provided.droppableProps}
               ref={provided.innerRef}
-              className="flex flex-col flex-grow gap-2 last:mb-4"
+              className="flex flex-col flex-grow gap-2"
               data-list-id={id}
             >
               {tasks?.map((task, index) => (
                 <Card
                   cardSize={cardSize}
+                  className={classNames({ "mb-4": index === tasks.length - 1 })}
                   index={index}
                   key={task.id}
                   task={task}

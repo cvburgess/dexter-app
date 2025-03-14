@@ -20,12 +20,13 @@ export type ECardSize = "normal" | "compact-h" | "compact-w";
 
 type CardProps = {
   cardSize?: ECardSize;
+  className?: string;
   index: number;
   task: TTask;
 };
 
 export const Card = (
-  { cardSize = "normal", task, index }: CardProps,
+  { cardSize = "normal", className, task, index }: CardProps,
 ) => {
   const [isEditing, setIsEditing] = useState(false);
   const [_, { deleteTask, updateTask }] = useTasks();
@@ -65,6 +66,7 @@ export const Card = (
               "shadow-md rounded-box p-4 border border-current/10",
               isComplete ? colors.complete : colors.incomplete,
               cardSize === "compact-w" ? "w-40" : "w-70",
+              className,
             )}
           >
             <div
