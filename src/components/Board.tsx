@@ -24,7 +24,7 @@ export const Board = (
   { canCreateTasks = false, cardSize = "normal", columns, groupBy }:
     TBoardProps,
 ) => (
-  <div className="flex gap-4 px-4 overflow-y-scroll overscroll-none no-scrollbar scroll-momentum">
+  <div className="flex gap-4 px-4">
     {columns.map((column) => {
       if (!column.tasks.length && column.autoCollapse) return null;
 

@@ -71,31 +71,40 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
-    <div
-      className={classNames(
-        "fixed top-0 bottom-0 right-0 z-100 flex transition-all duration-300 ease-in-out",
-        { "translate-x-79": !isOpen },
-      )}
-    >
+    <>
       <div
-        className="self-center h-20 p-1 bg-base-100 text-xs rounded-l-[var(--radius-box)] z-101 flex items-center justify-center border-2 border-base-300 border-r-base-100 mr-[-2px] text-base-content/40"
-        onClick={() => setIsOpen(!isOpen)}
+        className={classNames(
+          "fixed top-0 bottom-0 right-0 z-100 flex transition-all duration-300 ease-in-out",
+          { "translate-x-79": !isOpen },
+        )}
       >
-        <label className="swap swap-rotate">
-          <CaretRight
-            size={18}
-            weight="bold"
-            className={classNames(isOpen ? "swap-off" : "swap-on")}
-          />
-          <CaretLeft
-            size={18}
-            weight="bold"
-            className={classNames(isOpen ? "swap-on" : "swap-off")}
-          />
-        </label>
+        <div
+          className="self-center h-20 p-1 bg-base-100 text-xs rounded-l-[var(--radius-box)] z-101 flex items-center justify-center border-2 border-base-300 border-r-base-100 mr-[-2px] text-base-content/40"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <label className="swap swap-rotate">
+            <CaretRight
+              size={18}
+              weight="bold"
+              className={classNames(isOpen ? "swap-off" : "swap-on")}
+            />
+            <CaretLeft
+              size={18}
+              weight="bold"
+              className={classNames(isOpen ? "swap-on" : "swap-off")}
+            />
+          </label>
+        </div>
+        {children}
       </div>
-      {children}
-    </div>
+
+      <div
+        className={classNames(
+          "transition-all duration-300 ease-in-out",
+          isOpen ? "min-w-78" : "min-w-0",
+        )}
+      />
+    </>
   );
 };
 

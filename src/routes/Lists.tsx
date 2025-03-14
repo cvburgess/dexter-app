@@ -37,36 +37,38 @@ const CreateList = ({ onListCreate }: TCreateListProps) => {
   const [emoji, setEmoji] = useState<string>("🐶");
 
   return (
-    <div className="join w-70 min-w-70 h-[42px] shadow-sm rounded-[var(--radius-box)]">
-      <div className="dropdown">
-        <div
-          tabIndex={0}
-          role="button"
-          className="btn rounded-l-[var(--radius-box)] join-item border-base-100 bg-base-100 h-full shadow-none"
-        >
-          {emoji}
+    <div className="p-4 sticky top-0 z-10">
+      <div className="join w-70 min-w-70 h-[42px] rounded-[var(--radius-box)]">
+        <div className="dropdown">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn rounded-l-[var(--radius-box)] join-item border-base-100 bg-base-300 h-full shadow-none"
+          >
+            {emoji}
+          </div>
+          <div className="dropdown-content shadow-sm mt-2">
+            <EmojiPicker
+              data={emojiData}
+              maxFrequentRows={0}
+              onEmojiSelect={(emoji: { native: string }) =>
+                setEmoji(emoji.native)}
+              previewEmoji="dog"
+            />
+          </div>
         </div>
-        <div className="dropdown-content shadow-sm mt-2">
-          <EmojiPicker
-            data={emojiData}
-            maxFrequentRows={0}
-            onEmojiSelect={(emoji: { native: string }) =>
-              setEmoji(emoji.native)}
-            previewEmoji="dog"
-          />
-        </div>
+        <input
+          className="input join-item bg-base-100 border-base-100 focus:outline-none shadow-none focus:shadow-none rounded-r-[var(--radius-box)] h-full"
+          placeholder="New List"
+          type="text"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && e.currentTarget.value.trim()) {
+              onListCreate({ title: e.currentTarget.value.trim(), emoji });
+              e.currentTarget.value = "";
+            }
+          }}
+        />
       </div>
-      <input
-        className="input join-item bg-base-100 border-base-100 focus:outline-none shadow-none focus:shadow-none rounded-r-[var(--radius-box)] h-full"
-        placeholder="New List"
-        type="text"
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && e.currentTarget.value.trim()) {
-            onListCreate({ title: e.currentTarget.value.trim(), emoji });
-            e.currentTarget.value = "";
-          }
-        }}
-      />
     </div>
   );
 };
