@@ -42,7 +42,7 @@ export const Review = () => {
       <div className="carousel carousel-center rounded-box w-full h-full space-x-8 p-8">
         <CarouselItem
           title="Reflect"
-          subtitle="Take a deep breath and check in with yourself - clear priorities start with a clear mind"
+          subtitle="Take a deep breath, check in with yourself, and revisit throughout the day"
         >
           <Journal date={date.toString()} />
         </CarouselItem>
@@ -56,7 +56,7 @@ export const Review = () => {
         </CarouselItem>
         <CarouselItem
           title="Plan"
-          subtitle="Make time and space for the things that matter most"
+          subtitle="Make time and space for the things that matter most... tomorrow"
         >
           <QuickPlanner
             baseFilters={makeBaseFiltersForDate(nextDay)}
