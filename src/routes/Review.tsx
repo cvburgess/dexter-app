@@ -1,18 +1,27 @@
 import { useState } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 
+import { CardList } from "../components/CardList.tsx";
+import { Journal } from "../components/Journal.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
 import { View } from "../components/View.tsx";
 
 import { useTasks } from "../hooks/useTasks.tsx";
-import { Journal } from "../components/Journal.tsx";
+import { ETaskStatus } from "../api/tasks.ts";
 
 export const Review = () => {
   const [date, setDate] = useState<Temporal.PlainDate>(
     Temporal.Now.plainDateISO(),
   );
 
-  const [_tasks] = useTasks([["scheduledFor", "eq", date.toString()]]);
+  const [tasks] = useTasks([["scheduledFor", "eq", date.toString()]]);
+
+  const completeTasks = tasks.filter((task) =>
+    task.status === ETaskStatus.DONE || task.status === ETaskStatus.WONT_DO
+  );
+  const incompleteTasks = tasks.filter((task) =>
+    task.status === ETaskStatus.TODO || task.status === ETaskStatus.IN_PROGRESS
+  );
 
   return (
     <View className="flex-col">
@@ -29,7 +38,9 @@ export const Review = () => {
           title="Review"
           subtitle="Look back at the day and decide what to do next"
         >
-          TODO
+          <CardList tasks={completeTasks} />
+          <div className="divider divider-horizontal"></div>
+          <CardList tasks={incompleteTasks} />
         </CarouselItem>
         <CarouselItem
           title="Plan"
@@ -52,7 +63,7 @@ const CarouselItem = ({ children, subtitle, title }: TCarouselItemProps) => (
   <div id="slide1" className="carousel-item">
     <div className="flex flex-col rounded-box w-[80vw] border-1 border-base-200 shadow-xl items-center justify-center py-8 px-16">
       <h1 className="text-4xl font-black opacity-80">{title}</h1>
-      <p className="text-xs italic opacity-40 mt-2 mb-4">{subtitle}</p>
+      <p className="text-xs italic opacity-40 mt-2 mb-8">{subtitle}</p>
       <div className="flex flex-wrap w-full min-h-[66%] items-center justify-center overflow-auto">
         {children}
       </div>
