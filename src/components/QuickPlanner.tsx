@@ -12,9 +12,12 @@ import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
 type TQuickPlannerProps = {
   baseFilters?: TQueryFilter[];
+  className?: string;
 };
 
-export const QuickPlanner = ({ baseFilters = [] }: TQuickPlannerProps) => {
+export const QuickPlanner = (
+  { baseFilters = [], className }: TQuickPlannerProps,
+) => {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
 
   const options = makeFilterOptions(selectedFilter);
@@ -30,43 +33,55 @@ export const QuickPlanner = ({ baseFilters = [] }: TQuickPlannerProps) => {
     );
 
   return (
-    <Drawer>
-      <div className="overflow-x-hidden overflow-y-scroll bg-base-100 border-l-2 border-base-300 shadow-[-4px_0px_4px_0px_rgba(0,0,0,0.05)] no-scrollbar">
-        <div className="p-4 sticky top-0 z-10 bg-base-100">
-          <div className="join max-w-70">
-            <ButtonWithPopover
-              buttonVariant="left-join"
-              onChange={(id) => setSelectedFilter(id as string)}
-              options={options}
-              variant="menu"
-            >
-              {selected.title}
-            </ButtonWithPopover>
+    <div
+      className={classNames(
+        "overflow-x-hidden overflow-y-scroll no-scrollbar",
+        className,
+      )}
+    >
+      <div className="p-4 sticky top-0 z-10 bg-base-100">
+        <div className="join max-w-70">
+          <ButtonWithPopover
+            buttonVariant="left-join"
+            onChange={(id) => setSelectedFilter(id as string)}
+            options={options}
+            variant="menu"
+          >
+            {selected.title}
+          </ButtonWithPopover>
 
-            <InputWithIcon
-              // className="join-item"
-              type="text"
-              placeholder="Search"
-              onChange={(event) => setSearch(event.target.value)}
-              wrapperClassName="join-item"
-              value={search}
-            >
-              <MagnifyingGlass />
-            </InputWithIcon>
-          </div>
-        </div>
-        <div className="px-4">
-          <Column
-            // cardSize="compact-h"
-            id="scheduledFor:null"
-            tasks={searchTasks(filteredTasks)}
-            topSpacing="top-0"
-          />
+          <InputWithIcon
+            // className="join-item"
+            type="text"
+            placeholder="Search"
+            onChange={(event) => setSearch(event.target.value)}
+            wrapperClassName="join-item"
+            value={search}
+          >
+            <MagnifyingGlass />
+          </InputWithIcon>
         </div>
       </div>
-    </Drawer>
+      <div className="px-4">
+        <Column
+          // cardSize="compact-h"
+          id="scheduledFor:null"
+          tasks={searchTasks(filteredTasks)}
+          topSpacing="top-0"
+        />
+      </div>
+    </div>
   );
 };
+
+export const QuickDrawer = (props: TQuickPlannerProps) => (
+  <Drawer>
+    <QuickPlanner
+      {...props}
+      className="bg-base-100 border-l-2 border-base-300 shadow-[-4px_0px_4px_0px_rgba(0,0,0,0.05)]"
+    />
+  </Drawer>
+);
 
 const Drawer = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);

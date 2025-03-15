@@ -3,7 +3,7 @@ import { Temporal } from "@js-temporal/polyfill";
 
 import { Board, TColumn } from "../components/Board.tsx";
 import { WeekNav } from "../components/Toolbar.tsx";
-import { QuickPlanner } from "../components/QuickPlanner.tsx";
+import { QuickDrawer } from "../components/QuickPlanner.tsx";
 import { View } from "../components/View.tsx";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
@@ -45,7 +45,7 @@ export const Week = () => {
         groupBy="scheduledFor"
         topSpacing="top-14"
       />
-      <QuickPlanner baseFilters={filters.notThisWeek} />
+      <QuickDrawer baseFilters={filters.notThisWeek} />
     </View>
   );
 };
