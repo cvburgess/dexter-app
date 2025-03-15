@@ -81,7 +81,7 @@ type TCarouselItemProps = {
 
 const CarouselItem = ({ children, subtitle, title }: TCarouselItemProps) => (
   <div id="slide1" className="carousel-item">
-    <div className="flex flex-col rounded-box w-[80vw] min-w-[810px] border-1 border-base-200 shadow-xl items-center justify-center p-16">
+    <div className="flex flex-col rounded-box w-[85vw] min-w-[810px] border-1 border-base-200 shadow-xl items-center justify-center p-16">
       <h1 className="text-4xl font-black opacity-80">{title}</h1>
       <p className="text-xs italic opacity-40 mt-2 mb-8">{subtitle}</p>
       <div className="flex flex-wrap w-full h-full justify-center overflow-auto no-scrollbar">
