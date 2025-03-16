@@ -25,6 +25,7 @@ type AuthContextType = {
   signInWithGoogle: () => Promise<OAuthResponse>;
   signOut: () => Promise<{ error: AuthError | null }>;
   supabase: SupabaseClient;
+  userId?: string;
 };
 
 const signUp = ({ email, password }: EmailPassword) =>
@@ -86,6 +87,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         signOut,
         signUp,
         supabase,
+        userId: session?.user.id,
       }}
     >
       {children}

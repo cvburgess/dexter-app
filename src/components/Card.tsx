@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Draggable } from "@hello-pangea/dnd";
+import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
 import classNames from "classnames";
 
 import { DueDateButton } from "./DueDateButton.tsx";
@@ -18,15 +18,15 @@ import {
 
 export type ECardSize = "normal" | "compact-h" | "compact-w";
 
-type CardProps = {
+type TCardProps = {
   cardSize?: ECardSize;
   className?: string;
-  index: number;
+  provided?: DraggableProvided;
   task: TTask;
 };
 
 export const Card = (
-  { cardSize = "normal", className, task, index }: CardProps,
+  { cardSize = "normal", className, task, provided }: TCardProps,
 ) => {
   const [isEditing, setIsEditing] = useState(false);
   const [_, { deleteTask, updateTask }] = useTasks();
@@ -47,98 +47,111 @@ export const Card = (
     task.status === ETaskStatus.WONT_DO;
 
   const shouldShowButtons = cardSize !== "compact-h" && !isComplete;
+  const dragProps = provided
+    ? {
+      ref: provided.innerRef,
+      ...provided.draggableProps,
+      ...provided.dragHandleProps,
+      style: { ...provided.draggableProps.style },
+    }
+    : {};
 
   return (
-    <Draggable
-      key={task.id}
-      draggableId={task.id}
-      index={index}
+    <div
+      {...dragProps}
+      className={classNames(
+        "shadow-xs rounded-box p-4 border border-current/10",
+        isComplete ? colors.complete : colors.incomplete,
+        cardSize === "compact-w" ? "w-40" : "w-70",
+        className,
+      )}
     >
-      {(provided) => {
-        return (
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            data-task-id={task.id}
-            style={{ ...provided.draggableProps.style }}
-            className={classNames(
-              "shadow-xs rounded-box p-4 border border-current/10",
-              isComplete ? colors.complete : colors.incomplete,
-              cardSize === "compact-w" ? "w-40" : "w-70",
-              className,
-            )}
-          >
-            <div
-              className={classNames("flex items-center justify-start gap-2", {
-                "flex-wrap": cardSize === "compact-w",
-              })}
-            >
-              {cardSize === "compact-w" ? null : (
-                <StatusButton
-                  onTaskUpdate={onTaskUpdate}
-                  status={task.status}
-                />
-              )}
-              <p
-                className={classNames(
-                  "text-xs font-medium focus:outline-none",
-                  isEditing ? "cursor-text" : "cursor-default",
-                  {
-                    "flex-grow": cardSize !== "compact-w",
-                    "w-full mb-2 text-center": cardSize === "compact-w",
-                  },
-                )}
-                contentEditable={isEditing}
-                onClick={() => setIsEditing(true)}
-                onBlur={(e) => updateTitle(e.currentTarget.innerText)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    updateTitle(e.currentTarget.innerText);
-                    (e.target as HTMLParagraphElement).blur(); // Unfocus the input
-                  }
-                }}
-                suppressContentEditableWarning
-              >
-                {task.title}
-              </p>
-              {cardSize === "compact-w"
-                ? (
-                  <StatusButton
-                    onTaskUpdate={onTaskUpdate}
-                    status={task.status}
-                    className={isComplete ? "mx-auto" : "mr-auto"}
-                  />
-                )
-                : null}
-              {shouldShowButtons
-                ? (
-                  <>
-                    <DueDateButton
-                      dueOn={task.dueOn}
-                      isComplete={isComplete}
-                      onTaskUpdate={onTaskUpdate}
-                      overdueClasses={colors.overdue}
-                    />
-                    <ListButton
-                      listId={task.listId}
-                      onTaskUpdate={onTaskUpdate}
-                    />
-                    <MoreButton
-                      onTaskDelete={onTaskDelete}
-                      onTaskUpdate={onTaskUpdate}
-                      task={task}
-                    />
-                  </>
-                )
-                : null}
-            </div>
-          </div>
-        );
-      }}
-    </Draggable>
+      <div
+        className={classNames("flex items-center justify-start gap-2", {
+          "flex-wrap": cardSize === "compact-w",
+        })}
+      >
+        {cardSize === "compact-w" ? null : (
+          <StatusButton
+            onTaskUpdate={onTaskUpdate}
+            status={task.status}
+          />
+        )}
+        <p
+          className={classNames(
+            "text-xs font-medium focus:outline-none",
+            isEditing ? "cursor-text" : "cursor-default",
+            {
+              "flex-grow": cardSize !== "compact-w",
+              "w-full mb-2 text-center": cardSize === "compact-w",
+            },
+          )}
+          contentEditable={isEditing}
+          onClick={() => setIsEditing(true)}
+          onBlur={(e) => updateTitle(e.currentTarget.innerText)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              updateTitle(e.currentTarget.innerText);
+              (e.target as HTMLParagraphElement).blur(); // Unfocus the input
+            }
+          }}
+          suppressContentEditableWarning
+        >
+          {task.title}
+        </p>
+        {cardSize === "compact-w"
+          ? (
+            <StatusButton
+              onTaskUpdate={onTaskUpdate}
+              status={task.status}
+              className={isComplete ? "mx-auto" : "mr-auto"}
+            />
+          )
+          : null}
+        {shouldShowButtons
+          ? (
+            <>
+              <DueDateButton
+                dueOn={task.dueOn}
+                isComplete={isComplete}
+                onTaskUpdate={onTaskUpdate}
+                overdueClasses={colors.overdue}
+              />
+              <ListButton
+                listId={task.listId}
+                onTaskUpdate={onTaskUpdate}
+              />
+              <MoreButton
+                onTaskDelete={onTaskDelete}
+                onTaskUpdate={onTaskUpdate}
+                task={task}
+              />
+            </>
+          )
+          : null}
+      </div>
+    </div>
   );
 };
+
+export const DraggableCard = (
+  { cardSize, className, index, task }: TCardProps & { index: number },
+) => (
+  <Draggable
+    key={task.id}
+    draggableId={task.id}
+    index={index}
+  >
+    {(provided) => (
+      <Card
+        cardSize={cardSize}
+        className={className}
+        provided={provided}
+        task={task}
+      />
+    )}
+  </Draggable>
+);
 
 const cardColors = {
   [ETaskPriority.IMPORTANT_AND_URGENT]: {

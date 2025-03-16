@@ -2,7 +2,8 @@ import { Droppable } from "@hello-pangea/dnd";
 import { Plus } from "@phosphor-icons/react";
 import classNames from "classnames";
 
-import { Card, ECardSize } from "./Card.tsx";
+import { ECardSize } from "./Card.tsx";
+import { DraggableCard } from "./Card.tsx";
 import { InputWithIcon } from "./InputWithIcon.tsx";
 
 import { useTasks } from "../hooks/useTasks.tsx";
@@ -44,7 +45,7 @@ export const Column = ({
   return (
     <div
       className={classNames(
-        "max-h-screen min-h-screen flex flex-col",
+        "max-h-screen min-h-[50vh] flex flex-col",
         cardSize === "compact-w" ? "min-w-40 w-40" : "min-w-70 w-70",
       )}
       ref={(el) => {
@@ -77,7 +78,7 @@ export const Column = ({
               data-list-id={id}
             >
               {tasks?.map((task, index) => (
-                <Card
+                <DraggableCard
                   cardSize={cardSize}
                   className={classNames({ "mb-4": index === tasks.length - 1 })}
                   index={index}

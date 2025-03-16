@@ -9,24 +9,45 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      days: {
+        Row: {
+          date: string
+          notes: string | null
+          prompts: Json | null
+          user_id: string
+        }
+        Insert: {
+          date?: string
+          notes?: string | null
+          prompts?: Json | null
+          user_id?: string
+        }
+        Update: {
+          date?: string
+          notes?: string | null
+          prompts?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       lists: {
         Row: {
           created_at: string
-          emoji: string | null
+          emoji: string
           id: string
           title: string | null
           user_id: string
         }
         Insert: {
           created_at?: string
-          emoji?: string | null
+          emoji: string
           id?: string
           title?: string | null
           user_id?: string
         }
         Update: {
           created_at?: string
-          emoji?: string | null
+          emoji?: string
           id?: string
           title?: string | null
           user_id?: string
@@ -39,7 +60,7 @@ export type Database = {
           due_on: string | null
           id: string
           list_id: string | null
-          priority: number | null
+          priority: number
           scheduled_for: string | null
           status: number
           subtask_of: string | null
@@ -51,7 +72,7 @@ export type Database = {
           due_on?: string | null
           id?: string
           list_id?: string | null
-          priority?: number | null
+          priority?: number
           scheduled_for?: string | null
           status?: number
           subtask_of?: string | null
@@ -63,7 +84,7 @@ export type Database = {
           due_on?: string | null
           id?: string
           list_id?: string | null
-          priority?: number | null
+          priority?: number
           scheduled_for?: string | null
           status?: number
           subtask_of?: string | null

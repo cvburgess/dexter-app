@@ -5,7 +5,7 @@ import { Board } from "../components/Board.tsx";
 import { View } from "../components/View.tsx";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
-import { QuickPlanner } from "../components/QuickPlanner.tsx";
+import { QuickDrawer } from "../components/QuickPlanner.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
 
 export const Today = () => {
@@ -29,7 +29,7 @@ export const Today = () => {
         topSpacing="top-14"
       />
 
-      <QuickPlanner baseFilters={taskFilters.notToday} />
+      <QuickDrawer baseFilters={taskFilters.notToday} />
     </View>
   );
 };
