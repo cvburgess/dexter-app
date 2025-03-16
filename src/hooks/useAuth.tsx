@@ -19,9 +19,10 @@ type AuthContextType = {
   initializing: boolean;
   session: Session | null;
   signUp: ({ email, password }: EmailPassword) => Promise<AuthResponse>;
-  signIn: (
-    { email, password }: EmailPassword,
-  ) => Promise<AuthTokenResponsePassword>;
+  signIn: ({
+    email,
+    password,
+  }: EmailPassword) => Promise<AuthTokenResponsePassword>;
   signInWithGoogle: () => Promise<OAuthResponse>;
   signOut: () => Promise<{ error: AuthError | null }>;
   supabase: SupabaseClient;
@@ -62,20 +63,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    }).finally(() => {
-      setInitializing(false);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
         setSession(session);
-      },
-    );
+      })
+      .finally(() => {
+        setInitializing(false);
+      });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  console.dir(session);
 
   return (
     <AuthContext.Provider

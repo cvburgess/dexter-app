@@ -1,25 +1,8 @@
 {
-  "deno.enable": true,
-  "deno.lint": true,
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "denoland.vscode-deno",
-  "[javascript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
-  },
-  "[json]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
-  },
-  "[markdown]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
-  },
   "cSpell.ignorePaths": ["*.env"],
   "cSpell.words": [
     "apikey",
     "daisyui",
-    "denoland",
     "hcaptcha",
     "inbucket",
     "messagebird",
@@ -33,7 +16,6 @@
     "signup",
     "signups",
     "supabase",
-    "tauri",
     "textlocal",
     "timebox",
     "totp",
