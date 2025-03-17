@@ -15,7 +15,7 @@ export type TDay = {
 
 export const getDay = async (
   supabase: SupabaseClient<Database>,
-  date: string,
+  date: string
 ) => {
   const { data, error } = await supabase
     .from("days")
@@ -46,7 +46,7 @@ export type TUpsertDay = {
 
 export const upsertDay = async (
   supabase: SupabaseClient<Database>,
-  diff: TUpsertDay,
+  diff: TUpsertDay
 ) => {
   const { data, error } = await supabase
     .from("days")

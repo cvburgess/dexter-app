@@ -16,7 +16,7 @@ import { makeOrFilter } from "../api/applyFilters.ts";
 
 export const Review = () => {
   const [date, setDate] = useState<Temporal.PlainDate>(
-    Temporal.Now.plainDateISO(),
+    Temporal.Now.plainDateISO()
   );
 
   const nextDay = date.add({ days: 1 });

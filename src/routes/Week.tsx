@@ -52,7 +52,7 @@ export const Week = () => {
 
 const makeColumnsForWeekOf = (
   mostRecentMonday: Temporal.PlainDate,
-  tasks: TTask[],
+  tasks: TTask[]
 ): TColumn[] => {
   const dayNames = [
     "Monday",

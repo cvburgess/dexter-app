@@ -10,7 +10,7 @@ import { DayNav } from "../components/Toolbar.tsx";
 
 export const Today = () => {
   const [date, setDate] = useState<Temporal.PlainDate>(
-    Temporal.Now.plainDateISO(),
+    Temporal.Now.plainDateISO()
   );
 
   const [tasks] = useTasks([["scheduledFor", "eq", date.toString()]]);

@@ -38,7 +38,7 @@ export const Nav = () => {
                   "bg-base-content/80 text-base-100": isActive,
                   "mt-auto": item.bottom,
                   "indicator": true,
-                },
+                }
               )}
           >
             <Indicator route={item.route} />

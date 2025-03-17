@@ -31,7 +31,7 @@ export enum ETaskStatus {
 
 export const getTasks = async (
   supabase: SupabaseClient<Database>,
-  filters: TQueryFilter[],
+  filters: TQueryFilter[]
 ) => {
   const query = supabase.from("tasks").select("*");
 
@@ -55,7 +55,7 @@ export type TCreateTask = {
 
 export const createTask = async (
   supabase: SupabaseClient<Database>,
-  task: TCreateTask,
+  task: TCreateTask
 ) => {
   const { data, error } = await supabase
     .from("tasks")
@@ -78,7 +78,7 @@ export type TUpdateTask = {
 
 export const updateTask = async (
   supabase: SupabaseClient<Database>,
-  { id, ...diff }: TUpdateTask,
+  { id, ...diff }: TUpdateTask
 ) => {
   const { data, error } = await supabase
     .from("tasks")
@@ -92,7 +92,7 @@ export const updateTask = async (
 
 export const updateTasks = async (
   supabase: SupabaseClient<Database>,
-  tasks: TUpdateTask[],
+  tasks: TUpdateTask[]
 ) => {
   const { data, error } = await supabase
     .from("tasks")
@@ -105,7 +105,7 @@ export const updateTasks = async (
 
 export const deleteTask = async (
   supabase: SupabaseClient<Database>,
-  id: string,
+  id: string
 ) => {
   const { error } = await supabase
     .from("tasks")
