@@ -1,4 +1,7 @@
 {
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint":"always"
+  },
   "cSpell.ignorePaths": ["*.env"],
   "cSpell.words": [
     "apikey",

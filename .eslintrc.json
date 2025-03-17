@@ -14,7 +14,31 @@
   ],
   "parser": "@typescript-eslint/parser",
   "rules": {
-    "comma-dangle": ["error", "always-multiline"],
+    "quotes": ["error", "double"],
+    "semi": ["error", "always"],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "eqeqeq": ["error", "always"],
+    "no-var": "error",
+    "prefer-const": "error",
+    "object-curly-spacing": ["error", "always"],
+    "array-bracket-spacing": ["error", "never"],
+    "space-infix-ops": "error",
+    "keyword-spacing": ["error", { "before": true, "after": true }],
+    "no-trailing-spaces": "error",
+    "eol-last": ["error", "always"],
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "only-multiline"
+      }
+    ],
+    "prefer-arrow-callback": "error",
+    "arrow-parens": ["error", "always"],
+    "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1 }],
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
