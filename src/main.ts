@@ -1,8 +1,14 @@
-import { app, BrowserWindow, ipcMain, shell, dialog } from "electron";
 import path from "node:path";
+import { app, BrowserWindow, nativeTheme, shell } from "electron";
 import started from "electron-squirrel-startup";
 
 let mainWindow: BrowserWindow;
+
+const handleThemeChange = () => {
+  const theme = nativeTheme.shouldUseDarkColors ? "dark" : "light";
+  console.log("Theme changed to", theme);
+  mainWindow.webContents.send("os-theme-changed", theme);
+};
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -73,6 +79,8 @@ const createWindow = () => {
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
+
+// nativeTheme.on("updated", handleThemeChange);
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

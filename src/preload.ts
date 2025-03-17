@@ -17,6 +17,16 @@ contextBridge.exposeInMainWorld("electron", {
       ipcRenderer.removeAllListeners("supabase-auth-callback");
     };
   },
+  onThemeChange: (callback: (theme: "light" | "dark") => void) => {
+    ipcRenderer.on("os-theme-changed", (_event, value) => {
+      callback(value);
+    });
+
+    // Return a function to remove the listener
+    return () => {
+      ipcRenderer.removeAllListeners("os-theme-changed");
+    };
+  },
 });
 
 const urlToObj = (url: string) => {
