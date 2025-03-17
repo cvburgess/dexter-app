@@ -19,8 +19,8 @@ contextBridge.exposeInMainWorld("electron", {
 
   // ---------- THEME ----------
   getTheme: (callback: (theme: TTheme) => void) => {
-    ipcRenderer.invoke("get-native-theme").then((isDark) => {
-      callback(isDark ? "dark" : "light");
+    ipcRenderer.invoke("get-native-theme").then((theme: TTheme) => {
+      callback(theme);
     });
   },
   onThemeChange: (callback: (theme: TTheme) => void) => {

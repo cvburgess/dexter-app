@@ -4,9 +4,16 @@ import started from "electron-squirrel-startup";
 
 let mainWindow: BrowserWindow;
 
+const darkBackgroundColor = "black";
+const lightBackgroundColor = "white";
+
 const handleThemeChange = () => {
   const theme = nativeTheme.shouldUseDarkColors ? "dark" : "light";
-  console.log("Theme changed to", theme);
+  const backgroundColor = nativeTheme.shouldUseDarkColors
+    ? darkBackgroundColor
+    : lightBackgroundColor;
+
+  mainWindow.setBackgroundColor(backgroundColor);
   mainWindow.webContents.send("os-theme-changed", theme);
 };
 
@@ -28,11 +35,19 @@ if (process.defaultApp) {
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
+    backgroundColor: nativeTheme.shouldUseDarkColors
+      ? darkBackgroundColor
+      : lightBackgroundColor,
+    show: false,
     width: 800,
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
+  });
+
+  mainWindow.once("ready-to-show", () => {
+    mainWindow.show();
   });
 
   // and load the index.html of the app.
