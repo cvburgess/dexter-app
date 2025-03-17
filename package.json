@@ -1,6 +1,6 @@
 {
   "name": "dexter-app",
-  "productName": "dexter",
+  "productName": "Dexter",
   "version": "0.1.0",
   "description": "An opinionated day planner",
   "main": ".vite/build/main.js",
@@ -55,6 +55,7 @@
   },
   "scripts": {
     "git:prune": "git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D",
+    "icon": "npx png2icons ./public/app-icon.png ./public/app-icon -allp",
     "lint": "eslint --ext .ts,.tsx .",
     "make": "electron-forge make",
     "package": "electron-forge package",
