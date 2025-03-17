@@ -53,7 +53,7 @@ export const View = ({ children, className }: Props) => {
       <div
         className={classNames(
           "flex w-full overflow-x-visible overflow-y-scroll overscroll-none no-scrollbar scroll-momentum",
-          className
+          className,
         )}
       >
         {children}

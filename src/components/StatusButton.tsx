@@ -12,7 +12,7 @@ type TStatusButtonProps = {
 };
 
 export const StatusButton = (
-  { className, onTaskUpdate, status }: TStatusButtonProps
+  { className, onTaskUpdate, status }: TStatusButtonProps,
 ) => {
   const options = optionsForStatus(status);
   const icon = iconForStatus(status);

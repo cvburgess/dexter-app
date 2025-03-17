@@ -16,7 +16,7 @@ import { makeOrFilter } from "../api/applyFilters.ts";
 
 export const Review = () => {
   const [date, setDate] = useState<Temporal.PlainDate>(
-    Temporal.Now.plainDateISO()
+    Temporal.Now.plainDateISO(),
   );
 
   const nextDay = date.add({ days: 1 });
@@ -29,10 +29,10 @@ export const Review = () => {
   ]]);
 
   const completeTasks = tasks.filter((task) =>
-    task.status === ETaskStatus.DONE || task.status === ETaskStatus.WONT_DO
+    task.status === ETaskStatus.DONE || task.status === ETaskStatus.WONT_DO,
   );
   const incompleteTasks = tasks.filter((task) =>
-    task.status === ETaskStatus.TODO || task.status === ETaskStatus.IN_PROGRESS
+    task.status === ETaskStatus.TODO || task.status === ETaskStatus.IN_PROGRESS,
   );
 
   return (

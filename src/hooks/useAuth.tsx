@@ -95,7 +95,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       async (token: TToken) => {
         await supabase.auth.setSession(token);
         window.location.replace("/");
-      }
+      },
     );
 
     // Clean up the event listener when the component unmounts

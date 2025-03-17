@@ -29,7 +29,7 @@ export const Board = (
     columns,
     groupBy,
     topSpacing = "top-0",
-  }: TBoardProps
+  }: TBoardProps,
 ) => (
   <div className="flex gap-4 px-4">
     {columns.map((column) => {

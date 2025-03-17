@@ -8,7 +8,7 @@ export const snakeCase = (
   value:
     | string
     | Record<string, unknown>
-    | ReadonlyArray<Record<string, unknown>>
+    | ReadonlyArray<Record<string, unknown>>,
 ) => typeof value === "string" ? snakeCaseString(value) : snakeCaseKeys(value);
 
 const camelCaseString = (str: string) =>
@@ -18,5 +18,5 @@ export const camelCase = (
   value:
     | string
     | Record<string, unknown>
-    | ReadonlyArray<Record<string, unknown>>
+    | ReadonlyArray<Record<string, unknown>>,
 ) => typeof value === "string" ? camelCaseString(value) : camelCaseKeys(value);

@@ -28,7 +28,7 @@ export type TCreateList = {
 
 export const createList = async (
   supabase: SupabaseClient<Database>,
-  list: TCreateList
+  list: TCreateList,
 ) => {
   const { data, error } = await supabase
     .from("lists")
@@ -47,7 +47,7 @@ export type TUpdateList = {
 
 export const updateList = async (
   supabase: SupabaseClient<Database>,
-  { id, ...diff }: TUpdateList
+  { id, ...diff }: TUpdateList,
 ) => {
   const { data, error } = await supabase
     .from("lists")
@@ -61,7 +61,7 @@ export const updateList = async (
 
 export const deleteList = async (
   supabase: SupabaseClient<Database>,
-  id: string
+  id: string,
 ) => {
   const { error } = await supabase
     .from("lists")

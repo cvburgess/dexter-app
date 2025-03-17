@@ -40,7 +40,7 @@ export const useDays = (date: string): TUseDays => {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [`day-${date}`] });
       },
-    }
+    },
   );
 
   return [day, { upsertDay: upsert }];

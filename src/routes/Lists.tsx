@@ -77,7 +77,7 @@ type NoList = Omit<TList, "id"> & { id: null };
 
 const makeColumns = (
   lists: Array<TList | NoList> | undefined = [],
-  tasks: TTask[] | undefined = []
+  tasks: TTask[] | undefined = [],
 ): TColumn[] =>
   [...lists, {
     createdAt: "",

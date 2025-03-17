@@ -30,14 +30,14 @@ export const QuickPlanner = ({
 
   const searchTasks = (tasks: TTask[]) =>
     tasks.filter((task): boolean =>
-      task.title.toLowerCase().includes(search.toLowerCase())
+      task.title.toLowerCase().includes(search.toLowerCase()),
     );
 
   return (
     <div
       className={classNames(
         "overflow-x-hidden overflow-y-scroll no-scrollbar",
-        className
+        className,
       )}
     >
       <div className="p-4 sticky top-0 z-10 bg-base-100">
@@ -92,7 +92,7 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
       <div
         className={classNames(
           "fixed top-0 bottom-0 right-0 z-100 flex transition-all duration-300 ease-in-out",
-          { "translate-x-79": !isOpen }
+          { "translate-x-79": !isOpen },
         )}
       >
         <div
@@ -118,7 +118,7 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
       <div
         className={classNames(
           "transition-all duration-300 ease-in-out",
-          isOpen ? "min-w-78" : "min-w-0"
+          isOpen ? "min-w-78" : "min-w-0",
         )}
       />
     </>

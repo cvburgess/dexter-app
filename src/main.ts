@@ -40,7 +40,7 @@ const createWindow = () => {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
     mainWindow.loadFile(
-      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
+      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
     );
   }
 
@@ -72,7 +72,7 @@ ipcMain.handle(
   "set-native-theme",
   (_, themeSource: "light" | "dark" | "system") => {
     nativeTheme.themeSource = themeSource;
-  }
+  },
 );
 
 // Quit when all windows are closed, except on macOS. There, it's common

@@ -17,12 +17,12 @@ export const Login = () => {
 
   const handleError = (error: unknown) => {
     setMessage(
-      `Error: ${error instanceof Error ? error.message : "An error occurred"}`
+      `Error: ${error instanceof Error ? error.message : "An error occurred"}`,
     );
   };
 
   const handleEmailPasswordAuth = async (
-    event: React.FormEvent<HTMLFormElement>
+    event: React.FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
     setLoading(true);
@@ -74,7 +74,7 @@ export const Login = () => {
             <div
               className={classNames(
                 "alert mb-4",
-                message.includes("Error") ? "alert-error" : "alert-success"
+                message.includes("Error") ? "alert-error" : "alert-success",
               )}
             >
               {message}

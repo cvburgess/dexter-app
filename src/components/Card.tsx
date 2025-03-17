@@ -26,7 +26,7 @@ type TCardProps = {
 };
 
 export const Card = (
-  { cardSize = "normal", className, task, provided }: TCardProps
+  { cardSize = "normal", className, task, provided }: TCardProps,
 ) => {
   const [isEditing, setIsEditing] = useState(false);
   const [_, { deleteTask, updateTask }] = useTasks();
@@ -63,7 +63,7 @@ export const Card = (
         "shadow-xs rounded-box p-4 border border-current/10",
         isComplete ? colors.complete : colors.incomplete,
         cardSize === "compact-w" ? "w-40" : "w-70",
-        className
+        className,
       )}
     >
       <div
@@ -84,7 +84,7 @@ export const Card = (
             {
               "flex-grow": cardSize !== "compact-w",
               "w-full mb-2 text-center": cardSize === "compact-w",
-            }
+            },
           )}
           contentEditable={isEditing}
           onClick={() => setIsEditing(true)}
@@ -135,7 +135,7 @@ export const Card = (
 };
 
 export const DraggableCard = (
-  { cardSize, className, index, task }: TCardProps & { index: number }
+  { cardSize, className, index, task }: TCardProps & { index: number },
 ) => (
   <Draggable
     key={task.id}

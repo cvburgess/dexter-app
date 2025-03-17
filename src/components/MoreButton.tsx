@@ -23,10 +23,10 @@ export const MoreButton = ({
 }: TMoreButtonProps) => {
   const schedulingOptions = optionsForScheduling(
     task.scheduledFor,
-    (scheduledFor: string | null) => onTaskUpdate({ scheduledFor })
+    (scheduledFor: string | null) => onTaskUpdate({ scheduledFor }),
   );
   const priorityOptions = optionsForPriority(task.priority, (priority) =>
-    onTaskUpdate({ priority })
+    onTaskUpdate({ priority }),
   );
   const otherOptions: TSegmentedOption = {
     title: "Other",
@@ -55,7 +55,7 @@ export const MoreButton = ({
 
 const optionsForPriority = (
   priority: ETaskPriority,
-  onChange: TOnChange<ETaskPriority>
+  onChange: TOnChange<ETaskPriority>,
 ): TSegmentedOption => {
   const options: Array<TOption & { onChange: () => void }> = [
     {
@@ -89,7 +89,7 @@ const optionsForPriority = (
 
 const optionsForScheduling = (
   scheduledFor: string | null,
-  onChange: TOnChange<string | null>
+  onChange: TOnChange<string | null>,
 ): TSegmentedOption => {
   const today = Temporal.Now.plainDateISO().toString();
   const tomorrow = Temporal.Now.plainDateISO().add({ days: 1 }).toString();
