@@ -36,11 +36,10 @@ export const Login = () => {
         setMessage("Login successful!");
         navigate("/");
       } else {
-        const { data, error } = await signUp({ email, password });
+        const { error } = await signUp({ email, password });
 
         if (error) throw error;
         setMessage("Success! Check your email for verification");
-        console.log("User signed up:", data);
       }
     } catch (error) {
       handleError(error);
