@@ -82,7 +82,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log(event, session);
       setSession(session);
     });
 
@@ -94,6 +95,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const removeListener = window.electron.onSupabaseAuthCallback(
       async (token: TToken) => {
         await supabase.auth.setSession(token);
+        window.location.replace("/");
       }
     );
 
