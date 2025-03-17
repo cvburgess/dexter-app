@@ -15,13 +15,14 @@ type TQuickPlannerProps = {
   className?: string;
 };
 
-export const QuickPlanner = (
-  { baseFilters = [], className }: TQuickPlannerProps,
-) => {
+export const QuickPlanner = ({
+  baseFilters = [],
+  className,
+}: TQuickPlannerProps) => {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
 
   const options = makeFilterOptions(selectedFilter);
-  const selected = options.find((option) => option.isSelected)!;
+  const selected = options.find((option) => option.isSelected);
   const activeFilters = taskFilters?.[selectedFilter] ?? [];
 
   const [search, setSearch] = useState<string>("");
@@ -36,7 +37,7 @@ export const QuickPlanner = (
     <div
       className={classNames(
         "overflow-x-hidden overflow-y-scroll no-scrollbar",
-        className,
+        className
       )}
     >
       <div className="p-4 sticky top-0 z-10 bg-base-100">
@@ -91,7 +92,7 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
       <div
         className={classNames(
           "fixed top-0 bottom-0 right-0 z-100 flex transition-all duration-300 ease-in-out",
-          { "translate-x-79": !isOpen },
+          { "translate-x-79": !isOpen }
         )}
       >
         <div
@@ -117,7 +118,7 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
       <div
         className={classNames(
           "transition-all duration-300 ease-in-out",
-          isOpen ? "min-w-78" : "min-w-0",
+          isOpen ? "min-w-78" : "min-w-0"
         )}
       />
     </>

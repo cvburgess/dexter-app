@@ -13,20 +13,22 @@ type TDueDateButtonProps = {
   overdueClasses: string;
 };
 
-export const DueDateButton = (
-  { dueOn, isComplete, onTaskUpdate, overdueClasses }: TDueDateButtonProps,
-) => {
+export const DueDateButton = ({
+  dueOn,
+  isComplete,
+  onTaskUpdate,
+  overdueClasses,
+}: TDueDateButtonProps) => {
   const shouldShowCountdown = Boolean(dueOn) && !isComplete;
 
   const now = Temporal.Now.plainDateISO();
 
   const daysUntilDue = dueOn
-    ? now.until(Temporal.PlainDate.from(dueOn!)).days
+    ? now.until(Temporal.PlainDate.from(dueOn)).days
     : null;
 
-  const shouldWarnUser = shouldShowCountdown &&
-    daysUntilDue !== null &&
-    daysUntilDue <= 1;
+  const shouldWarnUser =
+    shouldShowCountdown && daysUntilDue !== null && daysUntilDue <= 1;
 
   return (
     <ButtonWithPopover

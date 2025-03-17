@@ -152,7 +152,9 @@ export const Login = () => {
               className={classNames("link link-hover", {
                 invisible: isLogin,
               })}
-              onClick={() => {}}
+              onClick={() => {
+                // TODO: Forgot password
+              }}
             >
               Forgot password
             </button>

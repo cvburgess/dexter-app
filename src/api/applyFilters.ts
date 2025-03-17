@@ -21,7 +21,7 @@ export type TQueryFilter = [
 
 // https://github.com/orgs/supabase/discussions/2733
 // https://www.reddit.com/r/Supabase/comments/1e8ewjm/typescript_type_of_a_supabase_query_the_query/
-// @ts-ignore no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const applyFilters = (query: any, filters: TQueryFilter[] = []) => {
   for (const [column, operation, value] of filters) {
     if (operation === "or") {
