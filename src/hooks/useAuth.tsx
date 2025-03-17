@@ -61,6 +61,11 @@ type EmailPassword = {
   password: string;
 };
 
+export type TToken = {
+  access_token: string;
+  refresh_token: string;
+};
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [initializing, setInitializing] = useState(true);
@@ -84,7 +89,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  console.dir(session);
+  useEffect(() => {
+    // Add the event listener
+    const removeListener = window.electron.onSupabaseAuthCallback(
+      async (token: TToken) => {
+        await supabase.auth.setSession(token);
+      }
+    );
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      if (removeListener) removeListener();
+    };
+  }, []);
 
   return (
     <AuthContext.Provider

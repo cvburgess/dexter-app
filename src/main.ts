@@ -32,9 +32,7 @@ if (!gotTheLock) {
     }
 
     const url = commandLine.pop().slice(0, -1);
-    // dialog.showErrorBox("Welcome Back", `You arrived from: ${url}`);
-    const window = BrowserWindow.getAllWindows()[0];
-    window.webContents.send("supabase-auth-callback", url);
+    mainWindow.webContents.send("supabase-auth-callback", url);
   });
 
   // Create mainWindow, load the rest of the app, etc...
@@ -43,9 +41,7 @@ if (!gotTheLock) {
   });
 
   app.on("open-url", (event, url) => {
-    // dialog.showErrorBox("Welcome Back", `You arrived from: ${url}`);
-    const window = BrowserWindow.getAllWindows()[0];
-    window.webContents.send("supabase-auth-callback", url);
+    mainWindow.webContents.send("supabase-auth-callback", url);
   });
 }
 
