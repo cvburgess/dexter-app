@@ -1,11 +1,10 @@
 import { contextBridge, ipcRenderer } from "electron";
 
 import type { TToken } from "./hooks/useAuth.tsx";
+import type { TTheme, TThemeMode } from "./hooks/useTheme.tsx";
 
-// Expose protected methods that allow the renderer process to use
-// the ipcRenderer without exposing the entire object
 contextBridge.exposeInMainWorld("electron", {
-  // For receiving messages
+  // ---------- AUTH ----------
   onSupabaseAuthCallback: (callback: (token: TToken) => void) => {
     ipcRenderer.on("supabase-auth-callback", (_event, value) => {
       const token = urlToObj(value) as TToken;
@@ -17,7 +16,14 @@ contextBridge.exposeInMainWorld("electron", {
       ipcRenderer.removeAllListeners("supabase-auth-callback");
     };
   },
-  onThemeChange: (callback: (theme: "light" | "dark") => void) => {
+
+  // ---------- THEME ----------
+  getTheme: (callback: (theme: TTheme) => void) => {
+    ipcRenderer.invoke("get-native-theme").then((isDark) => {
+      callback(isDark ? "dark" : "light");
+    });
+  },
+  onThemeChange: (callback: (theme: TTheme) => void) => {
     ipcRenderer.on("os-theme-changed", (_event, value) => {
       callback(value);
     });
@@ -26,6 +32,9 @@ contextBridge.exposeInMainWorld("electron", {
     return () => {
       ipcRenderer.removeAllListeners("os-theme-changed");
     };
+  },
+  setThemeMode: (mode: TThemeMode) => {
+    ipcRenderer.invoke("set-native-theme", mode);
   },
 });
 

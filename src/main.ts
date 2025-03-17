@@ -1,5 +1,5 @@
 import path from "node:path";
-import { app, BrowserWindow, nativeTheme, shell } from "electron";
+import { app, BrowserWindow, ipcMain, nativeTheme, shell } from "electron";
 import started from "electron-squirrel-startup";
 
 let mainWindow: BrowserWindow;
@@ -23,33 +23,6 @@ if (process.defaultApp) {
   }
 } else {
   app.setAsDefaultProtocolClient("dexter");
-}
-
-const gotTheLock = app.requestSingleInstanceLock();
-
-if (!gotTheLock) {
-  app.quit();
-} else {
-  app.on("second-instance", (_event, commandLine, _workingDirectory) => {
-    // Someone tried to run a second instance, we should focus our window.
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore();
-      mainWindow.focus();
-    }
-
-    const url = commandLine.pop().slice(0, -1);
-    mainWindow.webContents.send("supabase-auth-callback", url);
-  });
-
-  // Create mainWindow, load the rest of the app, etc...
-  app.whenReady().then(() => {
-    createWindow();
-  });
-
-  app.on("open-url", (_event, url) => {
-    mainWindow.focus();
-    mainWindow.webContents.send("supabase-auth-callback", url);
-  });
 }
 
 const createWindow = () => {
@@ -76,16 +49,31 @@ const createWindow = () => {
     return { action: "deny" }; // Prevent the app from opening the URL.
   });
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  handleThemeChange();
 };
-
-// nativeTheme.on("updated", handleThemeChange);
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", createWindow);
+
+app.on("open-url", (_event, url) => {
+  mainWindow.focus();
+  mainWindow.webContents.send("supabase-auth-callback", url);
+});
+
+nativeTheme.on("updated", handleThemeChange);
+
+ipcMain.handle("get-native-theme", () => {
+  return nativeTheme.shouldUseDarkColors ? "dark" : "light";
+});
+
+ipcMain.handle(
+  "set-native-theme",
+  (_, themeSource: "light" | "dark" | "system") => {
+    nativeTheme.themeSource = themeSource;
+  }
+);
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
