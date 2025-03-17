@@ -31,7 +31,7 @@ export const Board = (
     topSpacing = "top-0",
   }: TBoardProps,
 ) => (
-  <div className="flex gap-4 px-4">
+  <div className="flex flex-1 overflow-auto gap-4 px-4 duration-300 ease-in-out">
     {columns.map((column) => {
       if (!column.tasks.length && column.autoCollapse) return null;
 

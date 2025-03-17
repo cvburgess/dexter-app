@@ -12,6 +12,7 @@ import { makeOrFilter, TQueryFilter } from "../api/applyFilters.ts";
 import { weekStartEnd } from "../utils/weekStartEnd.ts";
 
 export const Week = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [weeksOffset, setWeeksOffset] = useState<number>(0);
 
   const { mostRecentMonday, sunday } = weekStartEnd(weeksOffset);
@@ -37,7 +38,11 @@ export const Week = () => {
 
   return (
     <View className="flex-col">
-      <WeekNav weeksOffset={weeksOffset} setWeeksOffset={setWeeksOffset} />
+      <WeekNav
+        weeksOffset={weeksOffset}
+        setWeeksOffset={setWeeksOffset}
+        toggleQuickPlan={() => setIsOpen(!isOpen)}
+      />
       <Board
         canCreateTasks
         cardSize="compact-w"
@@ -45,7 +50,7 @@ export const Week = () => {
         groupBy="scheduledFor"
         topSpacing="top-14"
       />
-      <QuickDrawer baseFilters={filters.notThisWeek} />
+      <QuickDrawer isOpen={isOpen} baseFilters={filters.notThisWeek} />
     </View>
   );
 };

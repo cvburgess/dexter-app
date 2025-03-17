@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CaretLeft, CaretRight, MagnifyingGlass } from "@phosphor-icons/react";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 import classNames from "classnames";
 
 import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
@@ -30,7 +30,7 @@ export const QuickPlanner = ({
 
   const searchTasks = (tasks: TTask[]) =>
     tasks.filter((task): boolean =>
-      task.title.toLowerCase().includes(search.toLowerCase()),
+      task.title.toLowerCase().includes(search.toLowerCase())
     );
 
   return (
@@ -75,55 +75,31 @@ export const QuickPlanner = ({
   );
 };
 
-export const QuickDrawer = (props: TQuickPlannerProps) => (
-  <Drawer>
+type TQuickDrawerProps = TQuickPlannerProps & {
+  isOpen: boolean;
+};
+
+export const QuickDrawer = ({ isOpen, ...props }: TQuickDrawerProps) => (
+  <Drawer isOpen={isOpen}>
     <QuickPlanner
       {...props}
-      className="bg-base-100 border-l-2 border-base-300 shadow-[-4px_0px_4px_0px_rgba(0,0,0,0.05)]"
+      className="bg-base-100 border-l-2 border-base-300"
     />
   </Drawer>
 );
 
-const Drawer = ({ children }: { children: React.ReactNode }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  return (
-    <>
-      <div
-        className={classNames(
-          "fixed top-0 bottom-0 right-0 z-100 flex transition-all duration-300 ease-in-out",
-          { "translate-x-79": !isOpen },
-        )}
-      >
-        <div
-          className="self-center h-20 p-1 bg-base-100 text-xs rounded-l-[var(--radius-box)] z-101 flex items-center justify-center border-2 border-base-300 border-r-base-100 mr-[-2px] text-base-content/40"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <label className="swap swap-rotate">
-            <CaretRight
-              size={18}
-              weight="bold"
-              className={classNames(isOpen ? "swap-off" : "swap-on")}
-            />
-            <CaretLeft
-              size={18}
-              weight="bold"
-              className={classNames(isOpen ? "swap-on" : "swap-off")}
-            />
-          </label>
-        </div>
-        {children}
-      </div>
-
-      <div
-        className={classNames(
-          "transition-all duration-300 ease-in-out",
-          isOpen ? "min-w-78" : "min-w-0",
-        )}
-      />
-    </>
-  );
-};
+const Drawer = (
+  { children, isOpen }: { children: React.ReactNode; isOpen: boolean },
+) => (
+  <div
+    className={classNames(
+      "flex flex-shrink-0 transition-all duration-300 ease-in-out",
+      { "mr-[-300px] w-0 bg-amber-600": isOpen },
+    )}
+  >
+    {children}
+  </div>
+);
 
 const makeFilterOptions = (selectedFilter: string): TOption[] => [
   {

@@ -6,13 +6,15 @@ import { ButtonWithPopover } from "./ButtonWithPopover.tsx";
 type TDayNavProps = {
   date: Temporal.PlainDate;
   setDate: (date: Temporal.PlainDate) => void;
+  toggleQuickPlan?: () => void;
 };
 
-export const DayNav = ({ date, setDate }: TDayNavProps) => {
+export const DayNav = ({ date, setDate, toggleQuickPlan }: TDayNavProps) => {
   return (
     <Toolbar
       onClickNext={() => setDate(date.add({ days: 1 }))}
       onClickPrevious={() => setDate(date.subtract({ days: 1 }))}
+      toggleQuickPlan={toggleQuickPlan}
     >
       {date.toString() === Temporal.Now.plainDateISO().toString()
         ? (
@@ -43,9 +45,12 @@ export const DayNav = ({ date, setDate }: TDayNavProps) => {
 type TWeekNavProps = {
   weeksOffset: number;
   setWeeksOffset: (value: number) => void;
+  toggleQuickPlan?: () => void;
 };
 
-export const WeekNav = ({ weeksOffset, setWeeksOffset }: TWeekNavProps) => {
+export const WeekNav = (
+  { weeksOffset, setWeeksOffset, toggleQuickPlan }: TWeekNavProps,
+) => {
   const today = Temporal.Now.plainDateISO();
   const offsetDate = today.add({ weeks: weeksOffset });
 
@@ -53,6 +58,7 @@ export const WeekNav = ({ weeksOffset, setWeeksOffset }: TWeekNavProps) => {
     <Toolbar
       onClickNext={() => setWeeksOffset(weeksOffset + 1)}
       onClickPrevious={() => setWeeksOffset(weeksOffset - 1)}
+      toggleQuickPlan={toggleQuickPlan}
     >
       <div
         className="btn btn-ghost mr-auto"
@@ -68,12 +74,22 @@ type TToolbarProps = {
   children: React.ReactNode;
   onClickNext: () => void;
   onClickPrevious: () => void;
+  toggleQuickPlan?: () => void;
 };
 
-const Toolbar = ({ children, onClickNext, onClickPrevious }: TToolbarProps) => {
+const Toolbar = (
+  { children, onClickNext, onClickPrevious, toggleQuickPlan }: TToolbarProps,
+) => {
   return (
     <div className="flex items-center p-4 pb-0 sticky top-0 left-0 z-20 bg-base-100">
       {children}
+      {toggleQuickPlan
+        ? (
+          <button className="btn btn-ghost" onClick={toggleQuickPlan}>
+            🎉
+          </button>
+        )
+        : null}
       <ArrowButton
         onClick={onClickPrevious}
         variant="previous"
