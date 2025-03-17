@@ -1,8 +1,24 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint":"always"
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-  "cSpell.ignorePaths": ["*.env"],
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.fixAll.eslint": "always"
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "cSpell.ignorePaths": [
+    "*.env"
+  ],
   "cSpell.words": [
     "apikey",
     "daisyui",
