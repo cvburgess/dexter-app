@@ -38,7 +38,10 @@ const signIn = ({ email, password }: EmailPassword) =>
 const signInWithGoogle = () =>
   supabase.auth.signInWithOAuth({
     provider: "google",
-    options: { redirectTo: globalThis.location.origin },
+    options: {
+      redirectTo: "dexter://auth-callback",
+      skipBrowserRedirect: true,
+    },
   });
 
 export const signOut = () => supabase.auth.signOut({ scope: "local" });

@@ -17,12 +17,12 @@ export const Login = () => {
 
   const handleError = (error: unknown) => {
     setMessage(
-      `Error: ${error instanceof Error ? error.message : "An error occurred"}`,
+      `Error: ${error instanceof Error ? error.message : "An error occurred"}`
     );
   };
 
   const handleEmailPasswordAuth = async (
-    event: React.FormEvent<HTMLFormElement>,
+    event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
     setLoading(true);
@@ -55,9 +55,9 @@ export const Login = () => {
 
     try {
       const { data, error } = await signInWithGoogle();
+      window.open(data.url, "_blank");
 
       if (error) throw error;
-      console.log("Google auth initiated:", data);
     } catch (error) {
       handleError(error);
     }
@@ -75,7 +75,7 @@ export const Login = () => {
             <div
               className={classNames(
                 "alert mb-4",
-                message.includes("Error") ? "alert-error" : "alert-success",
+                message.includes("Error") ? "alert-error" : "alert-success"
               )}
             >
               {message}
@@ -83,6 +83,7 @@ export const Login = () => {
           )}
 
           <button
+            id="open-in-browser"
             className="btn btn-outline rounded-box"
             disabled={loading}
             onClick={handleGoogleLogin}
@@ -125,11 +126,13 @@ export const Login = () => {
                 className="btn btn-primary w-full rounded-box"
                 disabled={loading}
               >
-                {loading
-                  ? <span className="loading loading-spinner"></span>
-                  : isLogin
-                  ? "Login"
-                  : "Sign Up"}
+                {loading ? (
+                  <span className="loading loading-spinner"></span>
+                ) : isLogin ? (
+                  "Login"
+                ) : (
+                  "Sign Up"
+                )}
               </button>
             </div>
           </form>
@@ -148,7 +151,7 @@ export const Login = () => {
             <button
               type="button"
               className={classNames("link link-hover", {
-                "invisible": isLogin,
+                invisible: isLogin,
               })}
               onClick={() => {}}
             >

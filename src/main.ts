@@ -1,15 +1,57 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain, shell, dialog } from "electron";
 import path from "node:path";
 import started from "electron-squirrel-startup";
+
+let mainWindow: BrowserWindow;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
 }
 
+if (process.defaultApp) {
+  if (process.argv.length >= 2) {
+    app.setAsDefaultProtocolClient("dexter", process.execPath, [
+      path.resolve(process.argv[1]),
+    ]);
+  }
+} else {
+  app.setAsDefaultProtocolClient("dexter");
+}
+
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on("second-instance", (_event, commandLine, _workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+
+    const url = commandLine.pop().slice(0, -1);
+    // dialog.showErrorBox("Welcome Back", `You arrived from: ${url}`);
+    const window = BrowserWindow.getAllWindows()[0];
+    window.webContents.send("supabase-auth-callback", url);
+  });
+
+  // Create mainWindow, load the rest of the app, etc...
+  app.whenReady().then(() => {
+    createWindow();
+  });
+
+  app.on("open-url", (event, url) => {
+    // dialog.showErrorBox("Welcome Back", `You arrived from: ${url}`);
+    const window = BrowserWindow.getAllWindows()[0];
+    window.webContents.send("supabase-auth-callback", url);
+  });
+}
+
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -25,6 +67,11 @@ const createWindow = () => {
       path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
     );
   }
+
+  mainWindow.webContents.setWindowOpenHandler((details) => {
+    shell.openExternal(details.url); // Open URL in user's browser.
+    return { action: "deny" }; // Prevent the app from opening the URL.
+  });
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
@@ -54,3 +101,10 @@ app.on("activate", () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+// Handle window controls via IPC
+ipcMain.on("shell:open", () => {
+  const pageDirectory = __dirname.replace("app.asar", "app.asar.unpacked");
+  const pagePath = path.join("file://", pageDirectory, "index.html");
+  shell.openExternal(pagePath);
+});
