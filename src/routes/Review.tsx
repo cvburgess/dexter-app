@@ -16,23 +16,25 @@ import { makeOrFilter } from "../api/applyFilters.ts";
 
 export const Review = () => {
   const [date, setDate] = useState<Temporal.PlainDate>(
-    Temporal.Now.plainDateISO(),
+    Temporal.Now.plainDateISO()
   );
 
   const nextDay = date.add({ days: 1 });
 
   const [tasks] = useTasks([["scheduledFor", "eq", date.toString()]]);
-  const [nextDaysTasks] = useTasks([[
-    "scheduledFor",
-    "eq",
-    nextDay.toString(),
-  ]]);
+  const [nextDaysTasks] = useTasks([
+    ["scheduledFor", "eq", nextDay.toString()],
+  ]);
 
-  const completeTasks = tasks.filter((task) =>
-    task.status === ETaskStatus.DONE || task.status === ETaskStatus.WONT_DO
+  const completeTasks = tasks.filter(
+    (task) =>
+      task.status === ETaskStatus.DONE ||
+      task.status === ETaskStatus.WONT_DO
   );
-  const incompleteTasks = tasks.filter((task) =>
-    task.status === ETaskStatus.TODO || task.status === ETaskStatus.IN_PROGRESS
+  const incompleteTasks = tasks.filter(
+    (task) =>
+      task.status === ETaskStatus.TODO ||
+      task.status === ETaskStatus.IN_PROGRESS
   );
 
   return (
@@ -58,9 +60,7 @@ export const Review = () => {
           title="Plan"
           subtitle="Make time and space for the things that matter most... tomorrow"
         >
-          <QuickPlanner
-            baseFilters={makeBaseFiltersForDate(nextDay)}
-          />
+          <QuickPlanner baseFilters={makeBaseFiltersForDate(nextDay)} />
           <Divider />
           <Board
             canCreateTasks

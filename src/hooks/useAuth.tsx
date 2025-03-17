@@ -19,9 +19,10 @@ type AuthContextType = {
   initializing: boolean;
   session: Session | null;
   signUp: ({ email, password }: EmailPassword) => Promise<AuthResponse>;
-  signIn: (
-    { email, password }: EmailPassword,
-  ) => Promise<AuthTokenResponsePassword>;
+  signIn: ({
+    email,
+    password,
+  }: EmailPassword) => Promise<AuthTokenResponsePassword>;
   signInWithGoogle: () => Promise<OAuthResponse>;
   signOut: () => Promise<{ error: AuthError | null }>;
   supabase: SupabaseClient;
@@ -37,7 +38,10 @@ const signIn = ({ email, password }: EmailPassword) =>
 const signInWithGoogle = () =>
   supabase.auth.signInWithOAuth({
     provider: "google",
-    options: { redirectTo: globalThis.location.origin },
+    options: {
+      redirectTo: "dexter://auth-callback",
+      skipBrowserRedirect: true,
+    },
   });
 
 export const signOut = () => supabase.auth.signOut({ scope: "local" });
@@ -57,24 +61,47 @@ type EmailPassword = {
   password: string;
 };
 
+export type TToken = {
+  access_token: string;
+  refresh_token: string;
+};
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        setSession(session);
+      })
+      .finally(() => {
+        setInitializing(false);
+      });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-    }).finally(() => {
-      setInitializing(false);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    // Add the event listener
+    const removeListener = window.electron.onSupabaseAuthCallback(
+      async (token: TToken) => {
+        await supabase.auth.setSession(token);
+        window.location.replace("/");
       },
     );
 
-    return () => subscription.unsubscribe();
+    // Clean up the event listener when the component unmounts
+    return () => {
+      if (removeListener) removeListener();
+    };
   }, []);
 
   return (

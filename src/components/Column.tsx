@@ -2,8 +2,7 @@ import { Droppable } from "@hello-pangea/dnd";
 import { Plus } from "@phosphor-icons/react";
 import classNames from "classnames";
 
-import { ECardSize } from "./Card.tsx";
-import { DraggableCard } from "./Card.tsx";
+import { DraggableCard, ECardSize } from "./Card.tsx";
 import { InputWithIcon } from "./InputWithIcon.tsx";
 
 import { useTasks } from "../hooks/useTasks.tsx";
@@ -37,7 +36,7 @@ export const Column = ({
     // column is prefixed with the property name
     // example: "scheduledFor:2022-01-01"
     const [prop, value] = id.split(":");
-    const nullableValue = (value === "null") ? null : value;
+    const nullableValue = value === "null" ? null : value;
 
     createTask({ title: taskTitle, [prop]: nullableValue });
   };
@@ -56,7 +55,7 @@ export const Column = ({
     >
       <div
         className={classNames(topSpacing, {
-          "sticky z-10 bg-base-100 pt-4": (title || canCreateTasks),
+          "sticky z-10 bg-base-100 pt-4": title || canCreateTasks,
         })}
       >
         <ColumnTitle icon={icon} isActive={isActive} title={title} />
@@ -123,19 +122,17 @@ type TCreateTaskProps = {
 };
 
 const CreateTask = ({ enabled, onTaskCreate }: TCreateTaskProps) =>
-  enabled
-    ? (
-      <InputWithIcon
-        type="text"
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && e.currentTarget.value.trim()) {
-            onTaskCreate?.(e.currentTarget.value.trim());
-            e.currentTarget.value = "";
-          }
-        }}
-        wrapperClassName="mb-4"
-      >
-        <Plus />
-      </InputWithIcon>
-    )
-    : null;
+  enabled ? (
+    <InputWithIcon
+      type="text"
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && e.currentTarget.value.trim()) {
+          onTaskCreate?.(e.currentTarget.value.trim());
+          e.currentTarget.value = "";
+        }
+      }}
+      wrapperClassName="mb-4"
+    >
+      <Plus />
+    </InputWithIcon>
+  ) : null;

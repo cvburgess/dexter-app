@@ -16,26 +16,29 @@ type TMoreButtonProps = {
   task: TTask;
 };
 
-export const MoreButton = (
-  { onTaskDelete, onTaskUpdate, task }: TMoreButtonProps,
-) => {
+export const MoreButton = ({
+  onTaskDelete,
+  onTaskUpdate,
+  task,
+}: TMoreButtonProps) => {
   const schedulingOptions = optionsForScheduling(
     task.scheduledFor,
     (scheduledFor: string | null) => onTaskUpdate({ scheduledFor }),
   );
-  const priorityOptions = optionsForPriority(
-    task.priority,
-    (priority) => onTaskUpdate({ priority }),
+  const priorityOptions = optionsForPriority(task.priority, (priority) =>
+    onTaskUpdate({ priority }),
   );
   const otherOptions: TSegmentedOption = {
     title: "Other",
-    options: [{
-      id: "delete",
-      title: "Delete",
-      onChange: onTaskDelete,
-      isDangerous: true,
-      isSelected: false,
-    }],
+    options: [
+      {
+        id: "delete",
+        title: "Delete",
+        onChange: onTaskDelete,
+        isDangerous: true,
+        isSelected: false,
+      },
+    ],
   };
 
   return (
@@ -111,6 +114,7 @@ const optionsForScheduling = (
       options.push({
         id: scheduledFor,
         isSelected: true,
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         onChange: () => {},
         title: Temporal.PlainDate.from(scheduledFor).toLocaleString(["en-us"], {
           month: "short",

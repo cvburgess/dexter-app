@@ -1,6 +1,6 @@
 import { Temporal } from "@js-temporal/polyfill";
 
-export const weekStartEnd = (weeksOffset: number = 0) => {
+export const weekStartEnd = (weeksOffset = 0) => {
   const today = Temporal.Now.plainDateISO();
 
   const mostRecentMonday = today

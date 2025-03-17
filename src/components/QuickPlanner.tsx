@@ -15,13 +15,14 @@ type TQuickPlannerProps = {
   className?: string;
 };
 
-export const QuickPlanner = (
-  { baseFilters = [], className }: TQuickPlannerProps,
-) => {
+export const QuickPlanner = ({
+  baseFilters = [],
+  className,
+}: TQuickPlannerProps) => {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
 
   const options = makeFilterOptions(selectedFilter);
-  const selected = options.find((option) => option.isSelected)!;
+  const selected = options.find((option) => option.isSelected);
   const activeFilters = taskFilters?.[selectedFilter] ?? [];
 
   const [search, setSearch] = useState<string>("");
@@ -29,7 +30,7 @@ export const QuickPlanner = (
 
   const searchTasks = (tasks: TTask[]) =>
     tasks.filter((task): boolean =>
-      task.title.toLowerCase().includes(search.toLowerCase())
+      task.title.toLowerCase().includes(search.toLowerCase()),
     );
 
   return (

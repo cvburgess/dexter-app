@@ -1,36 +1,37 @@
 import { useEffect, useState } from "react";
-import { listen, TauriEvent } from "@tauri-apps/api/event";
+
+export type TTheme = "light" | "dark";
+export type TThemeMode = TTheme | "system";
 
 export const useTheme = () => {
-  const [theme, setTheme] = useState(
-    globalThis.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "dexter",
-  );
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  const userPreferences = {
+    light: "dexter",
+    dark: "dark",
+    mode: "system",
+  };
 
   useEffect(() => {
-    // Initial theme detection
-    const mediaQuery = globalThis.matchMedia("(prefers-color-scheme: dark)");
+    // Get the theme from the system, or set it based on user preferences
+    if (userPreferences.mode === "system") {
+      window.electron.getTheme((theme: TTheme) => {
+        setTheme(theme);
+      });
+    } else {
+      window.electron.setThemeMode("set-native-theme", userPreferences.mode);
+    }
 
-    const lightTheme = "dexter";
-    const darkTheme = "dark";
-    const updateTheme = (e: MediaQueryListEvent) =>
-      setTheme(e.matches ? darkTheme : lightTheme);
-
-    // Listen for OS theme changes
-    mediaQuery.addEventListener("change", updateTheme);
-
-    // Listen for Tauri theme change events
-    const unlisten = listen(TauriEvent.WINDOW_THEME_CHANGED, (event) => {
-      const payload = event.payload as { theme: string };
-      setTheme(payload.theme);
+    // Listen for changes to the os theme
+    const removeListener = window.electron.onThemeChange((theme: TTheme) => {
+      if (userPreferences.mode === "system") setTheme(theme);
     });
 
+    // Clean up the event listener when the component unmounts
     return () => {
-      mediaQuery.removeEventListener("change", updateTheme);
-      unlisten.then((fn) => fn());
+      if (removeListener) removeListener();
     };
   }, []);
 
-  return theme;
+  return userPreferences[theme];
 };
