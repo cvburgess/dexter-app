@@ -21,10 +21,7 @@ export const getLists = async (supabase: SupabaseClient<Database>) => {
   return camelCase(data) as TList[];
 };
 
-export type TCreateList = {
-  emoji: string;
-  title: string;
-};
+export type TCreateList = { emoji: string; title: string };
 
 export const createList = async (
   supabase: SupabaseClient<Database>,
@@ -39,11 +36,7 @@ export const createList = async (
   return camelCase(data) as TList[];
 };
 
-export type TUpdateList = {
-  emoji?: string;
-  id: string;
-  title?: string;
-};
+export type TUpdateList = { emoji?: string; id: string; title?: string };
 
 export const updateList = async (
   supabase: SupabaseClient<Database>,
@@ -63,10 +56,7 @@ export const deleteList = async (
   supabase: SupabaseClient<Database>,
   id: string,
 ) => {
-  const { error } = await supabase
-    .from("lists")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("lists").delete().eq("id", id);
 
   if (error) throw error;
 };

@@ -16,7 +16,7 @@ export type TQueryFilter = [
     | "or"
     | "textSearch"
   ),
-  unknown
+  unknown,
 ];
 
 // https://github.com/orgs/supabase/discussions/2733

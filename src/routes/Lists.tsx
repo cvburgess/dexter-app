@@ -1,5 +1,5 @@
 import { useState } from "react";
-import emojiData from "@emoji-mart/data" with { type: "json" };
+import emojiData from "@emoji-mart/data";
 import EmojiPicker from "@emoji-mart/react";
 
 import { Board, TColumn } from "../components/Board.tsx";
@@ -21,21 +21,15 @@ export const Lists = () => {
   return (
     <View className="flex gap-4">
       <Toolbar>
-        <p className="btn btn-ghost">Lists</p>
+        <p className="btn btn-ghost"> Lists </p>
       </Toolbar>
-      <Board
-        canCreateTasks
-        columns={columns}
-        groupBy="listId"
-      />
+      <Board canCreateTasks columns={columns} groupBy="listId" />
       <CreateList onListCreate={createList} />
     </View>
   );
 };
 
-type TCreateListProps = {
-  onListCreate: (list: TCreateList) => void;
-};
+type TCreateListProps = { onListCreate: (list: TCreateList) => void };
 
 const CreateList = ({ onListCreate }: TCreateListProps) => {
   const [emoji, setEmoji] = useState<string>("🐶");
@@ -56,7 +50,8 @@ const CreateList = ({ onListCreate }: TCreateListProps) => {
               data={emojiData}
               maxFrequentRows={0}
               onEmojiSelect={(emoji: { native: string }) =>
-                setEmoji(emoji.native)}
+                setEmoji(emoji.native)
+              }
               previewEmoji="dog"
             />
           </div>
@@ -83,15 +78,12 @@ const makeColumns = (
   lists: Array<TList | NoList> | undefined = [],
   tasks: TTask[] | undefined = [],
 ): TColumn[] =>
-  [{
-    createdAt: "",
-    id: null,
-    title: "No List",
-    emoji: "🚫",
-  }, ...lists].map((list: TList | NoList) => ({
-    autoCollapse: list.id === null,
-    id: list.id,
-    title: list.title,
-    emoji: list.emoji,
-    tasks: tasks?.filter((task: TTask) => task.listId === list.id),
-  }));
+  [{ createdAt: "", id: null, title: "No List", emoji: "🚫" }, ...lists].map(
+    (list: TList | NoList) => ({
+      autoCollapse: list.id === null,
+      id: list.id,
+      title: list.title,
+      emoji: list.emoji,
+      tasks: tasks?.filter((task: TTask) => task.listId === list.id),
+    }),
+  );

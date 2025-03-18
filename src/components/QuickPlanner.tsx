@@ -10,10 +10,7 @@ import { TTask } from "../api/tasks.ts";
 import { TQueryFilter } from "../api/applyFilters.ts";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
-type TQuickPlannerProps = {
-  baseFilters?: TQueryFilter[];
-  className?: string;
-};
+type TQuickPlannerProps = { baseFilters?: TQueryFilter[]; className?: string };
 
 export const QuickPlanner = ({
   baseFilters = [],
@@ -30,7 +27,7 @@ export const QuickPlanner = ({
 
   const searchTasks = (tasks: TTask[]) =>
     tasks.filter((task): boolean =>
-      task.title.toLowerCase().includes(search.toLowerCase())
+      task.title.toLowerCase().includes(search.toLowerCase()),
     );
 
   return (
@@ -75,15 +72,13 @@ export const QuickPlanner = ({
   );
 };
 
-type TQuickDrawerProps = TQuickPlannerProps & {
-  isOpen: boolean;
-};
+type TQuickDrawerProps = TQuickPlannerProps & { isOpen: boolean };
 
 export const QuickDrawer = ({ isOpen, ...props }: TQuickDrawerProps) => (
   <div
     className={classNames(
       "bg-base-100 border-l-2 border-base-200 overflow-y-auto overflow-x-hidden flex-shrink-0",
-      { "w-0": !isOpen }
+      { "w-0": !isOpen },
     )}
   >
     <QuickPlanner {...props} />

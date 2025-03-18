@@ -3,10 +3,7 @@ import classNames from "classnames";
 
 import { useTasks } from "../hooks/useTasks.tsx";
 
-type Props = {
-  children: React.ReactNode;
-  className?: string;
-};
+type Props = { children: React.ReactNode; className?: string };
 
 export const View = ({ children, className }: Props) => {
   const [_, { updateTask }] = useTasks();
@@ -15,7 +12,7 @@ export const View = ({ children, className }: Props) => {
     // column is prefixed with the property name
     // example: "scheduledFor:2022-01-01"
     const [prop, value] = column.split(":");
-    const nullableValue = (value === "null") ? null : value;
+    const nullableValue = value === "null" ? null : value;
 
     // TODO: support moving within a column with index
     updateTask({ id, [prop]: nullableValue });

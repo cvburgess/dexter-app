@@ -33,12 +33,10 @@ export const ListButton = ({ onTaskUpdate, listId }: TListButtonProps) => {
 };
 
 const optionsForListId = (lists: TList[], listId: string | null): TOption[] =>
-  [...lists, {
-    id: null,
-    title: "None",
-    emoji: "🚫",
-    isSelected: listId === null,
-  }].map((list) => ({
+  [
+    ...lists,
+    { id: null, title: "None", emoji: "🚫", isSelected: listId === null },
+  ].map((list) => ({
     id: list.id,
     title: list.title,
     emoji: list.emoji,

@@ -1,24 +1,13 @@
 {
-  "[javascript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
   "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "always",
-    "source.fixAll.eslint": "always"
-  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.validate": [
     "javascript",
     "javascriptreact",
     "typescript",
     "typescriptreact"
   ],
-  "cSpell.ignorePaths": [
-    "*.env"
-  ],
+  "cSpell.ignorePaths": ["*.env"],
   "cSpell.words": [
     "apikey",
     "daisyui",
@@ -43,5 +32,12 @@
     "vite",
     "vonage",
     "workos"
-  ]
+  ],
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

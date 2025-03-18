@@ -56,15 +56,9 @@ const AuthContext = createContext<AuthContextType>({
   supabase,
 });
 
-type EmailPassword = {
-  email: string;
-  password: string;
-};
+type EmailPassword = { email: string; password: string };
 
-export type TToken = {
-  access_token: string;
-  refresh_token: string;
-};
+export type TToken = { access_token: string; refresh_token: string };
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);

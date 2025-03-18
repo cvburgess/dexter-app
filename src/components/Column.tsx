@@ -95,11 +95,7 @@ export const Column = ({
   );
 };
 
-type TColumnTitleProps = {
-  title?: string;
-  icon?: string;
-  isActive?: boolean;
-};
+type TColumnTitleProps = { title?: string; icon?: string; isActive?: boolean };
 
 const ColumnTitle = ({ title, icon, isActive }: TColumnTitleProps) => {
   if (!title) return null;

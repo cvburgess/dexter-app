@@ -19,15 +19,16 @@ export const Today = () => {
 
   return (
     <View>
-      <DayNav date={date} setDate={setDate} toggleQuickPlan={() => setIsOpen(!isOpen)} />
+      <DayNav
+        date={date}
+        setDate={setDate}
+        toggleQuickPlan={() => setIsOpen(!isOpen)}
+      />
 
       <div className="flex flex-1 relative overflow-hidden">
         <Board
           canCreateTasks
-          columns={[{
-            id: date.toString(),
-            tasks: tasks,
-          }]}
+          columns={[{ id: date.toString(), tasks: tasks }]}
           groupBy="scheduledFor"
         />
         <QuickDrawer isOpen={isOpen} baseFilters={taskFilters.notToday} />

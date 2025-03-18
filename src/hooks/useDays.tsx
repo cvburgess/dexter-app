@@ -10,9 +10,10 @@ import {
 
 import { useAuth } from "./useAuth.tsx";
 
-type TUseDays = [TDay & { prompts: TJournalPrompt[] }, {
-  upsertDay: (diff: Omit<TUpsertDay, "date">) => void;
-}];
+type TUseDays = [
+  TDay & { prompts: TJournalPrompt[] },
+  { upsertDay: (diff: Omit<TUpsertDay, "date">) => void },
+];
 
 export const useDays = (date: string): TUseDays => {
   const { supabase } = useAuth();

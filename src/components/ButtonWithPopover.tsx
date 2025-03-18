@@ -13,12 +13,7 @@ export type TOption = {
 
 export type TSegmentedOption = {
   title: string;
-  options: Array<
-    TOption & {
-      isDangerous?: boolean;
-      onChange: () => void;
-    }
-  >;
+  options: Array<TOption & { isDangerous?: boolean; onChange: () => void }>;
 };
 
 type TCommonProps = {
@@ -30,15 +25,15 @@ type TCommonProps = {
 
 type TConditionalProps =
   | {
-    variant: "calendar";
-    onChange: TOnChange<string | null>;
-    selectedDate?: string | null;
-  }
+      variant: "calendar";
+      onChange: TOnChange<string | null>;
+      selectedDate?: string | null;
+    }
   | {
-    variant: "menu";
-    onChange: TOnChange<string | number | null>;
-    options: TOption[];
-  }
+      variant: "menu";
+      onChange: TOnChange<string | number | null>;
+      options: TOption[];
+    }
   | { variant: "segmentedMenu"; options: TSegmentedOption[] };
 
 type TButtonWithPopoverProps = TCommonProps & TConditionalProps;
@@ -59,29 +54,31 @@ export const ButtonWithPopover = ({
     <div
       tabIndex={0}
       role="button"
-      className={classNames("cursor-pointer", {
-        [roundButtonClasses]: buttonVariant === "round",
-        [leftJoinButtonClasses]: buttonVariant === "left-join",
-      }, buttonClassName)}
+      className={classNames(
+        "cursor-pointer",
+        {
+          [roundButtonClasses]: buttonVariant === "round",
+          [leftJoinButtonClasses]: buttonVariant === "left-join",
+        },
+        buttonClassName,
+      )}
     >
       {children}
     </div>
-    {props.variant === "menu"
-      ? <DropdownMenu onChange={props.onChange} options={props.options} />
-      : null}
+    {props.variant === "menu" ? (
+      <DropdownMenu onChange={props.onChange} options={props.options} />
+    ) : null}
 
-    {props.variant === "segmentedMenu"
-      ? <SegmentedMenu options={props.options} />
-      : null}
+    {props.variant === "segmentedMenu" ? (
+      <SegmentedMenu options={props.options} />
+    ) : null}
 
-    {props.variant === "calendar"
-      ? (
-        <Calendar
-          onChange={props.onChange}
-          selectedDate={props.selectedDate || null}
-        />
-      )
-      : null}
+    {props.variant === "calendar" ? (
+      <Calendar
+        onChange={props.onChange}
+        selectedDate={props.selectedDate || null}
+      />
+    ) : null}
   </div>
 );
 
@@ -127,9 +124,7 @@ const SegmentedMenu = ({ options }: { options: TSegmentedOption[] }) => (
   >
     {options.map((segment) => (
       <Fragment key={segment.title}>
-        <div className="divider divider-start">
-          {segment.title}
-        </div>
+        <div className="divider divider-start">{segment.title}</div>
         {segment.options.map((option) => (
           <li key={option.id}>
             <a
@@ -160,10 +155,7 @@ type TCalendarProps = {
 const daySize = "30px";
 
 const Calendar = ({ onChange, selectedDate }: TCalendarProps) => (
-  <div
-    className={classNames(popoverStyles)}
-    tabIndex={0}
-  >
+  <div className={classNames(popoverStyles)} tabIndex={0}>
     <DayPicker
       className="react-day-picker flex cursor-pointer"
       classNames={{

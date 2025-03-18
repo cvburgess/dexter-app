@@ -25,9 +25,12 @@ type TCardProps = {
   task: TTask;
 };
 
-export const Card = (
-  { cardSize = "normal", className, task, provided }: TCardProps,
-) => {
+export const Card = ({
+  cardSize = "normal",
+  className,
+  task,
+  provided,
+}: TCardProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [_, { deleteTask, updateTask }] = useTasks();
 
@@ -43,17 +46,17 @@ export const Card = (
 
   const colors = cardColors[task.priority];
 
-  const isComplete = task.status === ETaskStatus.DONE ||
-    task.status === ETaskStatus.WONT_DO;
+  const isComplete =
+    task.status === ETaskStatus.DONE || task.status === ETaskStatus.WONT_DO;
 
   const shouldShowButtons = cardSize !== "compact-h" && !isComplete;
   const dragProps = provided
     ? {
-      ref: provided.innerRef,
-      ...provided.draggableProps,
-      ...provided.dragHandleProps,
-      style: { ...provided.draggableProps.style },
-    }
+        ref: provided.innerRef,
+        ...provided.draggableProps,
+        ...provided.dragHandleProps,
+        style: { ...provided.draggableProps.style },
+      }
     : {};
 
   return (
@@ -72,10 +75,7 @@ export const Card = (
         })}
       >
         {cardSize === "compact-w" ? null : (
-          <StatusButton
-            onTaskUpdate={onTaskUpdate}
-            status={task.status}
-          />
+          <StatusButton onTaskUpdate={onTaskUpdate} status={task.status} />
         )}
         <p
           className={classNames(
@@ -99,49 +99,41 @@ export const Card = (
         >
           {task.title}
         </p>
-        {cardSize === "compact-w"
-          ? (
-            <StatusButton
+        {cardSize === "compact-w" ? (
+          <StatusButton
+            onTaskUpdate={onTaskUpdate}
+            status={task.status}
+            className={isComplete ? "mx-auto" : "mr-auto"}
+          />
+        ) : null}
+        {shouldShowButtons ? (
+          <>
+            <DueDateButton
+              dueOn={task.dueOn}
+              isComplete={isComplete}
               onTaskUpdate={onTaskUpdate}
-              status={task.status}
-              className={isComplete ? "mx-auto" : "mr-auto"}
+              overdueClasses={colors.overdue}
             />
-          )
-          : null}
-        {shouldShowButtons
-          ? (
-            <>
-              <DueDateButton
-                dueOn={task.dueOn}
-                isComplete={isComplete}
-                onTaskUpdate={onTaskUpdate}
-                overdueClasses={colors.overdue}
-              />
-              <ListButton
-                listId={task.listId}
-                onTaskUpdate={onTaskUpdate}
-              />
-              <MoreButton
-                onTaskDelete={onTaskDelete}
-                onTaskUpdate={onTaskUpdate}
-                task={task}
-              />
-            </>
-          )
-          : null}
+            <ListButton listId={task.listId} onTaskUpdate={onTaskUpdate} />
+            <MoreButton
+              onTaskDelete={onTaskDelete}
+              onTaskUpdate={onTaskUpdate}
+              task={task}
+            />
+          </>
+        ) : null}
       </div>
     </div>
   );
 };
 
-export const DraggableCard = (
-  { cardSize, className, index, task }: TCardProps & { index: number },
-) => (
-  <Draggable
-    key={task.id}
-    draggableId={task.id}
-    index={index}
-  >
+export const DraggableCard = ({
+  cardSize,
+  className,
+  index,
+  task,
+}: TCardProps & { index: number }) => (
+  <Draggable key={task.id} draggableId={task.id} index={index}>
     {(provided) => (
       <Card
         cardSize={cardSize}
