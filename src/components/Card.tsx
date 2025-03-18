@@ -63,14 +63,14 @@ export const Card = ({
     <div
       {...dragProps}
       className={classNames(
-        "shadow-xs rounded-box p-4 border border-current/10",
+        "shadow-xs rounded-box p-4 border border-current/10 flex",
         isComplete ? colors.complete : colors.incomplete,
         cardSize === "compact-w" ? "w-compact" : "w-standard h-standard",
         className,
       )}
     >
       <div
-        className={classNames("flex items-center justify-start gap-2", {
+        className={classNames("flex items-center justify-start gap-2 w-full", {
           "flex-wrap": cardSize === "compact-w",
         })}
       >
@@ -79,7 +79,7 @@ export const Card = ({
         )}
         <p
           className={classNames(
-            "text-xs font-medium focus:outline-none",
+            "text-xs font-medium focus:outline-none mx-0.5",
             isEditing ? "cursor-text" : "cursor-default",
             {
               "flex-grow": cardSize !== "compact-w",
