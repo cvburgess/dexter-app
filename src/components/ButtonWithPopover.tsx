@@ -189,6 +189,7 @@ const Emoji = ({ onChange }: { onChange: TOnChange<string> }) => (
       data={emojiData}
       maxFrequentRows={0}
       onEmojiSelect={(emoji: { native: string }) => onChange(emoji.native)}
+      perLine={7}
       previewEmoji="dog"
     />
   </div>
