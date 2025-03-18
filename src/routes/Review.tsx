@@ -38,7 +38,7 @@ export const Review = () => {
   );
 
   return (
-    <View className="flex-col">
+    <View>
       <DayNav date={date} setDate={setDate} />
 
       <div className="carousel carousel-center rounded-box w-full h-full space-x-8 p-8">

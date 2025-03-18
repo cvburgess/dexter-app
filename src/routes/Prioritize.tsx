@@ -1,4 +1,5 @@
 import { Board, TColumn } from "../components/Board.tsx";
+import { Toolbar } from "../components/Toolbar.tsx";
 import { View } from "../components/View.tsx";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
@@ -12,6 +13,9 @@ export const Prioritize = () => {
 
   return (
     <View>
+      <Toolbar>
+        Prioritize
+      </Toolbar>
       <Board canCreateTasks columns={columns} groupBy="priority" />
     </View>
   );

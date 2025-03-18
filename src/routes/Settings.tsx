@@ -1,12 +1,16 @@
-import { useAuth } from "../hooks/useAuth.tsx";
+import { Toolbar } from "../components/Toolbar.tsx";
 import { View } from "../components/View.tsx";
+
+import { useAuth } from "../hooks/useAuth.tsx";
 
 export const Settings = () => {
   const { signOut } = useAuth();
 
   return (
     <View>
-      <h1>Settings</h1>
+      <Toolbar>
+        Settings
+      </Toolbar>
       <button
         type="button"
         className="btn"

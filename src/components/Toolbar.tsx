@@ -72,32 +72,34 @@ export const WeekNav = (
 
 type TToolbarProps = {
   children: React.ReactNode;
-  onClickNext: () => void;
-  onClickPrevious: () => void;
+  onClickNext?: () => void;
+  onClickPrevious?: () => void;
   toggleQuickPlan?: () => void;
 };
 
-const Toolbar = (
+export const Toolbar = (
   { children, onClickNext, onClickPrevious, toggleQuickPlan }: TToolbarProps,
 ) => {
   return (
     <div className="flex items-center p-4 pb-0 w-full bg-base-100">
       {children}
-      <ArrowButton
-        onClick={onClickPrevious}
-        variant="previous"
-      />
-      <ArrowButton
-        onClick={onClickNext}
-        variant="next"
-      />
-      {toggleQuickPlan
-        ? (
-          <button className="btn btn-ghost" onClick={toggleQuickPlan}>
-            <Rows />
-          </button>
-        )
-        : null}
+      {onClickPrevious && (
+        <ArrowButton
+          onClick={onClickPrevious}
+          variant="previous"
+        />
+      )}
+      {onClickNext && (
+        <ArrowButton
+          onClick={onClickNext}
+          variant="next"
+        />
+      )}
+      {toggleQuickPlan && (
+        <button className="btn btn-ghost" onClick={toggleQuickPlan}>
+          <Rows />
+        </button>
+      )}
     </div>
   );
 };

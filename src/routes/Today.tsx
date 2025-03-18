@@ -18,7 +18,7 @@ export const Today = () => {
   const [tasks] = useTasks([["scheduledFor", "eq", date.toString()]]);
 
   return (
-    <View className="flex-col">
+    <View>
       <DayNav date={date} setDate={setDate} toggleQuickPlan={() => setIsOpen(!isOpen)} />
 
       <div className="flex flex-1 relative overflow-hidden">

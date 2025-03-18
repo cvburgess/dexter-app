@@ -3,6 +3,7 @@ import emojiData from "@emoji-mart/data" with { type: "json" };
 import EmojiPicker from "@emoji-mart/react";
 
 import { Board, TColumn } from "../components/Board.tsx";
+import { Toolbar } from "../components/Toolbar.tsx";
 import { View } from "../components/View.tsx";
 
 import { useLists } from "../hooks/useLists.tsx";
@@ -19,6 +20,9 @@ export const Lists = () => {
 
   return (
     <View className="flex gap-4">
+      <Toolbar>
+        Lists
+      </Toolbar>
       <Board
         canCreateTasks
         columns={columns}

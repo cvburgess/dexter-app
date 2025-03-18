@@ -52,7 +52,7 @@ export const View = ({ children, className }: Props) => {
     <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
       <div
         className={classNames(
-          "flex flex-1 relative overflow-hidden",
+          "flex flex-1 flex-col relative overflow-hidden",
           className,
         )}
       >

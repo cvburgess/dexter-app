@@ -37,7 +37,7 @@ export const Week = () => {
   const columns = makeColumnsForWeekOf(mostRecentMonday, tasks);
 
   return (
-    <View className="flex-col">
+    <View>
       <WeekNav
         weeksOffset={weeksOffset}
         setWeeksOffset={setWeeksOffset}
