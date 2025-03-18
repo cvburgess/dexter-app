@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Droppable } from "@hello-pangea/dnd";
 import { Plus } from "@phosphor-icons/react";
 import classNames from "classnames";
@@ -28,6 +29,7 @@ export const Column = ({
   tasks = [],
   title,
 }: TColumnProps) => {
+  const [hasScrolled, setHasScrolled] = useState(false);
   const [_, { createTask }] = useTasks();
 
   const onTaskCreate = (taskTitle: string) => {
@@ -46,8 +48,9 @@ export const Column = ({
         cardSize === "compact-w" ? "min-w-40 w-40" : "min-w-70 w-70",
       )}
       ref={(el) => {
-        if (isActive && el) {
+        if (isActive && el && !hasScrolled) {
           el.scrollIntoView({ behavior: "smooth", inline: "center" });
+          setHasScrolled(true);
         }
       }}
     >
