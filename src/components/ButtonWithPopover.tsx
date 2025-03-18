@@ -42,9 +42,9 @@ type TConditionalProps =
 type TButtonWithPopoverProps = TCommonProps & TConditionalProps;
 
 const roundButtonClasses =
-  "w-5 h-5 rounded-box outline outline-current/25 flex items-center justify-center text-xs hover:opacity-90";
+  "w-5 h-5 rounded-box outline outline-current/25 flex items-center justify-center hover:opacity-90";
 const leftJoinButtonClasses =
-  "btn join-item p-4 h-standard min-w-20 bg-base-300 border-none text-xs";
+  "btn join-item p-4 h-standard min-w-20 bg-base-200 border-none";
 
 export const ButtonWithPopover = ({
   buttonClassName,
@@ -63,6 +63,7 @@ export const ButtonWithPopover = ({
           [roundButtonClasses]: buttonVariant === "round",
           [leftJoinButtonClasses]: buttonVariant === "left-join",
         },
+        props.variant === "emoji" ? "text-2xl" : "text-xs",
         buttonClassName,
       )}
     >
