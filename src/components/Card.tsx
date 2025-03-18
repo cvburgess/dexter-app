@@ -65,7 +65,7 @@ export const Card = ({
       className={classNames(
         "shadow-xs rounded-box p-4 border border-current/10",
         isComplete ? colors.complete : colors.incomplete,
-        cardSize === "compact-w" ? "w-compact" : "w-standard",
+        cardSize === "compact-w" ? "w-compact" : "w-standard h-standard",
         className,
       )}
     >
