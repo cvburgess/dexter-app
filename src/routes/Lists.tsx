@@ -83,12 +83,12 @@ const makeColumns = (
   lists: Array<TList | NoList> | undefined = [],
   tasks: TTask[] | undefined = [],
 ): TColumn[] =>
-  [...lists, {
+  [{
     createdAt: "",
     id: null,
     title: "No List",
     emoji: "🚫",
-  }].map((list: TList | NoList) => ({
+  }, ...lists].map((list: TList | NoList) => ({
     autoCollapse: list.id === null,
     id: list.id,
     title: list.title,
