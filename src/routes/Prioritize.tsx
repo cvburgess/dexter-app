@@ -1,4 +1,5 @@
 import { Board, TColumn } from "../components/Board.tsx";
+import { Toolbar } from "../components/Toolbar.tsx";
 import { View } from "../components/View.tsx";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
@@ -12,6 +13,9 @@ export const Prioritize = () => {
 
   return (
     <View>
+      <Toolbar>
+        <p className="btn btn-ghost">Prioritize</p>
+      </Toolbar>
       <Board canCreateTasks columns={columns} groupBy="priority" />
     </View>
   );
@@ -23,35 +27,35 @@ const makeColumns = (tasks: TTask[] | undefined = []): TColumn[] => [
     id: ETaskPriority.UNPRIORITIZED.toString(),
     title: "Unprioritized",
     tasks: tasks?.filter(
-      (task: TTask) => task.priority === ETaskPriority.UNPRIORITIZED
+      (task: TTask) => task.priority === ETaskPriority.UNPRIORITIZED,
     ),
   },
   {
     id: ETaskPriority.IMPORTANT_AND_URGENT.toString(),
     title: "Important and Urgent",
     tasks: tasks?.filter(
-      (task: TTask) => task.priority === ETaskPriority.IMPORTANT_AND_URGENT
+      (task: TTask) => task.priority === ETaskPriority.IMPORTANT_AND_URGENT,
     ),
   },
   {
     id: ETaskPriority.IMPORTANT.toString(),
     title: "Important",
     tasks: tasks?.filter(
-      (task: TTask) => task.priority === ETaskPriority.IMPORTANT
+      (task: TTask) => task.priority === ETaskPriority.IMPORTANT,
     ),
   },
   {
     id: ETaskPriority.URGENT.toString(),
     title: "Urgent",
     tasks: tasks?.filter(
-      (task: TTask) => task.priority === ETaskPriority.URGENT
+      (task: TTask) => task.priority === ETaskPriority.URGENT,
     ),
   },
   {
     id: ETaskPriority.NEITHER.toString(),
     title: "Rainy Day",
     tasks: tasks?.filter(
-      (task: TTask) => task.priority === ETaskPriority.NEITHER
+      (task: TTask) => task.priority === ETaskPriority.NEITHER,
     ),
   },
 ];

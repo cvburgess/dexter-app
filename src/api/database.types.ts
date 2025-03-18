@@ -35,6 +35,7 @@ export type Database = {
           created_at: string
           emoji: string
           id: string
+          is_archived: boolean
           title: string | null
           user_id: string
         }
@@ -42,6 +43,7 @@ export type Database = {
           created_at?: string
           emoji: string
           id?: string
+          is_archived?: boolean
           title?: string | null
           user_id?: string
         }
@@ -49,6 +51,7 @@ export type Database = {
           created_at?: string
           emoji?: string
           id?: string
+          is_archived?: boolean
           title?: string | null
           user_id?: string
         }

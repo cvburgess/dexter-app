@@ -1,10 +1,10 @@
 import { NavLink } from "react-router";
 import {
+  CalendarDots,
   Gear,
   List,
   Moon,
   SquaresFour,
-  Strategy,
   Sun,
 } from "@phosphor-icons/react";
 import classNames from "classnames";
@@ -14,7 +14,7 @@ import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 const navItems = [
   { Icon: Sun, route: "/" },
   { Icon: Moon, route: "/review" },
-  { Icon: Strategy, route: "/week" },
+  { Icon: CalendarDots, route: "/week" },
   { Icon: SquaresFour, route: "/prioritize" },
   { Icon: List, route: "/lists" },
   { Icon: Gear, route: "/settings", bottom: true },
@@ -37,9 +37,10 @@ export const Nav = () => {
                 {
                   "bg-base-content/80 text-base-100": isActive,
                   "mt-auto": item.bottom,
-                  "indicator": true,
+                  indicator: true,
                 },
-              )}
+              )
+            }
           >
             <Indicator route={item.route} />
             <item.Icon size={24} />

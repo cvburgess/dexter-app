@@ -41,9 +41,7 @@ const createWindow = () => {
     show: false,
     width: 800,
     height: 600,
-    webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
-    },
+    webPreferences: { preload: path.join(__dirname, "preload.js") },
   });
 
   mainWindow.once("ready-to-show", () => {

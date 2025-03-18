@@ -11,12 +11,7 @@ const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
     icon: "public/app-icon",
-    protocols: [
-      {
-        name: "Dexter",
-        schemes: ["dexter"],
-      },
-    ],
+    protocols: [{ name: "Dexter", schemes: ["dexter"] }],
   },
   rebuildConfig: {},
   makers: [
@@ -42,12 +37,7 @@ const config: ForgeConfig = {
           target: "preload",
         },
       ],
-      renderer: [
-        {
-          name: "main_window",
-          config: "vite.renderer.config.mjs",
-        },
-      ],
+      renderer: [{ name: "main_window", config: "vite.renderer.config.mjs" }],
     }),
     // Fuses are used to enable/disable various Electron functionality
     // at package time, before code signing the application

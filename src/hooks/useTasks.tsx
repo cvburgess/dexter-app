@@ -17,12 +17,15 @@ import {
 import { useAuth } from "./useAuth.tsx";
 import { makeOrFilter, TQueryFilter } from "../api/applyFilters.ts";
 
-type TUseTasks = [TTask[], {
-  createTask: (task: TCreateTask) => void;
-  deleteTask: (id: string) => void;
-  updateTask: (task: TUpdateTask) => void;
-  updateTasks: (tasks: TUpdateTask[]) => void;
-}];
+type TUseTasks = [
+  TTask[],
+  {
+    createTask: (task: TCreateTask) => void;
+    deleteTask: (id: string) => void;
+    updateTask: (task: TUpdateTask) => void;
+    updateTasks: (tasks: TUpdateTask[]) => void;
+  },
+];
 
 export const useTasks = (where: TQueryFilter[] = []): TUseTasks => {
   const { supabase } = useAuth();
@@ -61,12 +64,15 @@ export const useTasks = (where: TQueryFilter[] = []): TUseTasks => {
     },
   });
 
-  return [tasks, {
-    createTask: create,
-    deleteTask: remove,
-    updateTask: update,
-    updateTasks: bulkUpdate,
-  }];
+  return [
+    tasks,
+    {
+      createTask: create,
+      deleteTask: remove,
+      updateTask: update,
+      updateTasks: bulkUpdate,
+    },
+  ];
 };
 
 const today = Temporal.Now.plainDateISO();
@@ -81,10 +87,7 @@ export const taskFilters: Record<string, TQueryFilter[]> = {
     ];
   },
   get overdue(): TQueryFilter[] {
-    return [
-      ["dueOn", "lt", today.toString()],
-      ...this.incomplete,
-    ];
+    return [["dueOn", "lt", today.toString()], ...this.incomplete];
   },
   get dueSoon(): TQueryFilter[] {
     return [
@@ -94,16 +97,10 @@ export const taskFilters: Record<string, TQueryFilter[]> = {
     ];
   },
   get unscheduled(): TQueryFilter[] {
-    return [
-      ["scheduledFor", "is", null],
-      ...this.incomplete,
-    ];
+    return [["scheduledFor", "is", null], ...this.incomplete];
   },
   get leftBehind(): TQueryFilter[] {
-    return [
-      ["scheduledFor", "lt", today.toString()],
-      ...this.incomplete,
-    ];
+    return [["scheduledFor", "lt", today.toString()], ...this.incomplete];
   },
   get notToday(): TQueryFilter[] {
     return [

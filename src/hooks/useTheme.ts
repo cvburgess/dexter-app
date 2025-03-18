@@ -6,11 +6,7 @@ export type TThemeMode = TTheme | "system";
 export const useTheme = () => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
-  const userPreferences = {
-    light: "dexter",
-    dark: "dark",
-    mode: "system",
-  };
+  const userPreferences = { light: "dexter", dark: "dark", mode: "system" };
 
   useEffect(() => {
     // Get the theme from the system, or set it based on user preferences
