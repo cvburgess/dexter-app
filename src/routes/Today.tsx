@@ -9,6 +9,8 @@ import { QuickDrawer } from "../components/QuickPlanner.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
 
 export const Today = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const [date, setDate] = useState<Temporal.PlainDate>(
     Temporal.Now.plainDateISO(),
   );
@@ -16,20 +18,21 @@ export const Today = () => {
   const [tasks] = useTasks([["scheduledFor", "eq", date.toString()]]);
 
   return (
-    <View className="flex-col">
-      <DayNav date={date} setDate={setDate} />
-
-      <Board
-        canCreateTasks
-        columns={[{
-          id: date.toString(),
-          tasks: tasks,
-        }]}
-        groupBy="scheduledFor"
-        topSpacing="top-14"
+    <View>
+      <DayNav
+        date={date}
+        setDate={setDate}
+        toggleQuickPlan={() => setIsOpen(!isOpen)}
       />
 
-      <QuickDrawer baseFilters={taskFilters.notToday} />
+      <div className="flex flex-1 relative overflow-hidden">
+        <Board
+          canCreateTasks
+          columns={[{ id: date.toString(), tasks: tasks }]}
+          groupBy="scheduledFor"
+        />
+        <QuickDrawer isOpen={isOpen} baseFilters={taskFilters.notToday} />
+      </div>
     </View>
   );
 };

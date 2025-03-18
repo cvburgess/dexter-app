@@ -7,18 +7,38 @@
   }
 
   .no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 
   .scroll-momentum {
-    -webkit-overflow-scrolling: touch
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .h-standard {
+    height: calc(var(--spacing) * 13);
+  }
+
+  .w-standard {
+    width: calc(var(--spacing) * 70);
+  }
+
+  .min-w-standard {
+    min-width: calc(var(--spacing) * 70);
+  }
+
+  .w-compact {
+    width: calc(var(--spacing) * 40);
+  }
+
+  .min-w-compact {
+    min-width: calc(var(--spacing) * 40);
   }
 }
 
 @plugin "daisyui" {
-   themes: all;
- }
+  themes: all;
+}
 
 @plugin "daisyui/theme" {
   name: "dexter";

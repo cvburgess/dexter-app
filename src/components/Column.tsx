@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Droppable } from "@hello-pangea/dnd";
 import { Plus } from "@phosphor-icons/react";
 import classNames from "classnames";
@@ -12,24 +13,23 @@ import { TTask } from "../api/tasks.ts";
 type TColumnProps = {
   canCreateTasks?: boolean;
   cardSize?: ECardSize;
-  icon?: string;
   id: string;
   isActive?: boolean;
   tasks: TTask[];
   title?: string;
-  topSpacing: "top-0" | "top-14";
+  titleComponent?: React.ReactNode | null;
 };
 
 export const Column = ({
   canCreateTasks = false,
   cardSize = "normal",
-  icon,
   id,
   isActive = false,
   tasks = [],
   title,
-  topSpacing,
+  titleComponent = null,
 }: TColumnProps) => {
+  const [hasScrolled, setHasScrolled] = useState(false);
   const [_, { createTask }] = useTasks();
 
   const onTaskCreate = (taskTitle: string) => {
@@ -45,20 +45,26 @@ export const Column = ({
     <div
       className={classNames(
         "max-h-screen min-h-[50vh] flex flex-col",
-        cardSize === "compact-w" ? "min-w-40 w-40" : "min-w-70 w-70",
+        cardSize === "compact-w"
+          ? "min-w-compact w-compact"
+          : "min-w-standard w-standard",
       )}
       ref={(el) => {
-        if (isActive && el) {
+        if (isActive && el && !hasScrolled) {
           el.scrollIntoView({ behavior: "smooth", inline: "center" });
+          setHasScrolled(true);
         }
       }}
     >
       <div
-        className={classNames(topSpacing, {
-          "sticky z-10 bg-base-100 pt-4": title || canCreateTasks,
-        })}
+        className={classNames(
+          "top-0 pt-4 pb-2 mb-2 bg-base-100 flex flex-col gap-4",
+          {
+            "sticky z-10": title || canCreateTasks || titleComponent,
+          },
+        )}
       >
-        <ColumnTitle icon={icon} isActive={isActive} title={title} />
+        {titleComponent || <ColumnTitle isActive={isActive} title={title} />}
 
         <CreateTask
           enabled={canCreateTasks}
@@ -95,21 +101,21 @@ export const Column = ({
 };
 
 type TColumnTitleProps = {
-  title?: string;
-  icon?: string;
+  emoji?: string;
   isActive?: boolean;
+  isEditable?: boolean;
+  title?: string;
 };
 
-const ColumnTitle = ({ title, icon, isActive }: TColumnTitleProps) => {
+const ColumnTitle = ({ isActive, title }: TColumnTitleProps) => {
   if (!title) return null;
 
   return (
     <div
-      className={classNames("badge badge-lg p-5 mx-auto mb-4 w-full", {
+      className={classNames("badge badge-lg p-5 mx-auto w-full h-standard", {
         "bg-base-content/80 text-base-100": isActive,
       })}
     >
-      {icon}
       {title}
     </div>
   );
@@ -131,7 +137,6 @@ const CreateTask = ({ enabled, onTaskCreate }: TCreateTaskProps) =>
           e.currentTarget.value = "";
         }
       }}
-      wrapperClassName="mb-4"
     >
       <Plus />
     </InputWithIcon>

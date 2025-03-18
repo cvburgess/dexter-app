@@ -9,7 +9,8 @@ export const snakeCase = (
     | string
     | Record<string, unknown>
     | ReadonlyArray<Record<string, unknown>>,
-) => typeof value === "string" ? snakeCaseString(value) : snakeCaseKeys(value);
+) =>
+  typeof value === "string" ? snakeCaseString(value) : snakeCaseKeys(value);
 
 const camelCaseString = (str: string) =>
   str.replace(/_./g, (letter) => letter[1].toUpperCase());
@@ -19,4 +20,5 @@ export const camelCase = (
     | string
     | Record<string, unknown>
     | ReadonlyArray<Record<string, unknown>>,
-) => typeof value === "string" ? camelCaseString(value) : camelCaseKeys(value);
+) =>
+  typeof value === "string" ? camelCaseString(value) : camelCaseKeys(value);

@@ -12,12 +12,15 @@ import {
 
 import { useAuth } from "./useAuth.tsx";
 
-type TUseLists = [TList[], {
-  createList: (list: TCreateList) => void;
-  deleteList: (id: string) => void;
-  getListById: (id: string | null) => TList | undefined;
-  updateList: (list: TUpdateList) => void;
-}];
+type TUseLists = [
+  TList[],
+  {
+    createList: (list: TCreateList) => void;
+    deleteList: (id: string) => void;
+    getListById: (id: string | null) => TList | undefined;
+    updateList: (list: TUpdateList) => void;
+  },
+];
 
 export const useLists = (): TUseLists => {
   const { supabase } = useAuth();
@@ -54,10 +57,8 @@ export const useLists = (): TUseLists => {
     return lists?.find((list) => list.id === id);
   };
 
-  return [lists, {
-    createList: create,
-    deleteList: remove,
-    getListById,
-    updateList: update,
-  }];
+  return [
+    lists,
+    { createList: create, deleteList: remove, getListById, updateList: update },
+  ];
 };

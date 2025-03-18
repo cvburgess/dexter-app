@@ -44,7 +44,10 @@
     "@vitejs/plugin-react": "^4.3.4",
     "electron": "^35.0.2",
     "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.3",
+    "prettier": "^3.5.3",
     "supabase": "^2.19.7",
     "ts-node": "^10.9.2",
     "typescript": "~5.6.2",
@@ -54,6 +57,7 @@
     "node": ">=22.0.0"
   },
   "scripts": {
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "git:prune": "git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D",
     "icon": "npx png2icons ./public/app-icon.png ./public/app-icon -allp",
     "lint": "eslint --ext .ts,.tsx .",

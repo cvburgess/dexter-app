@@ -3,9 +3,7 @@ import { useDebounce } from "use-debounce";
 
 import { useDays } from "../hooks/useDays.tsx";
 
-type TJournalProps = {
-  date: string;
-};
+type TJournalProps = { date: string };
 
 export const Journal = ({ date }: TJournalProps) => {
   const [{ prompts }, { upsertDay }] = useDays(date);

@@ -5,12 +5,14 @@ type TInputWithIconProps = {
   wrapperClassName?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-export const InputWithIcon = (
-  { children, wrapperClassName, ...props }: TInputWithIconProps,
-) => (
+export const InputWithIcon = ({
+  children,
+  wrapperClassName,
+  ...props
+}: TInputWithIconProps) => (
   <label
     className={classNames(
-      "group input input-ghost w-full p-4 h-auto bg-base-200",
+      "group input input-ghost w-full p-4 h-standard bg-base-200",
       "focus-within:bg-base-100 focus-within:border-1 focus-within:border-base-300 focus-within:outline-none",
       wrapperClassName,
     )}

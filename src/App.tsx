@@ -25,7 +25,7 @@ const App = () => {
   const theme = useTheme();
 
   return (
-    <main className="flex h-screen w-full" data-theme={theme}>
+    <main className="flex h-screen w-full overflow-hidden" data-theme={theme}>
       <Nav />
       <Outlet />
     </main>

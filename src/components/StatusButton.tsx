@@ -11,9 +11,11 @@ type TStatusButtonProps = {
   status: ETaskStatus;
 };
 
-export const StatusButton = (
-  { className, onTaskUpdate, status }: TStatusButtonProps,
-) => {
+export const StatusButton = ({
+  className,
+  onTaskUpdate,
+  status,
+}: TStatusButtonProps) => {
   const options = optionsForStatus(status);
   const icon = iconForStatus(status);
 
@@ -22,7 +24,8 @@ export const StatusButton = (
       buttonVariant="round"
       options={options}
       onChange={(value) =>
-        onTaskUpdate({ status: Number(value) as ETaskStatus })}
+        onTaskUpdate({ status: Number(value) as ETaskStatus })
+      }
       variant="menu"
       wrapperClassName={classNames("dropdown-hover", className)}
     >

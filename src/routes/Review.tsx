@@ -16,7 +16,7 @@ import { makeOrFilter } from "../api/applyFilters.ts";
 
 export const Review = () => {
   const [date, setDate] = useState<Temporal.PlainDate>(
-    Temporal.Now.plainDateISO()
+    Temporal.Now.plainDateISO(),
   );
 
   const nextDay = date.add({ days: 1 });
@@ -28,17 +28,16 @@ export const Review = () => {
 
   const completeTasks = tasks.filter(
     (task) =>
-      task.status === ETaskStatus.DONE ||
-      task.status === ETaskStatus.WONT_DO
+      task.status === ETaskStatus.DONE || task.status === ETaskStatus.WONT_DO,
   );
   const incompleteTasks = tasks.filter(
     (task) =>
       task.status === ETaskStatus.TODO ||
-      task.status === ETaskStatus.IN_PROGRESS
+      task.status === ETaskStatus.IN_PROGRESS,
   );
 
   return (
-    <View className="flex-col">
+    <View>
       <DayNav date={date} setDate={setDate} />
 
       <div className="carousel carousel-center rounded-box w-full h-full space-x-8 p-8">
@@ -106,7 +105,7 @@ const CardListWithTitle = ({ tasks, variant }: TCardListWithTItleProps) => {
   const Icon = variant === "complete" ? CheckCircle : XCircle;
 
   return (
-    <div className="flex flex-col items-center gap-4 min-w-70">
+    <div className="flex flex-col items-center gap-4 min-w-standard">
       <p className="text-xl font-bold opacity-60 inline-flex items-center pr-5 mt-4 capitalize">
         <Icon
           className={classNames("mr-4", {

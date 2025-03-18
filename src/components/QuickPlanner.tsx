@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CaretLeft, CaretRight, MagnifyingGlass } from "@phosphor-icons/react";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 import classNames from "classnames";
 
 import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
@@ -10,10 +10,7 @@ import { TTask } from "../api/tasks.ts";
 import { TQueryFilter } from "../api/applyFilters.ts";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
-type TQuickPlannerProps = {
-  baseFilters?: TQueryFilter[];
-  className?: string;
-};
+type TQuickPlannerProps = { baseFilters?: TQueryFilter[]; className?: string };
 
 export const QuickPlanner = ({
   baseFilters = [],
@@ -40,90 +37,51 @@ export const QuickPlanner = ({
         className,
       )}
     >
-      <div className="p-4 sticky top-0 z-10 bg-base-100">
-        <div className="join max-w-70">
-          <ButtonWithPopover
-            buttonVariant="left-join"
-            onChange={(id) => setSelectedFilter(id as string)}
-            options={options}
-            variant="menu"
-          >
-            {selected.title}
-          </ButtonWithPopover>
-
-          <InputWithIcon
-            // className="join-item"
-            type="text"
-            placeholder="Search"
-            onChange={(event) => setSearch(event.target.value)}
-            wrapperClassName="join-item"
-            value={search}
-          >
-            <MagnifyingGlass />
-          </InputWithIcon>
-        </div>
-      </div>
       <div className="px-4">
         <Column
-          // cardSize="compact-h"
           id="scheduledFor:null"
           tasks={searchTasks(filteredTasks)}
-          topSpacing="top-0"
+          titleComponent={
+            <div className="join w-standard">
+              <ButtonWithPopover
+                buttonVariant="left-join"
+                onChange={(id) => setSelectedFilter(id as string)}
+                options={options}
+                variant="menu"
+              >
+                {selected.title}
+              </ButtonWithPopover>
+
+              <InputWithIcon
+                // className="join-item"
+                type="text"
+                placeholder="Search"
+                onChange={(event) => setSearch(event.target.value)}
+                wrapperClassName="join-item"
+                value={search}
+              >
+                <MagnifyingGlass />
+              </InputWithIcon>
+            </div>
+          }
         />
       </div>
     </div>
   );
 };
 
-export const QuickDrawer = (props: TQuickPlannerProps) => (
-  <Drawer>
-    <QuickPlanner
-      {...props}
-      className="bg-base-100 border-l-2 border-base-300 shadow-[-4px_0px_4px_0px_rgba(0,0,0,0.05)]"
-    />
-  </Drawer>
+type TQuickDrawerProps = TQuickPlannerProps & { isOpen: boolean };
+
+export const QuickDrawer = ({ isOpen, ...props }: TQuickDrawerProps) => (
+  <div
+    className={classNames(
+      "bg-base-100 border-l-2 border-base-200 overflow-y-auto overflow-x-hidden flex-shrink-0 transition-all duration-300 ease-in-out",
+      isOpen ? "w-78" : "w-0",
+    )}
+  >
+    <QuickPlanner {...props} />
+  </div>
 );
-
-const Drawer = ({ children }: { children: React.ReactNode }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  return (
-    <>
-      <div
-        className={classNames(
-          "fixed top-0 bottom-0 right-0 z-100 flex transition-all duration-300 ease-in-out",
-          { "translate-x-79": !isOpen },
-        )}
-      >
-        <div
-          className="self-center h-20 p-1 bg-base-100 text-xs rounded-l-[var(--radius-box)] z-101 flex items-center justify-center border-2 border-base-300 border-r-base-100 mr-[-2px] text-base-content/40"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <label className="swap swap-rotate">
-            <CaretRight
-              size={18}
-              weight="bold"
-              className={classNames(isOpen ? "swap-off" : "swap-on")}
-            />
-            <CaretLeft
-              size={18}
-              weight="bold"
-              className={classNames(isOpen ? "swap-on" : "swap-off")}
-            />
-          </label>
-        </div>
-        {children}
-      </div>
-
-      <div
-        className={classNames(
-          "transition-all duration-300 ease-in-out",
-          isOpen ? "min-w-78" : "min-w-0",
-        )}
-      />
-    </>
-  );
-};
 
 const makeFilterOptions = (selectedFilter: string): TOption[] => [
   {

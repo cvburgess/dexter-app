@@ -149,9 +149,7 @@ export const Login = () => {
 
             <button
               type="button"
-              className={classNames("link link-hover", {
-                invisible: isLogin,
-              })}
+              className={classNames("link link-hover", { invisible: isLogin })}
               onClick={() => {
                 // TODO: Forgot password
               }}
