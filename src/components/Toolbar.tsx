@@ -81,7 +81,7 @@ export const Toolbar = (
   { children, onClickNext, onClickPrevious, toggleQuickPlan }: TToolbarProps,
 ) => {
   return (
-    <div className="flex items-center p-4 pb-0 w-full bg-base-100">
+    <div className="flex items-center p-2 w-full bg-base-100 border-b-2 border-base-200">
       {children}
       {onClickPrevious && (
         <ArrowButton

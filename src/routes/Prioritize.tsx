@@ -14,7 +14,7 @@ export const Prioritize = () => {
   return (
     <View>
       <Toolbar>
-        Prioritize
+        <p className="btn btn-ghost">Prioritize</p>
       </Toolbar>
       <Board canCreateTasks columns={columns} groupBy="priority" />
     </View>
