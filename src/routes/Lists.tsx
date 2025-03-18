@@ -1,15 +1,14 @@
 import { useState } from "react";
-import emojiData from "@emoji-mart/data";
-import EmojiPicker from "@emoji-mart/react";
 
 import { Board, TColumn } from "../components/Board.tsx";
+import { ButtonWithPopover } from "../components/ButtonWithPopover.tsx";
 import { Toolbar } from "../components/Toolbar.tsx";
 import { View } from "../components/View.tsx";
 
 import { useLists } from "../hooks/useLists.tsx";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
-import { TCreateList, TList } from "../api/lists.ts";
+import { TCreateList, TList, TUpdateList } from "../api/lists.ts";
 import { TTask } from "../api/tasks.ts";
 
 export const Lists = () => {
@@ -19,55 +18,58 @@ export const Lists = () => {
   const columns = makeColumns(lists, tasks);
 
   return (
-    <View className="flex gap-4">
+    <View>
       <Toolbar>
         <p className="btn btn-ghost"> Lists </p>
       </Toolbar>
-      <Board canCreateTasks columns={columns} groupBy="listId" />
-      <CreateList onListCreate={createList} />
+      <Board
+        appendAfter={<ListInput onChange={createList} />}
+        canCreateTasks
+        columns={columns}
+        groupBy="listId"
+      />
     </View>
   );
 };
 
-type TCreateListProps = { onListCreate: (list: TCreateList) => void };
+type TListInputProps = {
+  list?: TList;
+  onChange?: (list: TCreateList | TUpdateList) => void;
+};
 
-const CreateList = ({ onListCreate }: TCreateListProps) => {
+const ListInput = ({ list, onChange }: TListInputProps) => {
+  const [title, setTitle] = useState<string>(list?.title || "");
   const [emoji, setEmoji] = useState<string>("🐶");
 
+  const onChangeEmoji = (newEmoji: string) => {
+    list ? onChange({ id: list.id, emoji: newEmoji }) : setEmoji(newEmoji);
+  };
+
+  // Font Size of 1rem chosen to match a large badge in DaisyUI
+  // https://github.com/saadeghi/daisyui/blob/master/packages/daisyui/src/components/badge.css#L109
   return (
-    <div className="p-4 sticky top-0 z-10">
-      <div className="join w-70 min-w-70 h-[42px] rounded-[var(--radius-box)]">
-        <div className="dropdown">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn rounded-l-[var(--radius-box)] join-item border-base-100 bg-base-300 h-full shadow-none"
-          >
-            {emoji}
-          </div>
-          <div className="dropdown-content shadow-sm mt-2">
-            <EmojiPicker
-              data={emojiData}
-              maxFrequentRows={0}
-              onEmojiSelect={(emoji: { native: string }) =>
-                setEmoji(emoji.native)
-              }
-              previewEmoji="dog"
-            />
-          </div>
-        </div>
-        <input
-          className="input join-item bg-base-100 border-base-100 focus:outline-none shadow-none focus:shadow-none rounded-r-[var(--radius-box)] h-full"
-          placeholder="New List"
-          type="text"
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && e.currentTarget.value.trim()) {
-              onListCreate({ title: e.currentTarget.value.trim(), emoji });
-              e.currentTarget.value = "";
-            }
-          }}
-        />
-      </div>
+    <div className="join min-w-standard h-standard pt-4 sticky top-0">
+      <ButtonWithPopover
+        buttonVariant="left-join"
+        variant="emoji"
+        onChange={onChangeEmoji}
+      >
+        {emoji}
+      </ButtonWithPopover>
+      <input
+        className="input join-item bg-base-100 focus:outline-none shadow-none focus:shadow-none rounded-r-[var(--radius-box)] h-standard border-1 border-base-200 text-[1rem]"
+        placeholder="New List"
+        type="text"
+        onChange={(e) => setTitle(e.currentTarget.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && title) {
+            list
+              ? onChange({ id: list.id, title })
+              : onChange({ title, emoji });
+          }
+        }}
+        value={title}
+      />
     </div>
   );
 };
@@ -78,10 +80,11 @@ const makeColumns = (
   lists: Array<TList | NoList> | undefined = [],
   tasks: TTask[] | undefined = [],
 ): TColumn[] =>
-  [{ createdAt: "", id: null, title: "No List", emoji: "🚫" }, ...lists].map(
+  [{ createdAt: "", id: null, title: "No List" }, ...lists].map(
     (list: TList | NoList) => ({
       autoCollapse: list.id === null,
       id: list.id,
+      isEditable: list.id !== null,
       title: list.title,
       emoji: list.emoji,
       tasks: tasks?.filter((task: TTask) => task.listId === list.id),

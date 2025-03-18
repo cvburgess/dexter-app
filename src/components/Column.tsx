@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Droppable } from "@hello-pangea/dnd";
-import { Plus } from "@phosphor-icons/react";
+import { DotsThreeOutlineVertical, Plus } from "@phosphor-icons/react";
 import classNames from "classnames";
 
 import { DraggableCard, ECardSize } from "./Card.tsx";
@@ -13,9 +13,10 @@ import { TTask } from "../api/tasks.ts";
 type TColumnProps = {
   canCreateTasks?: boolean;
   cardSize?: ECardSize;
-  icon?: string;
+  emoji?: string;
   id: string;
   isActive?: boolean;
+  isEditable?: boolean;
   tasks: TTask[];
   title?: string;
 };
@@ -23,9 +24,10 @@ type TColumnProps = {
 export const Column = ({
   canCreateTasks = false,
   cardSize = "normal",
-  icon,
+  emoji,
   id,
   isActive = false,
+  isEditable = false,
   tasks = [],
   title,
 }: TColumnProps) => {
@@ -61,7 +63,12 @@ export const Column = ({
           "sticky z-10 bg-base-100 pt-4": title || canCreateTasks,
         })}
       >
-        <ColumnTitle icon={icon} isActive={isActive} title={title} />
+        <ColumnTitle
+          emoji={emoji}
+          isActive={isActive}
+          isEditable={isEditable}
+          title={title}
+        />
 
         <CreateTask
           enabled={canCreateTasks}
@@ -97,19 +104,33 @@ export const Column = ({
   );
 };
 
-type TColumnTitleProps = { title?: string; icon?: string; isActive?: boolean };
+type TColumnTitleProps = {
+  emoji?: string;
+  isActive?: boolean;
+  isEditable?: boolean;
+  title?: string;
+};
 
-const ColumnTitle = ({ title, icon, isActive }: TColumnTitleProps) => {
+const ColumnTitle = ({
+  emoji,
+  isActive,
+  isEditable,
+  title,
+}: TColumnTitleProps) => {
   if (!title) return null;
 
   return (
     <div
-      className={classNames("badge badge-lg p-5 mx-auto mb-4 w-full", {
-        "bg-base-content/80 text-base-100": isActive,
-      })}
+      className={classNames(
+        "badge badge-lg p-5 mx-auto mb-4 w-full h-standard flex items-center justify-center",
+        {
+          "bg-base-content/80 text-base-100": isActive,
+        },
+      )}
     >
-      {icon}
-      {title}
+      {emoji && <span className="mr-4">{emoji}</span>}
+      <span>{title}</span>
+      {isEditable && <DotsThreeOutlineVertical className="ml-auto" />}
     </div>
   );
 };

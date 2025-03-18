@@ -4,6 +4,7 @@ import { Column } from "../components/Column.tsx";
 import { TTask } from "../api/tasks.ts";
 
 type TBoardProps = {
+  appendAfter?: React.ReactNode;
   canCreateTasks?: boolean;
   cardSize?: ECardSize;
   columns: TColumn[];
@@ -13,8 +14,10 @@ type TBoardProps = {
 
 export type TColumn = {
   autoCollapse?: boolean;
+  emoji?: string;
   id: string | null;
   isActive?: boolean;
+  isEditable?: boolean;
   title?: string;
   tasks: TTask[];
 };
@@ -22,6 +25,7 @@ export type TColumn = {
 export type EGroupBy = "scheduledFor" | "listId" | "priority";
 
 export const Board = ({
+  appendAfter = null,
   canCreateTasks = false,
   cardSize = "normal",
   columns,
@@ -33,15 +37,19 @@ export const Board = ({
 
       return (
         <Column
-          cardSize={cardSize}
           canCreateTasks={canCreateTasks}
+          cardSize={cardSize}
+          emoji={column.emoji}
           id={`${groupBy}:${column.id}`}
-          key={column.id}
           isActive={column.isActive}
+          isEditable={column.isEditable}
+          key={column.id}
           tasks={column.tasks}
           title={column.title}
         />
       );
     })}
+
+    {appendAfter}
   </div>
 );
