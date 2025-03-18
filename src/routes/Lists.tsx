@@ -50,11 +50,27 @@ const ListInput = ({ list, onChange }: TListInputProps) => {
     }
   }, [debouncedTitle]);
 
+  const resetForm = () => {
+    setTitle("");
+    setEmoji("🐶");
+  };
+
   const onChangeTitle = ({
     currentTarget: { value },
   }: React.ChangeEvent<HTMLInputElement>) => {
     if (list) onChange({ id: list.id, title: value });
     setTitle(value);
+  };
+
+  const onEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && title) {
+      if (list) {
+        onChange({ id: list.id, title });
+      } else {
+        onChange({ title, emoji });
+        resetForm();
+      }
+    }
   };
 
   const onChangeEmoji = (value: string) => {
@@ -82,13 +98,7 @@ const ListInput = ({ list, onChange }: TListInputProps) => {
         placeholder="New List"
         type="text"
         onChange={onChangeTitle}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && title) {
-            list
-              ? onChange({ id: list.id, title })
-              : onChange({ title, emoji });
-          }
-        }}
+        onKeyDown={onEnter}
         value={title}
       />
     </div>
