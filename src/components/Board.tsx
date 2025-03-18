@@ -29,23 +29,21 @@ export const Board = (
     groupBy,
   }: TBoardProps,
 ) => (
-  <div className="flex-1 overflow-auto bg-base-100 transition-all duration-300 ease-in-out">
-    <div className="flex gap-4 px-4 pb-4">
-      {columns.map((column) => {
-        if (!column.tasks.length && column.autoCollapse) return null;
+  <div className="flex flex-1 gap-4 px-4 pb-4 overflow-auto bg-base-100 transition-all duration-300 ease-in-out">
+    {columns.map((column) => {
+      if (!column.tasks.length && column.autoCollapse) return null;
 
-        return (
-          <Column
-            cardSize={cardSize}
-            canCreateTasks={canCreateTasks}
-            id={`${groupBy}:${column.id}`}
-            key={column.id}
-            isActive={column.isActive}
-            tasks={column.tasks}
-            title={column.title}
-          />
-        );
-      })}
-    </div>
+      return (
+        <Column
+          cardSize={cardSize}
+          canCreateTasks={canCreateTasks}
+          id={`${groupBy}:${column.id}`}
+          key={column.id}
+          isActive={column.isActive}
+          tasks={column.tasks}
+          title={column.title}
+        />
+      );
+    })}
   </div>
 );

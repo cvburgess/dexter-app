@@ -83,10 +83,10 @@ export const QuickDrawer = ({ isOpen, ...props }: TQuickDrawerProps) => (
   <div
     className={classNames(
       "bg-base-100 border-l-2 border-base-300 overflow-y-auto overflow-x-hidden transition-all duration-300 ease-in-out flex-shrink-0",
-      isOpen ? "w-[300px]" : "w-0 mr-[-300px]"
+      { "w-0 mr-[-300px]": !isOpen }
     )}
   >
-    {isOpen && <QuickPlanner {...props} />}
+    <QuickPlanner {...props} />
   </div>
 );
 
