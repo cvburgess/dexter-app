@@ -31,12 +31,7 @@ export const QuickPlanner = ({
     );
 
   return (
-    <div
-      className={classNames(
-        "overflow-x-hidden overflow-y-scroll no-scrollbar",
-        className,
-      )}
-    >
+    <div className={classNames("no-scrollbar", className)}>
       <div className="px-4">
         <Column
           id="scheduledFor:null"
