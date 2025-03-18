@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Droppable } from "@hello-pangea/dnd";
-import { DotsThreeOutlineVertical, Plus } from "@phosphor-icons/react";
+import { Plus } from "@phosphor-icons/react";
 import classNames from "classnames";
 
 import { DraggableCard, ECardSize } from "./Card.tsx";
@@ -13,23 +13,21 @@ import { TTask } from "../api/tasks.ts";
 type TColumnProps = {
   canCreateTasks?: boolean;
   cardSize?: ECardSize;
-  emoji?: string;
   id: string;
   isActive?: boolean;
-  isEditable?: boolean;
   tasks: TTask[];
   title?: string;
+  titleComponent?: React.ReactNode | null;
 };
 
 export const Column = ({
   canCreateTasks = false,
   cardSize = "normal",
-  emoji,
   id,
   isActive = false,
-  isEditable = false,
   tasks = [],
   title,
+  titleComponent = null,
 }: TColumnProps) => {
   const [hasScrolled, setHasScrolled] = useState(false);
   const [_, { createTask }] = useTasks();
@@ -60,15 +58,10 @@ export const Column = ({
     >
       <div
         className={classNames("top-0", {
-          "sticky z-10 bg-base-100 pt-4": title || canCreateTasks,
+          "sticky z-10 bg-base-100": title || canCreateTasks,
         })}
       >
-        <ColumnTitle
-          emoji={emoji}
-          isActive={isActive}
-          isEditable={isEditable}
-          title={title}
-        />
+        {titleComponent || <ColumnTitle isActive={isActive} title={title} />}
 
         <CreateTask
           enabled={canCreateTasks}
@@ -111,26 +104,17 @@ type TColumnTitleProps = {
   title?: string;
 };
 
-const ColumnTitle = ({
-  emoji,
-  isActive,
-  isEditable,
-  title,
-}: TColumnTitleProps) => {
+const ColumnTitle = ({ isActive, title }: TColumnTitleProps) => {
   if (!title) return null;
 
   return (
     <div
       className={classNames(
-        "badge badge-lg p-5 mx-auto mb-4 w-full h-standard flex items-center justify-center",
-        {
-          "bg-base-content/80 text-base-100": isActive,
-        },
+        "badge badge-lg p-5 mx-auto mb-4 w-full h-standard",
+        { "bg-base-content/80 text-base-100": isActive },
       )}
     >
-      {emoji && <span className="mr-4">{emoji}</span>}
-      <span>{title}</span>
-      {isEditable && <DotsThreeOutlineVertical className="ml-auto" />}
+      {title}
     </div>
   );
 };

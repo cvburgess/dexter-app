@@ -14,12 +14,11 @@ type TBoardProps = {
 
 export type TColumn = {
   autoCollapse?: boolean;
-  emoji?: string;
   id: string | null;
   isActive?: boolean;
-  isEditable?: boolean;
-  title?: string;
   tasks: TTask[];
+  title?: string;
+  titleComponent?: React.ReactNode | null;
 };
 
 export type EGroupBy = "scheduledFor" | "listId" | "priority";
@@ -31,7 +30,7 @@ export const Board = ({
   columns,
   groupBy,
 }: TBoardProps) => (
-  <div className="flex flex-1 gap-4 px-4 pb-4 overflow-auto bg-base-100 transition-all duration-300 ease-in-out">
+  <div className="flex flex-1 gap-4 p-4 overflow-auto bg-base-100 bg-clip-padding transition-all duration-300 ease-in-out">
     {columns.map((column) => {
       if (!column.tasks.length && column.autoCollapse) return null;
 
@@ -39,13 +38,12 @@ export const Board = ({
         <Column
           canCreateTasks={canCreateTasks}
           cardSize={cardSize}
-          emoji={column.emoji}
           id={`${groupBy}:${column.id}`}
           isActive={column.isActive}
-          isEditable={column.isEditable}
           key={column.id}
           tasks={column.tasks}
           title={column.title}
+          titleComponent={column.titleComponent}
         />
       );
     })}
