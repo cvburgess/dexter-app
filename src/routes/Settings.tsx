@@ -9,7 +9,7 @@ export const Settings = () => {
   return (
     <View>
       <Toolbar>
-        Settings
+        <p className="btn btn-ghost">Settings</p>
       </Toolbar>
       <button
         type="button"

@@ -21,7 +21,7 @@ export const Lists = () => {
   return (
     <View className="flex gap-4">
       <Toolbar>
-        Lists
+        <p className="btn btn-ghost">Lists</p>
       </Toolbar>
       <Board
         canCreateTasks
