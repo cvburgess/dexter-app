@@ -30,7 +30,7 @@ export const Board = ({
   columns,
   groupBy,
 }: TBoardProps) => (
-  <div className="flex flex-1 gap-4 mx-4 overflow-auto bg-base-100 transition-all duration-300 ease-in-out">
+  <div className="flex flex-1 gap-4 px-4 overflow-auto bg-base-100 transition-all duration-300 ease-in-out">
     {columns.map((column) => {
       if (!column.tasks.length && column.autoCollapse) return null;
 
