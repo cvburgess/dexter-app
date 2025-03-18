@@ -80,24 +80,13 @@ type TQuickDrawerProps = TQuickPlannerProps & {
 };
 
 export const QuickDrawer = ({ isOpen, ...props }: TQuickDrawerProps) => (
-  <Drawer isOpen={isOpen}>
-    <QuickPlanner
-      {...props}
-      className="bg-base-100 border-l-2 border-base-300"
-    />
-  </Drawer>
-);
-
-const Drawer = (
-  { children, isOpen }: { children: React.ReactNode; isOpen: boolean },
-) => (
   <div
     className={classNames(
-      "flex flex-shrink-0 transition-all duration-300 ease-in-out",
-      { "mr-[-300px] w-0 bg-amber-600": !isOpen },
+      "bg-base-100 border-l-2 border-base-300 overflow-y-auto overflow-x-hidden transition-all duration-300 ease-in-out flex-shrink-0",
+      isOpen ? "w-[300px]" : "w-0 mr-[-300px]"
     )}
   >
-    {children}
+    {isOpen && <QuickPlanner {...props} />}
   </div>
 );
 

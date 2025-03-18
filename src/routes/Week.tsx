@@ -43,13 +43,15 @@ export const Week = () => {
         setWeeksOffset={setWeeksOffset}
         toggleQuickPlan={() => setIsOpen(!isOpen)}
       />
-      <Board
-        canCreateTasks
-        cardSize="compact-w"
-        columns={columns}
-        groupBy="scheduledFor"
-      />
-      <QuickDrawer isOpen={isOpen} baseFilters={filters.notThisWeek} />
+      <div className="flex flex-1 relative overflow-hidden">
+        <Board
+          canCreateTasks
+          cardSize="compact-w"
+          columns={columns}
+          groupBy="scheduledFor"
+        />
+        <QuickDrawer isOpen={isOpen} baseFilters={filters.notThisWeek} />
+      </div>
     </View>
   );
 };
