@@ -48,7 +48,6 @@ export const Week = () => {
         cardSize="compact-w"
         columns={columns}
         groupBy="scheduledFor"
-        topSpacing="top-14"
       />
       <QuickDrawer isOpen={isOpen} baseFilters={filters.notThisWeek} />
     </View>

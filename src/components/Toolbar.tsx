@@ -81,7 +81,7 @@ const Toolbar = (
   { children, onClickNext, onClickPrevious, toggleQuickPlan }: TToolbarProps,
 ) => {
   return (
-    <div className="flex items-center p-4 pb-0 sticky top-0 left-0 z-20 bg-base-100">
+    <div className="flex items-center p-4 pb-0 w-full bg-base-100">
       {children}
       {toggleQuickPlan
         ? (

@@ -9,7 +9,6 @@ type TBoardProps = {
   columns: TColumn[];
   groupBy: EGroupBy;
   tasks?: TTask[];
-  topSpacing?: "top-0" | "top-14";
 };
 
 export type TColumn = {
@@ -28,7 +27,6 @@ export const Board = (
     cardSize = "normal",
     columns,
     groupBy,
-    topSpacing = "top-0",
   }: TBoardProps,
 ) => (
   <div className="flex flex-1 overflow-auto gap-4 px-4 duration-300 ease-in-out">
@@ -44,7 +42,6 @@ export const Board = (
           isActive={column.isActive}
           tasks={column.tasks}
           title={column.title}
-          topSpacing={topSpacing}
         />
       );
     })}

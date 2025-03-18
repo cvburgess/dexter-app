@@ -17,7 +17,6 @@ type TColumnProps = {
   isActive?: boolean;
   tasks: TTask[];
   title?: string;
-  topSpacing: "top-0" | "top-14";
 };
 
 export const Column = ({
@@ -28,7 +27,6 @@ export const Column = ({
   isActive = false,
   tasks = [],
   title,
-  topSpacing,
 }: TColumnProps) => {
   const [_, { createTask }] = useTasks();
 
@@ -54,7 +52,7 @@ export const Column = ({
       }}
     >
       <div
-        className={classNames(topSpacing, {
+        className={classNames("top-0", {
           "sticky z-10 bg-base-100 pt-4": title || canCreateTasks,
         })}
       >
