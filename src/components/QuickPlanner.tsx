@@ -94,7 +94,7 @@ const Drawer = (
   <div
     className={classNames(
       "flex flex-shrink-0 transition-all duration-300 ease-in-out",
-      { "mr-[-300px] w-0 bg-amber-600": isOpen },
+      { "mr-[-300px] w-0 bg-amber-600": !isOpen },
     )}
   >
     {children}
