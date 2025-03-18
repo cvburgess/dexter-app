@@ -1,5 +1,5 @@
 import { Temporal } from "@js-temporal/polyfill";
-import { CaretLeft, CaretRight } from "@phosphor-icons/react";
+import { CaretLeft, CaretRight, Rows } from "@phosphor-icons/react";
 
 import { ButtonWithPopover } from "./ButtonWithPopover.tsx";
 
@@ -83,13 +83,6 @@ const Toolbar = (
   return (
     <div className="flex items-center p-4 pb-0 w-full bg-base-100">
       {children}
-      {toggleQuickPlan
-        ? (
-          <button className="btn btn-ghost" onClick={toggleQuickPlan}>
-            🎉
-          </button>
-        )
-        : null}
       <ArrowButton
         onClick={onClickPrevious}
         variant="previous"
@@ -98,6 +91,13 @@ const Toolbar = (
         onClick={onClickNext}
         variant="next"
       />
+      {toggleQuickPlan
+        ? (
+          <button className="btn btn-ghost" onClick={toggleQuickPlan}>
+            <Rows />
+          </button>
+        )
+        : null}
     </div>
   );
 };
