@@ -38,10 +38,11 @@ export const Lists = () => {
 
 type TListInputProps = {
   list?: TList;
+  onArchive?: (id: string) => void;
   onChange?: (list: TCreateList | TUpdateList) => void;
 };
 
-const ListInput = ({ list, onChange }: TListInputProps) => {
+const ListInput = ({ list, onArchive, onChange }: TListInputProps) => {
   const [title, setTitle] = useState<string>(list?.title || "");
   const [emoji, setEmoji] = useState<string>(list?.emoji || "🐶");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -84,11 +85,6 @@ const ListInput = ({ list, onChange }: TListInputProps) => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const handleDeleteConfirm = () => {
-    console.log("Item deleted successfully!");
-    // Your action code here - this only runs when user confirms
-  };
-
   // Font Size of 1rem chosen to match a large badge in DaisyUI
   // https://github.com/saadeghi/daisyui/blob/master/packages/daisyui/src/components/badge.css#L109
   return (
@@ -124,7 +120,7 @@ const ListInput = ({ list, onChange }: TListInputProps) => {
         <ConfirmModal
           isOpen={isModalOpen}
           onClose={closeModal}
-          onConfirm={handleDeleteConfirm}
+          onConfirm={() => onArchive(list.id)}
           title={`Archive ${list.title}?`}
           message={
             <>
@@ -153,7 +149,11 @@ const makeColumns = (
       id: list.id,
       title: list.title,
       titleComponent: list.id && (
-        <ListInput list={list} onChange={updateList} />
+        <ListInput
+          list={list}
+          onArchive={() => updateList({ id: list.id, isArchived: true })}
+          onChange={updateList}
+        />
       ),
       tasks: tasks?.filter((task: TTask) => task.listId === list.id),
     }),

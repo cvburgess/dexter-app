@@ -8,6 +8,7 @@ export type TList = {
   createdAt: string;
   emoji: string;
   id: string;
+  isArchived: boolean;
   title: string;
 };
 
@@ -15,6 +16,7 @@ export const getLists = async (supabase: SupabaseClient<Database>) => {
   const { data, error } = await supabase
     .from("lists")
     .select("*")
+    .eq("is_archived", false)
     .order("created_at");
 
   if (error) throw error;
@@ -36,7 +38,12 @@ export const createList = async (
   return camelCase(data) as TList[];
 };
 
-export type TUpdateList = { emoji?: string; id: string; title?: string };
+export type TUpdateList = {
+  emoji?: string;
+  id: string;
+  isArchived?: boolean;
+  title?: string;
+};
 
 export const updateList = async (
   supabase: SupabaseClient<Database>,
