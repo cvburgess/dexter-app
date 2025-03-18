@@ -32,35 +32,33 @@ export const QuickPlanner = ({
 
   return (
     <div className={classNames("no-scrollbar", className)}>
-      <div className="px-4">
-        <Column
-          id="scheduledFor:null"
-          tasks={searchTasks(filteredTasks)}
-          titleComponent={
-            <div className="join w-standard">
-              <ButtonWithPopover
-                buttonVariant="left-join"
-                onChange={(id) => setSelectedFilter(id as string)}
-                options={options}
-                variant="menu"
-              >
-                {selected.title}
-              </ButtonWithPopover>
+      <Column
+        id="scheduledFor:null"
+        tasks={searchTasks(filteredTasks)}
+        titleComponent={
+          <div className="join w-standard">
+            <ButtonWithPopover
+              buttonVariant="left-join"
+              onChange={(id) => setSelectedFilter(id as string)}
+              options={options}
+              variant="menu"
+            >
+              {selected.title}
+            </ButtonWithPopover>
 
-              <InputWithIcon
-                // className="join-item"
-                type="text"
-                placeholder="Search"
-                onChange={(event) => setSearch(event.target.value)}
-                wrapperClassName="join-item"
-                value={search}
-              >
-                <MagnifyingGlass />
-              </InputWithIcon>
-            </div>
-          }
-        />
-      </div>
+            <InputWithIcon
+              // className="join-item"
+              type="text"
+              placeholder="Search"
+              onChange={(event) => setSearch(event.target.value)}
+              wrapperClassName="join-item"
+              value={search}
+            >
+              <MagnifyingGlass />
+            </InputWithIcon>
+          </div>
+        }
+      />
     </div>
   );
 };
@@ -71,7 +69,7 @@ export const QuickDrawer = ({ isOpen, ...props }: TQuickDrawerProps) => (
   <div
     className={classNames(
       "bg-base-100 border-l-2 border-base-200 overflow-y-auto overflow-x-hidden flex-shrink-0 transition-all duration-300 ease-in-out",
-      isOpen ? "w-78" : "w-0",
+      isOpen ? "w-78 px-4" : "w-0",
     )}
   >
     <QuickPlanner {...props} />

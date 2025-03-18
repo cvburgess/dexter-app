@@ -3,8 +3,8 @@ import { CaretRight, CheckCircle, XCircle } from "@phosphor-icons/react";
 import { Temporal } from "@js-temporal/polyfill";
 import classNames from "classnames";
 
-import { Board } from "../components/Board.tsx";
 import { CardList } from "../components/CardList.tsx";
+import { Column } from "../components/Column.tsx";
 import { Journal } from "../components/Journal.tsx";
 import { QuickPlanner } from "../components/QuickPlanner.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
@@ -61,10 +61,10 @@ export const Review = () => {
         >
           <QuickPlanner baseFilters={makeBaseFiltersForDate(nextDay)} />
           <Divider />
-          <Board
+          <Column
             canCreateTasks
-            columns={[{ id: nextDay.toString(), tasks: nextDaysTasks }]}
-            groupBy="scheduledFor"
+            id={`scheduledFor:${nextDay.toString()}`}
+            tasks={nextDaysTasks}
           />
         </CarouselItem>
       </div>
@@ -91,7 +91,7 @@ const CarouselItem = ({ children, subtitle, title }: TCarouselItemProps) => (
 );
 
 const Divider = () => (
-  <div className="divider divider-horizontal max-h-[50vh] pt-10">
+  <div className="divider divider-horizontal max-h-[50vh] pt-10 sticky top-0">
     <CaretRight className="text-current/40" size={48} />
   </div>
 );
