@@ -57,9 +57,12 @@ export const Column = ({
       }}
     >
       <div
-        className={classNames("top-0", {
-          "sticky z-10 bg-base-100": title || canCreateTasks,
-        })}
+        className={classNames(
+          "top-0 pt-4 pb-2 mb-2 bg-base-100 flex flex-col gap-4",
+          {
+            "sticky z-10": title || canCreateTasks || titleComponent,
+          },
+        )}
       >
         {titleComponent || <ColumnTitle isActive={isActive} title={title} />}
 
@@ -109,10 +112,9 @@ const ColumnTitle = ({ isActive, title }: TColumnTitleProps) => {
 
   return (
     <div
-      className={classNames(
-        "badge badge-lg p-5 mx-auto mb-4 w-full h-standard",
-        { "bg-base-content/80 text-base-100": isActive },
-      )}
+      className={classNames("badge badge-lg p-5 mx-auto w-full h-standard", {
+        "bg-base-content/80 text-base-100": isActive,
+      })}
     >
       {title}
     </div>
@@ -135,7 +137,6 @@ const CreateTask = ({ enabled, onTaskCreate }: TCreateTaskProps) =>
           e.currentTarget.value = "";
         }
       }}
-      wrapperClassName="mb-4"
     >
       <Plus />
     </InputWithIcon>

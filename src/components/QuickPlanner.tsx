@@ -37,34 +37,33 @@ export const QuickPlanner = ({
         className,
       )}
     >
-      <div className="p-4 sticky top-0 z-10 bg-base-100">
-        <div className="join w-standard">
-          <ButtonWithPopover
-            buttonVariant="left-join"
-            onChange={(id) => setSelectedFilter(id as string)}
-            options={options}
-            variant="menu"
-          >
-            {selected.title}
-          </ButtonWithPopover>
-
-          <InputWithIcon
-            // className="join-item"
-            type="text"
-            placeholder="Search"
-            onChange={(event) => setSearch(event.target.value)}
-            wrapperClassName="join-item"
-            value={search}
-          >
-            <MagnifyingGlass />
-          </InputWithIcon>
-        </div>
-      </div>
       <div className="px-4">
         <Column
-          // cardSize="compact-h"
           id="scheduledFor:null"
           tasks={searchTasks(filteredTasks)}
+          titleComponent={
+            <div className="join w-standard">
+              <ButtonWithPopover
+                buttonVariant="left-join"
+                onChange={(id) => setSelectedFilter(id as string)}
+                options={options}
+                variant="menu"
+              >
+                {selected.title}
+              </ButtonWithPopover>
+
+              <InputWithIcon
+                // className="join-item"
+                type="text"
+                placeholder="Search"
+                onChange={(event) => setSearch(event.target.value)}
+                wrapperClassName="join-item"
+                value={search}
+              >
+                <MagnifyingGlass />
+              </InputWithIcon>
+            </div>
+          }
         />
       </div>
     </div>

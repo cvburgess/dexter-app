@@ -11,6 +11,7 @@ import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
 import { TCreateList, TList, TUpdateList } from "../api/lists.ts";
 import { TTask } from "../api/tasks.ts";
+import classNames from "classnames";
 
 export const Lists = () => {
   const [lists, { createList, updateList }] = useLists();
@@ -64,7 +65,11 @@ const ListInput = ({ list, onChange }: TListInputProps) => {
   // Font Size of 1rem chosen to match a large badge in DaisyUI
   // https://github.com/saadeghi/daisyui/blob/master/packages/daisyui/src/components/badge.css#L109
   return (
-    <div className="join min-w-standard h-standard mb-4 sticky top-0">
+    <div
+      className={classNames("join min-w-standard h-standard", {
+        "pt-4 sticky top-0": !list,
+      })}
+    >
       <ButtonWithPopover
         buttonVariant="left-join"
         variant="emoji"
