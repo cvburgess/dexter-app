@@ -38,7 +38,7 @@ export const QuickPlanner = ({
       )}
     >
       <div className="p-4 sticky top-0 z-10 bg-base-100">
-        <div className="join max-w-70">
+        <div className="join w-standard">
           <ButtonWithPopover
             buttonVariant="left-join"
             onChange={(id) => setSelectedFilter(id as string)}
@@ -65,7 +65,6 @@ export const QuickPlanner = ({
           // cardSize="compact-h"
           id="scheduledFor:null"
           tasks={searchTasks(filteredTasks)}
-          topSpacing="top-0"
         />
       </div>
     </div>

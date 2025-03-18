@@ -105,7 +105,7 @@ const CardListWithTitle = ({ tasks, variant }: TCardListWithTItleProps) => {
   const Icon = variant === "complete" ? CheckCircle : XCircle;
 
   return (
-    <div className="flex flex-col items-center gap-4 min-w-70">
+    <div className="flex flex-col items-center gap-4 min-w-standard">
       <p className="text-xl font-bold opacity-60 inline-flex items-center pr-5 mt-4 capitalize">
         <Icon
           className={classNames("mr-4", {
