@@ -62,6 +62,7 @@
     "icon": "npx png2icons ./public/app-icon.png ./public/app-icon -allp",
     "lint": "eslint --ext .ts,.tsx .",
     "make": "electron-forge make",
+    "make:local": "npm run make && open out/Dexter-darwin-arm64",
     "package": "electron-forge package",
     "publish": "electron-forge publish",
     "start": "electron-forge start",
