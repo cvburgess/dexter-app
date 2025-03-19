@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
+import { Temporal } from "@js-temporal/polyfill";
 
 import { useDays } from "../hooks/useDays.tsx";
 
-type TJournalProps = { date: string };
+type TJournalProps = { date: Temporal.PlainDate };
 
 export const Journal = ({ date }: TJournalProps) => {
-  const [{ prompts }, { upsertDay }] = useDays(date);
+  const [{ prompts }, { upsertDay }] = useDays(date.toString());
 
   return prompts.map(({ prompt, response }, index) => (
-    <div key={index} className="flex flex-col w-full space-y-4 mt-4">
-      <label className="text-md font-bold text-center opacity-80">
+    <div key={index} className="flex flex-col w-full my-8">
+      <label className="text-md font-bold text-center opacity-80 mb-4">
         {prompt}
       </label>
 
@@ -46,7 +47,7 @@ const ResponseInput = ({ response, onChange }: TResponseInputProps) => {
 
   return (
     <input
-      className="w-full border-b-1 border-base-content/20 focus:outline-0 text-center text-xs"
+      className="w-full border-b-1 border-base-content/15 border-dashed focus:outline-0 text-center text-xs"
       value={newResponse}
       onChange={(e) => setNewResponse(e.target.value)}
     />
