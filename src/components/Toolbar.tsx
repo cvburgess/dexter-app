@@ -95,6 +95,17 @@ export const Toolbar = ({
   );
 };
 
+type TTextToolbarProps = {
+  title: string;
+  toggleQuickPlan?: () => void;
+};
+
+export const TextToolbar = ({ title, toggleQuickPlan }: TTextToolbarProps) => (
+  <Toolbar toggleQuickPlan={toggleQuickPlan}>
+    <p className="btn btn-ghost"> {title} </p>
+  </Toolbar>
+);
+
 type TArrowButtonProps = { onClick: () => void; variant: "previous" | "next" };
 
 const ArrowButton = ({ onClick, variant }: TArrowButtonProps) => (
