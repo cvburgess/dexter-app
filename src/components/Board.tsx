@@ -1,5 +1,6 @@
 import { ECardSize } from "./Card.tsx";
 import { Column } from "../components/Column.tsx";
+import { ScrollableContainer } from "./View.tsx";
 
 import { TTask } from "../api/tasks.ts";
 
@@ -30,7 +31,7 @@ export const Board = ({
   columns,
   groupBy,
 }: TBoardProps) => (
-  <div className="flex flex-1 gap-4 px-4 overflow-auto bg-base-100 transition-all duration-300 ease-in-out">
+  <ScrollableContainer>
     {columns.map((column) => {
       if (!column.tasks.length && column.autoCollapse) return null;
 
@@ -49,5 +50,5 @@ export const Board = ({
     })}
 
     {appendAfter}
-  </div>
+  </ScrollableContainer>
 );

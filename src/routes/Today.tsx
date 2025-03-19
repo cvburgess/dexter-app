@@ -5,7 +5,11 @@ import { Column } from "../components/Column.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
 import { Journal } from "../components/Journal.tsx";
 import { QuickDrawer } from "../components/QuickPlanner.tsx";
-import { DraggableView, DrawerContainer } from "../components/View.tsx";
+import {
+  DraggableView,
+  DrawerContainer,
+  ScrollableContainer,
+} from "../components/View.tsx";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
@@ -27,7 +31,7 @@ export const Today = () => {
       />
 
       <DrawerContainer>
-        <div className="flex flex-1 gap-4 px-4 overflow-auto">
+        <ScrollableContainer>
           <Column
             canCreateTasks
             id={`scheduledFor:${date.toString()}`}
@@ -53,7 +57,7 @@ export const Today = () => {
               <Journal date={date} />
             </div>
           </div>
-        </div>
+        </ScrollableContainer>
         <QuickDrawer isOpen={isOpen} baseFilters={taskFilters.notToday} />
       </DrawerContainer>
     </DraggableView>

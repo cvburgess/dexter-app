@@ -50,10 +50,8 @@ export const Review = () => {
       />
       <DrawerContainer>
         <div className="flex flex-1 flex-col items-center justify-center gap-4 px-4 pt-12 min-h-[calc(100vh-6rem)] overflow-auto">
-          <h1 className="text-4xl font-black opacity-80">{title}</h1>
-          <p className="text-xs text-center italic opacity-40 mt-2 mb-8">
-            {subtitle}
-          </p>
+          <Title text={title} />
+          <Subtitle text={subtitle} />
           <div className="flex md:flex-wrap max-sm:flex-col w-full h-full justify-center max-sm:items-center overflow-auto no-scrollbar">
             {incompleteTasks.length ? (
               <>
@@ -85,6 +83,14 @@ export const Review = () => {
     </DraggableView>
   );
 };
+
+const Title = ({ text }: { text: string }) => (
+  <h1 className="text-4xl font-black opacity-80">{text}</h1>
+);
+
+const Subtitle = ({ text }: { text: string }) => (
+  <p className="text-xs text-center italic opacity-40 mt-2 mb-8">{text}</p>
+);
 
 const Divider = () => (
   <div className="divider py-8 max-sm:px-8 sm:divider-horizontal sm:max-h-[75vh] sm:sticky sm:top-0">
