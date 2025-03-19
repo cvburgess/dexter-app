@@ -5,7 +5,6 @@ import classNames from "classnames";
 
 import { CardList } from "../components/CardList.tsx";
 import { Column } from "../components/Column.tsx";
-import { Journal } from "../components/Journal.tsx";
 import { QuickPlanner } from "../components/QuickPlanner.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
 import { View } from "../components/View.tsx";
@@ -41,12 +40,6 @@ export const Review = () => {
       <DayNav date={date} setDate={setDate} />
 
       <div className="carousel carousel-center rounded-box w-full h-full space-x-8 p-8">
-        <CarouselItem
-          title="Reflect"
-          subtitle="Take a deep breath, check in with yourself, and revisit throughout the day"
-        >
-          <Journal date={date.toString()} />
-        </CarouselItem>
         <CarouselItem
           title="Review"
           subtitle="Mark any incomplete items as done, won't do, rescheduled, or unscheduled"
