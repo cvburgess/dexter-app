@@ -7,7 +7,7 @@ import { CardList } from "../components/CardList.tsx";
 import { Column } from "../components/Column.tsx";
 import { QuickDrawer } from "../components/QuickPlanner.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
-import { View } from "../components/View.tsx";
+import { DraggableView } from "../components/View.tsx";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 import { ETaskStatus, TTask } from "../api/tasks.ts";
@@ -42,7 +42,7 @@ export const Review = () => {
     : "Make time and space for the things that matter most... tomorrow";
 
   return (
-    <View>
+    <DraggableView>
       <DayNav
         date={date}
         setDate={setDate}
@@ -82,7 +82,7 @@ export const Review = () => {
           baseFilters={makeBaseFiltersForDate(date)}
         />
       </div>
-    </View>
+    </DraggableView>
   );
 };
 

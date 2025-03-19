@@ -3,7 +3,7 @@ import { Temporal } from "@js-temporal/polyfill";
 
 import { DayNav, TextToolbar, WeekNav } from "../components/Toolbar.tsx";
 import { QuickDrawer } from "../components/QuickPlanner.tsx";
-import { View } from "../components/View.tsx";
+import { DraggableView } from "../components/View.tsx";
 
 import { TQueryFilter } from "../api/applyFilters.ts";
 
@@ -37,7 +37,7 @@ export const ViewWithToolbar = ({
     : undefined;
 
   return (
-    <View>
+    <DraggableView>
       {props.toolbarVariant === "day" && (
         <DayNav
           date={date}
@@ -68,6 +68,6 @@ export const ViewWithToolbar = ({
           />
         )}
       </div>
-    </View>
+    </DraggableView>
   );
 };

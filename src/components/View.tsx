@@ -1,11 +1,16 @@
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
-import classNames from "classnames";
 
 import { useTasks } from "../hooks/useTasks.tsx";
 
-type Props = { children: React.ReactNode; className?: string };
+type TProps = { children: React.ReactNode };
 
-export const View = ({ children, className }: Props) => {
+export const View = ({ children }: TProps) => (
+  <div className="flex flex-1 flex-col relative overflow-hidden">
+    {children}
+  </div>
+);
+
+export const DraggableView = ({ children }: TProps) => {
   const [_, { updateTask }] = useTasks();
 
   const onTaskMove = (id: string, _index: number, column: string) => {
@@ -47,14 +52,13 @@ export const View = ({ children, className }: Props) => {
 
   return (
     <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-      <div
-        className={classNames(
-          "flex flex-1 flex-col relative overflow-hidden",
-          className,
-        )}
-      >
-        {children}
-      </div>
+      <View>{children}</View>
     </DragDropContext>
   );
 };
+
+export const Container = ({ children }: TProps) => (
+  <div className="flex flex-1 gap-4 px-4 overflow-auto bg-base-100 transition-all duration-300 ease-in-out">
+    {children}
+  </div>
+);

@@ -7,7 +7,7 @@ import { Board, TColumn } from "../components/Board.tsx";
 import { ButtonWithPopover } from "../components/ButtonWithPopover.tsx";
 import { ConfirmModal } from "../components/ConfirmModal.tsx";
 import { TextToolbar } from "../components/Toolbar.tsx";
-import { View } from "../components/View.tsx";
+import { DraggableView } from "../components/View.tsx";
 
 import { useLists } from "../hooks/useLists.tsx";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
@@ -22,7 +22,7 @@ export const Lists = () => {
   const columns = makeColumns(lists, tasks, updateList);
 
   return (
-    <View>
+    <DraggableView>
       <TextToolbar title="Lists" />
       <Board
         appendAfter={<ListInput onChange={createList} />}
@@ -30,7 +30,7 @@ export const Lists = () => {
         columns={columns}
         groupBy="listId"
       />
-    </View>
+    </DraggableView>
   );
 };
 
