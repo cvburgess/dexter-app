@@ -32,7 +32,7 @@ const makeColumns = (tasks: TTask[] | undefined = []): TColumn[] => [
   },
   {
     id: ETaskPriority.IMPORTANT_AND_URGENT.toString(),
-    title: "Important and Urgent",
+    title: "Important & Urgent",
     tasks: tasks?.filter(
       (task: TTask) => task.priority === ETaskPriority.IMPORTANT_AND_URGENT,
     ),
