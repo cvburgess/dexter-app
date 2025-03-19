@@ -3,7 +3,7 @@ import { Temporal } from "@js-temporal/polyfill";
 
 import { DayNav, TextToolbar, WeekNav } from "../components/Toolbar.tsx";
 import { QuickDrawer } from "../components/QuickPlanner.tsx";
-import { DraggableView } from "../components/View.tsx";
+import { DraggableView, DrawerContainer } from "../components/View.tsx";
 
 import { TQueryFilter } from "../api/applyFilters.ts";
 
@@ -56,7 +56,7 @@ export const ViewWithToolbar = ({
         <TextToolbar title={toolbarTitle} toggleQuickPlan={toggleQuickPlan} />
       )}
 
-      <div className="flex flex-1 relative overflow-hidden">
+      <DrawerContainer>
         <div className="flex flex-1 gap-4 px-4 overflow-auto bg-base-100 transition-all duration-300 ease-in-out">
           {children}
         </div>
@@ -67,7 +67,7 @@ export const ViewWithToolbar = ({
             baseFilters={quickPlanFilters}
           />
         )}
-      </div>
+      </DrawerContainer>
     </DraggableView>
   );
 };

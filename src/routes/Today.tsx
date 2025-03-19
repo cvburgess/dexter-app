@@ -5,7 +5,7 @@ import { Column } from "../components/Column.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
 import { Journal } from "../components/Journal.tsx";
 import { QuickDrawer } from "../components/QuickPlanner.tsx";
-import { DraggableView } from "../components/View.tsx";
+import { DraggableView, DrawerContainer } from "../components/View.tsx";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
@@ -26,7 +26,7 @@ export const Today = () => {
         toggleQuickPlan={() => setIsOpen(!isOpen)}
       />
 
-      <div className="flex flex-1 relative overflow-hidden">
+      <DrawerContainer>
         <div className="flex flex-1 gap-4 px-4 overflow-auto">
           <Column
             canCreateTasks
@@ -55,7 +55,7 @@ export const Today = () => {
           </div>
         </div>
         <QuickDrawer isOpen={isOpen} baseFilters={taskFilters.notToday} />
-      </div>
+      </DrawerContainer>
     </DraggableView>
   );
 };

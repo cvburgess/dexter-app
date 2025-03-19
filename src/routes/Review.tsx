@@ -7,7 +7,7 @@ import { CardList } from "../components/CardList.tsx";
 import { Column } from "../components/Column.tsx";
 import { QuickDrawer } from "../components/QuickPlanner.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
-import { DraggableView } from "../components/View.tsx";
+import { DraggableView, DrawerContainer } from "../components/View.tsx";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 import { ETaskStatus, TTask } from "../api/tasks.ts";
@@ -48,7 +48,7 @@ export const Review = () => {
         setDate={setDate}
         toggleQuickPlan={() => setIsOpen(!isOpen)}
       />
-      <div className="flex flex-1 relative overflow-hidden">
+      <DrawerContainer>
         <div className="flex flex-1 flex-col items-center justify-center gap-4 px-4 pt-12 min-h-[calc(100vh-6rem)] overflow-auto">
           <h1 className="text-4xl font-black opacity-80">{title}</h1>
           <p className="text-xs text-center italic opacity-40 mt-2 mb-8">
@@ -81,7 +81,7 @@ export const Review = () => {
           isOpen={isOpen}
           baseFilters={makeBaseFiltersForDate(date)}
         />
-      </div>
+      </DrawerContainer>
     </DraggableView>
   );
 };

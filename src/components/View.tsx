@@ -57,8 +57,6 @@ export const DraggableView = ({ children }: TProps) => {
   );
 };
 
-export const Container = ({ children }: TProps) => (
-  <div className="flex flex-1 gap-4 px-4 overflow-auto bg-base-100 transition-all duration-300 ease-in-out">
-    {children}
-  </div>
+export const DrawerContainer = ({ children }: TProps) => (
+  <div className="flex flex-1 relative overflow-hidden">{children}</div>
 );
