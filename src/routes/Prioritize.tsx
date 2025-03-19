@@ -1,6 +1,6 @@
 import { Board, TColumn } from "../components/Board.tsx";
-import { Toolbar } from "../components/Toolbar.tsx";
-import { View } from "../components/View.tsx";
+import { TextToolbar } from "../components/Toolbar.tsx";
+import { DraggableView } from "../components/View.tsx";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
@@ -12,12 +12,10 @@ export const Prioritize = () => {
   const columns = makeColumns(tasks);
 
   return (
-    <View>
-      <Toolbar>
-        <p className="btn btn-ghost">Prioritize</p>
-      </Toolbar>
+    <DraggableView>
+      <TextToolbar title="Prioritize" />
       <Board canCreateTasks columns={columns} groupBy="priority" />
-    </View>
+    </DraggableView>
   );
 };
 

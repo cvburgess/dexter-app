@@ -6,8 +6,8 @@ import classNames from "classnames";
 import { Board, TColumn } from "../components/Board.tsx";
 import { ButtonWithPopover } from "../components/ButtonWithPopover.tsx";
 import { ConfirmModal } from "../components/ConfirmModal.tsx";
-import { Toolbar } from "../components/Toolbar.tsx";
-import { View } from "../components/View.tsx";
+import { TextToolbar } from "../components/Toolbar.tsx";
+import { DraggableView } from "../components/View.tsx";
 
 import { useLists } from "../hooks/useLists.tsx";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
@@ -22,17 +22,15 @@ export const Lists = () => {
   const columns = makeColumns(lists, tasks, updateList);
 
   return (
-    <View>
-      <Toolbar>
-        <p className="btn btn-ghost"> Lists </p>
-      </Toolbar>
+    <DraggableView>
+      <TextToolbar title="Lists" />
       <Board
         appendAfter={<ListInput onChange={createList} />}
         canCreateTasks
         columns={columns}
         groupBy="listId"
       />
-    </View>
+    </DraggableView>
   );
 };
 

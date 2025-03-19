@@ -5,7 +5,11 @@ import { Column } from "../components/Column.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
 import { Journal } from "../components/Journal.tsx";
 import { QuickDrawer } from "../components/QuickPlanner.tsx";
-import { View } from "../components/View.tsx";
+import {
+  DraggableView,
+  DrawerContainer,
+  ScrollableContainer,
+} from "../components/View.tsx";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
@@ -19,15 +23,15 @@ export const Today = () => {
   const [tasks] = useTasks([["scheduledFor", "eq", date.toString()]]);
 
   return (
-    <View>
+    <DraggableView>
       <DayNav
         date={date}
         setDate={setDate}
         toggleQuickPlan={() => setIsOpen(!isOpen)}
       />
 
-      <div className="flex flex-1 relative overflow-hidden">
-        <div className="flex flex-1 gap-4 px-4 overflow-auto">
+      <DrawerContainer>
+        <ScrollableContainer>
           <Column
             canCreateTasks
             id={`scheduledFor:${date.toString()}`}
@@ -53,9 +57,9 @@ export const Today = () => {
               <Journal date={date} />
             </div>
           </div>
-        </div>
+        </ScrollableContainer>
         <QuickDrawer isOpen={isOpen} baseFilters={taskFilters.notToday} />
-      </div>
-    </View>
+      </DrawerContainer>
+    </DraggableView>
   );
 };

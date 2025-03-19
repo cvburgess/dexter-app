@@ -3,7 +3,6 @@ import { GoogleLogo } from "@phosphor-icons/react";
 import { useNavigate } from "react-router";
 import classNames from "classnames";
 
-import { View } from "../components/View.tsx";
 import { useAuth } from "../hooks/useAuth.tsx";
 
 export const Login = () => {
@@ -63,7 +62,10 @@ export const Login = () => {
   };
 
   return (
-    <View className="flex items-center justify-center">
+    <div
+      className="flex flex-1 items-center justify-center"
+      data-theme="dexter"
+    >
       <div className="card w-full max-w-md bg-base-100 shadow-xl p-8 rounded-box">
         <div className="card-body">
           <h2 className="card-title text-2xl font-bold text-center mb-8 flex justify-center">
@@ -149,7 +151,9 @@ export const Login = () => {
 
             <button
               type="button"
-              className={classNames("link link-hover", { invisible: isLogin })}
+              className={classNames("link link-hover", {
+                invisible: isLogin,
+              })}
               onClick={() => {
                 // TODO: Forgot password
               }}
@@ -159,6 +163,6 @@ export const Login = () => {
           </div>
         </div>
       </div>
-    </View>
+    </div>
   );
 };

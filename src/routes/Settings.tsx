@@ -1,4 +1,4 @@
-import { Toolbar } from "../components/Toolbar.tsx";
+import { TextToolbar } from "../components/Toolbar.tsx";
 import { View } from "../components/View.tsx";
 
 import { useAuth } from "../hooks/useAuth.tsx";
@@ -8,9 +8,7 @@ export const Settings = () => {
 
   return (
     <View>
-      <Toolbar>
-        <p className="btn btn-ghost">Settings</p>
-      </Toolbar>
+      <TextToolbar title="Settings" />
       <button
         type="button"
         className="btn"

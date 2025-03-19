@@ -4,7 +4,7 @@ import { Temporal } from "@js-temporal/polyfill";
 import { Board, TColumn } from "../components/Board.tsx";
 import { WeekNav } from "../components/Toolbar.tsx";
 import { QuickDrawer } from "../components/QuickPlanner.tsx";
-import { View } from "../components/View.tsx";
+import { DraggableView, DrawerContainer } from "../components/View.tsx";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 import { TTask } from "../api/tasks.ts";
@@ -37,13 +37,13 @@ export const Week = () => {
   const columns = makeColumnsForWeekOf(mostRecentMonday, tasks);
 
   return (
-    <View>
+    <DraggableView>
       <WeekNav
         weeksOffset={weeksOffset}
         setWeeksOffset={setWeeksOffset}
         toggleQuickPlan={() => setIsOpen(!isOpen)}
       />
-      <div className="flex flex-1 relative overflow-hidden">
+      <DrawerContainer>
         <Board
           canCreateTasks
           cardSize="compact-w"
@@ -51,8 +51,8 @@ export const Week = () => {
           groupBy="scheduledFor"
         />
         <QuickDrawer isOpen={isOpen} baseFilters={filters.notThisWeek} />
-      </div>
-    </View>
+      </DrawerContainer>
+    </DraggableView>
   );
 };
 
