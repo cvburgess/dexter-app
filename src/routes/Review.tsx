@@ -54,7 +54,7 @@ export const Review = () => {
           <p className="text-xs text-center italic opacity-40 mt-2 mb-8">
             {subtitle}
           </p>
-          <div className="flex md:flex-wrap max-sm:flex-col w-full h-full justify-center overflow-auto no-scrollbar">
+          <div className="flex md:flex-wrap max-sm:flex-col w-full h-full justify-center max-sm:items-center overflow-auto no-scrollbar">
             {incompleteTasks.length ? (
               <>
                 <CardListWithTitle
