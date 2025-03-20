@@ -3,6 +3,36 @@ import { CaretLeft, CaretRight, SquareHalf } from "@phosphor-icons/react";
 
 import { ButtonWithPopover } from "./ButtonWithPopover.tsx";
 
+type TToolbarProps = {
+  children: React.ReactNode;
+  onClickNext?: () => void;
+  onClickPrevious?: () => void;
+  toggleQuickPlan?: () => void;
+};
+
+export const Toolbar = ({
+  children,
+  onClickNext,
+  onClickPrevious,
+  toggleQuickPlan,
+}: TToolbarProps) => {
+  return (
+    <div className="flex items-center p-2 w-full h-14 bg-base-100 border-b-2 border-base-200">
+      {children}
+      <div className="flex-grow w-full h-full app-draggable"></div>
+      {onClickPrevious && (
+        <ArrowButton onClick={onClickPrevious} variant="previous" />
+      )}
+      {onClickNext && <ArrowButton onClick={onClickNext} variant="next" />}
+      {toggleQuickPlan && (
+        <button className="btn btn-ghost" onClick={toggleQuickPlan}>
+          <SquareHalf />
+        </button>
+      )}
+    </div>
+  );
+};
+
 type TDayNavProps = {
   date: Temporal.PlainDate;
   setDate: (date: Temporal.PlainDate) => void;
@@ -18,18 +48,17 @@ export const DayNav = ({ date, setDate, toggleQuickPlan }: TDayNavProps) => {
     >
       {date.toString() === Temporal.Now.plainDateISO().toString() ? (
         <ButtonWithPopover
-          buttonClassName="btn btn-ghost"
+          buttonClassName="btn btn-ghost !text-sm text-nowrap"
           buttonVariant="none"
           onChange={(value) => value && setDate(Temporal.PlainDate.from(value))}
           selectedDate={date.toString()}
           variant="calendar"
-          wrapperClassName="mr-auto"
         >
           {formatDate(date)}
         </ButtonWithPopover>
       ) : (
         <div
-          className="btn btn-ghost mr-auto"
+          className="btn btn-ghost"
           onClick={() => setDate(Temporal.Now.plainDateISO())}
         >
           {formatDate(date)}
@@ -59,39 +88,10 @@ export const WeekNav = ({
       onClickPrevious={() => setWeeksOffset(weeksOffset - 1)}
       toggleQuickPlan={toggleQuickPlan}
     >
-      <div className="btn btn-ghost mr-auto" onClick={() => setWeeksOffset(0)}>
+      <div className="btn btn-ghost text-sm" onClick={() => setWeeksOffset(0)}>
         Week {offsetDate.weekOfYear}, {offsetDate.year}
       </div>
     </Toolbar>
-  );
-};
-
-type TToolbarProps = {
-  children: React.ReactNode;
-  onClickNext?: () => void;
-  onClickPrevious?: () => void;
-  toggleQuickPlan?: () => void;
-};
-
-export const Toolbar = ({
-  children,
-  onClickNext,
-  onClickPrevious,
-  toggleQuickPlan,
-}: TToolbarProps) => {
-  return (
-    <div className="flex items-center p-2 w-full bg-base-100 border-b-2 border-base-200">
-      {children}
-      {onClickPrevious && (
-        <ArrowButton onClick={onClickPrevious} variant="previous" />
-      )}
-      {onClickNext && <ArrowButton onClick={onClickNext} variant="next" />}
-      {toggleQuickPlan && (
-        <button className="btn btn-ghost" onClick={toggleQuickPlan}>
-          <SquareHalf />
-        </button>
-      )}
-    </div>
   );
 };
 
@@ -102,7 +102,7 @@ type TTextToolbarProps = {
 
 export const TextToolbar = ({ title, toggleQuickPlan }: TTextToolbarProps) => (
   <Toolbar toggleQuickPlan={toggleQuickPlan}>
-    <p className="btn btn-ghost"> {title} </p>
+    <p className="btn btn-ghost text-sm"> {title} </p>
   </Toolbar>
 );
 

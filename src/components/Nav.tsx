@@ -23,9 +23,10 @@ const navItems = [
 export const Nav = () => {
   return (
     <nav
-      className="bg-base-300 overflow-hidden h-screen w-16 py-4"
+      className="bg-base-300 overflow-hidden h-screen w-18 pt-18 pb-4"
       aria-label="Main navigation"
     >
+      <div className="h-14 w-full bg-base-100 fixed top-0 border-b-2 border-base-200" />
       <div className="flex flex-col gap-4 text-base-content h-full items-center">
         {navItems.map((item) => (
           <NavLink

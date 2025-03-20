@@ -1,6 +1,11 @@
 @import "tailwindcss";
 
 @layer utilities {
+  /* Tells electron this can drag the app around */
+  .app-draggable {
+    app-region: drag;
+  }
+
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
