@@ -43,7 +43,7 @@ const createWindow = () => {
     height: 600,
     webPreferences: { preload: path.join(__dirname, "preload.js") },
     titleBarStyle: "hidden",
-    trafficLightPosition: { x: 10, y: 19 },
+    trafficLightPosition: { x: 10, y: 10 },
     ...(process.platform !== "darwin" ? { titleBarOverlay: true } : {}),
   });
 

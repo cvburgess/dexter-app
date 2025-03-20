@@ -21,9 +21,15 @@ const navItems = [
 ];
 
 export const Nav = () => {
+  // TODO: Replace with a custom react hook
+  const isFullscreen = false;
+
   return (
     <nav
-      className="bg-base-300 overflow-hidden h-screen w-19 pt-13.5 pb-4"
+      className={classNames(
+        "bg-base-300 overflow-hidden h-screen w-19 pb-4",
+        isFullscreen ? "pt-4" : "pt-10",
+      )}
       aria-label="Main navigation"
     >
       <div className="flex flex-col gap-4 text-base-content h-full items-center">
@@ -43,7 +49,7 @@ export const Nav = () => {
             }
           >
             <Indicator route={item.route} />
-            <item.Icon size={26} />
+            <item.Icon size={26} weight="light" />
           </NavLink>
         ))}
       </div>
