@@ -4,6 +4,7 @@ import { Temporal } from "@js-temporal/polyfill";
 import { Column } from "../components/Column.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
 import { Journal } from "../components/Journal.tsx";
+import { Notes } from "../components/Notes.tsx";
 import { QuickDrawer } from "../components/QuickPlanner.tsx";
 import {
   DraggableView,
@@ -45,7 +46,9 @@ export const Today = () => {
               aria-label="Notes"
               defaultChecked
             />
-            <div className="tab-content bg-base-100 border-base-300 p-4 min-w-standard h-full"></div>
+            <div className="tab-content bg-base-100 border-base-300 p-4 min-w-standard h-full">
+              <Notes />
+            </div>
 
             <input
               type="radio"
