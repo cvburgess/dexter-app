@@ -1,15 +1,16 @@
 import { useState } from "react";
 import classNames from "classnames";
 
-// import {
-//   ButtonWithPopover,
-//   TOption,
-// } from "../components/ButtonWithPopover.tsx";
+import {
+  ButtonWithPopover,
+  TOption,
+} from "../components/ButtonWithPopover.tsx";
 import { TextToolbar } from "../components/Toolbar.tsx";
 import { ScrollableContainer, View } from "../components/View.tsx";
 
 import { useAuth } from "../hooks/useAuth.tsx";
 import { THEMES } from "../hooks/useTheme.ts";
+import { CaretDown } from "@phosphor-icons/react";
 
 export const Settings = () => {
   const [activePanel, setActivePanel] = useState<string>("Account");
@@ -71,51 +72,46 @@ const Account = () => {
 
 const Theme = () => {
   // const selectedClassNames = "outline-2 outline-offset-2 outline-base-content";
+  const userPreferences = {
+    lightTheme: "dexter",
+    darkTheme: "dark",
+    themeMode: "system",
+  };
 
   const lightThemes = THEMES.filter((theme) => theme.mode === "light").map(
-    ({ name }) => ({ id: name, title: name }),
+    ({ name }) => ({
+      id: name,
+      title: name,
+      isSelected: userPreferences.lightTheme === name,
+    }),
   );
   const darkThemes = THEMES.filter((theme) => theme.mode === "dark").map(
-    ({ name }) => ({ id: name, title: name }),
+    ({ name }) => ({
+      id: name,
+      title: name,
+      isSelected: userPreferences.darkTheme === name,
+    }),
   );
   const themeModeOptions = [
-    { id: "system", title: "System" },
-    { id: "light", title: "Light" },
-    { id: "dark", title: "Dark" },
+    {
+      id: "system",
+      title: "System",
+      isSelected: userPreferences.themeMode === "system",
+    },
+    {
+      id: "light",
+      title: "Light",
+      isSelected: userPreferences.themeMode === "light",
+    },
+    {
+      id: "dark",
+      title: "Dark",
+      isSelected: userPreferences.themeMode === "dark",
+    },
   ];
 
   return (
     <Panel>
-      {/* <ButtonWithPopover
-        buttonVariant="none"
-        variant="menu"
-        options={lightThemes.map(
-          ({ name }) => ({ id: name, title: name }) as TOption,
-        )}
-        onChange={(name) => console.log(name as string)}
-      >
-        <button className="btn text-xs">Light Theme</button>
-      </ButtonWithPopover>
-      <ButtonWithPopover
-        buttonVariant="none"
-        variant="menu"
-        options={darkThemes.map(
-          ({ name }) => ({ id: name, title: name }) as TOption,
-        )}
-        onChange={(name) => console.log(name as string)}
-      >
-        <button className="btn text-xs">Dark Theme</button>
-      </ButtonWithPopover>
-      <ButtonWithPopover
-        buttonVariant="none"
-        variant="menu"
-        options={themeModeOptions}
-        onChange={(name) => console.log(name as string)}
-      >
-        <button className="btn text-xs">Theme Mode</button>
-      </ButtonWithPopover> */}
-
-      {/* <div className="divider" /> */}
       <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-4">
         <SettingsOption
           options={lightThemes}
@@ -193,18 +189,27 @@ const ThemeOption = ({ theme }: { theme: string }) => (
 );
 
 type TSettingsOptionProps = {
-  options: { id: string; title: string }[];
+  options: TOption[];
   selected: string;
   title: string;
 };
 
-const SettingsOption = ({ options, selected, title }: TSettingsOptionProps) => (
-  <fieldset className="fieldset w-full">
-    <legend className="fieldset-legend ml-2">{title}</legend>
-    <select defaultValue={selected} className="select capitalize">
-      {options.map(({ id, title }) => (
-        <option value={id}>{title}</option>
-      ))}
-    </select>
-  </fieldset>
-);
+const SettingsOption = ({ options, title }: TSettingsOptionProps) => {
+  const selected = options.find((option) => option.isSelected);
+
+  return (
+    <fieldset className="fieldset w-full">
+      <legend className="fieldset-legend ml-2">{title}</legend>
+      <ButtonWithPopover
+        buttonVariant="none"
+        variant="menu"
+        options={options}
+        onChange={(name) => console.log(name as string)}
+      >
+        <button className="btn text-xs justify-start capitalize w-full">
+          {selected.title} <CaretDown className="ml-auto" />
+        </button>
+      </ButtonWithPopover>
+    </fieldset>
+  );
+};
