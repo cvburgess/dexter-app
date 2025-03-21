@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CaretDown } from "@phosphor-icons/react";
 import classNames from "classnames";
 
 import {
@@ -8,9 +9,11 @@ import {
 import { TextToolbar } from "../components/Toolbar.tsx";
 import { ScrollableContainer, View } from "../components/View.tsx";
 
-import { useAuth } from "../hooks/useAuth.tsx";
 import { THEMES } from "../hooks/useTheme.ts";
-import { CaretDown } from "@phosphor-icons/react";
+import { useAuth } from "../hooks/useAuth.tsx";
+import { usePreferences } from "../hooks/usePreferences.tsx";
+
+import { EThemeMode } from "../api/preferences.ts";
 
 export const Settings = () => {
   const [activePanel, setActivePanel] = useState<string>("Account");
@@ -72,11 +75,7 @@ const Account = () => {
 
 const Theme = () => {
   // const selectedClassNames = "outline-2 outline-offset-2 outline-base-content";
-  const userPreferences = {
-    lightTheme: "dexter",
-    darkTheme: "dark",
-    themeMode: "system",
-  };
+  const [userPreferences] = usePreferences();
 
   const lightThemes = THEMES.filter((theme) => theme.mode === "light").map(
     ({ name }) => ({
@@ -94,19 +93,19 @@ const Theme = () => {
   );
   const themeModeOptions = [
     {
-      id: "system",
+      id: EThemeMode.SYSTEM,
       title: "System",
-      isSelected: userPreferences.themeMode === "system",
+      isSelected: userPreferences.themeMode === EThemeMode.SYSTEM,
     },
     {
-      id: "light",
+      id: EThemeMode.LIGHT,
       title: "Light",
-      isSelected: userPreferences.themeMode === "light",
+      isSelected: userPreferences.themeMode === EThemeMode.LIGHT,
     },
     {
-      id: "dark",
+      id: EThemeMode.DARK,
       title: "Dark",
-      isSelected: userPreferences.themeMode === "dark",
+      isSelected: userPreferences.themeMode === EThemeMode.DARK,
     },
   ];
 
@@ -116,16 +115,19 @@ const Theme = () => {
         <SettingsOption
           options={lightThemes}
           selected="dexter"
+          setting="lightTheme"
           title="Light Theme"
         />
         <SettingsOption
           options={darkThemes}
           selected="dark"
+          setting="darkTheme"
           title="Dark Theme"
         />
         <SettingsOption
           options={themeModeOptions}
           selected="dark"
+          setting="themeMode"
           title="Theme Mode"
         />
       </div>
@@ -191,10 +193,12 @@ const ThemeOption = ({ theme }: { theme: string }) => (
 type TSettingsOptionProps = {
   options: TOption[];
   selected: string;
+  setting: string;
   title: string;
 };
 
-const SettingsOption = ({ options, title }: TSettingsOptionProps) => {
+const SettingsOption = ({ options, setting, title }: TSettingsOptionProps) => {
+  const [_, { updatePreferences }] = usePreferences();
   const selected = options.find((option) => option.isSelected);
 
   return (
@@ -204,7 +208,7 @@ const SettingsOption = ({ options, title }: TSettingsOptionProps) => {
         buttonVariant="none"
         variant="menu"
         options={options}
-        onChange={(name) => console.log(name as string)}
+        onChange={(value) => updatePreferences({ [setting]: value })}
       >
         <button className="btn text-xs justify-start capitalize w-full">
           {selected.title} <CaretDown className="ml-auto" />

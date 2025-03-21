@@ -13,12 +13,14 @@ import { useAuth } from "./useAuth.tsx";
 type TUsePreferences = [
   TPreferences,
   {
-    updatePreferences: (preferences: TUpdatePreferences) => void;
+    updatePreferences: (
+      preferences: Omit<TUpdatePreferences, "userId">,
+    ) => void;
   },
 ];
 
 export const usePreferences = (): TUsePreferences => {
-  const { supabase } = useAuth();
+  const { supabase, userId } = useAuth();
   const queryClient = useQueryClient();
 
   const { data: preferences = defaultPreferences } = useQuery({
@@ -29,9 +31,9 @@ export const usePreferences = (): TUsePreferences => {
   const { mutate: update } = useMutation<
     TPreferences,
     Error,
-    TUpdatePreferences
+    Omit<TUpdatePreferences, "userId">
   >({
-    mutationFn: (diff) => updatePreferences(supabase, diff),
+    mutationFn: (diff) => updatePreferences(supabase, { userId, ...diff }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["preferences"] });
     },

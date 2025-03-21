@@ -27,6 +27,7 @@ export const getPreferences = async (supabase: SupabaseClient<Database>) => {
 };
 
 export type TUpdatePreferences = {
+  userId: string;
   lightTheme?: string;
   darkTheme?: string;
   themeMode?: EThemeMode;
@@ -34,11 +35,12 @@ export type TUpdatePreferences = {
 
 export const updatePreferences = async (
   supabase: SupabaseClient<Database>,
-  diff: TUpdatePreferences,
+  { userId, ...diff }: TUpdatePreferences,
 ) => {
   const { data, error } = await supabase
     .from("preferences")
     .update(snakeCase(diff))
+    .eq("user_id", userId)
     .select();
 
   if (error) throw error;
