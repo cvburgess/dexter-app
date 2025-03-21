@@ -57,6 +57,27 @@ export type Database = {
         }
         Relationships: []
       }
+      preferences: {
+        Row: {
+          dark_theme: string
+          light_theme: string
+          theme_mode: number
+          user_id: string
+        }
+        Insert: {
+          dark_theme?: string
+          light_theme?: string
+          theme_mode?: number
+          user_id?: string
+        }
+        Update: {
+          dark_theme?: string
+          light_theme?: string
+          theme_mode?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       tasks: {
         Row: {
           created_at: string | null
