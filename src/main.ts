@@ -8,6 +8,11 @@ const darkBackgroundColor = "black";
 const lightBackgroundColor = "white";
 
 const handleThemeChange = () => {
+  // Check if mainWindow exists and is not destroyed
+  if (!mainWindow || mainWindow.isDestroyed()) {
+    return;
+  }
+
   const theme = nativeTheme.shouldUseDarkColors ? "dark" : "light";
   const backgroundColor = nativeTheme.shouldUseDarkColors
     ? darkBackgroundColor
