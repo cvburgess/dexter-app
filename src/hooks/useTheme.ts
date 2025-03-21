@@ -1,26 +1,33 @@
 import { useEffect, useState } from "react";
 
+import { usePreferences } from "./usePreferences";
+import { EThemeMode } from "../api/preferences";
+
 export type TTheme = "light" | "dark";
 export type TThemeMode = TTheme | "system";
 
 export const useTheme = () => {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [themeMode, setThemeMode] = useState<"light" | "dark">("light");
+  const [userPreferences] = usePreferences();
 
-  const userPreferences = { light: "dexter", dark: "dark", mode: "system" };
+  const modes = ["system", "light", "dark"];
 
   useEffect(() => {
     // Get the theme from the system, or set it based on user preferences
-    if (userPreferences.mode === "system") {
+    if (userPreferences.themeMode === EThemeMode.SYSTEM) {
       window.electron.getTheme((theme: TTheme) => {
-        setTheme(theme);
+        setThemeMode(theme);
       });
     } else {
-      window.electron.setThemeMode("set-native-theme", userPreferences.mode);
+      window.electron.setThemeMode(
+        "set-native-theme",
+        modes[userPreferences.themeMode],
+      );
     }
 
     // Listen for changes to the os theme
     const removeListener = window.electron.onThemeChange((theme: TTheme) => {
-      if (userPreferences.mode === "system") setTheme(theme);
+      if (userPreferences.themeMode === EThemeMode.SYSTEM) setThemeMode(theme);
     });
 
     // Clean up the event listener when the component unmounts
@@ -29,7 +36,7 @@ export const useTheme = () => {
     };
   }, []);
 
-  return userPreferences[theme];
+  return userPreferences[`${themeMode}Theme`];
 };
 
 export const THEMES = [

@@ -5,6 +5,7 @@ import {
   updatePreferences,
   TPreferences,
   TUpdatePreferences,
+  EThemeMode,
 } from "../api/preferences.ts";
 
 import { useAuth } from "./useAuth.tsx";
@@ -20,7 +21,7 @@ export const usePreferences = (): TUsePreferences => {
   const { supabase } = useAuth();
   const queryClient = useQueryClient();
 
-  const { data: preferences } = useQuery({
+  const { data: preferences = defaultPreferences } = useQuery({
     queryKey: ["preferences"],
     queryFn: () => getPreferences(supabase),
   });
@@ -37,4 +38,10 @@ export const usePreferences = (): TUsePreferences => {
   });
 
   return [preferences, { updatePreferences: update }];
+};
+
+const defaultPreferences: TPreferences = {
+  themeMode: EThemeMode.SYSTEM,
+  lightTheme: "dexter",
+  darkTheme: "dark",
 };
