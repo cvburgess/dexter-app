@@ -108,7 +108,7 @@ const DropdownMenu = ({ onChange, options }: TDropdownMenuProps) => (
       <li key={option.id}>
         <a
           onClick={() => onChange(option.id)}
-          className={classNames("flex items-center gap-2", {
+          className={classNames("flex items-center gap-2 text-xs", {
             "bg-base-300": option.isSelected,
           })}
         >
@@ -130,12 +130,14 @@ const SegmentedMenu = ({ options }: { options: TSegmentedOption[] }) => (
   >
     {options.map((segment) => (
       <Fragment key={segment.title}>
-        <div className="divider divider-start mx-2">{segment.title}</div>
+        <div className="divider divider-start mx-2 my-2 text-xs">
+          {segment.title}
+        </div>
         {segment.options.map((option) => (
           <li key={option.id}>
             <a
               onClick={option.onChange}
-              className={classNames("flex items-center gap-2 mx-2", {
+              className={classNames("flex items-center gap-2 mx-2 text-xs", {
                 "bg-base-300": option.isSelected,
               })}
             >
