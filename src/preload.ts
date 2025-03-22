@@ -3,6 +3,20 @@ import { contextBridge, ipcRenderer } from "electron";
 import type { TToken } from "./hooks/useAuth.tsx";
 import type { TTheme, TThemeMode } from "./hooks/useTheme.tsx";
 
+// Declare electron property on window object
+declare global {
+  interface Window {
+    electron: {
+      onSupabaseAuthCallback: (callback: (token: TToken) => void) => () => void;
+      setThemeMode: (mode: TThemeMode) => void;
+      getTheme: (callback: (theme: TTheme) => void) => void;
+      onThemeChange: (
+        callback: (theme: TTheme) => void,
+      ) => (() => void) | undefined;
+    };
+  }
+}
+
 contextBridge.exposeInMainWorld("electron", {
   // ---------- AUTH ----------
   onSupabaseAuthCallback: (callback: (token: TToken) => void) => {
