@@ -139,7 +139,7 @@ const Theme = () => {
         <div className="collapse-content">
           <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4">
             {lightThemes.map((theme) => (
-              <ThemeOption theme={theme.id} />
+              <ThemeOption key={theme.id} theme={theme.id} />
             ))}
           </div>
         </div>
@@ -150,7 +150,7 @@ const Theme = () => {
         <div className="collapse-content">
           <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4">
             {darkThemes.map((theme) => (
-              <ThemeOption theme={theme.id} />
+              <ThemeOption key={theme.id} theme={theme.id} />
             ))}
           </div>
         </div>

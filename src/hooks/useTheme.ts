@@ -7,22 +7,21 @@ export type TTheme = "light" | "dark";
 export type TThemeMode = TTheme | "system";
 
 export const useTheme = () => {
-  const [themeMode, setThemeMode] = useState<"light" | "dark">("light");
+  const [themeMode, setThemeMode] = useState<TTheme>("light");
   const [userPreferences] = usePreferences();
 
-  const modes = ["system", "light", "dark"];
+  const modes: TThemeMode[] = ["system", "light", "dark"];
 
   useEffect(() => {
     // Get the theme from the system, or set it based on user preferences
     if (userPreferences.themeMode === EThemeMode.SYSTEM) {
+      window.electron.setThemeMode(modes[EThemeMode.SYSTEM]);
       window.electron.getTheme((theme: TTheme) => {
         setThemeMode(theme);
       });
     } else {
-      window.electron.setThemeMode(
-        "set-native-theme",
-        modes[userPreferences.themeMode],
-      );
+      window.electron.setThemeMode(modes[userPreferences.themeMode]);
+      setThemeMode(modes[userPreferences.themeMode] as TTheme);
     }
 
     // Listen for changes to the os theme
@@ -34,7 +33,7 @@ export const useTheme = () => {
     return () => {
       if (removeListener) removeListener();
     };
-  }, []);
+  }, [userPreferences.themeMode]);
 
   return userPreferences[`${themeMode}Theme`];
 };
