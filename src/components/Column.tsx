@@ -112,9 +112,12 @@ const ColumnTitle = ({ isActive, title }: TColumnTitleProps) => {
 
   return (
     <div
-      className={classNames("badge badge-lg p-5 mx-auto w-full h-standard", {
-        "bg-base-content/80 text-base-100": isActive,
-      })}
+      className={classNames(
+        "badge badge-lg p-5 mx-auto w-full h-standard rounded-field",
+        {
+          "bg-base-content/80 text-base-100": isActive,
+        },
+      )}
     >
       {title}
     </div>
@@ -137,6 +140,7 @@ const CreateTask = ({ enabled, onTaskCreate }: TCreateTaskProps) =>
           e.currentTarget.value = "";
         }
       }}
+      wrapperClassName="rounded-field"
     >
       <Plus />
     </InputWithIcon>
