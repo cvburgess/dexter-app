@@ -17,7 +17,7 @@ import { EThemeMode } from "../api/preferences.ts";
 
 export const Settings = () => {
   const [activePanel, setActivePanel] = useState<string>("Account");
-  const panels = ["Account", "Theme", "About"];
+  const panels = ["Account", "Features", "Theme", "About"];
 
   return (
     <View>
@@ -37,6 +37,7 @@ export const Settings = () => {
         </ul>
         {activePanel === "Account" && <Account />}
         {activePanel === "Theme" && <Theme />}
+        {activePanel === "Features" && <Features />}
       </ScrollableContainer>
     </View>
   );
@@ -69,6 +70,31 @@ const Account = () => {
       >
         Delete account
       </button>
+    </Panel>
+  );
+};
+
+const Features = () => {
+  return (
+    <Panel>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-4">
+        <SettingsOption
+          options={[
+            { id: "true", title: "Enabled", isSelected: true },
+            { id: "false", title: "Disabled", isSelected: false },
+          ]}
+          setting="notes"
+          title="Daily Notes"
+        />
+        <SettingsOption
+          options={[
+            { id: "true", title: "Enabled", isSelected: true },
+            { id: "false", title: "Disabled", isSelected: false },
+          ]}
+          setting="journal"
+          title="Journal"
+        />
+      </div>
     </Panel>
   );
 };
@@ -114,19 +140,16 @@ const Theme = () => {
       <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-4">
         <SettingsOption
           options={lightThemes}
-          selected="dexter"
           setting="lightTheme"
           title="Light Theme"
         />
         <SettingsOption
           options={darkThemes}
-          selected="dark"
           setting="darkTheme"
           title="Dark Theme"
         />
         <SettingsOption
           options={themeModeOptions}
-          selected="dark"
           setting="themeMode"
           title="Theme Mode"
         />
@@ -192,7 +215,6 @@ const ThemeOption = ({ theme }: { theme: string }) => (
 
 type TSettingsOptionProps = {
   options: TOption[];
-  selected: string;
   setting: string;
   title: string;
 };
