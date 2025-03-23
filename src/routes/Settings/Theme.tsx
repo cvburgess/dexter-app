@@ -1,105 +1,12 @@
-import { useState } from "react";
-import { CaretDown } from "@phosphor-icons/react";
-import classNames from "classnames";
+import { Panel } from "../../components/Panel";
+import { SettingsOption } from "../../components/SettingsOption";
 
-import {
-  ButtonWithPopover,
-  TOption,
-} from "../components/ButtonWithPopover.tsx";
-import { TextToolbar } from "../components/Toolbar.tsx";
-import { ScrollableContainer, View } from "../components/View.tsx";
+import { usePreferences } from "../../hooks/usePreferences.tsx";
+import { THEMES } from "../../hooks/useTheme.ts";
 
-import { THEMES } from "../hooks/useTheme.ts";
-import { useAuth } from "../hooks/useAuth.tsx";
-import { usePreferences } from "../hooks/usePreferences.tsx";
+import { EThemeMode } from "../../api/preferences.ts";
 
-import { EThemeMode } from "../api/preferences.ts";
-
-export const Settings = () => {
-  const [activePanel, setActivePanel] = useState<string>("Account");
-  const panels = ["Account", "Features", "Theme", "About"];
-
-  return (
-    <View>
-      <TextToolbar title="Settings" />
-      <ScrollableContainer>
-        <ul className="menu bg-base-100 rounded-box w-standard mt-4">
-          {panels.map((panel) => (
-            <li className="my-1" key={panel}>
-              <a
-                className={classNames({ "bg-base-200": activePanel === panel })}
-                onClick={() => setActivePanel(panel)}
-              >
-                {panel}
-              </a>
-            </li>
-          ))}
-        </ul>
-        {activePanel === "Account" && <Account />}
-        {activePanel === "Theme" && <Theme />}
-        {activePanel === "Features" && <Features />}
-      </ScrollableContainer>
-    </View>
-  );
-};
-
-const Panel = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="border-2 border-base-200 w-full h-[calc(100vh-5.5rem)] rounded-box mt-4 p-4 overflow-auto">
-      {children}
-    </div>
-  );
-};
-
-const Account = () => {
-  const { signOut } = useAuth();
-
-  return (
-    <Panel>
-      <button
-        type="button"
-        className="btn"
-        onClick={async () => await signOut()}
-      >
-        Sign out
-      </button>
-      <button
-        type="button"
-        className="btn"
-        onClick={async () => await signOut()}
-      >
-        Delete account
-      </button>
-    </Panel>
-  );
-};
-
-const Features = () => {
-  return (
-    <Panel>
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-4">
-        <SettingsOption
-          options={[
-            { id: "true", title: "Enabled", isSelected: true },
-            { id: "false", title: "Disabled", isSelected: false },
-          ]}
-          setting="notes"
-          title="Daily Notes"
-        />
-        <SettingsOption
-          options={[
-            { id: "true", title: "Enabled", isSelected: true },
-            { id: "false", title: "Disabled", isSelected: false },
-          ]}
-          setting="journal"
-          title="Journal"
-        />
-      </div>
-    </Panel>
-  );
-};
-
-const Theme = () => {
+export const Theme = () => {
   // const selectedClassNames = "outline-2 outline-offset-2 outline-base-content";
   const [userPreferences] = usePreferences();
 
@@ -212,30 +119,3 @@ const ThemeOption = ({ theme }: { theme: string }) => (
     </div>
   </div>
 );
-
-type TSettingsOptionProps = {
-  options: TOption[];
-  setting: string;
-  title: string;
-};
-
-const SettingsOption = ({ options, setting, title }: TSettingsOptionProps) => {
-  const [_, { updatePreferences }] = usePreferences();
-  const selected = options.find((option) => option.isSelected);
-
-  return (
-    <fieldset className="fieldset w-full">
-      <legend className="fieldset-legend ml-2">{title}</legend>
-      <ButtonWithPopover
-        buttonVariant="none"
-        variant="menu"
-        options={options}
-        onChange={(value) => updatePreferences({ [setting]: value })}
-      >
-        <button className="btn text-xs justify-start capitalize w-full">
-          {selected.title} <CaretDown className="ml-auto" />
-        </button>
-      </ButtonWithPopover>
-    </fieldset>
-  );
-};

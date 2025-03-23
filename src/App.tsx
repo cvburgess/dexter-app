@@ -15,7 +15,7 @@ import { Review } from "./routes/Review.tsx";
 import { Week } from "./routes/Week.tsx";
 import { Prioritize } from "./routes/Prioritize.tsx";
 import { Lists } from "./routes/Lists.tsx";
-import { Settings } from "./routes/Settings.tsx";
+import { Settings } from "./routes/Settings/index.tsx";
 import { Login } from "./routes/Login.tsx";
 
 import { Nav } from "./components/Nav.tsx";
