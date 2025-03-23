@@ -63,7 +63,7 @@ export const Card = ({
     <div
       {...dragProps}
       className={classNames(
-        "shadow-xs rounded-box p-4 border border-current/10 flex",
+        "shadow-xs rounded-field p-4 border border-current/10 flex",
         isComplete ? colors.complete : colors.incomplete,
         cardSize === "compact-w" ? "w-compact" : "w-standard h-standard",
         className,

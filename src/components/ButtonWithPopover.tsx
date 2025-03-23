@@ -42,7 +42,7 @@ type TConditionalProps =
 type TButtonWithPopoverProps = TCommonProps & TConditionalProps;
 
 const roundButtonClasses =
-  "w-5 h-5 rounded-box outline outline-current/25 flex items-center justify-center hover:opacity-90";
+  "w-5 h-5 rounded-field outline outline-current/25 flex items-center justify-center hover:opacity-90";
 const leftJoinButtonClasses =
   "btn join-item p-4 h-standard min-w-20 bg-base-300 border-none";
 
@@ -108,7 +108,7 @@ const DropdownMenu = ({ onChange, options }: TDropdownMenuProps) => (
       <li key={option.id}>
         <a
           onClick={() => onChange(option.id)}
-          className={classNames("flex items-center gap-2", {
+          className={classNames("flex items-center gap-2 text-xs", {
             "bg-base-300": option.isSelected,
           })}
         >
@@ -130,12 +130,14 @@ const SegmentedMenu = ({ options }: { options: TSegmentedOption[] }) => (
   >
     {options.map((segment) => (
       <Fragment key={segment.title}>
-        <div className="divider divider-start">{segment.title}</div>
+        <div className="divider divider-start mx-2 my-2 text-xs">
+          {segment.title}
+        </div>
         {segment.options.map((option) => (
           <li key={option.id}>
             <a
               onClick={option.onChange}
-              className={classNames("flex items-center gap-2", {
+              className={classNames("flex items-center gap-2 mx-2 text-xs", {
                 "bg-base-300": option.isSelected,
               })}
             >

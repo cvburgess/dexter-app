@@ -28,12 +28,11 @@ export const DraggableView = ({ children }: TProps) => {
     const { source, destination } = result;
 
     const taskId = result.draggableId;
-    const sourceColumn = result.source.droppableId;
+    const _sourceColumn = result.source.droppableId;
     const destColumn = result.destination.droppableId;
     const destIndex = result.destination.index;
 
     if (source.droppableId !== destination.droppableId) {
-      console.dir({ taskId, sourceColumn, destColumn });
       onTaskMove(taskId, destIndex, destColumn);
     } else {
       // const column = columns[source.droppableId];

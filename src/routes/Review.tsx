@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CaretRight, CheckCircle, XCircle } from "@phosphor-icons/react";
+import { CheckCircle, XCircle } from "@phosphor-icons/react";
 import { Temporal } from "@js-temporal/polyfill";
 import classNames from "classnames";
 
@@ -52,27 +52,31 @@ export const Review = () => {
         <div className="flex flex-1 flex-col items-center justify-center gap-4 px-4 pt-12 min-h-[calc(100vh-6rem)] overflow-auto">
           <Title text={title} />
           <Subtitle text={subtitle} />
-          <div className="flex md:flex-wrap max-sm:flex-col w-full h-full justify-center max-sm:items-center overflow-auto no-scrollbar">
-            {incompleteTasks.length ? (
-              <>
-                <CardListWithTitle
-                  tasks={incompleteTasks}
-                  variant="incomplete"
-                />
-                <Divider />
-                <CardListWithTitle tasks={completeTasks} variant="complete" />
-              </>
-            ) : (
-              <>
-                <CardListWithTitle tasks={completeTasks} variant="complete" />
-                <Divider />
-                <Column
-                  canCreateTasks
-                  id={`scheduledFor:${nextDay.toString()}`}
-                  tasks={nextDaysTasks}
-                />
-              </>
-            )}
+          <div className="flex gap-8 md:flex-wrap max-sm:flex-col w-full h-full justify-center max-sm:items-center overflow-auto no-scrollbar">
+            <CardListWithTitle
+              isVisible={incompleteTasks.length > 0}
+              tasks={incompleteTasks}
+              variant="incomplete"
+            />
+            <CardListWithTitle
+              isVisible
+              tasks={completeTasks}
+              variant="complete"
+            />
+            <div
+              className={classNames(
+                "transition-all duration-300",
+                incompleteTasks.length === 0
+                  ? "opacity-100 w-standard"
+                  : "opacity-0 w-0 min-w-0",
+              )}
+            >
+              <Column
+                canCreateTasks
+                id={`scheduledFor:${nextDay.toString()}`}
+                tasks={nextDaysTasks}
+              />
+            </div>
           </div>
         </div>
         <QuickDrawer
@@ -92,22 +96,26 @@ const Subtitle = ({ text }: { text: string }) => (
   <p className="text-xs text-center italic opacity-40 mt-2 mb-8">{text}</p>
 );
 
-const Divider = () => (
-  <div className="divider py-8 max-sm:px-8 sm:divider-horizontal sm:max-h-[75vh] sm:sticky sm:top-0">
-    <CaretRight className="text-current/40" size={48} />
-  </div>
-);
-
 type TCardListWithTItleProps = {
+  isVisible: boolean;
   tasks: TTask[];
   variant: "complete" | "incomplete";
 };
 
-const CardListWithTitle = ({ tasks, variant }: TCardListWithTItleProps) => {
+const CardListWithTitle = ({
+  isVisible,
+  tasks,
+  variant,
+}: TCardListWithTItleProps) => {
   const Icon = variant === "complete" ? CheckCircle : XCircle;
 
   return (
-    <div className="flex flex-col items-center gap-4 min-w-standard">
+    <div
+      className={classNames(
+        "flex flex-col items-center gap-4 transition-all duration-300",
+        isVisible ? "opacity-100 w-standard" : "opacity-0 w-0 min-w-0",
+      )}
+    >
       <p className="text-xl font-bold opacity-60 inline-flex items-center pr-5 mt-4 capitalize">
         <Icon
           className={classNames("mr-4", {
