@@ -191,7 +191,7 @@ client_id = "218947795156-k6ov628icbb021i4e0src54p2j5v798b.apps.googleuserconten
 # DO NOT commit your OAuth provider secret to git. Use environment variable substitution instead:
 secret = "env(SUPABASE_AUTH_GOOGLE_SECRET)"
 # Overrides the default auth redirectUrl.
-redirect_uri = "https://isreileykodwkyedcewv.supabase.co/auth/v1/callback"
+redirect_uri = "https://api.dexterplanner.com/auth/v1/callback"
 # Overrides the default auth provider URL. Used to support self-hosted gitlab, single-tenant Azure,
 # or any other third-party OIDC providers.
 url = ""
