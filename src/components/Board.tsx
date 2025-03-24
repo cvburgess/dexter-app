@@ -41,6 +41,7 @@ export const Board = ({
           id={`${groupBy}:${column.id}`}
           isActive={column.isActive}
           key={column.id}
+          subtitle={column.subtitle}
           tasks={column.tasks}
           title={column.title}
           titleComponent={column.titleComponent}
