@@ -78,9 +78,8 @@ const makeColumnsForWeekOf = (
       id: isoDate,
       isActive: isoDate === Temporal.Now.plainDateISO().toString(),
       subtitle: date.toLocaleString(["en-us"], {
-        month: "short",
+        month: "numeric",
         day: "numeric",
-        year: "numeric",
       }),
       title: dayName,
       tasks: tasks?.filter((task: TTask) => task.scheduledFor === isoDate),

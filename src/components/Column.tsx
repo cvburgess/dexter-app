@@ -126,7 +126,9 @@ const ColumnTitle = ({ isActive, title, subtitle }: TColumnTitleProps) => {
     >
       {title}
       {subtitle && (
-        <span className="text-[0.5rem] opacity-80 mb-[2px]">{subtitle}</span>
+        <span className="text-[0.5rem] opacity-80 mt-[-1px] mb-[2px]">
+          {subtitle}
+        </span>
       )}
     </div>
   );
