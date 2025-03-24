@@ -118,7 +118,7 @@ const ColumnTitle = ({ isActive, title, subtitle }: TColumnTitleProps) => {
   return (
     <div
       className={classNames(
-        "badge badge-lg p-5 mx-auto w-full h-standard rounded-field flex flex-col justify-center gap-0",
+        "badge badge-lg p-0 mx-auto w-full h-standard rounded-field flex flex-col justify-center gap-0",
         {
           "bg-base-content/80 text-base-100": isActive,
         },
