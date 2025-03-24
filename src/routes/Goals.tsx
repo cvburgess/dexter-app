@@ -5,8 +5,9 @@ import classNames from "classnames";
 
 import { Board, TColumn } from "../components/Board.tsx";
 import { ConfirmModal } from "../components/ConfirmModal.tsx";
+import { DraggableView, DrawerContainer } from "../components/View.tsx";
+import { QuickDrawer } from "../components/QuickPlanner.tsx";
 import { TextToolbar } from "../components/Toolbar.tsx";
-import { DraggableView } from "../components/View.tsx";
 
 import { useGoals } from "../hooks/useGoals.tsx";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
@@ -15,20 +16,25 @@ import { TCreateGoal, TGoal, TUpdateGoal } from "../api/goals.ts";
 import { TTask } from "../api/tasks.ts";
 
 export const Goals = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [goals, { createGoal, updateGoal }] = useGoals();
-  const [tasks] = useTasks(taskFilters.incomplete);
+  const [tasks] = useTasks();
 
   const columns = makeColumns(goals, tasks, updateGoal);
 
   return (
     <DraggableView>
-      <TextToolbar title="Goals" />
-      <Board
-        appendAfter={<GoalInput onChange={createGoal} />}
-        canCreateTasks
-        columns={columns}
-        groupBy="goalId"
-      />
+      <TextToolbar title="Goals" toggleQuickPlan={() => setIsOpen(!isOpen)} />
+
+      <DrawerContainer>
+        <Board
+          appendAfter={<GoalInput onChange={createGoal} />}
+          canCreateTasks
+          columns={columns}
+          groupBy="goalId"
+        />
+        <QuickDrawer isOpen={isOpen} baseFilters={taskFilters.noGoal} />
+      </DrawerContainer>
     </DraggableView>
   );
 };
