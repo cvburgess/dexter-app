@@ -1,5 +1,5 @@
 import { ECardSize } from "./Card.tsx";
-import { Column } from "../components/Column.tsx";
+import { Column, TColumnProps } from "../components/Column.tsx";
 import { ScrollableContainer } from "./View.tsx";
 
 import { TTask } from "../api/tasks.ts";
@@ -13,13 +13,12 @@ type TBoardProps = {
   tasks?: TTask[];
 };
 
-export type TColumn = {
+export type TColumn = Omit<
+  TColumnProps,
+  "canCreateTasks" | "cardSize" | "id"
+> & {
   autoCollapse?: boolean;
   id: string | null;
-  isActive?: boolean;
-  tasks: TTask[];
-  title?: string;
-  titleComponent?: React.ReactNode | null;
 };
 
 export type EGroupBy = "scheduledFor" | "listId" | "priority";
