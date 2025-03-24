@@ -4,80 +4,72 @@ import { Archive } from "@phosphor-icons/react";
 import classNames from "classnames";
 
 import { Board, TColumn } from "../components/Board.tsx";
-import { ButtonWithPopover } from "../components/ButtonWithPopover.tsx";
 import { ConfirmModal } from "../components/ConfirmModal.tsx";
 import { TextToolbar } from "../components/Toolbar.tsx";
 import { DraggableView } from "../components/View.tsx";
 
-import { useLists } from "../hooks/useLists.tsx";
+import { useGoals } from "../hooks/useGoals.tsx";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
-import { TCreateList, TList, TUpdateList } from "../api/lists.ts";
+import { TCreateGoal, TGoal, TUpdateGoal } from "../api/goals.ts";
 import { TTask } from "../api/tasks.ts";
 
 export const Goals = () => {
-  const [lists, { createList, updateList }] = useLists();
+  const [goals, { createGoal, updateGoal }] = useGoals();
   const [tasks] = useTasks(taskFilters.incomplete);
 
-  const columns = makeColumns(lists, tasks, updateList);
+  const columns = makeColumns(goals, tasks, updateGoal);
 
   return (
     <DraggableView>
-      <TextToolbar title="Lists" />
+      <TextToolbar title="Goals" />
       <Board
-        appendAfter={<ListInput onChange={createList} />}
+        appendAfter={<GoalInput onChange={createGoal} />}
         canCreateTasks
         columns={columns}
-        groupBy="listId"
+        groupBy="goalId"
       />
     </DraggableView>
   );
 };
 
-type TListInputProps = {
-  list?: TList;
+type TGoalInputProps = {
+  goal?: TGoal;
   onArchive?: (id: string) => void;
-  onChange?: (list: TCreateList | TUpdateList) => void;
+  onChange?: (goal: TCreateGoal | TUpdateGoal) => void;
 };
 
-const ListInput = ({ list, onArchive, onChange }: TListInputProps) => {
-  const [title, setTitle] = useState<string>(list?.title || "");
-  const [emoji, setEmoji] = useState<string>(list?.emoji || "🐶");
+const GoalInput = ({ goal, onArchive, onChange }: TGoalInputProps) => {
+  const [title, setTitle] = useState<string>(goal?.title || "");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [debouncedTitle] = useDebounce(title, 1000);
 
   useEffect(() => {
-    if (list && debouncedTitle !== list.title) {
-      onChange({ id: list.id, title: debouncedTitle });
+    if (goal && debouncedTitle !== goal.title) {
+      onChange({ id: goal.id, title: debouncedTitle });
     }
   }, [debouncedTitle]);
 
   const resetForm = () => {
     setTitle("");
-    setEmoji("🐶");
   };
 
   const onChangeTitle = ({
     currentTarget: { value },
   }: React.ChangeEvent<HTMLInputElement>) => {
-    if (list) onChange({ id: list.id, title: value });
+    if (goal) onChange({ id: goal.id, title: value });
     setTitle(value);
   };
 
   const onEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && title) {
-      if (list) {
-        onChange({ id: list.id, title });
+      if (goal) {
+        onChange({ id: goal.id, title });
       } else {
-        onChange({ title, emoji });
+        onChange({ title } as TCreateGoal);
         resetForm();
       }
     }
-  };
-
-  const onChangeEmoji = (value: string) => {
-    if (list) onChange({ id: list.id, emoji: value });
-    setEmoji(value);
   };
 
   const openModal = () => setIsModalOpen(true);
@@ -89,40 +81,33 @@ const ListInput = ({ list, onArchive, onChange }: TListInputProps) => {
     <>
       <div
         className={classNames("join min-w-standard h-standard", {
-          "pt-4 sticky top-0": !list,
+          "pt-4 sticky top-0": !goal,
         })}
       >
-        <ButtonWithPopover
-          buttonVariant="left-join"
-          variant="emoji"
-          onChange={onChangeEmoji}
-        >
-          {emoji}
-        </ButtonWithPopover>
-        <label className="input join-item bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-r-[var(--radius-field)] h-standard border-1 border-base-200 text-[1rem]">
+        <label className="input bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field h-standard border-1 border-base-200 text-[1rem] pl-6">
           <input
-            placeholder="New List"
+            placeholder="New Goal"
             type="text"
             onChange={onChangeTitle}
             onKeyDown={onEnter}
             value={title}
           />
-          {list && (
+          {goal && (
             <span className="btn btn-link" onClick={openModal}>
               <Archive className="text-base-content/60 hover:text-error" />
             </span>
           )}
         </label>
       </div>
-      {list && (
+      {goal && (
         <ConfirmModal
           isOpen={isModalOpen}
           onClose={closeModal}
-          onConfirm={() => onArchive(list.id)}
-          title={`Archive ${list.title}?`}
+          onConfirm={() => onArchive(goal.id)}
+          title={`Archive ${goal.title}?`}
           message={
             <>
-              This will archive the list and <br />
+              This will archive the goal and <br />
               move any open tasks to <span className="font-bold">won't do</span>
               .
             </>
@@ -134,25 +119,21 @@ const ListInput = ({ list, onArchive, onChange }: TListInputProps) => {
   );
 };
 
-type NoList = Omit<TList, "id"> & { id: null };
-
 const makeColumns = (
-  lists: Array<TList | NoList> | undefined = [],
+  goals: Array<TGoal> | undefined = [],
   tasks: TTask[] | undefined = [],
-  updateList: (list: TUpdateList) => void,
+  updateGoal: (goal: TUpdateGoal) => void,
 ): TColumn[] =>
-  [{ createdAt: "", id: null, title: "No List" }, ...lists].map(
-    (list: TList | NoList) => ({
-      autoCollapse: list.id === null,
-      id: list.id,
-      title: list.title,
-      titleComponent: list.id && (
-        <ListInput
-          list={list}
-          onArchive={() => updateList({ id: list.id, isArchived: true })}
-          onChange={updateList}
-        />
-      ),
-      tasks: tasks?.filter((task: TTask) => task.listId === list.id),
-    }),
-  );
+  goals.map((goal: TGoal) => ({
+    autoCollapse: goal.id === null,
+    id: goal.id,
+    title: goal.title,
+    titleComponent: goal.id && (
+      <GoalInput
+        goal={goal}
+        onArchive={() => updateGoal({ id: goal.id, isArchived: true })}
+        onChange={updateGoal}
+      />
+    ),
+    tasks: tasks?.filter((task: TTask) => task.goalId === goal.id),
+  }));

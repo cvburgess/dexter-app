@@ -30,6 +30,30 @@ export type Database = {
         }
         Relationships: []
       }
+      goals: {
+        Row: {
+          created_at: string
+          id: string
+          is_archived: boolean
+          title: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_archived?: boolean
+          title?: string | null
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_archived?: boolean
+          title?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       lists: {
         Row: {
           created_at: string
@@ -82,6 +106,7 @@ export type Database = {
         Row: {
           created_at: string | null
           due_on: string | null
+          goal_id: string | null
           id: string
           list_id: string | null
           priority: number
@@ -94,6 +119,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           due_on?: string | null
+          goal_id?: string | null
           id?: string
           list_id?: string | null
           priority?: number
@@ -106,6 +132,7 @@ export type Database = {
         Update: {
           created_at?: string | null
           due_on?: string | null
+          goal_id?: string | null
           id?: string
           list_id?: string | null
           priority?: number
@@ -128,6 +155,13 @@ export type Database = {
             columns: ["subtask_of"]
             isOneToOne: false
             referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "goals"
             referencedColumns: ["id"]
           },
         ]

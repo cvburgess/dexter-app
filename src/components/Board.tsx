@@ -21,7 +21,7 @@ export type TColumn = Omit<
   id: string | null;
 };
 
-export type EGroupBy = "scheduledFor" | "listId" | "priority";
+export type EGroupBy = "scheduledFor" | "listId" | "priority" | "goalId";
 
 export const Board = ({
   appendAfter = null,
