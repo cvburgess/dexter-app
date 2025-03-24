@@ -7,6 +7,7 @@ import { Database, TablesInsert, TablesUpdate } from "./database.types.ts";
 export type TTask = {
   id: string;
   dueOn: string | null;
+  goalId: string | null;
   listId: string | null;
   priority: ETaskPriority;
   scheduledFor: string | null;
@@ -46,6 +47,7 @@ export const getTasks = async (
 
 export type TCreateTask = {
   dueOn?: string | null;
+  goalId?: string | null;
   listId?: string | null;
   priority?: ETaskPriority;
   scheduledFor?: string | null;
@@ -69,6 +71,7 @@ export const createTask = async (
 export type TUpdateTask = {
   id: string;
   dueOn?: string | null;
+  goalId?: string | null;
   listId?: string | null;
   priority?: ETaskPriority;
   scheduledFor?: string | null;

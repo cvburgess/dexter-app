@@ -15,6 +15,7 @@ type TColumnProps = {
   cardSize?: ECardSize;
   id: string;
   isActive?: boolean;
+  subtitle?: string;
   tasks: TTask[];
   title?: string;
   titleComponent?: React.ReactNode | null;
@@ -25,6 +26,7 @@ export const Column = ({
   cardSize = "normal",
   id,
   isActive = false,
+  subtitle,
   tasks = [],
   title,
   titleComponent = null,
@@ -64,7 +66,9 @@ export const Column = ({
           },
         )}
       >
-        {titleComponent || <ColumnTitle isActive={isActive} title={title} />}
+        {titleComponent || (
+          <ColumnTitle isActive={isActive} subtitle={subtitle} title={title} />
+        )}
 
         <CreateTask
           enabled={canCreateTasks}
@@ -104,22 +108,28 @@ type TColumnTitleProps = {
   emoji?: string;
   isActive?: boolean;
   isEditable?: boolean;
+  subtitle?: string;
   title?: string;
 };
 
-const ColumnTitle = ({ isActive, title }: TColumnTitleProps) => {
+const ColumnTitle = ({ isActive, title, subtitle }: TColumnTitleProps) => {
   if (!title) return null;
 
   return (
     <div
       className={classNames(
-        "badge badge-lg p-5 mx-auto w-full h-standard rounded-field",
+        "badge badge-lg p-0 mx-auto w-full h-standard rounded-field flex flex-col justify-center gap-0",
         {
           "bg-base-content/80 text-base-100": isActive,
         },
       )}
     >
       {title}
+      {subtitle && (
+        <span className="text-[0.5rem] opacity-80 mt-[-1px] mb-[2px]">
+          {subtitle}
+        </span>
+      )}
     </div>
   );
 };

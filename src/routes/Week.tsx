@@ -71,11 +71,16 @@ const makeColumnsForWeekOf = (
   ];
 
   return dayNames.map((dayName, index) => {
-    const isoDate = mostRecentMonday.add({ days: index }).toString();
+    const date = mostRecentMonday.add({ days: index });
+    const isoDate = date.toString();
 
     return {
       id: isoDate,
       isActive: isoDate === Temporal.Now.plainDateISO().toString(),
+      subtitle: date.toLocaleString(["en-us"], {
+        month: "numeric",
+        day: "numeric",
+      }),
       title: dayName,
       tasks: tasks?.filter((task: TTask) => task.scheduledFor === isoDate),
     };

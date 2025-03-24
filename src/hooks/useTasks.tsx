@@ -111,4 +111,7 @@ export const taskFilters: Record<string, TQueryFilter[]> = {
       ...this.incomplete,
     ];
   },
+  get noGoal(): TQueryFilter[] {
+    return [["goalId", "is", null], ...this.incomplete];
+  },
 };

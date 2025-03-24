@@ -2,10 +2,11 @@ import { NavLink } from "react-router";
 import {
   CalendarDots,
   Gear,
-  List,
+  ListHeart,
   Moon,
   SquaresFour,
   Sun,
+  Trophy,
 } from "@phosphor-icons/react";
 import classNames from "classnames";
 
@@ -16,7 +17,8 @@ const navItems = [
   { Icon: Moon, route: "/review" },
   { Icon: CalendarDots, route: "/week" },
   { Icon: SquaresFour, route: "/prioritize" },
-  { Icon: List, route: "/lists" },
+  { Icon: ListHeart, route: "/lists" },
+  { Icon: Trophy, route: "/goals" },
   { Icon: Gear, route: "/settings", bottom: true },
 ];
 
