@@ -1,4 +1,4 @@
-import { Check, SpinnerGap, X } from "@phosphor-icons/react";
+import { Check, Circle, SpinnerGap, X } from "@phosphor-icons/react";
 import classNames from "classnames";
 
 import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
@@ -38,25 +38,25 @@ const optionsForStatus = (status: ETaskStatus): TOption[] => [
   {
     id: ETaskStatus.TODO.toString(),
     title: "To Do",
-    emoji: "⚪",
+    icon: <Circle />,
     isSelected: status === ETaskStatus.TODO,
   },
   {
     id: ETaskStatus.IN_PROGRESS.toString(),
     title: "In Progress",
-    emoji: "🟡",
+    icon: <SpinnerGap />,
     isSelected: status === ETaskStatus.IN_PROGRESS,
   },
   {
     id: ETaskStatus.DONE.toString(),
     title: "Done",
-    emoji: "🟢",
+    icon: <Check />,
     isSelected: status === ETaskStatus.DONE,
   },
   {
     id: ETaskStatus.WONT_DO.toString(),
     title: "Won't Do",
-    emoji: "🔴",
+    icon: <X />,
     isSelected: status === ETaskStatus.WONT_DO,
   },
 ];

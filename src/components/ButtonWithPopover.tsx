@@ -8,6 +8,7 @@ export type TOnChange<T> = (id: T) => void;
 
 export type TOption = {
   emoji?: string;
+  icon?: React.ReactNode;
   id: string | number | null;
   isSelected: boolean;
   title: string;
@@ -113,6 +114,7 @@ const DropdownMenu = ({ onChange, options }: TDropdownMenuProps) => (
           })}
         >
           {option.emoji ? <span>{option.emoji}</span> : null}
+          {option.icon ? option.icon : null}
           <span>{option.title}</span>
         </a>
       </li>
@@ -142,6 +144,7 @@ const SegmentedMenu = ({ options }: { options: TSegmentedOption[] }) => (
               })}
             >
               {option.emoji ? <span>{option.emoji}</span> : null}
+              {option.icon ? option.icon : null}
               <span
                 className={classNames({ "text-red-600": option.isDangerous })}
               >
