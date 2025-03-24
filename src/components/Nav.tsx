@@ -2,7 +2,7 @@ import { NavLink } from "react-router";
 import {
   CalendarDots,
   Gear,
-  List,
+  ListHeart,
   Moon,
   SquaresFour,
   Sun,
@@ -17,8 +17,8 @@ const navItems = [
   { Icon: Moon, route: "/review" },
   { Icon: CalendarDots, route: "/week" },
   { Icon: SquaresFour, route: "/prioritize" },
+  { Icon: ListHeart, route: "/lists" },
   { Icon: Trophy, route: "/goals" },
-  { Icon: List, route: "/lists" },
   { Icon: Gear, route: "/settings", bottom: true },
 ];
 
