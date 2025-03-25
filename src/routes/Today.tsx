@@ -21,6 +21,7 @@ export const Today = () => {
   );
 
   const [{ enableJournal, enableNotes }] = usePreferences();
+
   const [tasks] = useTasks([["scheduledFor", "eq", date.toString()]]);
 
   return (
