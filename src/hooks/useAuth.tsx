@@ -18,12 +18,10 @@ const supabase = createClient<Database>(VITE_SUPABASE_URL, VITE_SUPABASE_KEY);
 
 type TResetResponse = { data: unknown | null; error: AuthError | null };
 
-type EResetState = null | "recovering" | "recovered";
-
 type AuthContextType = {
   initializing: boolean;
+  resetInProgress: boolean;
   resetPassword: ({ email }: { email: string }) => Promise<TResetResponse>;
-  resetPasswordState: EResetState;
   session: Session | null;
   signUp: ({ email, password }: EmailPassword) => Promise<AuthResponse>;
   signIn: ({
@@ -41,10 +39,10 @@ type AuthContextType = {
   userId?: string;
 };
 
-/**
- * Step 1: Send the user an email to get a password reset token.
- * This email contains a link which sends the user back to your application.
- */
+const resetPassword = ({ email }: { email: string }) =>
+  supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: "dexter://auth-callback",
+  });
 
 const signUp = ({ email, password }: EmailPassword) =>
   supabase.auth.signUp({ email, password });
@@ -73,8 +71,8 @@ export const deleteAccount = async () => {
 
 const AuthContext = createContext<AuthContextType>({
   initializing: true,
+  resetInProgress: false,
   resetPassword: null,
-  resetPasswordState: null,
   session: null,
   signIn,
   signInWithGoogle,
@@ -94,8 +92,7 @@ export type TToken = {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [initializing, setInitializing] = useState(true);
-  const [resetPasswordState, setResetPasswordState] =
-    useState<EResetState>(null);
+  const [resetInProgress, setResetInProgress] = useState<boolean>(false);
 
   useEffect(() => {
     supabase.auth
@@ -111,7 +108,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "PASSWORD_RECOVERY") {
-        setResetPasswordState("recovered");
+        setResetInProgress(true);
       }
       setSession(session);
     });
@@ -124,7 +121,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const removeListener = window.electron.onSupabaseAuthCallback(
       async (token: TToken) => {
         if (token.type === "recovery") {
-          setResetPasswordState("recovered");
+          setResetInProgress(true);
           await supabase.auth.setSession(token);
         } else {
           await supabase.auth.setSession(token);
@@ -139,19 +136,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const resetPassword = ({ email }: { email: string }) => {
-    setResetPasswordState("recovering");
-    return supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "dexter://auth-callback",
-    });
-  };
-
   return (
     <AuthContext.Provider
       value={{
         initializing,
+        resetInProgress,
         resetPassword,
-        resetPasswordState,
         session,
         signIn,
         signInWithGoogle,

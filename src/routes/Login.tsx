@@ -7,8 +7,8 @@ import { useAuth } from "../hooks/useAuth.tsx";
 
 export const Login = () => {
   const {
+    resetInProgress,
     resetPassword,
-    resetPasswordState,
     signIn,
     signInWithGoogle,
     signUp,
@@ -22,10 +22,10 @@ export const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (resetPasswordState === "recovered") {
+    if (resetInProgress) {
       setMessage("Success! Please enter a new password");
     }
-  }, [resetPasswordState]);
+  }, [resetInProgress]);
 
   const handleError = (error: unknown) => {
     setMessage(
@@ -42,7 +42,7 @@ export const Login = () => {
 
     try {
       if (isLogin) {
-        if (resetPasswordState === "recovered") {
+        if (resetInProgress) {
           const { error } = await updatePassword({ password });
 
           if (error) throw error;
@@ -85,7 +85,7 @@ export const Login = () => {
   if (loading) {
     buttonText = <span className="loading loading-spinner"></span>;
   } else if (isLogin) {
-    if (resetPasswordState === "recovered") {
+    if (resetInProgress) {
       buttonText = "Save Password and Login";
     } else {
       buttonText = "Login";
