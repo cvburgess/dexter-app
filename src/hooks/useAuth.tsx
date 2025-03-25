@@ -1,56 +1,46 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import {
-  AuthError,
-  AuthResponse,
-  AuthTokenResponsePassword,
-  createClient,
-  OAuthResponse,
-  Session,
-  SupabaseClient,
-  UserResponse,
-} from "@supabase/supabase-js";
+import { createClient, Session } from "@supabase/supabase-js";
 
 import { Database } from "../api/database.types.ts";
 
 const { VITE_SUPABASE_URL, VITE_SUPABASE_KEY } = import.meta.env;
-// Create a single supabase client for interacting with your database
-const supabase = createClient<Database>(VITE_SUPABASE_URL, VITE_SUPABASE_KEY);
 
-type TResetResponse = { data: unknown | null; error: AuthError | null };
+// ---------- TYPES ----------
+
+type EmailPassword = { email: string; password: string };
+
+export type TToken = {
+  access_token: string;
+  refresh_token: string;
+  type: string;
+};
 
 type AuthContextType = {
   initializing: boolean;
   resetInProgress: boolean;
-  resetPassword: ({ email }: { email: string }) => Promise<TResetResponse>;
   session: Session | null;
-  signUp: ({ email, password }: EmailPassword) => Promise<AuthResponse>;
-  signIn: ({
-    email,
-    password,
-  }: EmailPassword) => Promise<AuthTokenResponsePassword>;
-  signInWithGoogle: () => Promise<OAuthResponse>;
-  signOut: () => Promise<{ error: AuthError | null }>;
-  supabase: SupabaseClient;
-  updatePassword?: ({
-    password,
-  }: {
-    password: string;
-  }) => Promise<UserResponse>;
   userId?: string;
 };
 
-const resetPassword = ({ email }: { email: string }) =>
+// ---------- HELPER EXPORTS ----------
+
+export const supabase = createClient<Database>(
+  VITE_SUPABASE_URL,
+  VITE_SUPABASE_KEY,
+);
+
+export const resetPassword = ({ email }: { email: string }) =>
   supabase.auth.resetPasswordForEmail(email, {
     redirectTo: "dexter://auth-callback",
   });
 
-const signUp = ({ email, password }: EmailPassword) =>
+export const signUp = ({ email, password }: EmailPassword) =>
   supabase.auth.signUp({ email, password });
 
-const signIn = ({ email, password }: EmailPassword) =>
+export const signIn = ({ email, password }: EmailPassword) =>
   supabase.auth.signInWithPassword({ email, password });
 
-const signInWithGoogle = () =>
+export const signInWithGoogle = () =>
   supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
@@ -69,27 +59,15 @@ export const deleteAccount = async () => {
   await supabase.auth.signOut();
 };
 
+// ---------- HOOK ----------
+
 const AuthContext = createContext<AuthContextType>({
   initializing: true,
   resetInProgress: false,
-  resetPassword: null,
   session: null,
-  signIn,
-  signInWithGoogle,
-  signOut,
-  signUp,
-  supabase,
 });
 
-type EmailPassword = { email: string; password: string };
-
-export type TToken = {
-  access_token: string;
-  refresh_token: string;
-  type: string;
-};
-
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [initializing, setInitializing] = useState(true);
   const [resetInProgress, setResetInProgress] = useState<boolean>(false);
@@ -141,20 +119,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         initializing,
         resetInProgress,
-        resetPassword,
         session,
-        signIn,
-        signInWithGoogle,
-        signOut,
-        signUp,
-        supabase,
-        updatePassword,
         userId: session?.user.id,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
 export const useAuth = () => useContext(AuthContext);

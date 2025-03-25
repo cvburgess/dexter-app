@@ -8,7 +8,7 @@ import {
   upsertDay,
 } from "../api/days.ts";
 
-import { useAuth } from "./useAuth.tsx";
+import { supabase } from "./useAuth.tsx";
 
 type TUseDays = [
   TDay & { prompts: TJournalPrompt[] },
@@ -16,7 +16,6 @@ type TUseDays = [
 ];
 
 export const useDays = (date: string): TUseDays => {
-  const { supabase } = useAuth();
   const queryClient = useQueryClient();
 
   const defaultDay: TDay = {

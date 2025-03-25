@@ -10,7 +10,7 @@ import {
   updateList,
 } from "../api/lists.ts";
 
-import { useAuth } from "./useAuth.tsx";
+import { supabase } from "./useAuth.tsx";
 
 type TUseLists = [
   TList[],
@@ -23,7 +23,6 @@ type TUseLists = [
 ];
 
 export const useLists = (): TUseLists => {
-  const { supabase } = useAuth();
   const queryClient = useQueryClient();
 
   const { data: lists = [] } = useQuery({

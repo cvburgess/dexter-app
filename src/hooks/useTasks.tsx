@@ -14,7 +14,7 @@ import {
   updateTasks,
 } from "../api/tasks.ts";
 
-import { useAuth } from "./useAuth.tsx";
+import { supabase } from "./useAuth.tsx";
 import { makeOrFilter, TQueryFilter } from "../api/applyFilters.ts";
 
 type TUseTasks = [
@@ -28,7 +28,6 @@ type TUseTasks = [
 ];
 
 export const useTasks = (where: TQueryFilter[] = []): TUseTasks => {
-  const { supabase } = useAuth();
   const queryClient = useQueryClient();
 
   const { data: tasks = [] } = useQuery({

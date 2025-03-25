@@ -3,17 +3,17 @@ import { GoogleLogo } from "@phosphor-icons/react";
 import { useNavigate } from "react-router";
 import classNames from "classnames";
 
-import { useAuth } from "../hooks/useAuth.tsx";
+import {
+  resetPassword,
+  signIn,
+  signInWithGoogle,
+  signUp,
+  updatePassword,
+  useAuth,
+} from "../hooks/useAuth.tsx";
 
 export const Login = () => {
-  const {
-    resetInProgress,
-    resetPassword,
-    signIn,
-    signInWithGoogle,
-    signUp,
-    updatePassword,
-  } = useAuth();
+  const { resetInProgress } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);

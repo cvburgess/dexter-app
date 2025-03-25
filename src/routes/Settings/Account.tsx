@@ -3,11 +3,10 @@ import { useState } from "react";
 import { ConfirmModal } from "../../components/ConfirmModal.tsx";
 import { Panel } from "../../components/Panel.tsx";
 
-import { deleteAccount, useAuth } from "../../hooks/useAuth.tsx";
+import { deleteAccount, signOut } from "../../hooks/useAuth.tsx";
 
 export const Account = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const { signOut } = useAuth();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);

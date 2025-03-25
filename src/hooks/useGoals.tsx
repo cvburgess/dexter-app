@@ -10,7 +10,7 @@ import {
   updateGoal,
 } from "../api/goals.ts";
 
-import { useAuth } from "./useAuth.tsx";
+import { supabase } from "./useAuth.tsx";
 
 type TUseGoals = [
   TGoal[],
@@ -23,7 +23,6 @@ type TUseGoals = [
 ];
 
 export const useGoals = (): TUseGoals => {
-  const { supabase } = useAuth();
   const queryClient = useQueryClient();
 
   const { data: goals = [] } = useQuery({
