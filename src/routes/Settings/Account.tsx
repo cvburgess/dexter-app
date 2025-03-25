@@ -1,9 +1,15 @@
+import { useState } from "react";
+
+import { ConfirmModal } from "../../components/ConfirmModal.tsx";
 import { Panel } from "../../components/Panel.tsx";
 
-import { useAuth } from "../../hooks/useAuth.tsx";
+import { deleteAccount, signOut } from "../../hooks/useAuth.tsx";
 
 export const Account = () => {
-  const { signOut } = useAuth();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <Panel>
@@ -14,13 +20,24 @@ export const Account = () => {
       >
         Sign out
       </button>
-      <button
-        type="button"
-        className="btn"
-        onClick={async () => await signOut()}
-      >
+      <button type="button" className="btn" onClick={openModal}>
         Delete account
       </button>
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onConfirm={deleteAccount}
+        title={"Delete account"}
+        message={
+          <>
+            This will{" "}
+            <span className="font-bold text-error">permanently delete</span>
+            <br /> your account and all your data <br /> <br />
+            This cannot be undone
+          </>
+        }
+        confirmButtonText="Goodbye"
+      />
     </Panel>
   );
 };

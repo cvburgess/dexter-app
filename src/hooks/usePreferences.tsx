@@ -8,7 +8,7 @@ import {
   EThemeMode,
 } from "../api/preferences.ts";
 
-import { useAuth } from "./useAuth.tsx";
+import { supabase, useAuth } from "./useAuth.tsx";
 
 type TUsePreferences = [
   TPreferences,
@@ -20,7 +20,7 @@ type TUsePreferences = [
 ];
 
 export const usePreferences = (): TUsePreferences => {
-  const { supabase, userId } = useAuth();
+  const { userId } = useAuth();
   const queryClient = useQueryClient();
 
   const { data: preferences = defaultPreferences } = useQuery({

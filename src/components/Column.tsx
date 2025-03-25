@@ -10,7 +10,7 @@ import { useTasks } from "../hooks/useTasks.tsx";
 
 import { TTask } from "../api/tasks.ts";
 
-type TColumnProps = {
+export type TColumnProps = {
   canCreateTasks?: boolean;
   cardSize?: ECardSize;
   id: string;

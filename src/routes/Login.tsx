@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GoogleLogo } from "@phosphor-icons/react";
 import { useNavigate } from "react-router";
 import classNames from "classnames";
 
-import { useAuth } from "../hooks/useAuth.tsx";
+import {
+  resetPassword,
+  signIn,
+  signInWithGoogle,
+  signUp,
+  updatePassword,
+  useAuth,
+} from "../hooks/useAuth.tsx";
 
 export const Login = () => {
-  const { signIn, signInWithGoogle, signUp } = useAuth();
+  const { resetInProgress } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -14,9 +21,15 @@ export const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (resetInProgress) {
+      setMessage("Success! Please enter a new password");
+    }
+  }, [resetInProgress]);
+
   const handleError = (error: unknown) => {
     setMessage(
-      `Error: ${error instanceof Error ? error.message : "An error occurred"}`,
+      `Error: ${error instanceof Error ? error.message : "Something went wrong"}`,
     );
   };
 
@@ -29,16 +42,23 @@ export const Login = () => {
 
     try {
       if (isLogin) {
-        const { error } = await signIn({ email, password });
+        if (resetInProgress) {
+          const { error } = await updatePassword({ password });
 
-        if (error) throw error;
-        setMessage("Login successful!");
-        navigate("/");
+          if (error) throw error;
+          setMessage("Password saved successfully");
+          navigate("/");
+        } else {
+          const { error } = await signIn({ email, password });
+
+          if (error) throw error;
+          navigate("/");
+        }
       } else {
         const { error } = await signUp({ email, password });
 
         if (error) throw error;
-        setMessage("Success! Check your email for verification");
+        setMessage("Check your email for a verification link");
       }
     } catch (error) {
       handleError(error);
@@ -49,7 +69,6 @@ export const Login = () => {
 
   const handleGoogleLogin = async () => {
     setLoading(true);
-    setMessage("");
 
     try {
       const { data, error } = await signInWithGoogle();
@@ -61,11 +80,26 @@ export const Login = () => {
     }
   };
 
+  let buttonText: string | React.ReactNode = "";
+
+  if (loading) {
+    buttonText = <span className="loading loading-spinner"></span>;
+  } else if (isLogin) {
+    if (resetInProgress) {
+      buttonText = "Save Password and Login";
+    } else {
+      buttonText = "Login";
+    }
+  } else {
+    buttonText = "Sign Up";
+  }
+
   return (
     <div
       className="flex flex-1 items-center justify-center"
       data-theme="dexter"
     >
+      <div className="w-full h-14 top-0 absolute app-draggable" />
       <div className="card w-full max-w-md bg-base-100 shadow-xl p-8 rounded-box">
         <div className="card-body">
           <h2 className="card-title text-2xl font-bold text-center mb-8 flex justify-center">
@@ -127,13 +161,7 @@ export const Login = () => {
                 className="btn btn-primary w-full rounded-box"
                 disabled={loading}
               >
-                {loading ? (
-                  <span className="loading loading-spinner"></span>
-                ) : isLogin ? (
-                  "Login"
-                ) : (
-                  "Sign Up"
-                )}
+                {buttonText}
               </button>
             </div>
           </form>
@@ -152,10 +180,17 @@ export const Login = () => {
             <button
               type="button"
               className={classNames("link link-hover", {
-                invisible: isLogin,
+                invisible: !isLogin,
               })}
-              onClick={() => {
-                // TODO: Forgot password
+              onClick={async () => {
+                if (email) {
+                  const { error } = await resetPassword({ email });
+                  if (error) {
+                    handleError(error);
+                  } else {
+                    setMessage("Check your email for a reset link");
+                  }
+                }
               }}
             >
               Forgot password

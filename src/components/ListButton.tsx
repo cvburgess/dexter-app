@@ -22,7 +22,7 @@ export const ListButton = ({ onTaskUpdate, listId }: TListButtonProps) => {
   return (
     <ButtonWithPopover
       buttonVariant="round"
-      onChange={(value) => onTaskUpdate({ listId: value })}
+      onChange={(value) => onTaskUpdate({ listId: value as string })}
       options={options}
       variant="menu"
       wrapperClassName="dropdown-center dropdown-hover"
