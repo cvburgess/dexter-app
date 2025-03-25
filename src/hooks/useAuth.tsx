@@ -122,8 +122,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setResetPasswordState("recovered");
           await supabase.auth.setSession(token);
         } else {
-          window.location.replace("/");
           await supabase.auth.setSession(token);
+          window.location.replace("/");
         }
       },
     );
