@@ -66,6 +66,11 @@ export const signOut = () => supabase.auth.signOut({ scope: "local" });
 export const updatePassword = ({ password }: { password: string }) =>
   supabase.auth.updateUser({ password });
 
+export const deleteAccount = async () => {
+  await supabase.rpc("delete_user");
+  await supabase.auth.signOut();
+};
+
 const AuthContext = createContext<AuthContextType>({
   initializing: true,
   resetPassword: null,
