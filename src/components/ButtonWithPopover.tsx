@@ -56,8 +56,6 @@ export const ButtonWithPopover = ({
 }: TButtonWithPopoverProps) => (
   <div className={classNames("dropdown", wrapperClassName)}>
     <div
-      tabIndex={0}
-      role="button"
       className={classNames(
         "cursor-pointer",
         {
@@ -67,6 +65,8 @@ export const ButtonWithPopover = ({
         props.variant === "emoji" ? "text-2xl" : "text-xs",
         buttonClassName,
       )}
+      role="button"
+      tabIndex={0}
     >
       {children}
     </div>
@@ -108,10 +108,10 @@ const DropdownMenu = ({ onChange, options }: TDropdownMenuProps) => (
     {options.map((option) => (
       <li key={option.id}>
         <a
-          onClick={() => onChange(option.id)}
           className={classNames("flex items-center gap-2 text-xs", {
             "bg-base-300": option.isSelected,
           })}
+          onClick={() => onChange(option.id)}
         >
           {option.emoji ? <span>{option.emoji}</span> : null}
           {option.icon ? option.icon : null}
@@ -138,10 +138,10 @@ const SegmentedMenu = ({ options }: { options: TSegmentedOption[] }) => (
         {segment.options.map((option) => (
           <li key={option.id}>
             <a
-              onClick={option.onChange}
               className={classNames("flex items-center gap-2 mx-2 text-xs", {
                 "bg-base-300": option.isSelected,
               })}
+              onClick={option.onChange}
             >
               {option.emoji ? <span>{option.emoji}</span> : null}
               {option.icon ? option.icon : null}

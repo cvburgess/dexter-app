@@ -48,11 +48,11 @@ export const QuickPlanner = ({
 
             <InputWithIcon
               // className="join-item"
-              type="text"
-              placeholder="Search"
               onChange={(event) => setSearch(event.target.value)}
-              wrapperClassName="join-item"
+              placeholder="Search"
+              type="text"
               value={search}
+              wrapperClassName="join-item"
             >
               <MagnifyingGlass />
             </InputWithIcon>

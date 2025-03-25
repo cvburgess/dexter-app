@@ -87,8 +87,8 @@ export const Card = ({
             },
           )}
           contentEditable={isEditing}
-          onClick={() => setIsEditing(true)}
           onBlur={(e) => updateTitle(e.currentTarget.innerText)}
+          onClick={() => setIsEditing(true)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               updateTitle(e.currentTarget.innerText);
@@ -101,9 +101,9 @@ export const Card = ({
         </p>
         {cardSize === "compact-w" ? (
           <StatusButton
+            className={isComplete ? "mx-auto" : "mr-auto"}
             onTaskUpdate={onTaskUpdate}
             status={task.status}
-            className={isComplete ? "mx-auto" : "mr-auto"}
           />
         ) : null}
         {shouldShowButtons ? (
@@ -133,7 +133,7 @@ export const DraggableCard = ({
   index,
   task,
 }: TCardProps & { index: number }) => (
-  <Draggable key={task.id} draggableId={task.id} index={index}>
+  <Draggable draggableId={task.id} index={index} key={task.id}>
     {(provided) => (
       <Card
         cardSize={cardSize}

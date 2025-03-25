@@ -39,9 +39,9 @@ export const Week = () => {
   return (
     <DraggableView>
       <WeekNav
-        weeksOffset={weeksOffset}
         setWeeksOffset={setWeeksOffset}
         toggleQuickPlan={() => setIsOpen(!isOpen)}
+        weeksOffset={weeksOffset}
       />
       <DrawerContainer>
         <Board
@@ -50,7 +50,7 @@ export const Week = () => {
           columns={columns}
           groupBy="scheduledFor"
         />
-        <QuickDrawer isOpen={isOpen} baseFilters={filters.notThisWeek} />
+        <QuickDrawer baseFilters={filters.notThisWeek} isOpen={isOpen} />
       </DrawerContainer>
     </DraggableView>
   );

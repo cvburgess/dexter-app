@@ -42,7 +42,7 @@ export const ConfirmModal = ({
   };
 
   return (
-    <dialog ref={dialogRef} className="modal">
+    <dialog className="modal" ref={dialogRef}>
       <div className="modal-box w-xs">
         <h3 className="font-bold text-lg text-center">{title}</h3>
 
@@ -59,7 +59,7 @@ export const ConfirmModal = ({
         </div>
       </div>
 
-      <form method="dialog" className="modal-backdrop">
+      <form className="modal-backdrop" method="dialog">
         <button>close</button>
       </form>
     </dialog>

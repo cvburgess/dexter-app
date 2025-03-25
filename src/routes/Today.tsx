@@ -39,26 +39,26 @@ export const Today = () => {
           />
           <div className="tabs tabs-lift py-4 h-[calc(100vh-6rem)] sticky top-0 w-full">
             <input
-              type="radio"
-              name="today-tabs"
-              className="tab"
               aria-label="Notes"
+              className="tab"
               defaultChecked
+              name="today-tabs"
+              type="radio"
             />
             <div className="tab-content bg-base-100 border-base-300 p-4 min-w-standard h-full"></div>
 
             <input
-              type="radio"
-              name="today-tabs"
-              className="tab"
               aria-label="Journal"
+              className="tab"
+              name="today-tabs"
+              type="radio"
             />
             <div className="tab-content bg-base-100 border-base-300 p-4 min-w-standard h-full">
               <Journal date={date} />
             </div>
           </div>
         </ScrollableContainer>
-        <QuickDrawer isOpen={isOpen} baseFilters={taskFilters.notToday} />
+        <QuickDrawer baseFilters={taskFilters.notToday} isOpen={isOpen} />
       </DrawerContainer>
     </DraggableView>
   );

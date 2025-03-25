@@ -71,8 +71,8 @@ export const Column = ({
         )}
 
         <CreateTask
-          enabled={canCreateTasks}
           columnId={id}
+          enabled={canCreateTasks}
           onTaskCreate={onTaskCreate}
         />
       </div>
@@ -82,9 +82,9 @@ export const Column = ({
           return (
             <div
               {...provided.droppableProps}
-              ref={provided.innerRef}
               className="flex flex-col flex-grow gap-2"
               data-list-id={id}
+              ref={provided.innerRef}
             >
               {tasks?.map((task, index) => (
                 <DraggableCard
@@ -143,13 +143,13 @@ type TCreateTaskProps = {
 const CreateTask = ({ enabled, onTaskCreate }: TCreateTaskProps) =>
   enabled ? (
     <InputWithIcon
-      type="text"
       onKeyDown={(e) => {
         if (e.key === "Enter" && e.currentTarget.value.trim()) {
           onTaskCreate?.(e.currentTarget.value.trim());
           e.currentTarget.value = "";
         }
       }}
+      type="text"
       wrapperClassName="rounded-field"
     >
       <Plus />

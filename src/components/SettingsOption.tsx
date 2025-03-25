@@ -26,9 +26,9 @@ export const SettingsOption = ({
       <legend className="fieldset-legend ml-2">{title}</legend>
       <ButtonWithPopover
         buttonVariant="none"
-        variant="menu"
-        options={options}
         onChange={(value) => updatePreferences({ [setting]: value })}
+        options={options}
+        variant="menu"
       >
         <button className="btn text-xs justify-start capitalize w-full">
           {selected.title} <CaretDown className="ml-auto" />

@@ -27,7 +27,7 @@ export const ListButton = ({ onTaskUpdate, listId }: TListButtonProps) => {
       variant="menu"
       wrapperClassName="dropdown-center dropdown-hover"
     >
-      {selectedList ? selectedList.emoji : <Smiley weight="thin" size={24} />}
+      {selectedList ? selectedList.emoji : <Smiley size={24} weight="thin" />}
     </ButtonWithPopover>
   );
 };
