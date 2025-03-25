@@ -66,6 +66,7 @@ export const Login = () => {
       className="flex flex-1 items-center justify-center"
       data-theme="dexter"
     >
+      <div className="w-full h-14 top-0 absolute app-draggable" />
       <div className="card w-full max-w-md bg-base-100 shadow-xl p-8 rounded-box">
         <div className="card-body">
           <h2 className="card-title text-2xl font-bold text-center mb-8 flex justify-center">
