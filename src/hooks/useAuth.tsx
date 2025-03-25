@@ -107,7 +107,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "PASSWORD_RECOVERY") {
         setResetPasswordState("recovered");
-        console.log("PASSWORD_RECOVERY", "RECOVERED");
       }
       setSession(session);
     });
@@ -119,7 +118,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Add the event listener
     const removeListener = window.electron.onSupabaseAuthCallback(
       async (token: TToken) => {
-        console.log("TOKEN", token);
         if (token.type === "recovery") {
           setResetPasswordState("recovered");
           await supabase.auth.setSession(token);
