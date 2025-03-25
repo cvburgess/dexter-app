@@ -25,7 +25,7 @@ export const Toolbar = ({
       )}
       {onClickNext && <ArrowButton onClick={onClickNext} variant="next" />}
       {toggleQuickPlan && (
-        <button className="btn btn-ghost" onClick={toggleQuickPlan}>
+        <button className={buttonClasses} onClick={toggleQuickPlan}>
           <SquareHalf />
         </button>
       )}
@@ -39,6 +39,9 @@ type TDayNavProps = {
   toggleQuickPlan?: () => void;
 };
 
+const buttonClasses =
+  "btn btn-ghost !text-sm text-nowrap hover:bg-base-200 hover:border-base-200";
+
 export const DayNav = ({ date, setDate, toggleQuickPlan }: TDayNavProps) => {
   return (
     <Toolbar
@@ -48,7 +51,7 @@ export const DayNav = ({ date, setDate, toggleQuickPlan }: TDayNavProps) => {
     >
       {date.toString() === Temporal.Now.plainDateISO().toString() ? (
         <ButtonWithPopover
-          buttonClassName="btn btn-ghost !text-sm text-nowrap"
+          buttonClassName={buttonClasses}
           buttonVariant="none"
           onChange={(value) => value && setDate(Temporal.PlainDate.from(value))}
           selectedDate={date.toString()}
@@ -58,7 +61,7 @@ export const DayNav = ({ date, setDate, toggleQuickPlan }: TDayNavProps) => {
         </ButtonWithPopover>
       ) : (
         <div
-          className="btn btn-ghost"
+          className={buttonClasses}
           onClick={() => setDate(Temporal.Now.plainDateISO())}
         >
           {formatDate(date)}
@@ -88,7 +91,7 @@ export const WeekNav = ({
       onClickPrevious={() => setWeeksOffset(weeksOffset - 1)}
       toggleQuickPlan={toggleQuickPlan}
     >
-      <div className="btn btn-ghost text-sm" onClick={() => setWeeksOffset(0)}>
+      <div className={buttonClasses} onClick={() => setWeeksOffset(0)}>
         Week {offsetDate.weekOfYear}, {offsetDate.year}
       </div>
     </Toolbar>
@@ -102,14 +105,14 @@ type TTextToolbarProps = {
 
 export const TextToolbar = ({ title, toggleQuickPlan }: TTextToolbarProps) => (
   <Toolbar toggleQuickPlan={toggleQuickPlan}>
-    <p className="btn btn-ghost text-sm"> {title} </p>
+    <p className={buttonClasses}> {title} </p>
   </Toolbar>
 );
 
 type TArrowButtonProps = { onClick: () => void; variant: "previous" | "next" };
 
 const ArrowButton = ({ onClick, variant }: TArrowButtonProps) => (
-  <div className="btn btn-ghost" onClick={onClick}>
+  <div className={buttonClasses} onClick={onClick}>
     {variant === "previous" ? <CaretLeft /> : <CaretRight />}
   </div>
 );
