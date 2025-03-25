@@ -33,7 +33,7 @@ export const Goals = () => {
           columns={columns}
           groupBy="goalId"
         />
-        <QuickDrawer isOpen={isOpen} baseFilters={taskFilters.noGoal} />
+        <QuickDrawer baseFilters={taskFilters.noGoal} isOpen={isOpen} />
       </DrawerContainer>
     </DraggableView>
   );
@@ -92,10 +92,10 @@ const GoalInput = ({ goal, onArchive, onChange }: TGoalInputProps) => {
       >
         <label className="input bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field h-standard border-1 border-base-200 text-[1rem] pl-6">
           <input
-            placeholder="New Goal"
-            type="text"
             onChange={onChangeTitle}
             onKeyDown={onEnter}
+            placeholder="New Goal"
+            type="text"
             value={title}
           />
           {goal && (
@@ -107,18 +107,18 @@ const GoalInput = ({ goal, onArchive, onChange }: TGoalInputProps) => {
       </div>
       {goal && (
         <ConfirmModal
+          confirmButtonText="Archive"
           isOpen={isModalOpen}
-          onClose={closeModal}
-          onConfirm={() => onArchive(goal.id)}
-          title={`Archive ${goal.title}?`}
           message={
             <>
               This will archive the goal and <br />
-              move any open tasks to <span className="font-bold">won't do</span>
-              .
+              move any open tasks to{" "}
+              <span className="font-bold">won&apos;t do</span>.
             </>
           }
-          confirmButtonText="Archive"
+          onClose={closeModal}
+          onConfirm={() => onArchive(goal.id)}
+          title={`Archive ${goal.title}?`}
         />
       )}
     </>

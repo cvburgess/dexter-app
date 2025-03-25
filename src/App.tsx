@@ -52,7 +52,7 @@ const router = createHashRouter([
       { path: "settings", element: <Settings /> },
     ],
   },
-  { path: "*", element: <Navigate to="/" replace /> },
+  { path: "*", element: <Navigate replace to="/" /> },
 ]);
 
 const queryClient = new QueryClient();

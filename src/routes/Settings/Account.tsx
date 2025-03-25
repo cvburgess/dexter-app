@@ -14,20 +14,18 @@ export const Account = () => {
   return (
     <Panel>
       <button
-        type="button"
         className="btn"
         onClick={async () => await signOut()}
+        type="button"
       >
         Sign out
       </button>
-      <button type="button" className="btn" onClick={openModal}>
+      <button className="btn" onClick={openModal} type="button">
         Delete account
       </button>
       <ConfirmModal
+        confirmButtonText="Goodbye"
         isOpen={isModalOpen}
-        onClose={closeModal}
-        onConfirm={deleteAccount}
-        title={"Delete account"}
         message={
           <>
             This will{" "}
@@ -36,7 +34,9 @@ export const Account = () => {
             This cannot be undone
           </>
         }
-        confirmButtonText="Goodbye"
+        onClose={closeModal}
+        onConfirm={deleteAccount}
+        title={"Delete account"}
       />
     </Panel>
   );

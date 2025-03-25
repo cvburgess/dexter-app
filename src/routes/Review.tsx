@@ -80,8 +80,8 @@ export const Review = () => {
           </div>
         </div>
         <QuickDrawer
-          isOpen={isOpen}
           baseFilters={makeBaseFiltersForDate(date)}
+          isOpen={isOpen}
         />
       </DrawerContainer>
     </DraggableView>

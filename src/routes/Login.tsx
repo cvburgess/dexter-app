@@ -118,9 +118,9 @@ export const Login = () => {
           )}
 
           <button
-            id="open-in-browser"
             className="btn btn-outline rounded-box"
             disabled={loading}
+            id="open-in-browser"
             onClick={handleGoogleLogin}
             type="button"
           >
@@ -134,32 +134,32 @@ export const Login = () => {
             <label className="floating-label">
               <span className="ml-1">Email</span>
               <input
-                type="email"
-                placeholder="Email"
                 className="input input-md w-full rounded-box px-6 pb-0.5"
-                value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
                 required
+                type="email"
+                value={email}
               />
             </label>
 
             <label className="floating-label mt-6">
               <span className="ml-1">Password</span>
               <input
-                type="password"
-                placeholder="Password"
                 className="input input-md w-full rounded-box px-6 pb-0.5"
-                value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
                 required
+                type="password"
+                value={password}
               />
             </label>
 
             <div className="form-control mt-8">
               <button
-                type="submit"
                 className="btn btn-primary w-full rounded-box"
                 disabled={loading}
+                type="submit"
               >
                 {buttonText}
               </button>
@@ -168,9 +168,9 @@ export const Login = () => {
 
           <div className="flex flex-col mt-4 gap-4">
             <button
-              type="button"
               className="link link-hover"
               onClick={() => setIsLogin(!isLogin)}
+              type="button"
             >
               {isLogin
                 ? "Don't have an account? Sign up"
@@ -178,7 +178,6 @@ export const Login = () => {
             </button>
 
             <button
-              type="button"
               className={classNames("link link-hover", {
                 invisible: !isLogin,
               })}
@@ -192,6 +191,7 @@ export const Login = () => {
                   }
                 }
               }}
+              type="button"
             >
               Forgot password
             </button>

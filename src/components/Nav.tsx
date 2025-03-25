@@ -28,17 +28,15 @@ export const Nav = () => {
 
   return (
     <nav
+      aria-label="Main navigation"
       className={classNames(
         "bg-base-300 overflow-hidden h-screen w-19 pb-4",
         isFullscreen ? "pt-4" : "pt-10",
       )}
-      aria-label="Main navigation"
     >
       <div className="flex flex-col gap-4 text-base-content h-full items-center">
         {navItems.map((item) => (
           <NavLink
-            key={item.route}
-            to={item.route}
             className={({ isActive }) =>
               classNames(
                 "bg-base-100 rounded-box shadow-md hover:shadow-lg transition-shadow flex items-center justify-center size-12",
@@ -49,6 +47,8 @@ export const Nav = () => {
                 },
               )
             }
+            key={item.route}
+            to={item.route}
           >
             <Indicator route={item.route} />
             <item.Icon size={26} weight="light" />

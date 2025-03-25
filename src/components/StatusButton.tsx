@@ -22,10 +22,10 @@ export const StatusButton = ({
   return (
     <ButtonWithPopover
       buttonVariant="round"
-      options={options}
       onChange={(value) =>
         onTaskUpdate({ status: Number(value) as ETaskStatus })
       }
+      options={options}
       variant="menu"
       wrapperClassName={classNames("dropdown-hover", className)}
     >
