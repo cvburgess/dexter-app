@@ -81,8 +81,10 @@ const createWindow = () => {
 app.on("ready", createWindow);
 
 app.on("open-url", (_event, url) => {
-  mainWindow.focus();
-  mainWindow.webContents.send("supabase-auth-callback", url);
+  if (mainWindow) {
+    mainWindow.focus();
+    mainWindow.webContents.send("supabase-auth-callback", url);
+  }
 });
 
 nativeTheme.on("updated", handleThemeChange);
