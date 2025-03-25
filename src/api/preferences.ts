@@ -11,8 +11,12 @@ export enum EThemeMode {
 }
 
 export type TPreferences = {
-  lightTheme: string;
   darkTheme: string;
+  enableJournal: boolean;
+  enableNotes: boolean;
+  lightTheme: string;
+  templateNote: string;
+  templatePrompts: string[];
   themeMode: EThemeMode;
 };
 
@@ -31,6 +35,10 @@ export type TUpdatePreferences = {
   lightTheme?: string;
   darkTheme?: string;
   themeMode?: EThemeMode;
+  enableNotes?: boolean;
+  enableJournal?: boolean;
+  templateNote?: string;
+  templatePrompts?: string[];
 };
 
 export const updatePreferences = async (

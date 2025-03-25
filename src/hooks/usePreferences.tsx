@@ -43,7 +43,11 @@ export const usePreferences = (): TUsePreferences => {
 };
 
 const defaultPreferences: TPreferences = {
-  themeMode: EThemeMode.SYSTEM,
-  lightTheme: "dexter",
   darkTheme: "dark",
+  enableJournal: true,
+  enableNotes: true,
+  lightTheme: "dexter",
+  templateNote: "",
+  templatePrompts: [],
+  themeMode: EThemeMode.SYSTEM,
 };
