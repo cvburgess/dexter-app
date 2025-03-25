@@ -12,7 +12,7 @@ import {
 
 import { Database } from "../api/database.types.ts";
 
-const { VITE_SUPABASE_URL, VITE_SUPABASE_KEY } = process.env;
+const { VITE_SUPABASE_URL, VITE_SUPABASE_KEY } = import.meta.env;
 // Create a single supabase client for interacting with your database
 const supabase = createClient<Database>(VITE_SUPABASE_URL, VITE_SUPABASE_KEY);
 
