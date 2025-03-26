@@ -102,8 +102,6 @@ const optionsForScheduling = (
     Temporal.PlainDate.from(scheduledFor).until(monday).days <= 0 &&
     Temporal.PlainDate.from(scheduledFor).until(monday).days >= -6;
 
-  console.log(scheduledFor, isScheduledForNextWeek);
-
   const nextMonday = monday.toString();
 
   const options: Array<TOption & { onChange: () => void }> = [
