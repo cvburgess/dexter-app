@@ -30,11 +30,13 @@ type TUseTasks = [
 export const useTasks = (where: TQueryFilter[] = []): TUseTasks => {
   const queryClient = useQueryClient();
 
-  const { data: tasks = [] } = useQuery({
+  const queryOptions = {
     queryKey: ["tasks", where],
     queryFn: () => getTasks(supabase, where),
     staleTime: 1000 * 60,
-  });
+  };
+
+  const { data: tasks = [] } = useQuery(queryOptions);
 
   const { mutate: create } = useMutation<TTask[], Error, TCreateTask>({
     mutationFn: (task) => createTask(supabase, task),
@@ -45,9 +47,34 @@ export const useTasks = (where: TQueryFilter[] = []): TUseTasks => {
 
   const { mutate: update } = useMutation<TTask[], Error, TUpdateTask>({
     mutationFn: (diff) => updateTask(supabase, diff),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    onMutate: async (diff: TUpdateTask) => {
+      console.log("onMutate", diff);
+
+      // Cancel any outgoing refetch so they don't overwrite our optimistic update
+      await queryClient.cancelQueries(queryOptions);
+
+      // // Snapshot the previous value
+      const previousTasks: TTask[] = queryClient.getQueryData(
+        queryOptions.queryKey,
+      );
+
+      queryClient.setQueryData(
+        queryOptions.queryKey,
+        previousTasks.map((task: TTask) => {
+          return task.id === diff.id ? { ...task, ...diff } : task;
+        }),
+      );
+
+      return { previousTasks };
     },
+    // If the mutation fails, use the context returned from onMutate to roll back
+    onError: (_err, _variables, context: { previousTasks: TTask[] }) => {
+      if (context?.previousTasks) {
+        queryClient.setQueryData<TTask[]>(["todos"], context.previousTasks);
+      }
+    },
+    // Always refetch after error or success:
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
   const { mutate: bulkUpdate } = useMutation<TTask[], Error, TUpdateTask[]>({
