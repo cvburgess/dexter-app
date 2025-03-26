@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Plus, Trash } from "@phosphor-icons/react";
 import { useDebounce } from "use-debounce";
 
-import { InputWithIcon } from "../../components/InputWithIcon";
 import { Panel } from "../../components/Panel";
 import { SettingsOption } from "../../components/SettingsOption";
 
@@ -70,7 +69,9 @@ export const Features = () => {
 
       {preferences.enableJournal && (
         <fieldset className="fieldset w-full mt-4">
-          <legend className="fieldset-legend ml-2">Journal Prompts</legend>
+          <legend className="fieldset-legend ml-2 text-sm">
+            Journal Prompts
+          </legend>
           {preferences.templatePrompts.map((prompt, index) => (
             <PromptInput
               deletePrompt={deletePrompt}
@@ -81,18 +82,20 @@ export const Features = () => {
             />
           ))}
 
-          <InputWithIcon
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && e.currentTarget.value.trim()) {
-                addPrompt(e.currentTarget.value.trim());
-                e.currentTarget.value = "";
-              }
-            }}
-            type="text"
-            wrapperClassName="rounded-field"
-          >
-            <Plus />
-          </InputWithIcon>
+          <label className="input w-full bg-base-200 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
+            <span>
+              <Plus className="text-base-content/60" />
+            </span>
+            <input
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && e.currentTarget.value.trim()) {
+                  addPrompt(e.currentTarget.value.trim());
+                  e.currentTarget.value = "";
+                }
+              }}
+              type="text"
+            />
+          </label>
         </fieldset>
       )}
     </Panel>
@@ -125,13 +128,14 @@ const PromptInput = ({
   }, [debounced]);
 
   return (
-    <label className="input w-full h-standard bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
+    <label className="input w-full bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
       <input
+        className="text-xs"
         onChange={(e) => setValue(e.target.value)}
         type="text"
         value={value}
       />
-      <span className="btn btn-link" onClick={() => deletePrompt(index)}>
+      <span className="btn btn-link px-2" onClick={() => deletePrompt(index)}>
         <Trash className="text-base-content/60 hover:text-error" />
       </span>
     </label>

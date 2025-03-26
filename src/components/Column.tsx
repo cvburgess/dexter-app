@@ -150,7 +150,7 @@ const CreateTask = ({ enabled, onTaskCreate }: TCreateTaskProps) =>
         }
       }}
       type="text"
-      wrapperClassName="rounded-field"
+      wrapperClassName="rounded-field h-standard"
     >
       <Plus />
     </InputWithIcon>
