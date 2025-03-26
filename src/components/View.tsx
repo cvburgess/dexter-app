@@ -1,30 +1,7 @@
-import { useCallback, useState, createContext, useContext } from "react";
+import { useCallback, useState, createContext } from "react";
 import { DragStart, DragDropContext, DropResult } from "@hello-pangea/dnd";
 
 import { useTasks } from "../hooks/useTasks.tsx";
-
-// Define the type for ReorderingContext
-type TReorderingContext = {
-  isReordering: (columnId: string) => boolean;
-};
-
-// Create the context
-export const ReorderingContext = createContext<TReorderingContext>({
-  isReordering: () => false,
-});
-
-// Create a hook to use the reordering context
-export const useDragDrop = () => {
-  const context = useContext(ReorderingContext);
-
-  if (!context) {
-    throw new Error(
-      "useDragDrop must be used within a DraggableView component",
-    );
-  }
-
-  return context;
-};
 
 type TProps = { children: React.ReactNode };
 
@@ -100,3 +77,11 @@ export const ScrollableContainer = ({ children }: TProps) => (
     {children}
   </div>
 );
+
+type TReorderingContext = {
+  isReordering: (columnId: string) => boolean;
+};
+
+export const ReorderingContext = createContext<TReorderingContext>({
+  isReordering: () => false,
+});
