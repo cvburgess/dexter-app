@@ -12,7 +12,8 @@ import {
 } from "../components/View.tsx";
 
 import { usePreferences } from "../hooks/usePreferences.tsx";
-import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
+import { useTasks } from "../hooks/useTasks.tsx";
+import { makeBaseFiltersForDate } from "../utils/makeBaseFiltersForDate.ts";
 
 export const Today = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -52,7 +53,10 @@ export const Today = () => {
             </Tab>
           </Tabs>
         </ScrollableContainer>
-        <QuickDrawer baseFilters={taskFilters.notToday} isOpen={isOpen} />
+        <QuickDrawer
+          baseFilters={makeBaseFiltersForDate(date)}
+          isOpen={isOpen}
+        />
       </DrawerContainer>
     </DraggableView>
   );
