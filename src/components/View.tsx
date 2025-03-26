@@ -1,7 +1,30 @@
-import { useState } from "react";
+import { useCallback, useState, createContext, useContext } from "react";
 import { DragStart, DragDropContext, DropResult } from "@hello-pangea/dnd";
 
 import { useTasks } from "../hooks/useTasks.tsx";
+
+// Define the type for ReorderingContext
+type TReorderingContext = {
+  isReordering: (columnId: string) => boolean;
+};
+
+// Create the context
+export const ReorderingContext = createContext<TReorderingContext>({
+  isReordering: () => false,
+});
+
+// Create a hook to use the reordering context
+export const useDragDrop = () => {
+  const context = useContext(ReorderingContext);
+
+  if (!context) {
+    throw new Error(
+      "useDragDrop must be used within a DraggableView component",
+    );
+  }
+
+  return context;
+};
 
 type TProps = { children: React.ReactNode };
 
@@ -54,14 +77,16 @@ export const DraggableView = ({ children }: TProps) => {
     }
   };
 
-  const _isReordering = (currentColumn: string) => {
-    if (!startingColumn) return false;
-    return startingColumn === currentColumn;
-  };
+  const isReordering = useCallback(
+    (currentColumn: string) => startingColumn === currentColumn,
+    [startingColumn],
+  );
 
   return (
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
-      <View>{children}</View>
+      <ReorderingContext.Provider value={{ isReordering }}>
+        <View>{children}</View>
+      </ReorderingContext.Provider>
     </DragDropContext>
   );
 };
