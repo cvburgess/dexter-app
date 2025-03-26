@@ -15,16 +15,16 @@ export const Week = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [weeksOffset, setWeeksOffset] = useState<number>(0);
 
-  const { mostRecentMonday, sunday } = weekStartEnd(weeksOffset);
+  const { monday, sunday } = weekStartEnd(weeksOffset);
 
   const filters: Record<string, TQueryFilter[]> = {
     thisWeek: [
-      ["scheduledFor", "gte", mostRecentMonday.toString()],
+      ["scheduledFor", "gte", monday.toString()],
       ["scheduledFor", "lte", sunday.toString()],
     ],
     notThisWeek: [
       makeOrFilter([
-        ["scheduledFor", "lt", mostRecentMonday.toString()],
+        ["scheduledFor", "lt", monday.toString()],
         ["scheduledFor", "gt", sunday.toString()],
         ["scheduledFor", "is", null],
       ]),
@@ -34,7 +34,7 @@ export const Week = () => {
 
   const [tasks] = useTasks(filters.thisWeek);
 
-  const columns = makeColumnsForWeekOf(mostRecentMonday, tasks);
+  const columns = makeColumnsForWeekOf(monday, tasks);
 
   return (
     <DraggableView>
