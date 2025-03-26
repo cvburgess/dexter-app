@@ -84,19 +84,31 @@ export type Database = {
       preferences: {
         Row: {
           dark_theme: string
+          enable_journal: boolean
+          enable_notes: boolean
           light_theme: string
+          template_note: string
+          template_prompts: string[]
           theme_mode: number
           user_id: string
         }
         Insert: {
           dark_theme?: string
+          enable_journal?: boolean
+          enable_notes?: boolean
           light_theme?: string
+          template_note?: string
+          template_prompts?: string[]
           theme_mode?: number
           user_id?: string
         }
         Update: {
           dark_theme?: string
+          enable_journal?: boolean
+          enable_notes?: boolean
           light_theme?: string
+          template_note?: string
+          template_prompts?: string[]
           theme_mode?: number
           user_id?: string
         }

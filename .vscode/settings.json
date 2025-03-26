@@ -7,7 +7,7 @@
     "typescript",
     "typescriptreact"
   ],
-  "cSpell.ignorePaths": ["*.env"],
+  "cSpell.ignorePaths": ["*.env", "*.json"],
   "cSpell.words": [
     "apikey",
     "caramellatte",

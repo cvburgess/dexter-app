@@ -28,6 +28,7 @@ export const useGoals = (): TUseGoals => {
   const { data: goals = [] } = useQuery({
     queryKey: ["goals"],
     queryFn: () => getGoals(supabase),
+    staleTime: 1000 * 60,
   });
 
   const { mutate: create } = useMutation<TGoal[], Error, TCreateGoal>({

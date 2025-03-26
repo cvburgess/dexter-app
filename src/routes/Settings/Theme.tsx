@@ -8,37 +8,37 @@ import { EThemeMode } from "../../api/preferences.ts";
 
 export const Theme = () => {
   // const selectedClassNames = "outline-2 outline-offset-2 outline-base-content";
-  const [userPreferences] = usePreferences();
+  const [preferences] = usePreferences();
 
   const lightThemes = THEMES.filter((theme) => theme.mode === "light").map(
     ({ name }) => ({
       id: name,
       title: name,
-      isSelected: userPreferences.lightTheme === name,
+      isSelected: preferences.lightTheme === name,
     }),
   );
   const darkThemes = THEMES.filter((theme) => theme.mode === "dark").map(
     ({ name }) => ({
       id: name,
       title: name,
-      isSelected: userPreferences.darkTheme === name,
+      isSelected: preferences.darkTheme === name,
     }),
   );
   const themeModeOptions = [
     {
       id: EThemeMode.SYSTEM,
       title: "System",
-      isSelected: userPreferences.themeMode === EThemeMode.SYSTEM,
+      isSelected: preferences.themeMode === EThemeMode.SYSTEM,
     },
     {
       id: EThemeMode.LIGHT,
       title: "Light",
-      isSelected: userPreferences.themeMode === EThemeMode.LIGHT,
+      isSelected: preferences.themeMode === EThemeMode.LIGHT,
     },
     {
       id: EThemeMode.DARK,
       title: "Dark",
-      isSelected: userPreferences.themeMode === EThemeMode.DARK,
+      isSelected: preferences.themeMode === EThemeMode.DARK,
     },
   ];
 
@@ -62,10 +62,14 @@ export const Theme = () => {
         />
       </div>
 
-      <div className="divider divider-start text-xs mx-2">Preview Themes</div>
+      <div className="divider divider-start text-sm mx-2 my-6">
+        Preview Themes
+      </div>
 
       <details className="collapse collapse-arrow bg-base-100 border border-base-300 mb-4">
-        <summary className="collapse-title font-semibold">Light Themes</summary>
+        <summary className="collapse-title font-semibold text-sm min-h-0">
+          Light Themes
+        </summary>
         <div className="collapse-content">
           <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4">
             {lightThemes.map((theme) => (
@@ -76,7 +80,9 @@ export const Theme = () => {
       </details>
 
       <details className="collapse collapse-arrow bg-base-100 border border-base-300">
-        <summary className="collapse-title font-semibold">Dark Themes</summary>
+        <summary className="collapse-title font-semibold text-sm min-h-0">
+          Dark Themes
+        </summary>
         <div className="collapse-content">
           <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4">
             {darkThemes.map((theme) => (

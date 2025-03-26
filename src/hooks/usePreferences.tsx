@@ -26,6 +26,7 @@ export const usePreferences = (): TUsePreferences => {
   const { data: preferences = defaultPreferences } = useQuery({
     queryKey: ["preferences"],
     queryFn: () => getPreferences(supabase),
+    staleTime: 1000 * 60,
   });
 
   const { mutate: update } = useMutation<
@@ -43,7 +44,11 @@ export const usePreferences = (): TUsePreferences => {
 };
 
 const defaultPreferences: TPreferences = {
-  themeMode: EThemeMode.SYSTEM,
-  lightTheme: "dexter",
   darkTheme: "dark",
+  enableJournal: true,
+  enableNotes: true,
+  lightTheme: "dexter",
+  templateNote: "",
+  templatePrompts: [],
+  themeMode: EThemeMode.SYSTEM,
 };

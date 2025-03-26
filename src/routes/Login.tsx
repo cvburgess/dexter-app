@@ -157,7 +157,7 @@ export const Login = () => {
 
             <div className="form-control mt-8">
               <button
-                className="btn btn-primary w-full rounded-box"
+                className="btn btn-primary w-full rounded-box" // bg-base-content text-base-100
                 disabled={loading}
                 type="submit"
               >
