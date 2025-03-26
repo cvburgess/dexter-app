@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Droppable } from "@hello-pangea/dnd";
 import { Plus } from "@phosphor-icons/react";
 import classNames from "classnames";
 
 import { DraggableCard, ECardSize } from "./Card.tsx";
 import { InputWithIcon } from "./InputWithIcon.tsx";
+import { ReorderingContext } from "./View";
 
 import { useTasks } from "../hooks/useTasks.tsx";
 
@@ -32,8 +33,8 @@ export const Column = ({
   titleComponent = null,
 }: TColumnProps) => {
   const [hasScrolled, setHasScrolled] = useState(false);
+  const { isReordering } = useContext(ReorderingContext);
   const [_, { createTask }] = useTasks();
-
   const onTaskCreate = (taskTitle: string) => {
     // column is prefixed with the property name
     // example: "scheduledFor:2022-01-01"
@@ -77,7 +78,7 @@ export const Column = ({
         />
       </div>
 
-      <Droppable droppableId={id} key={id}>
+      <Droppable droppableId={id} isDropDisabled={isReordering(id)} key={id}>
         {(provided) => {
           return (
             <div

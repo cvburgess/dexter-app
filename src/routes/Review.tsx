@@ -9,9 +9,9 @@ import { QuickDrawer } from "../components/QuickPlanner.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
 import { DraggableView, DrawerContainer } from "../components/View.tsx";
 
-import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
+import { useTasks } from "../hooks/useTasks.tsx";
 import { ETaskStatus, TTask } from "../api/tasks.ts";
-import { makeOrFilter } from "../api/applyFilters.ts";
+import { makeBaseFiltersForDate } from "../utils/makeBaseFiltersForDate.ts";
 
 export const Review = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -129,11 +129,3 @@ const CardListWithTitle = ({
     </div>
   );
 };
-
-const makeBaseFiltersForDate = (date: Temporal.PlainDate) => [
-  makeOrFilter([
-    ["scheduledFor", "neq", date.toString()],
-    ["scheduledFor", "is", null],
-  ]),
-  ...taskFilters.incomplete,
-];
