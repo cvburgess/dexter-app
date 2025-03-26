@@ -33,6 +33,7 @@ export const useTasks = (where: TQueryFilter[] = []): TUseTasks => {
   const { data: tasks = [] } = useQuery({
     queryKey: ["tasks", where],
     queryFn: () => getTasks(supabase, where),
+    staleTime: 1000 * 60,
   });
 
   const { mutate: create } = useMutation<TTask[], Error, TCreateTask>({

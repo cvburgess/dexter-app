@@ -26,6 +26,7 @@ export const usePreferences = (): TUsePreferences => {
   const { data: preferences = defaultPreferences } = useQuery({
     queryKey: ["preferences"],
     queryFn: () => getPreferences(supabase),
+    staleTime: 1000 * 60,
   });
 
   const { mutate: update } = useMutation<

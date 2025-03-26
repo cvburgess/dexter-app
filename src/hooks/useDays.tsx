@@ -32,6 +32,7 @@ export const useDays = (date: string): TUseDays => {
   const { data: day = defaultDay } = useQuery({
     queryKey: ["days", `day-${date}`],
     queryFn: () => getDay(supabase, date),
+    staleTime: 1000 * 60,
   });
 
   const { mutate: upsert } = useMutation<TDay, Error, Omit<TUpsertDay, "date">>(

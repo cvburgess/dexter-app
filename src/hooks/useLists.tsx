@@ -28,6 +28,7 @@ export const useLists = (): TUseLists => {
   const { data: lists = [] } = useQuery({
     queryKey: ["lists"],
     queryFn: () => getLists(supabase),
+    staleTime: 1000 * 60,
   });
 
   const { mutate: create } = useMutation<TList[], Error, TCreateList>({
