@@ -70,22 +70,22 @@ export const ButtonWithPopover = ({
     >
       {children}
     </div>
-    {props.variant === "menu" ? (
+    {props.variant === "menu" && (
       <DropdownMenu onChange={props.onChange} options={props.options} />
-    ) : null}
+    )}
 
-    {props.variant === "segmentedMenu" ? (
+    {props.variant === "segmentedMenu" && (
       <SegmentedMenu options={props.options} />
-    ) : null}
+    )}
 
-    {props.variant === "calendar" ? (
+    {props.variant === "calendar" && (
       <Calendar
         onChange={props.onChange}
         selectedDate={props.selectedDate || null}
       />
-    ) : null}
+    )}
 
-    {props.variant === "emoji" ? <Emoji onChange={props.onChange} /> : null}
+    {props.variant === "emoji" && <Emoji onChange={props.onChange} />}
   </div>
 );
 
@@ -113,9 +113,11 @@ const DropdownMenu = ({ onChange, options }: TDropdownMenuProps) => (
           })}
           onClick={() => onChange(option.id)}
         >
-          {option.emoji ? <span>{option.emoji}</span> : null}
-          {option.icon ? option.icon : null}
-          <span>{option.title}</span>
+          {option.emoji}
+          {option.icon}
+          <span className={classNames({ "ml-1": option.emoji || option.icon })}>
+            {option.title}
+          </span>
         </a>
       </li>
     ))}
@@ -143,10 +145,13 @@ const SegmentedMenu = ({ options }: { options: TSegmentedOption[] }) => (
               })}
               onClick={option.onChange}
             >
-              {option.emoji ? <span>{option.emoji}</span> : null}
-              {option.icon ? option.icon : null}
+              {option.emoji}
+              {option.icon}
               <span
-                className={classNames({ "text-red-600": option.isDangerous })}
+                className={classNames({
+                  "text-red-600": option.isDangerous,
+                  "ml-1": option.emoji || option.icon,
+                })}
               >
                 {option.title}
               </span>

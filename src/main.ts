@@ -1,6 +1,10 @@
 import path from "node:path";
 import { app, BrowserWindow, ipcMain, nativeTheme, shell } from "electron";
 import started from "electron-squirrel-startup";
+import {
+  installExtension,
+  REACT_DEVELOPER_TOOLS,
+} from "electron-devtools-installer";
 
 let mainWindow: BrowserWindow;
 
@@ -79,6 +83,14 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", createWindow);
+
+app.whenReady().then(() => {
+  installExtension(REACT_DEVELOPER_TOOLS, {
+    loadExtensionOptions: { allowFileAccess: true },
+  })
+    .then((ext) => console.log(`Added Extension:  ${ext.name}`))
+    .catch((err) => console.log("An error occurred: ", err));
+});
 
 app.on("open-url", (_event, url) => {
   if (mainWindow) {

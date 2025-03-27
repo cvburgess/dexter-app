@@ -30,7 +30,8 @@ type TUseTasks = [
 export const useTasks = (where: TQueryFilter[] = []): TUseTasks => {
   const queryClient = useQueryClient();
 
-  const { data: tasks = [] } = useQuery({
+  const { data: tasks } = useQuery({
+    placeholderData: [],
     queryKey: ["tasks", where],
     queryFn: () => getTasks(supabase, where),
     staleTime: 1000 * 60,
@@ -45,14 +46,29 @@ export const useTasks = (where: TQueryFilter[] = []): TUseTasks => {
 
   const { mutate: update } = useMutation<TTask[], Error, TUpdateTask>({
     mutationFn: (diff) => updateTask(supabase, diff),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    },
+    // onMutate: async (diff: TUpdateTask) => {
+    //   const taskQueries = queryClient.getQueryCache().findAll({
+    //     queryKey: ["tasks"],
+    //   });
+
+    //   for (const query of taskQueries) {
+    //     const currentData = query.state.data as TTask[];
+    //     if (currentData) {
+    //       queryClient.setQueryData(
+    //         query.queryKey,
+    //         currentData.map((task: TTask) => {
+    //           return task.id === diff.id ? { ...task, ...diff } : task;
+    //         }),
+    //       );
+    //     }
+    //   }
+    // },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
   const { mutate: bulkUpdate } = useMutation<TTask[], Error, TUpdateTask[]>({
     mutationFn: (diffs) => updateTasks(supabase, diffs),
-    onSuccess: () => {
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
   });

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
 import classNames from "classnames";
 
@@ -25,125 +25,126 @@ type TCardProps = {
   task: TTask;
 };
 
-export const Card = ({
-  cardSize = "normal",
-  className,
-  task,
-  provided,
-}: TCardProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [_, { deleteTask, updateTask }] = useTasks();
+export const Card = React.memo(
+  ({ cardSize = "normal", className, task, provided }: TCardProps) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [_, { deleteTask, updateTask }] = useTasks();
 
-  const onTaskDelete = () => deleteTask(task.id);
+    const onTaskDelete = () => deleteTask(task.id);
 
-  const onTaskUpdate = (diff: Omit<TUpdateTask, "id">) =>
-    updateTask({ id: task.id, ...diff });
+    const onTaskUpdate = (diff: Omit<TUpdateTask, "id">) =>
+      updateTask({ id: task.id, ...diff });
 
-  const updateTitle = (title: string) => {
-    if (title !== task.title) onTaskUpdate({ title });
-    setIsEditing(false);
-  };
+    const updateTitle = (title: string) => {
+      if (title !== task.title) onTaskUpdate({ title });
+      setIsEditing(false);
+    };
 
-  const colors = cardColors[task.priority];
+    const colors = cardColors[task.priority];
 
-  const isComplete =
-    task.status === ETaskStatus.DONE || task.status === ETaskStatus.WONT_DO;
+    const isComplete =
+      task.status === ETaskStatus.DONE || task.status === ETaskStatus.WONT_DO;
 
-  const shouldShowButtons = cardSize !== "compact-h" && !isComplete;
-  const dragProps = provided
-    ? {
-        ref: provided.innerRef,
-        ...provided.draggableProps,
-        ...provided.dragHandleProps,
-        style: { ...provided.draggableProps.style },
-      }
-    : {};
+    const shouldShowButtons = cardSize !== "compact-h" && !isComplete;
+    const dragProps = provided
+      ? {
+          ref: provided.innerRef,
+          ...provided.draggableProps,
+          ...provided.dragHandleProps,
+          style: { ...provided.draggableProps.style },
+        }
+      : {};
 
-  return (
-    <div
-      {...dragProps}
-      className={classNames(
-        "shadow-xs rounded-field p-4 border border-current/10 flex",
-        isComplete ? colors.complete : colors.incomplete,
-        cardSize === "compact-w" ? "w-compact" : "w-standard h-standard",
-        className,
-      )}
-    >
+    return (
       <div
-        className={classNames("flex items-center justify-start gap-2 w-full", {
-          "flex-wrap": cardSize === "compact-w",
-        })}
-      >
-        {cardSize === "compact-w" ? null : (
-          <StatusButton onTaskUpdate={onTaskUpdate} status={task.status} />
+        {...dragProps}
+        className={classNames(
+          "shadow-xs rounded-field p-4 border border-current/10 flex",
+          isComplete ? colors.complete : colors.incomplete,
+          cardSize === "compact-w" ? "w-compact" : "w-standard h-standard",
+          className,
         )}
-        <p
+      >
+        <div
           className={classNames(
-            "text-xs font-medium focus:outline-none mx-0.5",
-            isEditing ? "cursor-text" : "cursor-default",
+            "flex items-center justify-start gap-2 w-full",
             {
-              "flex-grow": cardSize !== "compact-w",
-              "w-full mb-2 text-center": cardSize === "compact-w",
+              "flex-wrap": cardSize === "compact-w",
             },
           )}
-          contentEditable={isEditing}
-          onBlur={(e) => updateTitle(e.currentTarget.innerText)}
-          onClick={() => setIsEditing(true)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              updateTitle(e.currentTarget.innerText);
-              (e.target as HTMLParagraphElement).blur(); // Unfocus the input
-            }
-          }}
-          suppressContentEditableWarning
         >
-          {task.title}
-        </p>
-        {cardSize === "compact-w" ? (
-          <StatusButton
-            className={isComplete ? "mx-auto" : "mr-auto"}
-            onTaskUpdate={onTaskUpdate}
-            status={task.status}
-          />
-        ) : null}
-        {shouldShowButtons ? (
-          <>
-            <DueDateButton
-              dueOn={task.dueOn}
-              isComplete={isComplete}
+          {cardSize === "compact-w" ? null : (
+            <StatusButton onTaskUpdate={onTaskUpdate} status={task.status} />
+          )}
+          <p
+            className={classNames(
+              "text-xs font-medium focus:outline-none mx-0.5",
+              isEditing ? "cursor-text" : "cursor-default",
+              {
+                "flex-grow": cardSize !== "compact-w",
+                "w-full mb-2 text-center": cardSize === "compact-w",
+              },
+            )}
+            contentEditable={isEditing}
+            onBlur={(e) => updateTitle(e.currentTarget.innerText)}
+            onClick={() => setIsEditing(true)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                updateTitle(e.currentTarget.innerText);
+                (e.target as HTMLParagraphElement).blur(); // Unfocus the input
+              }
+            }}
+            suppressContentEditableWarning
+          >
+            {task.title}
+          </p>
+          {cardSize === "compact-w" && (
+            <StatusButton
+              className={isComplete ? "mx-auto" : "mr-auto"}
               onTaskUpdate={onTaskUpdate}
-              overdueClasses={colors.overdue}
+              status={task.status}
             />
-            <ListButton listId={task.listId} onTaskUpdate={onTaskUpdate} />
-            <MoreButton
-              onTaskDelete={onTaskDelete}
-              onTaskUpdate={onTaskUpdate}
-              task={task}
-            />
-          </>
-        ) : null}
+          )}
+          {shouldShowButtons && (
+            <>
+              <DueDateButton
+                dueOn={task.dueOn}
+                isComplete={isComplete}
+                onTaskUpdate={onTaskUpdate}
+                overdueClasses={colors.overdue}
+              />
+              <ListButton listId={task.listId} onTaskUpdate={onTaskUpdate} />
+              <MoreButton
+                onTaskDelete={onTaskDelete}
+                onTaskUpdate={onTaskUpdate}
+                task={task}
+              />
+            </>
+          )}
+        </div>
       </div>
-    </div>
-  );
-};
-
-export const DraggableCard = ({
-  cardSize,
-  className,
-  index,
-  task,
-}: TCardProps & { index: number }) => (
-  <Draggable draggableId={task.id} index={index} key={task.id}>
-    {(provided) => (
-      <Card
-        cardSize={cardSize}
-        className={className}
-        provided={provided}
-        task={task}
-      />
-    )}
-  </Draggable>
+    );
+  },
 );
+
+Card.displayName = "Card";
+
+export const DraggableCard = React.memo(
+  ({ cardSize, className, index, task }: TCardProps & { index: number }) => (
+    <Draggable draggableId={task.id} index={index} key={task.id}>
+      {(provided) => (
+        <Card
+          cardSize={cardSize}
+          className={className}
+          provided={provided}
+          task={task}
+        />
+      )}
+    </Draggable>
+  ),
+);
+
+DraggableCard.displayName = "DraggableCard";
 
 const cardColors = {
   [ETaskPriority.IMPORTANT_AND_URGENT]: {

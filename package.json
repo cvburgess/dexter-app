@@ -1,7 +1,7 @@
 {
   "name": "dexter-app",
   "productName": "Dexter",
-  "version": "0.1.0",
+  "version": "0.1",
   "description": "An opinionated day planner",
   "main": ".vite/build/main.js",
   "dependencies": {
@@ -43,6 +43,7 @@
     "@typescript-eslint/parser": "^5.62.0",
     "@vitejs/plugin-react": "^4.3.4",
     "electron": "^35.0.3",
+    "electron-devtools-installer": "^4.0.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-import": "^2.31.0",
