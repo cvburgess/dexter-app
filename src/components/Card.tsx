@@ -98,14 +98,14 @@ export const Card = React.memo(
           >
             {task.title}
           </p>
-          {cardSize === "compact-w" ? (
+          {cardSize === "compact-w" && (
             <StatusButton
               className={isComplete ? "mx-auto" : "mr-auto"}
               onTaskUpdate={onTaskUpdate}
               status={task.status}
             />
-          ) : null}
-          {shouldShowButtons ? (
+          )}
+          {shouldShowButtons && (
             <>
               <DueDateButton
                 dueOn={task.dueOn}
@@ -120,7 +120,7 @@ export const Card = React.memo(
                 task={task}
               />
             </>
-          ) : null}
+          )}
         </div>
       </div>
     );

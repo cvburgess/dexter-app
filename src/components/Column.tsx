@@ -150,7 +150,7 @@ type TCreateTaskProps = {
 };
 
 const CreateTask = ({ enabled, onTaskCreate }: TCreateTaskProps) =>
-  enabled ? (
+  enabled && (
     <InputWithIcon
       onKeyDown={(e) => {
         if (e.key === "Enter" && e.currentTarget.value.trim()) {
@@ -163,4 +163,4 @@ const CreateTask = ({ enabled, onTaskCreate }: TCreateTaskProps) =>
     >
       <Plus />
     </InputWithIcon>
-  ) : null;
+  );
