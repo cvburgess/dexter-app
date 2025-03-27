@@ -59,7 +59,7 @@
     "node": ">=22.0.0"
   },
   "scripts": {
-    "bump": "node ./bumpVersion.mjs",
+    "bump": "node scripts/bumpVersion.mjs",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "git:prune": "git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D",
     "icon": "npx png2icons ./public/app-icon.png ./public/app-icon -allp",
