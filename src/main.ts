@@ -1,6 +1,5 @@
 import path from "node:path";
 import { app, BrowserWindow, ipcMain, nativeTheme, shell } from "electron";
-import started from "electron-squirrel-startup";
 import {
   installExtension,
   REACT_DEVELOPER_TOOLS,
@@ -25,11 +24,6 @@ const handleThemeChange = () => {
   mainWindow.setBackgroundColor(backgroundColor);
   mainWindow.webContents.send("os-theme-changed", theme);
 };
-
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (started) {
-  app.quit();
-}
 
 if (process.defaultApp) {
   if (process.argv.length >= 2) {
