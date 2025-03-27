@@ -50,7 +50,11 @@ export const Week = () => {
           columns={columns}
           groupBy="scheduledFor"
         />
-        <QuickDrawer baseFilters={filters.notThisWeek} isOpen={isOpen} />
+        <QuickDrawer
+          baseFilters={filters.notThisWeek}
+          columnId="scheduledFor:null"
+          isOpen={isOpen}
+        />
       </DrawerContainer>
     </DraggableView>
   );

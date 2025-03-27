@@ -10,11 +10,16 @@ import { TTask } from "../api/tasks.ts";
 import { TQueryFilter } from "../api/applyFilters.ts";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
-type TQuickPlannerProps = { baseFilters?: TQueryFilter[]; className?: string };
+type TQuickPlannerProps = {
+  baseFilters?: TQueryFilter[];
+  className?: string;
+  columnId: string;
+};
 
 export const QuickPlanner = ({
   baseFilters = [],
   className,
+  columnId,
 }: TQuickPlannerProps) => {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
 
@@ -33,7 +38,7 @@ export const QuickPlanner = ({
   return (
     <div className={classNames("no-scrollbar", className)}>
       <Column
-        id="scheduledFor:null"
+        id={columnId}
         tasks={searchTasks(filteredTasks)}
         titleComponent={
           <div className="join w-standard">

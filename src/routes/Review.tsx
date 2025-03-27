@@ -81,6 +81,7 @@ export const Review = () => {
         </div>
         <QuickDrawer
           baseFilters={makeBaseFiltersForDate(nextDay)}
+          columnId="scheduledFor:null"
           isOpen={isOpen}
         />
       </DrawerContainer>
