@@ -34,7 +34,7 @@ export const useTasks = (where: TQueryFilter[] = []): TUseTasks => {
     placeholderData: [],
     queryKey: ["tasks", where],
     queryFn: () => getTasks(supabase, where),
-    // staleTime: 1000 * 60,
+    staleTime: 1000 * 60,
   });
 
   const { mutate: create } = useMutation<TTask[], Error, TCreateTask>({
@@ -46,30 +46,29 @@ export const useTasks = (where: TQueryFilter[] = []): TUseTasks => {
 
   const { mutate: update } = useMutation<TTask[], Error, TUpdateTask>({
     mutationFn: (diff) => updateTask(supabase, diff),
-    onMutate: async (diff: TUpdateTask) => {
-      const taskQueries = queryClient.getQueryCache().findAll({
-        queryKey: ["tasks"],
-      });
+    // onMutate: async (diff: TUpdateTask) => {
+    //   const taskQueries = queryClient.getQueryCache().findAll({
+    //     queryKey: ["tasks"],
+    //   });
 
-      for (const query of taskQueries) {
-        const currentData = query.state.data as TTask[];
-        if (currentData) {
-          queryClient.setQueryData(
-            query.queryKey,
-            currentData.map((task: TTask) => {
-              return task.id === diff.id ? { ...task, ...diff } : task;
-            }),
-          );
-        }
-      }
-    },
-    // Always refetch after error or success:
+    //   for (const query of taskQueries) {
+    //     const currentData = query.state.data as TTask[];
+    //     if (currentData) {
+    //       queryClient.setQueryData(
+    //         query.queryKey,
+    //         currentData.map((task: TTask) => {
+    //           return task.id === diff.id ? { ...task, ...diff } : task;
+    //         }),
+    //       );
+    //     }
+    //   }
+    // },
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
   const { mutate: bulkUpdate } = useMutation<TTask[], Error, TUpdateTask[]>({
     mutationFn: (diffs) => updateTasks(supabase, diffs),
-    onSuccess: () => {
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
   });
