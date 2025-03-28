@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { GoogleLogo } from "@phosphor-icons/react";
+import {
+  CheckCircle,
+  GoogleLogo,
+  PaperPlaneRight,
+  XCircle,
+} from "@phosphor-icons/react";
 import { useNavigate } from "react-router";
 import classNames from "classnames";
 
@@ -13,7 +18,7 @@ import {
 } from "../hooks/useAuth.tsx";
 
 export const Login = () => {
-  const { resetInProgress } = useAuth();
+  const { recoveryEmail, resetInProgress } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,6 +31,12 @@ export const Login = () => {
       setMessage("Success! Please enter a new password");
     }
   }, [resetInProgress]);
+
+  useEffect(() => {
+    if (recoveryEmail) {
+      setEmail(recoveryEmail);
+    }
+  }, [recoveryEmail]);
 
   const handleError = (error: unknown) => {
     setMessage(
@@ -46,7 +57,7 @@ export const Login = () => {
           const { error } = await updatePassword({ password });
 
           if (error) throw error;
-          setMessage("Password saved successfully");
+          setMessage("Success! Password updated");
           navigate("/");
         } else {
           const { error } = await signIn({ email, password });
@@ -109,11 +120,17 @@ export const Login = () => {
           {message && (
             <div
               className={classNames(
-                "alert mb-4",
-                message.includes("Error") ? "alert-error" : "alert-success",
+                "alert alert-soft alert-info mb-4 text-center",
+                {
+                  "!alert-error": message.includes("Error"),
+                  "!alert-success": message.includes("Success"),
+                },
               )}
             >
-              {message}
+              {message.includes("Error") && <XCircle />}
+              {message.includes("Success") && <CheckCircle />}
+              {message.includes("email") && <PaperPlaneRight />}
+              <span>{message}</span>
             </div>
           )}
 
