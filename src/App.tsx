@@ -1,11 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {
-  createHashRouter,
-  Navigate,
-  Outlet,
-  RouterProvider,
-} from "react-router";
+import { createHashRouter, Outlet, RouterProvider } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
@@ -52,7 +47,6 @@ const router = createHashRouter([
       { path: "settings", element: <Settings /> },
     ],
   },
-  { path: "*", element: <Navigate replace to="/" /> },
 ]);
 
 const queryClient = new QueryClient();

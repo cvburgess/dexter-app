@@ -24,7 +24,9 @@ type AuthContextType = {
 
 // ---------- HELPER EXPORTS ----------
 
-const redirectTo = window.electron ? "dexter://auth-callback" : "/";
+const redirectTo = window.electron
+  ? "dexter://auth-callback"
+  : window.location.origin;
 
 export const supabase = createClient<Database>(
   VITE_SUPABASE_URL,
