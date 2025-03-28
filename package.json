@@ -56,25 +56,25 @@
     "node": ">=22.0.0"
   },
   "scripts": {
-    "web:build": "vite build",
-    "web:dev": "vite serve",
     "bump": "node scripts/bumpVersion.mjs",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "git:prune": "git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D",
     "icon": "npx png2icons ./public/app-icon.png ./public/app-icon -allp",
     "lint": "tsc && eslint --ext .ts,.tsx .",
-    "make": "electron-forge make",
+    "make:all": "npm run make:universal && npm run make:zip & npm run make:pkg & wait",
     "make:arm64": "npm run make -- --arch=arm64",
-    "make:x64": "npm run make -- --arch=x64",
-    "make:universal": "npm run make:arm64 & npm run make:x64 & wait && node scripts/makeUniversal.mjs",
     "make:local": "npm run make && open out",
-    "make:zip": "electron-forge make --skip-package --targets=@electron-forge/maker-zip",
     "make:pkg": "electron-forge make --skip-package --targets=@electron-forge/maker-pkg",
-    "make:all": "npm run make:universal && npm run make:zip && npm run make:pkg",
+    "make:universal": "npm run make:arm64 & npm run make:x64 & wait && node scripts/makeUniversal.mjs",
+    "make:x64": "npm run make -- --arch=x64",
+    "make:zip": "electron-forge make --skip-package --targets=@electron-forge/maker-zip",
+    "make": "electron-forge make",
     "package": "electron-forge package",
     "publish": "electron-forge publish",
     "start": "electron-forge start",
     "supabase:login": "npx supabase login",
-    "supabase:types": "npx supabase gen types typescript --project-id \"isreileykodwkyedcewv\" --schema public > ./src/api/database.types.ts"
+    "supabase:types": "npx supabase gen types typescript --project-id \"isreileykodwkyedcewv\" --schema public > ./src/api/database.types.ts",
+    "web:build": "vite build",
+    "web:dev": "vite serve"
   }
 }
