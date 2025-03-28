@@ -36,7 +36,7 @@ export const supabase = createClient<Database>(
 export const resetPassword = ({ email }: { email: string }) =>
   window.electron
     ? supabase.auth.resetPasswordForEmail(email, { redirectTo })
-    : supabase.auth.resetPasswordForEmail(email);
+    : supabase.auth.resetPasswordForEmail(email, { redirectTo });
 
 export const signUp = ({ email, password }: EmailPassword) =>
   supabase.auth.signUp({ email, password });
