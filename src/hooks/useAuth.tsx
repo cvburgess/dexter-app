@@ -50,7 +50,10 @@ export const signInWithGoogle = () =>
         provider: "google",
         options: { redirectTo, skipBrowserRedirect: true },
       })
-    : supabase.auth.signInWithOAuth({ provider: "google" });
+    : supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo, skipBrowserRedirect: false },
+      });
 
 export const signOut = () => supabase.auth.signOut({ scope: "local" });
 
