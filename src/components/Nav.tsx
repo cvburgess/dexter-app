@@ -11,6 +11,7 @@ import {
 import classNames from "classnames";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
+import { useFullScreen } from "../hooks/useFullscreen.tsx";
 
 const navItems = [
   { Icon: Sun, route: "/" },
@@ -23,16 +24,14 @@ const navItems = [
 ];
 
 export const Nav = () => {
-  // TODO: Replace with a custom react hook
-  const isFullscreen = false;
-  const isFullscreenOrWeb = window.electron ? isFullscreen : true;
+  const isFullscreen = useFullScreen();
 
   return (
     <nav
       aria-label="Main navigation"
       className={classNames(
         "bg-base-300 overflow-hidden h-screen w-19 pb-4",
-        isFullscreenOrWeb ? "pt-4" : "pt-10",
+        isFullscreen ? "pt-4" : "pt-10",
       )}
     >
       <div className="flex flex-col gap-4 text-base-content h-full items-center">

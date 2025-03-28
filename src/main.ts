@@ -52,6 +52,15 @@ const createWindow = () => {
     ...(process.platform !== "darwin" ? { titleBarOverlay: true } : {}),
   });
 
+  // Listen for fullscreen changes
+  mainWindow.on("enter-full-screen", () => {
+    mainWindow?.webContents.send("window-fullscreen-changed", true);
+  });
+
+  mainWindow.on("leave-full-screen", () => {
+    mainWindow?.webContents.send("window-fullscreen-changed", false);
+  });
+
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
   });
@@ -79,6 +88,11 @@ const createWindow = () => {
 app.on("ready", createWindow);
 
 app.whenReady().then(() => {
+  // Handle fullscreen state requests
+  ipcMain.handle("window-get-fullscreen-state", () => {
+    return mainWindow?.isFullScreen();
+  });
+
   installExtension(REACT_DEVELOPER_TOOLS, {
     loadExtensionOptions: { allowFileAccess: true },
   })
@@ -113,6 +127,10 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
+});
+
+app.on("will-quit", () => {
+  ipcMain.removeHandler("window-get-fullscreen-state");
 });
 
 app.on("activate", () => {

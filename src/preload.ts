@@ -7,6 +7,10 @@ import type { TTheme, TThemeMode } from "./hooks/useTheme.tsx";
 declare global {
   interface Window {
     electron: {
+      getFullscreenState: () => Promise<boolean>;
+      onFullscreenChange: (
+        callback: (isFullScreen: boolean) => void,
+      ) => () => void;
       onSupabaseAuthCallback: (callback: (token: TToken) => void) => () => void;
       setThemeMode: (mode: TThemeMode) => void;
       getTheme: (callback: (theme: TTheme) => void) => void;
@@ -18,6 +22,19 @@ declare global {
 }
 
 contextBridge.exposeInMainWorld("electron", {
+  // ---------- WINDOW ----------
+  getFullscreenState: () => ipcRenderer.invoke("window-get-fullscreen-state"),
+
+  onFullscreenChange: (callback: (isFullScreen: boolean) => void) => {
+    ipcRenderer.on("window-fullscreen-changed", (_, isFullScreen) =>
+      callback(isFullScreen),
+    );
+
+    // Return unsubscribe function
+    return () => {
+      ipcRenderer.removeAllListeners("window:fullscreen-changed");
+    };
+  },
   // ---------- AUTH ----------
   onSupabaseAuthCallback: (callback: (token: TToken) => void) => {
     ipcRenderer.on("supabase-auth-callback", (_event, value) => {
