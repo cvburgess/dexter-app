@@ -33,7 +33,11 @@ export const Goals = () => {
           columns={columns}
           groupBy="goalId"
         />
-        <QuickDrawer baseFilters={taskFilters.noGoal} isOpen={isOpen} />
+        <QuickDrawer
+          baseFilters={taskFilters.noGoal}
+          columnId="goalId:null"
+          isOpen={isOpen}
+        />
       </DrawerContainer>
     </DraggableView>
   );

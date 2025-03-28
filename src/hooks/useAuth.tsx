@@ -24,15 +24,17 @@ type AuthContextType = {
 
 // ---------- HELPER EXPORTS ----------
 
+const redirectTo = window.electron ? "dexter://auth-callback" : "/";
+
 export const supabase = createClient<Database>(
   VITE_SUPABASE_URL,
   VITE_SUPABASE_KEY,
 );
 
 export const resetPassword = ({ email }: { email: string }) =>
-  supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: "dexter://auth-callback",
-  });
+  window.electron
+    ? supabase.auth.resetPasswordForEmail(email, { redirectTo })
+    : supabase.auth.resetPasswordForEmail(email);
 
 export const signUp = ({ email, password }: EmailPassword) =>
   supabase.auth.signUp({ email, password });
@@ -41,13 +43,12 @@ export const signIn = ({ email, password }: EmailPassword) =>
   supabase.auth.signInWithPassword({ email, password });
 
 export const signInWithGoogle = () =>
-  supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      redirectTo: "dexter://auth-callback",
-      skipBrowserRedirect: true,
-    },
-  });
+  window.electron
+    ? supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo, skipBrowserRedirect: true },
+      })
+    : supabase.auth.signInWithOAuth({ provider: "google" });
 
 export const signOut = () => supabase.auth.signOut({ scope: "local" });
 
@@ -85,6 +86,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("onAuthStateChange", event, session);
       if (event === "PASSWORD_RECOVERY") {
         setResetInProgress(true);
       }
@@ -96,7 +98,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     // Add the event listener
-    const removeListener = window.electron.onSupabaseAuthCallback(
+    const removeListener = window.electron?.onSupabaseAuthCallback(
       async (token: TToken) => {
         if (token.type === "recovery") {
           setResetInProgress(true);

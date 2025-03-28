@@ -11,6 +11,7 @@ import {
 import classNames from "classnames";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
+import { useFullScreen } from "../hooks/useFullscreen.tsx";
 
 const navItems = [
   { Icon: Sun, route: "/" },
@@ -23,8 +24,7 @@ const navItems = [
 ];
 
 export const Nav = () => {
-  // TODO: Replace with a custom react hook
-  const isFullscreen = false;
+  const isFullscreen = useFullScreen();
 
   return (
     <nav

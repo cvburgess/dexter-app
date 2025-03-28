@@ -1,6 +1,5 @@
 import path from "node:path";
 import { app, BrowserWindow, ipcMain, nativeTheme, shell } from "electron";
-import started from "electron-squirrel-startup";
 import {
   installExtension,
   REACT_DEVELOPER_TOOLS,
@@ -25,11 +24,6 @@ const handleThemeChange = () => {
   mainWindow.setBackgroundColor(backgroundColor);
   mainWindow.webContents.send("os-theme-changed", theme);
 };
-
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (started) {
-  app.quit();
-}
 
 if (process.defaultApp) {
   if (process.argv.length >= 2) {
@@ -56,6 +50,15 @@ const createWindow = () => {
     titleBarStyle: "hidden",
     trafficLightPosition: { x: 10, y: 10 },
     ...(process.platform !== "darwin" ? { titleBarOverlay: true } : {}),
+  });
+
+  // Listen for fullscreen changes
+  mainWindow.on("enter-full-screen", () => {
+    mainWindow?.webContents.send("window-fullscreen-changed", true);
+  });
+
+  mainWindow.on("leave-full-screen", () => {
+    mainWindow?.webContents.send("window-fullscreen-changed", false);
   });
 
   mainWindow.once("ready-to-show", () => {
@@ -85,6 +88,11 @@ const createWindow = () => {
 app.on("ready", createWindow);
 
 app.whenReady().then(() => {
+  // Handle fullscreen state requests
+  ipcMain.handle("window-get-fullscreen-state", () => {
+    return mainWindow?.isFullScreen();
+  });
+
   installExtension(REACT_DEVELOPER_TOOLS, {
     loadExtensionOptions: { allowFileAccess: true },
   })
@@ -119,6 +127,10 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
+});
+
+app.on("will-quit", () => {
+  ipcMain.removeHandler("window-get-fullscreen-state");
 });
 
 app.on("activate", () => {

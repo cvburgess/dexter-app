@@ -55,6 +55,7 @@ export const Today = () => {
         </ScrollableContainer>
         <QuickDrawer
           baseFilters={makeBaseFiltersForDate(date)}
+          columnId="scheduledFor:null"
           isOpen={isOpen}
         />
       </DrawerContainer>

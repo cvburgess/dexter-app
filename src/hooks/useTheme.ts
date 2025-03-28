@@ -6,6 +6,8 @@ import { EThemeMode } from "../api/preferences";
 export type TTheme = "light" | "dark";
 export type TThemeMode = TTheme | "system";
 
+const isElectron = Boolean(window.electron);
+
 export const useTheme = () => {
   const [themeMode, setThemeMode] = useState<TTheme>("light");
   const [preferences] = usePreferences();
@@ -15,19 +17,36 @@ export const useTheme = () => {
   useEffect(() => {
     // Get the theme from the system, or set it based on user preferences
     if (preferences.themeMode === EThemeMode.SYSTEM) {
-      window.electron.setThemeMode(modes[EThemeMode.SYSTEM]);
-      window.electron.getTheme((theme: TTheme) => {
-        setThemeMode(theme);
-      });
+      if (isElectron) {
+        window.electron.setThemeMode(modes[EThemeMode.SYSTEM]);
+        window.electron.getTheme((theme: TTheme) => {
+          setThemeMode(theme);
+        });
+      } else {
+        const isDark = window.matchMedia?.(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        setThemeMode(isDark ? "dark" : "light");
+      }
     } else {
-      window.electron.setThemeMode(modes[preferences.themeMode]);
+      if (isElectron) {
+        window.electron.setThemeMode(modes[preferences.themeMode]);
+      }
       setThemeMode(modes[preferences.themeMode] as TTheme);
     }
 
-    // Listen for changes to the os theme
-    const removeListener = window.electron.onThemeChange((theme: TTheme) => {
-      if (preferences.themeMode === EThemeMode.SYSTEM) setThemeMode(theme);
-    });
+    // Listen for changes to the os/browser theme
+    const removeListener = isElectron
+      ? window.electron.onThemeChange((theme: TTheme) => {
+          if (preferences.themeMode === EThemeMode.SYSTEM) setThemeMode(theme);
+        })
+      : window
+          .matchMedia("(prefers-color-scheme: dark)")
+          .addEventListener("change", (event) => {
+            if (preferences.themeMode === EThemeMode.SYSTEM) {
+              setThemeMode(event.matches ? "dark" : "light");
+            }
+          });
 
     // Clean up the event listener when the component unmounts
     return () => {
