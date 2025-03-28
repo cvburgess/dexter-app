@@ -7,6 +7,12 @@ const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
     icon: "public/app-icon",
+    osxSign: {},
+    osxNotarize: {
+      appleApiKey: process.env.APPLE_API_KEY,
+      appleApiKeyId: process.env.APPLE_API_KEY_ID,
+      appleApiIssuer: process.env.APPLE_API_ISSUER,
+    },
     protocols: [{ name: "Dexter", schemes: ["dexter"] }],
   },
   rebuildConfig: {},
@@ -27,16 +33,16 @@ const config: ForgeConfig = {
         {
           // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
           entry: "src/main.ts",
-          config: "vite.main.config.mjs",
+          config: "vite.config.mjs",
           target: "main",
         },
         {
           entry: "src/preload.ts",
-          config: "vite.preload.config.mjs",
+          config: "vite.config.mjs",
           target: "preload",
         },
       ],
-      renderer: [{ name: "main_window", config: "vite.renderer.config.mjs" }],
+      renderer: [{ name: "main_window", config: "vite.config.mjs" }],
     }),
     // Fuses are used to enable/disable various Electron functionality
     // at package time, before code signing the application
