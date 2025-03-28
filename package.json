@@ -56,6 +56,8 @@
     "node": ">=22.0.0"
   },
   "scripts": {
+    "web:build": "vite build",
+    "web:dev": "vite serve",
     "bump": "node scripts/bumpVersion.mjs",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "git:prune": "git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D",

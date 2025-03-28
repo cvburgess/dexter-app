@@ -15,17 +15,21 @@ export const useTheme = () => {
   useEffect(() => {
     // Get the theme from the system, or set it based on user preferences
     if (preferences.themeMode === EThemeMode.SYSTEM) {
-      window.electron.setThemeMode(modes[EThemeMode.SYSTEM]);
-      window.electron.getTheme((theme: TTheme) => {
-        setThemeMode(theme);
-      });
+      if (window.electron) {
+        window.electron.setThemeMode(modes[EThemeMode.SYSTEM]);
+        window.electron.getTheme((theme: TTheme) => {
+          setThemeMode(theme);
+        });
+      }
     } else {
-      window.electron.setThemeMode(modes[preferences.themeMode]);
-      setThemeMode(modes[preferences.themeMode] as TTheme);
+      if (window.electron) {
+        window.electron.setThemeMode(modes[preferences.themeMode]);
+        setThemeMode(modes[preferences.themeMode] as TTheme);
+      }
     }
 
     // Listen for changes to the os theme
-    const removeListener = window.electron.onThemeChange((theme: TTheme) => {
+    const removeListener = window.electron?.onThemeChange((theme: TTheme) => {
       if (preferences.themeMode === EThemeMode.SYSTEM) setThemeMode(theme);
     });
 
