@@ -108,10 +108,10 @@ export const Login = () => {
 
           {message && (
             <div
-              className={classNames(
-                "alert mb-4",
-                message.includes("Error") ? "alert-error" : "alert-success",
-              )}
+              className={classNames("alert alert-soft alert-info mb-4", {
+                "!alert-error": message.includes("Error"),
+                "!alert-success": message.includes("Success"),
+              })}
             >
               {message}
             </div>
