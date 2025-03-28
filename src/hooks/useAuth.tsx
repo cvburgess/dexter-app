@@ -13,10 +13,14 @@ export type TToken = {
   access_token: string;
   refresh_token: string;
   type: string;
+  user?: {
+    email: string;
+  };
 };
 
 type AuthContextType = {
   initializing: boolean;
+  recoveryEmail: string | null;
   resetInProgress: boolean;
   session: Session | null;
   userId?: string;
@@ -69,6 +73,7 @@ export const deleteAccount = async () => {
 
 const AuthContext = createContext<AuthContextType>({
   initializing: true,
+  recoveryEmail: null,
   resetInProgress: false,
   session: null,
 });
@@ -77,6 +82,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [initializing, setInitializing] = useState(true);
   const [resetInProgress, setResetInProgress] = useState<boolean>(false);
+  const [recoveryEmail, setRecoveryEmail] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.auth
@@ -91,9 +97,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log("onAuthStateChange", event, session);
       if (event === "PASSWORD_RECOVERY") {
         setResetInProgress(true);
+        setRecoveryEmail(session.user.email);
       }
       setSession(session);
     });
@@ -107,6 +113,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       async (token: TToken) => {
         if (token.type === "recovery") {
           setResetInProgress(true);
+          setRecoveryEmail(token.user?.email);
           await supabase.auth.setSession(token);
         } else {
           await supabase.auth.setSession(token);
@@ -125,6 +132,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     <AuthContext.Provider
       value={{
         initializing,
+        recoveryEmail,
         resetInProgress,
         session,
         userId: session?.user.id,

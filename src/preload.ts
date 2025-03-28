@@ -38,7 +38,7 @@ contextBridge.exposeInMainWorld("electron", {
   // ---------- AUTH ----------
   onSupabaseAuthCallback: (callback: (token: TToken) => void) => {
     ipcRenderer.on("supabase-auth-callback", (_event, value) => {
-      const token = urlToObj(value) as TToken;
+      const token = urlToObj(value) as Omit<TToken, "user">;
       callback(token);
     });
 

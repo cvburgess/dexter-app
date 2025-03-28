@@ -18,7 +18,7 @@ import {
 } from "../hooks/useAuth.tsx";
 
 export const Login = () => {
-  const { resetInProgress } = useAuth();
+  const { recoveryEmail, resetInProgress } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,6 +31,12 @@ export const Login = () => {
       setMessage("Success! Please enter a new password");
     }
   }, [resetInProgress]);
+
+  useEffect(() => {
+    if (recoveryEmail) {
+      setEmail(recoveryEmail);
+    }
+  }, [recoveryEmail]);
 
   const handleError = (error: unknown) => {
     setMessage(
