@@ -19,11 +19,17 @@ type TUsePreferences = [
   },
 ];
 
-export const usePreferences = (): TUsePreferences => {
+type THookOptions = {
+  skipQuery?: boolean;
+};
+
+export const usePreferences = (options?: THookOptions): TUsePreferences => {
   const { userId } = useAuth();
   const queryClient = useQueryClient();
 
-  const { data: preferences = defaultPreferences } = useQuery({
+  const { data: preferences } = useQuery({
+    enabled: !options?.skipQuery,
+    placeholderData: defaultPreferences,
     queryKey: ["preferences"],
     queryFn: () => getPreferences(supabase),
     staleTime: 1000 * 60,

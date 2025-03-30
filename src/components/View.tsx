@@ -13,7 +13,7 @@ export const View = ({ children }: TProps) => (
 
 export const DraggableView = ({ children }: TProps) => {
   const [startingColumn, setStartingColumn] = useState<string | null>(null);
-  const [_, { updateTask }] = useTasks();
+  const [_, { updateTask }] = useTasks({ skipQuery: true });
 
   const onTaskMove = (id: string, _index: number, column: string) => {
     // column is prefixed with the property name

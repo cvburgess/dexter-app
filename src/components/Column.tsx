@@ -33,7 +33,7 @@ export const Column = React.memo(
     titleComponent = null,
   }: TColumnProps) => {
     const [hasScrolled, setHasScrolled] = useState(false);
-    const [_, { createTask }] = useTasks();
+    const [_, { createTask }] = useTasks({ skipQuery: true });
     const onTaskCreate = (taskTitle: string) => {
       // column is prefixed with the property name
       // example: "scheduledFor:2022-01-01"

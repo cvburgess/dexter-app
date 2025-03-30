@@ -22,10 +22,15 @@ type TUseGoals = [
   },
 ];
 
-export const useGoals = (): TUseGoals => {
+type THookOptions = {
+  skipQuery?: boolean;
+};
+
+export const useGoals = (options?: THookOptions): TUseGoals => {
   const queryClient = useQueryClient();
 
   const { data: goals = [] } = useQuery({
+    enabled: !options?.skipQuery,
     queryKey: ["goals"],
     queryFn: () => getGoals(supabase),
     staleTime: 1000 * 60,

@@ -27,13 +27,19 @@ type TUseTasks = [
   },
 ];
 
-export const useTasks = (where: TQueryFilter[] = []): TUseTasks => {
+type TSupabaseHookOptions = {
+  skipQuery?: boolean;
+  filters?: TQueryFilter[];
+};
+
+export const useTasks = (options?: TSupabaseHookOptions): TUseTasks => {
   const queryClient = useQueryClient();
 
   const { data: tasks } = useQuery({
+    enabled: !options?.skipQuery,
     placeholderData: [],
-    queryKey: ["tasks", where],
-    queryFn: () => getTasks(supabase, where),
+    queryKey: ["tasks", options?.filters],
+    queryFn: () => getTasks(supabase, options?.filters),
     staleTime: 1000 * 60,
   });
 

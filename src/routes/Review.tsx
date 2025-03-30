@@ -21,10 +21,12 @@ export const Review = () => {
 
   const nextDay = date.add({ days: 1 });
 
-  const [tasks] = useTasks([["scheduledFor", "eq", date.toString()]]);
-  const [nextDaysTasks] = useTasks([
-    ["scheduledFor", "eq", nextDay.toString()],
-  ]);
+  const [tasks] = useTasks({
+    filters: [["scheduledFor", "eq", date.toString()]],
+  });
+  const [nextDaysTasks] = useTasks({
+    filters: [["scheduledFor", "eq", nextDay.toString()]],
+  });
 
   const completeTasks = tasks.filter(
     (task) =>

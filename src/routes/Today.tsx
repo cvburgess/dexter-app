@@ -23,7 +23,9 @@ export const Today = () => {
 
   const [{ enableJournal, enableNotes }] = usePreferences();
 
-  const [tasks] = useTasks([["scheduledFor", "eq", date.toString()]]);
+  const [tasks] = useTasks({
+    filters: [["scheduledFor", "eq", date.toString()]],
+  });
 
   return (
     <DraggableView>

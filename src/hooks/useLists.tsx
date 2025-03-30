@@ -22,10 +22,15 @@ type TUseLists = [
   },
 ];
 
-export const useLists = (): TUseLists => {
+type THookOptions = {
+  skipQuery?: boolean;
+};
+
+export const useLists = (options?: THookOptions): TUseLists => {
   const queryClient = useQueryClient();
 
   const { data: lists = [] } = useQuery({
+    enabled: !options?.skipQuery,
     queryKey: ["lists"],
     queryFn: () => getLists(supabase),
     staleTime: 1000 * 60,
