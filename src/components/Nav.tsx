@@ -60,11 +60,10 @@ export const Nav = () => {
 };
 
 const Indicator = ({ route }: { route: string }) => {
-  const [todaysTasks] = useTasks([
-    ...taskFilters.today,
-    ...taskFilters.incomplete,
-  ]);
-  const [unprioritizedTasks] = useTasks(taskFilters.unprioritized);
+  const [todaysTasks] = useTasks({
+    filters: [...taskFilters.today, ...taskFilters.incomplete],
+  });
+  const [unprioritizedTasks] = useTasks({ filters: taskFilters.unprioritized });
 
   switch (route) {
     case "/":

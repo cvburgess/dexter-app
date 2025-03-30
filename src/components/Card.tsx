@@ -28,7 +28,7 @@ type TCardProps = {
 export const Card = React.memo(
   ({ cardSize = "normal", className, task, provided }: TCardProps) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [_, { deleteTask, updateTask }] = useTasks();
+    const [_, { deleteTask, updateTask }] = useTasks({ skipQuery: true });
 
     const onTaskDelete = () => deleteTask(task.id);
 

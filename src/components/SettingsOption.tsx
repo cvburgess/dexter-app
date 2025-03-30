@@ -18,7 +18,7 @@ export const SettingsOption = ({
   setting,
   title,
 }: TSettingsOptionProps) => {
-  const [_, { updatePreferences }] = usePreferences();
+  const [_, { updatePreferences }] = usePreferences({ skipQuery: true });
   const selected = options.find((option) => option.isSelected);
 
   return (

@@ -32,7 +32,7 @@ export const Week = () => {
     ],
   };
 
-  const [tasks] = useTasks(filters.thisWeek);
+  const [tasks] = useTasks({ filters: filters.thisWeek });
 
   const columns = makeColumnsForWeekOf(monday, tasks);
 

@@ -17,7 +17,7 @@ import { TTask } from "../api/tasks.ts";
 
 export const Lists = () => {
   const [lists, { createList, updateList }] = useLists();
-  const [tasks] = useTasks(taskFilters.incomplete);
+  const [tasks] = useTasks({ filters: taskFilters.incomplete });
 
   const columns = makeColumns(lists, tasks, updateList);
 

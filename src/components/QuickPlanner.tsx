@@ -28,7 +28,9 @@ export const QuickPlanner = ({
   const activeFilters = taskFilters?.[selectedFilter] ?? [];
 
   const [search, setSearch] = useState<string>("");
-  const [filteredTasks] = useTasks([...baseFilters, ...activeFilters]);
+  const [filteredTasks] = useTasks({
+    filters: [...baseFilters, ...activeFilters],
+  });
 
   const searchTasks = (tasks: TTask[]) =>
     tasks.filter((task): boolean =>
