@@ -43,7 +43,11 @@ export const resetPassword = ({ email }: { email: string }) =>
     : supabase.auth.resetPasswordForEmail(email, { redirectTo });
 
 export const signUp = ({ email, password }: EmailPassword) =>
-  supabase.auth.signUp({ email, password });
+  supabase.auth.signUp({
+    email,
+    password,
+    options: { emailRedirectTo: redirectTo },
+  });
 
 export const signIn = ({ email, password }: EmailPassword) =>
   supabase.auth.signInWithPassword({ email, password });
