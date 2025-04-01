@@ -7,8 +7,6 @@ const { VITE_SUPABASE_URL, VITE_SUPABASE_KEY } = import.meta.env;
 
 // ---------- TYPES ----------
 
-type EmailPassword = { email: string; password: string };
-
 export type TToken = {
   access_token: string;
   refresh_token: string;
@@ -20,8 +18,6 @@ export type TToken = {
 
 type AuthContextType = {
   initializing: boolean;
-  recoveryEmail: string | null;
-  resetInProgress: boolean;
   session: Session | null;
   userId?: string;
 };
@@ -37,20 +33,11 @@ export const supabase = createClient<Database>(
   VITE_SUPABASE_KEY,
 );
 
-export const resetPassword = ({ email }: { email: string }) =>
-  window.electron
-    ? supabase.auth.resetPasswordForEmail(email, { redirectTo })
-    : supabase.auth.resetPasswordForEmail(email, { redirectTo });
-
-export const signUp = ({ email, password }: EmailPassword) =>
-  supabase.auth.signUp({
+export const signInWithEmail = (email: string) =>
+  supabase.auth.signInWithOtp({
     email,
-    password,
     options: { emailRedirectTo: redirectTo },
   });
-
-export const signIn = ({ email, password }: EmailPassword) =>
-  supabase.auth.signInWithPassword({ email, password });
 
 export const signInWithGoogle = () =>
   window.electron
@@ -77,16 +64,12 @@ export const deleteAccount = async () => {
 
 const AuthContext = createContext<AuthContextType>({
   initializing: true,
-  recoveryEmail: null,
-  resetInProgress: false,
   session: null,
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [initializing, setInitializing] = useState(true);
-  const [resetInProgress, setResetInProgress] = useState<boolean>(false);
-  const [recoveryEmail, setRecoveryEmail] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.auth
@@ -101,10 +84,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "PASSWORD_RECOVERY") {
-        setResetInProgress(true);
-        setRecoveryEmail(session.user.email);
-      }
       setSession(session);
     });
 
@@ -115,14 +94,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Add the event listener
     const removeListener = window.electron?.onSupabaseAuthCallback(
       async (token: TToken) => {
-        if (token.type === "recovery") {
-          setResetInProgress(true);
-          setRecoveryEmail(token.user?.email);
-          await supabase.auth.setSession(token);
-        } else {
-          await supabase.auth.setSession(token);
-          window.location.replace("/");
-        }
+        await supabase.auth.setSession(token);
+        window.location.replace("/");
       },
     );
 
@@ -136,8 +109,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     <AuthContext.Provider
       value={{
         initializing,
-        recoveryEmail,
-        resetInProgress,
         session,
         userId: session?.user.id,
       }}
