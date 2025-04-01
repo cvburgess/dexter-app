@@ -1,7 +1,7 @@
 {
   "name": "dexter-app",
   "productName": "Dexter",
-  "version": "0.6",
+  "version": "0.7",
   "description": "An opinionated day planner",
   "main": ".vite/build/main.js",
   "dependencies": {
