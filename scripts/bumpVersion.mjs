@@ -4,7 +4,7 @@ import pkg from "../package.json" with { type: "json" };
 const [minor, patch] = pkg.version.split(".");
 
 // Determine new version based on argument
-const type = process.argv[2]; // 'feature' or 'bug/chore/etx'
+const type = process.argv[2]; // 'feature' or 'bug/chore/etc'
 const newVersion =
   type === "feature"
     ? `${parseInt(minor) + 1}.0`
