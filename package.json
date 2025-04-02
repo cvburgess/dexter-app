@@ -1,9 +1,14 @@
 {
   "name": "dexter-app",
   "productName": "Dexter",
-  "version": "0.11",
+  "version": "0.12",
   "description": "An opinionated day planner",
+  "license": "AGPLv3",
   "main": ".vite/build/main.js",
+  "repository": "github:cvburgess/dexter-app",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "dependencies": {
     "@emoji-mart/data": "^1.2.1",
     "@emoji-mart/react": "^1.1.1",
@@ -54,23 +59,14 @@
     "typescript": "5.8.2",
     "vite": "6.2.3"
   },
-  "engines": {
-    "node": ">=22.0.0"
-  },
-  "repository": "github:cvburgess/dexter-app",
   "scripts": {
     "bump": "node scripts/bumpVersion.mjs",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "git:prune": "git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D",
     "icon": "npx png2icons ./public/app-icon.png ./public/app-icon -allp",
     "lint": "tsc && eslint --ext .ts,.tsx .",
-    "make:arm64": "npm run make -- --arch=arm64",
-    "make:pkg": "electron-forge make --skip-package --targets=@electron-forge/maker-pkg",
-    "make:universal": "npm run make -- --arch=universal",
-    "make:x64": "npm run make -- --arch=x64",
-    "make:zip": "electron-forge make --skip-package --targets=@electron-forge/maker-zip",
     "make": "electron-forge make",
-    "package": "electron-forge package",
+    "make:local": "env-cmd -- electron-forge make",
     "publish": "electron-forge publish --arch=universal",
     "publish:local": "env-cmd -- npm run publish",
     "start": "electron-forge start",
