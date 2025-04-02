@@ -11,15 +11,6 @@ let mainWindow: BrowserWindow;
 const darkBackgroundColor = "black";
 const lightBackgroundColor = "white";
 
-// In main.ts
-console.log("Current directory:", process.cwd());
-console.log("__dirname:", __dirname);
-console.log("app path:", app.getAppPath());
-console.log(
-  "Attempting to load:",
-  path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
-);
-
 updateElectronApp();
 
 const handleThemeChange = () => {
@@ -62,14 +53,6 @@ const createWindow = () => {
     titleBarStyle: "hidden",
     trafficLightPosition: { x: 10, y: 10 },
     ...(process.platform !== "darwin" ? { titleBarOverlay: true } : {}),
-  });
-
-  // Force open DevTools even in production
-  mainWindow.webContents.openDevTools();
-
-  // Add console redirects to see errors
-  mainWindow.webContents.on("console-message", (_, level, message) => {
-    console.log(`Renderer console (${level}): ${message}`);
   });
 
   // Listen for fullscreen changes
