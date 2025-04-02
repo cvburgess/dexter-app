@@ -67,6 +67,7 @@ const config: ForgeConfig = {
           name: "dexter-app",
         },
         prerelease: true,
+        draft: false,
       },
     },
   ],
