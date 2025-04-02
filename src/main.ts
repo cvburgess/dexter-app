@@ -4,11 +4,14 @@ import {
   installExtension,
   REACT_DEVELOPER_TOOLS,
 } from "electron-devtools-installer";
+import { updateElectronApp } from "update-electron-app";
 
 let mainWindow: BrowserWindow;
 
 const darkBackgroundColor = "black";
 const lightBackgroundColor = "white";
+
+updateElectronApp();
 
 const handleThemeChange = () => {
   // Check if mainWindow exists and is not destroyed
