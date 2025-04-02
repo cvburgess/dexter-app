@@ -5,17 +5,19 @@ import { FuseV1Options, FuseVersion } from "@electron/fuses";
 
 const config: ForgeConfig = {
   packagerConfig: {
+    appBundleId: "com.dexterplanner",
+    appCategoryType: "public.app-category.developer-tools",
     asar: true,
     icon: "public/app-icon",
+    name: "Dexter",
     osxSign: {},
     osxNotarize: {
-      appleApiKey: process.env.APPLE_API_KEY,
-      appleApiKeyId: process.env.APPLE_API_KEY_ID,
-      appleApiIssuer: process.env.APPLE_API_ISSUER,
+      appleId: process.env.APPLE_ID,
+      appleIdPassword: process.env.APPLE_APP_SPECIFIC_PASSWORD,
+      teamId: process.env.APPLE_TEAM_ID,
     },
     protocols: [{ name: "Dexter", schemes: ["dexter"] }],
   },
-  rebuildConfig: {},
   makers: [
     {
       name: "@electron-forge/maker-zip", // Used for direct downloads
@@ -55,6 +57,18 @@ const config: ForgeConfig = {
       [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
+  ],
+  publishers: [
+    {
+      name: "@electron-forge/publisher-github",
+      config: {
+        repository: {
+          owner: "cvburgess",
+          name: "dexter-app",
+        },
+        prerelease: true,
+      },
+    },
   ],
 };
 
