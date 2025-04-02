@@ -2,6 +2,9 @@ name: Publish
 permissions:
   contents: write
 
+permissions:
+  contents: write
+
 on:
   release:
     types:
