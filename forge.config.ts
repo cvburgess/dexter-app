@@ -18,11 +18,11 @@ const config: ForgeConfig = {
   rebuildConfig: {},
   makers: [
     {
-      name: "@electron-forge/maker-zip",
+      name: "@electron-forge/maker-zip", // Used for direct downloads
       config: {},
     },
     // {
-    //   name: "@electron-forge/maker-pkg",
+    //   name: "@electron-forge/maker-pkg", // Used for Mac App Store
     //   config: {},
     // },
   ],
