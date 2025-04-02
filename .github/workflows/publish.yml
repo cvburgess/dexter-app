@@ -1,14 +1,14 @@
 name: Publish
+permissions:
+  contents: write
 
 on:
-  push:
-    tags:
-      - "v*"
+  release:
+    types:
+      - created
 
 jobs:
   publish_on_mac:
-    permissions:
-      contents: write
     timeout-minutes: 15 # Prevent stuck jobs
     runs-on: macos-latest
     steps:
