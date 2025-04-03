@@ -11,7 +11,9 @@ let mainWindow: BrowserWindow;
 const darkBackgroundColor = "black";
 const lightBackgroundColor = "white";
 
-updateElectronApp();
+if (!MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+  updateElectronApp();
+}
 
 const handleThemeChange = () => {
   // Check if mainWindow exists and is not destroyed
@@ -96,11 +98,13 @@ app.whenReady().then(() => {
     return mainWindow?.isFullScreen();
   });
 
-  installExtension(REACT_DEVELOPER_TOOLS, {
-    loadExtensionOptions: { allowFileAccess: true },
-  })
-    .then((ext) => console.log(`Added Extension:  ${ext.name}`))
-    .catch((err) => console.log("An error occurred: ", err));
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    installExtension(REACT_DEVELOPER_TOOLS, {
+      loadExtensionOptions: { allowFileAccess: true },
+    })
+      .then((ext) => console.log(`Added Extension:  ${ext.name}`))
+      .catch((err) => console.log("An error occurred: ", err));
+  }
 });
 
 app.on("open-url", (_event, url) => {
