@@ -164,6 +164,11 @@ otp_expiry = 3600
 subject = "Magic Link for Dexter Day Planner"
 content_path = "./supabase/templates/magic_link.html"
 
+
+[auth.email.template.confirmation]
+subject = "Welcome to Dexter Day Planner"
+content_path = "./supabase/templates/confirmation.html"
+
 # Configure logged in session timeouts.
 # [auth.sessions]
 # Force log out after the specified duration.
