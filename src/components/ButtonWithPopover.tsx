@@ -70,7 +70,7 @@ export const ButtonWithPopover = ({
         buttonClassName,
       )}
       popovertarget={popoverId}
-      style={{ anchorName: `--anchor-${popoverId}` } as React.CSSProperties}
+      // style={{ anchorName: `--${popoverId}` } as React.CSSProperties}
     >
       {children}
     </button>
@@ -103,6 +103,7 @@ export const ButtonWithPopover = ({
 
 const popoverPolyfill = {
   position: "absolute",
+  positionAnchor: "auto",
   left: "anchor(center)",
   top: "anchor(bottom)",
   justifySelf: "anchor-center",
@@ -130,7 +131,7 @@ const DropdownMenu = ({
     className={classNames(
       popoverStyles,
       "menu p-2 min-w-48 border-1 border-base-200",
-      { "!justify-self-start": alignLeft },
+      { "!justify-self-start -ml-6": alignLeft },
     )}
     id={popoverId}
     popover="auto"
