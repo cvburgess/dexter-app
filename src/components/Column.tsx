@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Droppable } from "@hello-pangea/dnd";
 import { Plus } from "@phosphor-icons/react";
 import classNames from "classnames";
 
 import { DraggableCard, ECardSize } from "./Card.tsx";
 import { InputWithIcon } from "./InputWithIcon.tsx";
+import { ReorderingContext } from "./View.tsx";
 
 import { useTasks } from "../hooks/useTasks.tsx";
 
@@ -32,6 +33,7 @@ export const Column = React.memo(
     title,
     titleComponent = null,
   }: TColumnProps) => {
+    const { isReordering } = useContext(ReorderingContext);
     const [hasScrolled, setHasScrolled] = useState(false);
     const [_, { createTask }] = useTasks({ skipQuery: true });
     const onTaskCreate = (taskTitle: string) => {
@@ -81,7 +83,7 @@ export const Column = React.memo(
           />
         </div>
 
-        <Droppable droppableId={id}>
+        <Droppable droppableId={id} isDropDisabled={isReordering(id)}>
           {(provided) => {
             return (
               <div
