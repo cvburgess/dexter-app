@@ -40,7 +40,6 @@ export const DueDateButton = ({
       popoverId={`${task.id}-due-date`}
       selectedDate={dueOn}
       variant="calendar"
-      wrapperClassName="dropdown-center"
     >
       {shouldShowCountdown ? daysUntilDue : <BellRinging />}
     </ButtonWithPopover>

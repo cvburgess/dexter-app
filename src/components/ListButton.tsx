@@ -31,7 +31,6 @@ export const ListButton = ({
       options={options}
       popoverId={`${task.id}-list`}
       variant="menu"
-      wrapperClassName="dropdown-center"
     >
       {selectedList ? selectedList.emoji : <Smiley size={24} weight="thin" />}
     </ButtonWithPopover>

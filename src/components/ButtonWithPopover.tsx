@@ -20,6 +20,7 @@ export type TSegmentedOption = {
 };
 
 type TCommonProps = {
+  alignMenuLeft?: boolean;
   buttonClassName?: string;
   buttonVariant: "round" | "left-join" | "none";
   children: React.ReactNode;
@@ -49,6 +50,7 @@ const leftJoinButtonClasses =
   "btn join-item p-4 h-standard min-w-20 bg-base-300 border-none";
 
 export const ButtonWithPopover = ({
+  alignMenuLeft = false,
   buttonClassName,
   buttonVariant,
   children,
@@ -74,6 +76,7 @@ export const ButtonWithPopover = ({
     </button>
     {props.variant === "menu" && (
       <DropdownMenu
+        alignLeft={alignMenuLeft}
         onChange={props.onChange}
         options={props.options}
         popoverId={popoverId}
@@ -100,12 +103,15 @@ export const ButtonWithPopover = ({
 
 const popoverPolyfill = {
   position: "absolute",
-  top: "anchor(bottom)",
   left: "anchor(center)",
+  top: "anchor(bottom)",
+  justifySelf: "anchor-center",
+  marginTop: "4px",
   transition: "opacity 0.15s ease-in-out, transform 0.15s ease-in-out",
 } as React.CSSProperties;
 
 type TDropdownMenuProps = {
+  alignLeft?: boolean;
   onChange: TOnChange<string | number | null>;
   options: TOption[];
   popoverId: string;
@@ -114,11 +120,17 @@ type TDropdownMenuProps = {
 const popoverStyles =
   "dropdown bg-base-100 rounded-box shadow-sm !text-base-content";
 
-const DropdownMenu = ({ onChange, options, popoverId }: TDropdownMenuProps) => (
+const DropdownMenu = ({
+  alignLeft,
+  onChange,
+  options,
+  popoverId,
+}: TDropdownMenuProps) => (
   <ul
     className={classNames(
       popoverStyles,
-      "menu p-2 min-w-52 border-1 border-base-200",
+      "menu p-2 min-w-48 border-1 border-base-200",
+      { "!justify-self-start": alignLeft },
     )}
     id={popoverId}
     popover="auto"
@@ -152,7 +164,7 @@ const SegmentedMenu = ({ options, popoverId }: TSegmentedMenuProps) => (
   <ul
     className={classNames(
       popoverStyles,
-      "menu p-2 min-w-52 border-1 border-base-200",
+      "menu p-2 min-w-48 border-1 border-base-200",
     )}
     id={popoverId}
     popover="auto"

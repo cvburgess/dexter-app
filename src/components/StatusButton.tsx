@@ -6,6 +6,7 @@ import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
 import { ETaskStatus, TTask, TUpdateTask } from "../api/tasks.ts";
 
 type TStatusButtonProps = {
+  alignMenuLeft?: boolean;
   className?: string;
   onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
   status: ETaskStatus;
@@ -13,6 +14,7 @@ type TStatusButtonProps = {
 };
 
 export const StatusButton = ({
+  alignMenuLeft = false,
   className,
   onTaskUpdate,
   status,
@@ -23,6 +25,7 @@ export const StatusButton = ({
 
   return (
     <ButtonWithPopover
+      alignMenuLeft={alignMenuLeft}
       buttonVariant="round"
       onChange={(value) =>
         onTaskUpdate({ status: Number(value) as ETaskStatus })
