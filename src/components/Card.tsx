@@ -61,7 +61,7 @@ export const Card = React.memo(
         className={classNames(
           "shadow-xs rounded-field p-4 border border-current/10 flex",
           isComplete ? colors.complete : colors.incomplete,
-          cardSize === "compact-w" ? "w-compact" : "w-standard h-standard",
+          cardSize === "compact-w" ? "w-compact" : "w-standard min-h-standard",
           className,
         )}
       >
