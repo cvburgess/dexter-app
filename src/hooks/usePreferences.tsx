@@ -32,7 +32,7 @@ export const usePreferences = (options?: THookOptions): TUsePreferences => {
     placeholderData: defaultPreferences,
     queryKey: ["preferences"],
     queryFn: () => getPreferences(supabase),
-    staleTime: 1000 * 60,
+    staleTime: 1000 * 60 * 10,
   });
 
   const { mutate: update } = useMutation<
