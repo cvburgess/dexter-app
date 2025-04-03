@@ -28,6 +28,7 @@ export const SettingsOption = ({
         buttonVariant="none"
         onChange={(value) => updatePreferences({ [setting]: value })}
         options={options}
+        popoverId={setting}
         variant="menu"
       >
         <button className="btn text-xs justify-start capitalize w-full">

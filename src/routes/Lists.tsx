@@ -95,6 +95,7 @@ const ListInput = ({ list, onArchive, onChange }: TListInputProps) => {
         <ButtonWithPopover
           buttonVariant="left-join"
           onChange={onChangeEmoji}
+          popoverId="emoji-picker"
           variant="emoji"
         >
           {emoji}

@@ -48,6 +48,7 @@ export const QuickPlanner = ({
               buttonVariant="left-join"
               onChange={(id) => setSelectedFilter(id as string)}
               options={options}
+              popoverId="quick-planner"
               variant="menu"
             >
               {selected.title}

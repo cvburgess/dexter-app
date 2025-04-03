@@ -54,6 +54,7 @@ export const DayNav = ({ date, setDate, toggleQuickPlan }: TDayNavProps) => {
           buttonClassName={buttonClasses}
           buttonVariant="none"
           onChange={(value) => value && setDate(Temporal.PlainDate.from(value))}
+          popoverId="today-day-picker"
           selectedDate={date.toString()}
           variant="calendar"
         >

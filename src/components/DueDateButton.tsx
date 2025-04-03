@@ -4,13 +4,14 @@ import classNames from "classnames";
 
 import { ButtonWithPopover } from "./ButtonWithPopover.tsx";
 
-import { TUpdateTask } from "../api/tasks.ts";
+import { TTask, TUpdateTask } from "../api/tasks.ts";
 
 type TDueDateButtonProps = {
   dueOn: string | null;
   isComplete: boolean;
   onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
   overdueClasses: string;
+  task: TTask;
 };
 
 export const DueDateButton = ({
@@ -18,6 +19,7 @@ export const DueDateButton = ({
   isComplete,
   onTaskUpdate,
   overdueClasses,
+  task,
 }: TDueDateButtonProps) => {
   const shouldShowCountdown = Boolean(dueOn) && !isComplete;
 
@@ -35,9 +37,10 @@ export const DueDateButton = ({
       buttonClassName={classNames({ [overdueClasses]: shouldWarnUser })}
       buttonVariant="round"
       onChange={(value) => onTaskUpdate({ dueOn: value })}
+      popoverId={`${task.id}-due-date`}
       selectedDate={dueOn}
       variant="calendar"
-      wrapperClassName="dropdown-center dropdown-hover"
+      wrapperClassName="dropdown-center"
     >
       {shouldShowCountdown ? daysUntilDue : <BellRinging />}
     </ButtonWithPopover>
