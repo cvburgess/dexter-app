@@ -41,41 +41,6 @@
   }
 }
 
-@position-fallback --popover-fallbacks {
-  /* Fallback 1: Bottom right alignment */
-  @try {
-    bottom: auto;
-    top: anchor(bottom);
-    left: anchor(center);
-    transform: translateX(-50%);
-  }
-
-  /* Fallback 2: Top center alignment */
-  @try {
-    bottom: anchor(top);
-    top: auto;
-    left: anchor(center);
-    transform: translateX(-50%);
-  }
-
-  /* Fallback 3: Right center alignment */
-  @try {
-    top: anchor(center);
-    bottom: auto;
-    left: anchor(right);
-    transform: translateY(-50%);
-  }
-
-  /* Fallback 4: Left center alignment */
-  @try {
-    top: anchor(center);
-    bottom: auto;
-    right: anchor(left);
-    left: auto;
-    transform: translateY(-50%);
-  }
-}
-
 @plugin "daisyui" {
   themes: all;
 }
