@@ -13,24 +13,23 @@ import classNames from "classnames";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 import { useFullScreen } from "../hooks/useFullscreen.tsx";
 
-const navItems = [
-  { Icon: Sun, route: "/" },
-  { Icon: Moon, route: "/review" },
-  { Icon: CalendarDots, route: "/week" },
-  { Icon: SquaresFour, route: "/prioritize" },
-  { Icon: ListHeart, route: "/lists" },
-  { Icon: Trophy, route: "/goals" },
-  { Icon: Gear, route: "/settings", bottom: true },
-];
-
 export const Nav = () => {
+  return (
+    <>
+      <DesktopNav />
+      <MobileNav />
+    </>
+  );
+};
+
+const DesktopNav = () => {
   const isFullscreen = useFullScreen();
 
   return (
     <nav
       aria-label="Main navigation"
       className={classNames(
-        "bg-base-300 overflow-hidden h-screen w-19 pb-4",
+        "max-sm:hidden bg-base-200 overflow-hidden h-screen w-19 pb-4",
         isFullscreen ? "pt-4" : "pt-10",
       )}
     >
@@ -58,6 +57,73 @@ export const Nav = () => {
     </nav>
   );
 };
+
+const MobileNav = () => {
+  return (
+    <div className="dock sm:hidden bg-base-300 text-base-content/80">
+      {navItems
+        .filter((item) => item.showOnMobile)
+        .map((item) => (
+          <NavLink
+            className={({ isActive }) =>
+              classNames({ "font-medium text-primary": isActive })
+            }
+            key={item.route}
+            to={item.route}
+          >
+            <item.Icon size={18} weight="fill" />
+            <span className="dock-label">{item.title}</span>
+          </NavLink>
+        ))}
+    </div>
+  );
+};
+
+const navItems = [
+  {
+    title: "Today",
+    Icon: Sun,
+    route: "/",
+    showOnMobile: true,
+  },
+  {
+    title: "Review",
+    Icon: Moon,
+    route: "/review",
+    showOnMobile: true,
+  },
+  {
+    title: "Week",
+    Icon: CalendarDots,
+    route: "/week",
+    showOnMobile: true,
+  },
+  {
+    title: "Prioritize",
+    Icon: SquaresFour,
+    route: "/prioritize",
+    showOnMobile: false,
+  },
+  {
+    title: "Lists",
+    Icon: ListHeart,
+    route: "/lists",
+    showOnMobile: false,
+  },
+  {
+    title: "Goals",
+    Icon: Trophy,
+    route: "/goals",
+    showOnMobile: false,
+  },
+  {
+    title: "Settings",
+    Icon: Gear,
+    route: "/settings",
+    bottom: true,
+    showOnMobile: true,
+  },
+];
 
 const Indicator = ({ route }: { route: string }) => {
   const [todaysTasks] = useTasks({
