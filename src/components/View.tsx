@@ -61,7 +61,7 @@ export const DrawerContainer = ({ children }: TProps) => (
 );
 
 export const ScrollableContainer = ({ children }: TProps) => (
-  <div className="flex flex-1 gap-4 px-4 overflow-auto bg-base-100">
+  <div className="flex flex-1 gap-4 px-4 overflow-auto bg-base-100 no-scrollbar">
     {children}
   </div>
 );
