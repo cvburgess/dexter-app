@@ -96,7 +96,7 @@ export const Login = () => {
             <label className="floating-label">
               <span className="ml-1">Email</span>
               <input
-                className="input input-md w-full rounded-box px-6 pb-0.5"
+                className="input input-md w-full rounded-box px-6 pb-0.5 focus:outline-none"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
                 required
