@@ -1,18 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CheckCircle,
   GoogleLogo,
   PaperPlaneRight,
   XCircle,
 } from "@phosphor-icons/react";
+import { useNavigate } from "react-router";
 import classNames from "classnames";
 
-import { signInWithEmail, signInWithGoogle } from "../hooks/useAuth.tsx";
+import {
+  signInWithEmail,
+  signInWithGoogle,
+  useAuth,
+} from "../hooks/useAuth.tsx";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const { session } = useAuth();
+  const navigate = useNavigate();
+
+  // Detect session after login redirect
+  useEffect(() => {
+    if (session) navigate("/");
+  }, [session]);
 
   const handleError = (error: unknown) => {
     setMessage(

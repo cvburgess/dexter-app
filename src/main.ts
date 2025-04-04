@@ -78,6 +78,13 @@ const createWindow = () => {
     mainWindow.show();
   });
 
+  mainWindow.webContents.on("did-fail-load", () => {
+    if (process.env.NODE_ENV === "production") {
+      // Load the index URL the same way you load it above
+      mainWindow.loadURL("app://./index.html");
+    }
+  });
+
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
