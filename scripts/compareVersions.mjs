@@ -8,13 +8,8 @@ const mainPackage = JSON.parse(fs.readFileSync(process.argv[3], "utf8"));
 const prVersion = prPackage.version;
 const mainVersion = mainPackage.version;
 
-// Split versions
-const [prMinor, prPatch] = prVersion.split(".").map(Number);
-const [mainMinor, mainPatch] = mainVersion.split(".").map(Number);
-
 // Compare versions
-const hasBeenBumped =
-  prMinor > mainMinor || (prMinor === mainMinor && prPatch > mainPatch);
+const hasBeenBumped = prVersion > mainVersion;
 
 if (hasBeenBumped) {
   console.log(
