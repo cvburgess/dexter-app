@@ -67,10 +67,10 @@ export const Login = () => {
       className="flex flex-1 items-center justify-center"
       data-theme="dexter"
     >
-      <div className="w-full h-14 top-0 absolute app-draggable" />
-      <div className="card w-full max-w-md bg-base-100 shadow-xl p-8 rounded-box">
-        <div className="card-body">
-          <h2 className="card-title text-2xl font-bold text-center mb-8 flex justify-center">
+      <div className="w-full sm:h-14 top-0 absolute app-draggable" />
+      <div className="max-sm:h-screen card w-full max-w-lg bg-base-100 sm:shadow-xl max-sm:p-8 sm:p-16 rounded-box">
+        <div className="card-body max-sm:justify-center ">
+          <h2 className="card-title text-2xl font-bold text-center mb-12 justify-center">
             Dexter Day Planner
           </h2>
 
