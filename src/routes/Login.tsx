@@ -69,10 +69,13 @@ export const Login = () => {
     >
       <div className="w-full sm:h-14 top-0 absolute app-draggable" />
       <div className="max-sm:h-screen card w-full max-w-lg bg-base-100 sm:shadow-xl max-sm:p-8 sm:p-16 rounded-box">
-        <div className="card-body max-sm:justify-center ">
-          <h2 className="card-title text-2xl font-bold text-center mb-12 justify-center">
-            Dexter Day Planner
-          </h2>
+        <div className="card-body max-sm:justify-center">
+          <div className="card-title flex-col mb-8 justify-center">
+            <img className="size-24 mb-4" src="/app-icon.png" />
+            <h2 className="text-2xl font-bold text-center">
+              Dexter Day Planner
+            </h2>
+          </div>
 
           {message && (
             <div
