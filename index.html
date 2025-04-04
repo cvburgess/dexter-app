@@ -11,5 +11,18 @@
   <body class="bg-base-200 overflow-hidden">
     <div id="root" class=" flex min-h-screen h-full"></div>
     <script type="module" src="/src/renderer.ts"></script>
+    <script>
+      // every 10s log the current href
+      const intervalId = setInterval(() => {
+        console.log("HREF", window.location.href);
+        console.log("HASH", window.location.hash);
+        console.log("PATHNAME", window.location.pathname);
+      }, 1000);
+
+      // Clean up interval when page unloads
+      window.addEventListener('beforeunload', () => {
+        clearInterval(intervalId);
+      });
+    </script>
   </body>
 </html>
