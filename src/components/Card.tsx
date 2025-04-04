@@ -75,7 +75,6 @@ export const Card = React.memo(
         >
           {cardSize === "compact-w" ? null : (
             <StatusButton
-              alignMenuLeft
               onTaskUpdate={onTaskUpdate}
               status={task.status}
               task={task}
@@ -105,7 +104,6 @@ export const Card = React.memo(
           </p>
           {cardSize === "compact-w" && (
             <StatusButton
-              alignMenuLeft={!isComplete}
               className={isComplete ? "mx-auto" : "mr-auto"}
               onTaskUpdate={onTaskUpdate}
               status={task.status}
