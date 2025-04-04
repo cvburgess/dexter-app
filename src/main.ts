@@ -57,14 +57,6 @@ const createWindow = () => {
     ...(process.platform !== "darwin" ? { titleBarOverlay: true } : {}),
   });
 
-  // Force open DevTools even in production
-  mainWindow.webContents.openDevTools();
-
-  // Add console redirects to see errors
-  mainWindow.webContents.on("console-message", (_, level, message) => {
-    console.log(`Renderer console (${level}): ${message}`);
-  });
-
   // Listen for fullscreen changes
   mainWindow.on("enter-full-screen", () => {
     mainWindow?.webContents.send("window-fullscreen-changed", true);
