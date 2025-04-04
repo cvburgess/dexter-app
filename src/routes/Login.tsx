@@ -120,7 +120,7 @@ export const Login = () => {
               />
             </label>
 
-            <div className="form-control mt-8">
+            <div className="form-control mt-8 max-sm:mb-10">
               <button
                 className="btn bg-base-content text-base-100 w-full"
                 disabled={loading}
