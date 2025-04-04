@@ -25,6 +25,7 @@ export const SettingsOption = ({
     <fieldset className="fieldset w-full">
       <legend className="fieldset-legend ml-2 text-sm">{title}</legend>
       <ButtonWithPopover
+        buttonClassName="w-full"
         buttonVariant="none"
         onChange={(value) => updatePreferences({ [setting]: value })}
         options={options}
