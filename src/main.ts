@@ -11,9 +11,7 @@ let mainWindow: BrowserWindow;
 const darkBackgroundColor = "black";
 const lightBackgroundColor = "white";
 
-if (!MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-  updateElectronApp();
-}
+updateElectronApp();
 
 const handleThemeChange = () => {
   // Check if mainWindow exists and is not destroyed
@@ -107,7 +105,7 @@ app.whenReady().then(() => {
     return mainWindow?.isFullScreen();
   });
 
-  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+  if (!app.isPackaged) {
     installExtension(REACT_DEVELOPER_TOOLS, {
       loadExtensionOptions: { allowFileAccess: true },
     })

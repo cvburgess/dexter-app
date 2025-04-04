@@ -1,7 +1,7 @@
 {
   "name": "dexter-app",
   "productName": "Dexter",
-  "version": "0.13",
+  "version": "0.14.0",
   "description": "An opinionated day planner",
   "license": "AGPLv3",
   "main": ".vite/build/main.js",
@@ -60,7 +60,6 @@
     "vite": "6.2.3"
   },
   "scripts": {
-    "bump": "node scripts/bumpVersion.mjs",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "git:prune": "git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D",
     "icon": "npx png2icons ./public/app-icon.png ./public/app-icon -allp",
