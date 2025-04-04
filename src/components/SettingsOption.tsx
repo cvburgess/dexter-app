@@ -25,14 +25,16 @@ export const SettingsOption = ({
     <fieldset className="fieldset w-full">
       <legend className="fieldset-legend ml-2 text-sm">{title}</legend>
       <ButtonWithPopover
+        buttonClassName="w-full"
         buttonVariant="none"
         onChange={(value) => updatePreferences({ [setting]: value })}
         options={options}
+        popoverId={setting}
         variant="menu"
       >
-        <button className="btn text-xs justify-start capitalize w-full">
+        <span className="btn text-xs justify-start capitalize w-full">
           {selected.title} <CaretDown className="ml-auto" />
-        </button>
+        </span>
       </ButtonWithPopover>
     </fieldset>
   );

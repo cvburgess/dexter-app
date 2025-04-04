@@ -40,7 +40,7 @@ export const useTasks = (options?: TSupabaseHookOptions): TUseTasks => {
     placeholderData: [],
     queryKey: ["tasks", options?.filters],
     queryFn: () => getTasks(supabase, options?.filters),
-    staleTime: 1000 * 60,
+    staleTime: 1000 * 60 * 10,
   });
 
   const { mutate: create } = useMutation<TTask[], Error, TCreateTask>({

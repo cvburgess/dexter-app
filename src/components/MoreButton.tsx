@@ -46,8 +46,8 @@ export const MoreButton = ({
     <ButtonWithPopover
       buttonVariant="round"
       options={[schedulingOptions, priorityOptions, otherOptions]}
+      popoverId={`${task.id}-more`}
       variant="segmentedMenu"
-      wrapperClassName="dropdown-center dropdown-hover"
     >
       <DotsThreeOutlineVertical />
     </ButtonWithPopover>

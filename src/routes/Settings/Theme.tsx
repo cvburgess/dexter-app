@@ -46,20 +46,28 @@ export const Theme = () => {
     <Panel>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-4">
         <SettingsOption
-          options={lightThemes}
-          setting="lightTheme"
-          title="Light Theme"
-        />
-        <SettingsOption
-          options={darkThemes}
-          setting="darkTheme"
-          title="Dark Theme"
-        />
-        <SettingsOption
           options={themeModeOptions}
           setting="themeMode"
           title="Theme Mode"
         />
+
+        {(preferences.themeMode === EThemeMode.SYSTEM ||
+          preferences.themeMode === EThemeMode.LIGHT) && (
+          <SettingsOption
+            options={lightThemes}
+            setting="lightTheme"
+            title="Light Theme"
+          />
+        )}
+
+        {(preferences.themeMode === EThemeMode.SYSTEM ||
+          preferences.themeMode === EThemeMode.DARK) && (
+          <SettingsOption
+            options={darkThemes}
+            setting="darkTheme"
+            title="Dark Theme"
+          />
+        )}
       </div>
 
       <div className="divider divider-start text-sm mx-2 my-6">

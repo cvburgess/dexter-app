@@ -95,7 +95,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const removeListener = window.electron?.onSupabaseAuthCallback(
       async (token: TToken) => {
         await supabase.auth.setSession(token);
-        window.location.replace("/");
       },
     );
 

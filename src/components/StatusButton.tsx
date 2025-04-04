@@ -3,18 +3,20 @@ import classNames from "classnames";
 
 import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
 
-import { ETaskStatus, TUpdateTask } from "../api/tasks.ts";
+import { ETaskStatus, TTask, TUpdateTask } from "../api/tasks.ts";
 
 type TStatusButtonProps = {
   className?: string;
   onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
   status: ETaskStatus;
+  task: TTask;
 };
 
 export const StatusButton = ({
   className,
   onTaskUpdate,
   status,
+  task,
 }: TStatusButtonProps) => {
   const options = optionsForStatus(status);
   const icon = iconForStatus(status);
@@ -26,8 +28,9 @@ export const StatusButton = ({
         onTaskUpdate({ status: Number(value) as ETaskStatus })
       }
       options={options}
+      popoverId={`${task.id}`}
       variant="menu"
-      wrapperClassName={classNames("dropdown-hover", className)}
+      wrapperClassName={classNames(className)}
     >
       {icon}
     </ButtonWithPopover>

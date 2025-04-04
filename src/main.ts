@@ -11,7 +11,9 @@ let mainWindow: BrowserWindow;
 const darkBackgroundColor = "black";
 const lightBackgroundColor = "white";
 
-updateElectronApp();
+if (!MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+  updateElectronApp();
+}
 
 const handleThemeChange = () => {
   // Check if mainWindow exists and is not destroyed
@@ -68,6 +70,15 @@ const createWindow = () => {
     mainWindow.show();
   });
 
+  mainWindow.webContents.on("did-fail-load", () => {
+    if (process.env.NODE_ENV === "production") {
+      // Load the index URL the same way you load it above
+      mainWindow.loadFile(
+        path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
+      );
+    }
+  });
+
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
@@ -96,11 +107,13 @@ app.whenReady().then(() => {
     return mainWindow?.isFullScreen();
   });
 
-  installExtension(REACT_DEVELOPER_TOOLS, {
-    loadExtensionOptions: { allowFileAccess: true },
-  })
-    .then((ext) => console.log(`Added Extension:  ${ext.name}`))
-    .catch((err) => console.log("An error occurred: ", err));
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    installExtension(REACT_DEVELOPER_TOOLS, {
+      loadExtensionOptions: { allowFileAccess: true },
+    })
+      .then((ext) => console.log(`Added Extension:  ${ext.name}`))
+      .catch((err) => console.log("An error occurred: ", err));
+  }
 });
 
 app.on("open-url", (_event, url) => {

@@ -61,7 +61,7 @@ export const Card = React.memo(
         className={classNames(
           "shadow-xs rounded-field p-4 border border-current/10 flex",
           isComplete ? colors.complete : colors.incomplete,
-          cardSize === "compact-w" ? "w-compact" : "w-standard h-standard",
+          cardSize === "compact-w" ? "w-compact" : "w-standard min-h-standard",
           className,
         )}
       >
@@ -74,7 +74,11 @@ export const Card = React.memo(
           )}
         >
           {cardSize === "compact-w" ? null : (
-            <StatusButton onTaskUpdate={onTaskUpdate} status={task.status} />
+            <StatusButton
+              onTaskUpdate={onTaskUpdate}
+              status={task.status}
+              task={task}
+            />
           )}
           <p
             className={classNames(
@@ -103,6 +107,7 @@ export const Card = React.memo(
               className={isComplete ? "mx-auto" : "mr-auto"}
               onTaskUpdate={onTaskUpdate}
               status={task.status}
+              task={task}
             />
           )}
           {shouldShowButtons && (
@@ -112,8 +117,13 @@ export const Card = React.memo(
                 isComplete={isComplete}
                 onTaskUpdate={onTaskUpdate}
                 overdueClasses={colors.overdue}
+                task={task}
               />
-              <ListButton listId={task.listId} onTaskUpdate={onTaskUpdate} />
+              <ListButton
+                listId={task.listId}
+                onTaskUpdate={onTaskUpdate}
+                task={task}
+              />
               <MoreButton
                 onTaskDelete={onTaskDelete}
                 onTaskUpdate={onTaskUpdate}

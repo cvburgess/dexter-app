@@ -23,6 +23,7 @@ type TCommonProps = {
   buttonClassName?: string;
   buttonVariant: "round" | "left-join" | "none";
   children: React.ReactNode;
+  popoverId: string;
   wrapperClassName?: string;
 };
 
@@ -51,13 +52,14 @@ export const ButtonWithPopover = ({
   buttonClassName,
   buttonVariant,
   children,
+  popoverId,
   wrapperClassName,
   ...props
 }: TButtonWithPopoverProps) => (
-  <div className={classNames("dropdown", wrapperClassName)}>
-    <div
+  <div className={classNames(wrapperClassName)}>
+    <button
       className={classNames(
-        "cursor-pointer",
+        "relative cursor-pointer",
         {
           [roundButtonClasses]: buttonVariant === "round",
           [leftJoinButtonClasses]: buttonVariant === "left-join",
@@ -65,45 +67,62 @@ export const ButtonWithPopover = ({
         props.variant === "emoji" ? "text-2xl" : "text-xs",
         buttonClassName,
       )}
-      role="button"
-      tabIndex={0}
+      popovertarget={popoverId}
     >
       {children}
-    </div>
+    </button>
     {props.variant === "menu" && (
-      <DropdownMenu onChange={props.onChange} options={props.options} />
+      <DropdownMenu
+        onChange={props.onChange}
+        options={props.options}
+        popoverId={popoverId}
+      />
     )}
 
     {props.variant === "segmentedMenu" && (
-      <SegmentedMenu options={props.options} />
+      <SegmentedMenu options={props.options} popoverId={popoverId} />
     )}
 
     {props.variant === "calendar" && (
       <Calendar
         onChange={props.onChange}
+        popoverId={popoverId}
         selectedDate={props.selectedDate || null}
       />
     )}
 
-    {props.variant === "emoji" && <Emoji onChange={props.onChange} />}
+    {props.variant === "emoji" && (
+      <Emoji onChange={props.onChange} popoverId={popoverId} />
+    )}
   </div>
 );
+
+const popoverPolyfill = {
+  positionAnchor: "auto",
+  positionArea: "bottom",
+  positionTryFallbacks: "top, left, right",
+  justifySelf: "anchor-center",
+  transition: "opacity 0.15s ease-in-out, transform 0.15s ease-in-out",
+} as React.CSSProperties;
 
 type TDropdownMenuProps = {
   onChange: TOnChange<string | number | null>;
   options: TOption[];
+  popoverId: string;
 };
 
 const popoverStyles =
-  "dropdown-content bg-base-100 rounded-box shadow-sm text-base-content";
+  "dropdown fixed bg-base-100 rounded-box shadow-sm !text-base-content mt-1";
 
-const DropdownMenu = ({ onChange, options }: TDropdownMenuProps) => (
+const DropdownMenu = ({ onChange, options, popoverId }: TDropdownMenuProps) => (
   <ul
     className={classNames(
       popoverStyles,
-      "menu p-2 min-w-52 border-1 border-base-200",
+      "menu p-2 min-w-48 border-1 border-base-200",
     )}
-    tabIndex={0}
+    id={popoverId}
+    popover="auto"
+    style={popoverPolyfill}
   >
     {options.map((option) => (
       <li key={option.id}>
@@ -124,13 +143,20 @@ const DropdownMenu = ({ onChange, options }: TDropdownMenuProps) => (
   </ul>
 );
 
-const SegmentedMenu = ({ options }: { options: TSegmentedOption[] }) => (
+type TSegmentedMenuProps = {
+  options: TSegmentedOption[];
+  popoverId: string;
+};
+
+const SegmentedMenu = ({ options, popoverId }: TSegmentedMenuProps) => (
   <ul
     className={classNames(
       popoverStyles,
-      "menu p-2 min-w-52 border-1 border-base-200",
+      "menu p-2 min-w-48 border-1 border-base-200",
     )}
-    tabIndex={0}
+    id={popoverId}
+    popover="auto"
+    style={popoverPolyfill}
   >
     {options.map((segment) => (
       <Fragment key={segment.title}>
@@ -165,13 +191,19 @@ const SegmentedMenu = ({ options }: { options: TSegmentedOption[] }) => (
 
 type TCalendarProps = {
   onChange: TOnChange<string | null>;
+  popoverId: string;
   selectedDate: string | null;
 };
 
 const daySize = "30px";
 
-const Calendar = ({ onChange, selectedDate }: TCalendarProps) => (
-  <div className={classNames(popoverStyles)} tabIndex={0}>
+const Calendar = ({ onChange, popoverId, selectedDate }: TCalendarProps) => (
+  <div
+    className={classNames(popoverStyles)}
+    id={popoverId}
+    popover="auto"
+    style={popoverPolyfill}
+  >
     <DayPicker
       className="react-day-picker flex cursor-pointer"
       classNames={{
@@ -193,8 +225,18 @@ const Calendar = ({ onChange, selectedDate }: TCalendarProps) => (
   </div>
 );
 
-const Emoji = ({ onChange }: { onChange: TOnChange<string> }) => (
-  <div className={classNames(popoverStyles)} tabIndex={0}>
+type TEmojiProps = {
+  onChange: TOnChange<string>;
+  popoverId: string;
+};
+
+const Emoji = ({ onChange, popoverId }: TEmojiProps) => (
+  <div
+    className={classNames(popoverStyles)}
+    id={popoverId}
+    popover="auto"
+    style={popoverPolyfill}
+  >
     <EmojiPicker
       data={emojiData}
       maxFrequentRows={0}

@@ -33,7 +33,7 @@ export const useGoals = (options?: THookOptions): TUseGoals => {
     enabled: !options?.skipQuery,
     queryKey: ["goals"],
     queryFn: () => getGoals(supabase),
-    staleTime: 1000 * 60,
+    staleTime: 1000 * 60 * 10,
   });
 
   const { mutate: create } = useMutation<TGoal[], Error, TCreateGoal>({

@@ -33,7 +33,7 @@ export const useLists = (options?: THookOptions): TUseLists => {
     enabled: !options?.skipQuery,
     queryKey: ["lists"],
     queryFn: () => getLists(supabase),
-    staleTime: 1000 * 60,
+    staleTime: 1000 * 60 * 10,
   });
 
   const { mutate: create } = useMutation<TList[], Error, TCreateList>({
