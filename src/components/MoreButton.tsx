@@ -119,7 +119,7 @@ const optionsForScheduling = (
     },
   ];
 
-  if (!isScheduledForNextWeek) {
+  if (!isScheduledForNextWeek && tomorrow !== nextMonday) {
     options.push({
       id: nextMonday,
       isSelected: false,
