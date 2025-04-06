@@ -1,5 +1,6 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { CaretLeft, CaretRight, SquareHalf } from "@phosphor-icons/react";
+import classNames from "classnames";
 
 import { ButtonWithPopover } from "./ButtonWithPopover.tsx";
 
@@ -8,26 +9,45 @@ type TToolbarProps = {
   onClickNext?: () => void;
   onClickPrevious?: () => void;
   toggleQuickPlan?: () => void;
+  tooltipNoun?: string;
 };
+
+const buttonClasses =
+  "btn btn-ghost !text-sm text-nowrap hover:bg-base-200 hover:border-base-200";
 
 export const Toolbar = ({
   children,
   onClickNext,
   onClickPrevious,
   toggleQuickPlan,
+  tooltipNoun,
 }: TToolbarProps) => {
   return (
     <div className="flex items-center p-2 w-full h-14 bg-base-100 border-b-2 border-base-200">
       {children}
       <div className="flex-grow w-full h-full app-draggable"></div>
       {onClickPrevious && (
-        <ArrowButton onClick={onClickPrevious} variant="previous" />
+        <div
+          className="tooltip tooltip-left z-100"
+          data-tip={`Previous ${tooltipNoun}`}
+        >
+          <ArrowButton onClick={onClickPrevious} variant="previous" />
+        </div>
       )}
-      {onClickNext && <ArrowButton onClick={onClickNext} variant="next" />}
+      {onClickNext && (
+        <div
+          className="tooltip tooltip-left z-100"
+          data-tip={`Next ${tooltipNoun}`}
+        >
+          <ArrowButton onClick={onClickNext} variant="next" />
+        </div>
+      )}
       {toggleQuickPlan && (
-        <button className={buttonClasses} onClick={toggleQuickPlan}>
-          <SquareHalf />
-        </button>
+        <div className="tooltip tooltip-left z-100" data-tip="Quick Planner">
+          <button className={buttonClasses} onClick={toggleQuickPlan}>
+            <SquareHalf />
+          </button>
+        </div>
       )}
     </div>
   );
@@ -39,33 +59,37 @@ type TDayNavProps = {
   toggleQuickPlan?: () => void;
 };
 
-const buttonClasses =
-  "btn btn-ghost !text-sm text-nowrap hover:bg-base-200 hover:border-base-200";
-
 export const DayNav = ({ date, setDate, toggleQuickPlan }: TDayNavProps) => {
   return (
     <Toolbar
       onClickNext={() => setDate(date.add({ days: 1 }))}
       onClickPrevious={() => setDate(date.subtract({ days: 1 }))}
       toggleQuickPlan={toggleQuickPlan}
+      tooltipNoun="day"
     >
       {date.toString() === Temporal.Now.plainDateISO().toString() ? (
-        <ButtonWithPopover
-          buttonClassName={buttonClasses}
-          buttonVariant="none"
-          onChange={(value) => value && setDate(Temporal.PlainDate.from(value))}
-          popoverId="today-day-picker"
-          selectedDate={date.toString()}
-          variant="calendar"
-        >
-          {formatDate(date)}
-        </ButtonWithPopover>
+        <div className="tooltip tooltip-right z-100" data-tip="Go to a day">
+          <ButtonWithPopover
+            buttonClassName={buttonClasses}
+            buttonVariant="none"
+            onChange={(value) =>
+              value && setDate(Temporal.PlainDate.from(value))
+            }
+            popoverId="today-day-picker"
+            selectedDate={date.toString()}
+            variant="calendar"
+          >
+            {formatDate(date)}
+          </ButtonWithPopover>
+        </div>
       ) : (
-        <div
-          className={buttonClasses}
-          onClick={() => setDate(Temporal.Now.plainDateISO())}
-        >
-          {formatDate(date)}
+        <div className="tooltip tooltip-right z-100" data-tip="Go to today">
+          <div
+            className={buttonClasses}
+            onClick={() => setDate(Temporal.Now.plainDateISO())}
+          >
+            {formatDate(date)}
+          </div>
         </div>
       )}
     </Toolbar>
@@ -91,9 +115,17 @@ export const WeekNav = ({
       onClickNext={() => setWeeksOffset(weeksOffset + 1)}
       onClickPrevious={() => setWeeksOffset(weeksOffset - 1)}
       toggleQuickPlan={toggleQuickPlan}
+      tooltipNoun="week"
     >
-      <div className={buttonClasses} onClick={() => setWeeksOffset(0)}>
-        Week {offsetDate.weekOfYear}, {offsetDate.year}
+      <div
+        className={classNames({
+          "tooltip tooltip-right z-100": weeksOffset !== 0,
+        })}
+        data-tip={weeksOffset !== 0 ? "Back to this week" : undefined}
+      >
+        <div className={buttonClasses} onClick={() => setWeeksOffset(0)}>
+          Week {offsetDate.weekOfYear}, {offsetDate.year}
+        </div>
       </div>
     </Toolbar>
   );
