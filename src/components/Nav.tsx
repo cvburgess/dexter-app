@@ -29,29 +29,35 @@ const DesktopNav = () => {
     <nav
       aria-label="Main navigation"
       className={classNames(
-        "max-sm:hidden bg-base-200 overflow-hidden h-screen w-19 pb-4",
+        "max-sm:hidden bg-base-200 h-screen w-19 pb-4",
         isFullscreen ? "pt-4" : "pt-10",
       )}
     >
       <div className="flex flex-col gap-4 text-base-content h-full items-center">
         {navItems.map((item) => (
-          <NavLink
-            className={({ isActive }) =>
-              classNames(
-                "bg-base-100 rounded-box shadow-md hover:shadow-lg transition-shadow flex items-center justify-center size-12",
-                {
-                  "bg-base-content/80 text-base-100": isActive,
-                  "mt-auto": item.bottom,
-                  indicator: true,
-                },
-              )
-            }
+          <div
+            className={classNames("tooltip tooltip-right z-100", {
+              "mt-auto": item.bottom,
+            })}
+            data-tip={item.title}
             key={item.route}
-            to={item.route}
           >
-            <Indicator route={item.route} />
-            <item.Icon size={26} weight="light" />
-          </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                classNames(
+                  "bg-base-100 rounded-box shadow-md hover:shadow-lg transition-shadow flex items-center justify-center size-12",
+                  {
+                    "bg-base-content/80 text-base-100": isActive,
+                    indicator: true,
+                  },
+                )
+              }
+              to={item.route}
+            >
+              <Indicator route={item.route} />
+              <item.Icon size={26} weight="light" />
+            </NavLink>
+          </div>
         ))}
       </div>
     </nav>
