@@ -13,10 +13,11 @@ import {
 
 import { usePreferences } from "../hooks/usePreferences.tsx";
 import { useTasks } from "../hooks/useTasks.tsx";
+import { useToggle } from "../hooks/useToggle.tsx";
 import { makeBaseFiltersForDate } from "../utils/makeBaseFiltersForDate.ts";
 
 export const Day = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, toggle] = useToggle();
   const [date, setDate] = useState<Temporal.PlainDate>(
     Temporal.Now.plainDateISO(),
   );
@@ -29,11 +30,7 @@ export const Day = () => {
 
   return (
     <DraggableView>
-      <DayNav
-        date={date}
-        setDate={setDate}
-        toggleQuickPlan={() => setIsOpen(!isOpen)}
-      />
+      <DayNav date={date} setDate={setDate} toggleQuickPlan={toggle} />
 
       <DrawerContainer>
         <ScrollableContainer>

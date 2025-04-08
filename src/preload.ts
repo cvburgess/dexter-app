@@ -20,6 +20,7 @@ declare global {
       onGoToRoute: (
         callback: (route: string) => void,
       ) => (() => void) | undefined;
+      onToggleQuickPlanner: (callback: () => void) => (() => void) | undefined;
     };
   }
 }
@@ -80,6 +81,16 @@ contextBridge.exposeInMainWorld("electron", {
     // Return a function to remove the listener
     return () => {
       ipcRenderer.removeAllListeners("go-to-route");
+    };
+  },
+  onToggleQuickPlanner: (callback: () => void) => {
+    ipcRenderer.on("toggle-quick-planner", (_event) => {
+      callback();
+    });
+
+    // Return a function to remove the listener
+    return () => {
+      ipcRenderer.removeAllListeners("toggle-quick-planner");
     };
   },
 });

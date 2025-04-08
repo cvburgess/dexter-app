@@ -174,6 +174,13 @@ const goToRoute = (route: string) => {
   }
 };
 
+const toggleQuickPlanner = () => {
+  if (mainWindow) {
+    mainWindow.focus();
+    mainWindow.webContents.send("toggle-quick-planner");
+  }
+};
+
 const template: Array<MenuItemConstructorOptions> = [
   ...((isMac ? [{ role: "appMenu" }] : []) as MenuItemConstructorOptions[]),
   { role: "fileMenu" },
@@ -208,8 +215,8 @@ const template: Array<MenuItemConstructorOptions> = [
     label: "View",
     submenu: [
       { role: "reload" },
-      // { role: "forceReload" },
-      // { role: "toggleDevTools" },
+      { role: "forceReload" },
+      { role: "toggleDevTools" },
       { type: "separator" },
 
       { role: "resetZoom" },
@@ -260,7 +267,7 @@ const template: Array<MenuItemConstructorOptions> = [
       {
         label: "Toggle Quick Planner",
         accelerator: isMac ? "Cmd+B" : "Ctrl+B",
-        click: console.log,
+        click: () => toggleQuickPlanner(),
       },
     ],
   },

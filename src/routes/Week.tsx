@@ -7,12 +7,14 @@ import { QuickDrawer } from "../components/QuickPlanner.tsx";
 import { DraggableView, DrawerContainer } from "../components/View.tsx";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
+import { useToggle } from "../hooks/useToggle.tsx";
+
 import { TTask } from "../api/tasks.ts";
 import { makeOrFilter, TQueryFilter } from "../api/applyFilters.ts";
 import { weekStartEnd } from "../utils/weekStartEnd.ts";
 
 export const Week = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, toggle] = useToggle();
   const [weeksOffset, setWeeksOffset] = useState<number>(0);
 
   const { monday, sunday } = weekStartEnd(weeksOffset);
@@ -40,7 +42,7 @@ export const Week = () => {
     <DraggableView>
       <WeekNav
         setWeeksOffset={setWeeksOffset}
-        toggleQuickPlan={() => setIsOpen(!isOpen)}
+        toggleQuickPlan={toggle}
         weeksOffset={weeksOffset}
       />
       <DrawerContainer>

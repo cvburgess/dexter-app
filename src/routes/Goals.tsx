@@ -11,12 +11,13 @@ import { TextToolbar } from "../components/Toolbar.tsx";
 
 import { useGoals } from "../hooks/useGoals.tsx";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
+import { useToggle } from "../hooks/useToggle.tsx";
 
 import { TCreateGoal, TGoal, TUpdateGoal } from "../api/goals.ts";
 import { TTask } from "../api/tasks.ts";
 
 export const Goals = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, toggle] = useToggle();
   const [goals, { createGoal, updateGoal }] = useGoals();
   const [tasks] = useTasks();
 
@@ -24,7 +25,7 @@ export const Goals = () => {
 
   return (
     <DraggableView>
-      <TextToolbar title="Goals" toggleQuickPlan={() => setIsOpen(!isOpen)} />
+      <TextToolbar title="Goals" toggleQuickPlan={toggle} />
 
       <DrawerContainer>
         <Board
