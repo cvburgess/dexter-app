@@ -1,8 +1,8 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { CaretLeft, CaretRight, SquareHalf } from "@phosphor-icons/react";
-import classNames from "classnames";
 
 import { ButtonWithPopover } from "./ButtonWithPopover.tsx";
+import { Tooltip } from "./Tooltip.tsx";
 
 type TToolbarProps = {
   children: React.ReactNode;
@@ -27,27 +27,21 @@ export const Toolbar = ({
       {children}
       <div className="flex-grow w-full h-full app-draggable"></div>
       {onClickPrevious && (
-        <div
-          className="tooltip tooltip-left z-100"
-          data-tip={`Previous ${tooltipNoun}`}
-        >
+        <Tooltip position="left" text={`Previous ${tooltipNoun}`}>
           <ArrowButton onClick={onClickPrevious} variant="previous" />
-        </div>
+        </Tooltip>
       )}
       {onClickNext && (
-        <div
-          className="tooltip tooltip-left z-100"
-          data-tip={`Next ${tooltipNoun}`}
-        >
+        <Tooltip position="left" text={`Next ${tooltipNoun}`}>
           <ArrowButton onClick={onClickNext} variant="next" />
-        </div>
+        </Tooltip>
       )}
       {toggleQuickPlan && (
-        <div className="tooltip tooltip-left z-100" data-tip="Quick Planner">
+        <Tooltip position="left" text="Quick Planner">
           <button className={buttonClasses} onClick={toggleQuickPlan}>
             <SquareHalf />
           </button>
-        </div>
+        </Tooltip>
       )}
     </div>
   );
@@ -68,7 +62,7 @@ export const DayNav = ({ date, setDate, toggleQuickPlan }: TDayNavProps) => {
       tooltipNoun="day"
     >
       {date.toString() === Temporal.Now.plainDateISO().toString() ? (
-        <div className="tooltip tooltip-right z-100" data-tip="Go to a day">
+        <Tooltip position="right" text="Change date">
           <ButtonWithPopover
             buttonClassName={buttonClasses}
             buttonVariant="none"
@@ -81,16 +75,16 @@ export const DayNav = ({ date, setDate, toggleQuickPlan }: TDayNavProps) => {
           >
             {formatDate(date)}
           </ButtonWithPopover>
-        </div>
+        </Tooltip>
       ) : (
-        <div className="tooltip tooltip-right z-100" data-tip="Go to today">
+        <Tooltip position="right" text="Go to today">
           <div
             className={buttonClasses}
             onClick={() => setDate(Temporal.Now.plainDateISO())}
           >
             {formatDate(date)}
           </div>
-        </div>
+        </Tooltip>
       )}
     </Toolbar>
   );
@@ -117,16 +111,15 @@ export const WeekNav = ({
       toggleQuickPlan={toggleQuickPlan}
       tooltipNoun="week"
     >
-      <div
-        className={classNames({
-          "tooltip tooltip-right z-100": weeksOffset !== 0,
-        })}
-        data-tip={weeksOffset !== 0 ? "Back to this week" : undefined}
+      <Tooltip
+        enabled={weeksOffset !== 0}
+        position="right"
+        text="Back to this week"
       >
         <div className={buttonClasses} onClick={() => setWeeksOffset(0)}>
           Week {offsetDate.weekOfYear}, {offsetDate.year}
         </div>
-      </div>
+      </Tooltip>
     </Toolbar>
   );
 };

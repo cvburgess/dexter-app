@@ -12,6 +12,7 @@ import classNames from "classnames";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 import { useFullScreen } from "../hooks/useFullscreen.tsx";
+import { Tooltip } from "./Tooltip.tsx";
 
 export const Nav = () => {
   return (
@@ -35,12 +36,11 @@ const DesktopNav = () => {
     >
       <div className="flex flex-col gap-4 text-base-content h-full items-center">
         {navItems.map((item) => (
-          <div
-            className={classNames("tooltip tooltip-right z-100", {
-              "mt-auto": item.bottom,
-            })}
-            data-tip={item.title}
+          <Tooltip
+            className={classNames({ "mt-auto": item.bottom })}
             key={item.route}
+            position="right"
+            text={item.title}
           >
             <NavLink
               className={({ isActive }) =>
@@ -57,7 +57,7 @@ const DesktopNav = () => {
               <Indicator route={item.route} />
               <item.Icon size={26} weight="light" />
             </NavLink>
-          </div>
+          </Tooltip>
         ))}
       </div>
     </nav>
