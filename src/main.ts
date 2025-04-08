@@ -260,11 +260,6 @@ const template: Array<MenuItemConstructorOptions> = [
 
       { type: "separator" },
       {
-        label: "Go to Today",
-        accelerator: isMac ? "Cmd+T" : "Ctrl+T",
-        click: console.log,
-      },
-      {
         label: "Toggle Quick Planner",
         accelerator: isMac ? "Cmd+B" : "Ctrl+B",
         click: () => toggleQuickPlanner(),
