@@ -66,7 +66,7 @@ const DesktopNav = () => {
 
 const MobileNav = () => {
   return (
-    <div className="dock sm:hidden bg-base-300 text-base-content/80">
+    <div className="dock sm:hidden bg-base-200 text-base-content/80">
       {navItems
         .filter((item) => item.showOnMobile)
         .map((item) => (
