@@ -1,10 +1,20 @@
 import path from "path";
-import { app, BrowserWindow, ipcMain, nativeTheme, shell } from "electron";
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  Menu,
+  MenuItemConstructorOptions,
+  nativeTheme,
+  shell,
+} from "electron";
 import {
   installExtension,
   REACT_DEVELOPER_TOOLS,
 } from "electron-devtools-installer";
 import { updateElectronApp } from "update-electron-app";
+
+const isMac = process.platform === "darwin";
 
 let mainWindow: BrowserWindow;
 
@@ -155,5 +165,109 @@ app.on("activate", () => {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+// ---------- MENUS ----------
+
+const template: Array<MenuItemConstructorOptions> = [
+  ...((isMac ? [{ role: "appMenu" }] : []) as MenuItemConstructorOptions[]),
+  { role: "fileMenu" },
+  {
+    label: "Edit",
+    submenu: [
+      // { role: "undo" },
+      // { role: "redo" },
+      // { type: "separator" },
+      { role: "cut" },
+      { role: "copy" },
+      { role: "paste" },
+      ...((isMac
+        ? [
+            { role: "delete" },
+            { role: "selectAll" },
+            { type: "separator" },
+            {
+              label: "Speech",
+              submenu: [{ role: "startSpeaking" }, { role: "stopSpeaking" }],
+            },
+          ]
+        : [
+            { role: "delete" },
+            { type: "separator" },
+            { role: "selectAll" },
+          ]) as MenuItemConstructorOptions[]),
+    ],
+  },
+  // { role: 'viewMenu' }
+  {
+    label: "View",
+    submenu: [
+      { role: "reload" },
+      // { role: "forceReload" },
+      // { role: "toggleDevTools" },
+      { type: "separator" },
+
+      { role: "resetZoom" },
+      { role: "zoomIn" },
+      { role: "zoomOut" },
+      { type: "separator" },
+
+      { role: "togglefullscreen" },
+
+      { type: "separator" },
+      {
+        label: "Day",
+        accelerator: isMac ? "Cmd+1" : "Ctrl+1",
+        click: console.log,
+      },
+      {
+        label: "Week",
+        accelerator: isMac ? "Cmd+2" : "Ctrl+2",
+        click: console.log,
+      },
+      {
+        label: "Prioritize",
+        accelerator: isMac ? "Cmd+3" : "Ctrl+3",
+        click: console.log,
+      },
+      {
+        label: "Lists",
+        accelerator: isMac ? "Cmd+4" : "Ctrl+4",
+        click: console.log,
+      },
+      {
+        label: "Goals",
+        accelerator: isMac ? "Cmd+5" : "Ctrl+5",
+        click: console.log,
+      },
+      {
+        label: "Settings",
+        accelerator: isMac ? "Cmd+9" : "Ctrl+9",
+        click: console.log,
+      },
+
+      { type: "separator" },
+      {
+        label: "Go to Today",
+        accelerator: isMac ? "Cmd+T" : "Ctrl+T",
+        click: console.log,
+      },
+      {
+        label: "Toggle Quick Planner",
+        accelerator: isMac ? "Cmd+B" : "Ctrl+B",
+        click: console.log,
+      },
+    ],
+  },
+  { role: "windowMenu" },
+  {
+    role: "help",
+    submenu: [
+      {
+        label: "Learn More",
+        click: console.log,
+      },
+    ],
+  },
+];
+
+const menu = Menu.buildFromTemplate(template);
+Menu.setApplicationMenu(menu);
