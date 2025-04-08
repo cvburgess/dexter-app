@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
-import { createHashRouter, Outlet, RouterProvider } from "react-router";
+import {
+  createHashRouter,
+  Outlet,
+  RouterProvider,
+  useNavigate,
+} from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
@@ -11,7 +16,7 @@ import { Login } from "./routes/Login.tsx";
 import { Priorities } from "./routes/Priorities.tsx";
 import { Review } from "./routes/Review.tsx";
 import { Settings } from "./routes/Settings/index.tsx";
-import { Today } from "./routes/Today.tsx";
+import { Day } from "./routes/Day.tsx";
 import { Week } from "./routes/Week.tsx";
 
 import { Nav } from "./components/Nav.tsx";
@@ -19,6 +24,19 @@ import { useTheme } from "./hooks/useTheme.ts";
 
 const App = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Add the event listener
+    const removeListener = window.electron?.onGoToRoute((route: string) => {
+      navigate(route);
+    });
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      if (removeListener) removeListener();
+    };
+  }, []);
 
   return (
     <main
@@ -41,7 +59,7 @@ const router = createHashRouter([
       </ProtectedRoute>
     ),
     children: [
-      { index: true, element: <Today /> },
+      { index: true, element: <Day /> },
       { path: "week", element: <Week /> },
       { path: "review", element: <Review /> },
       { path: "priorities", element: <Priorities /> },

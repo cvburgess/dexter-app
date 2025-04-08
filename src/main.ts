@@ -167,6 +167,13 @@ app.on("activate", () => {
 
 // ---------- MENUS ----------
 
+const goToRoute = (route: string) => {
+  if (mainWindow) {
+    mainWindow.focus();
+    mainWindow.webContents.send("go-to-route", route);
+  }
+};
+
 const template: Array<MenuItemConstructorOptions> = [
   ...((isMac ? [{ role: "appMenu" }] : []) as MenuItemConstructorOptions[]),
   { role: "fileMenu" },
@@ -216,32 +223,32 @@ const template: Array<MenuItemConstructorOptions> = [
       {
         label: "Day",
         accelerator: isMac ? "Cmd+1" : "Ctrl+1",
-        click: console.log,
+        click: () => goToRoute("/"),
       },
       {
         label: "Week",
         accelerator: isMac ? "Cmd+2" : "Ctrl+2",
-        click: console.log,
+        click: () => goToRoute("/week"),
       },
       {
         label: "Priorities",
         accelerator: isMac ? "Cmd+3" : "Ctrl+3",
-        click: console.log,
+        click: () => goToRoute("/priorities"),
       },
       {
         label: "Lists",
         accelerator: isMac ? "Cmd+4" : "Ctrl+4",
-        click: console.log,
+        click: () => goToRoute("/lists"),
       },
       {
         label: "Goals",
         accelerator: isMac ? "Cmd+5" : "Ctrl+5",
-        click: console.log,
+        click: () => goToRoute("/goals"),
       },
       {
         label: "Settings",
         accelerator: isMac ? "Cmd+9" : "Ctrl+9",
-        click: console.log,
+        click: () => goToRoute("/settings"),
       },
 
       { type: "separator" },

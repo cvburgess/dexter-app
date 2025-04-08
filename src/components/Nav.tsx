@@ -87,7 +87,7 @@ const MobileNav = () => {
 
 const navItems = [
   {
-    title: "Today",
+    title: "Day",
     Icon: Sun,
     route: "/",
     showOnMobile: true,

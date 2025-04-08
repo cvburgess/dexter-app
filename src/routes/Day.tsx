@@ -15,7 +15,7 @@ import { usePreferences } from "../hooks/usePreferences.tsx";
 import { useTasks } from "../hooks/useTasks.tsx";
 import { makeBaseFiltersForDate } from "../utils/makeBaseFiltersForDate.ts";
 
-export const Today = () => {
+export const Day = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [date, setDate] = useState<Temporal.PlainDate>(
     Temporal.Now.plainDateISO(),
