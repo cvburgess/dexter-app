@@ -1,8 +1,8 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import camelCase from "camelcase-keys";
-import snakeCase from "decamelize-keys";
 
-import { Database } from "./database.types.ts";
+import { camelCase, snakeCase } from "../utils/changeCase.ts";
+
+import { Database, TablesInsert, TablesUpdate } from "./database.types.ts";
 
 export type TGoal = {
   createdAt: string;
@@ -30,7 +30,7 @@ export const createGoal = async (
 ) => {
   const { data, error } = await supabase
     .from("goals")
-    .insert(snakeCase(goal))
+    .insert(snakeCase(goal) as TablesInsert<"goals">)
     .select();
 
   if (error) throw error;
@@ -50,7 +50,7 @@ export const updateGoal = async (
 ) => {
   const { data, error } = await supabase
     .from("goals")
-    .update(snakeCase(diff))
+    .update(snakeCase(diff) as TablesUpdate<"goals">)
     .eq("id", id)
     .select();
 

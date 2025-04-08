@@ -1,8 +1,8 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import camelCase from "camelcase-keys";
-import snakeCase from "decamelize-keys";
 
-import { Database } from "./database.types.ts";
+import { camelCase, snakeCase } from "../utils/changeCase.ts";
+
+import { Database, TablesUpdate } from "./database.types.ts";
 
 export enum EThemeMode {
   SYSTEM,
@@ -24,10 +24,11 @@ export const getPreferences = async (supabase: SupabaseClient<Database>) => {
   const { data, error } = await supabase
     .from("preferences")
     .select("*")
-    .limit(1);
+    .limit(1)
+    .single();
 
   if (error) throw error;
-  return camelCase(data)[0] as TPreferences;
+  return camelCase(data) as TPreferences;
 };
 
 export type TUpdatePreferences = {
@@ -47,10 +48,11 @@ export const updatePreferences = async (
 ) => {
   const { data, error } = await supabase
     .from("preferences")
-    .update(snakeCase(diff))
+    .update(snakeCase(diff) as TablesUpdate<"preferences">)
     .eq("user_id", userId)
-    .select();
+    .select()
+    .single();
 
   if (error) throw error;
-  return camelCase(data)[0] as TPreferences;
+  return camelCase(data) as TPreferences;
 };

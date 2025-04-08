@@ -1,7 +1,8 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 
-import { applyFilters, TQueryFilter } from "./applyFilters.ts";
 import { camelCase, snakeCase } from "../utils/changeCase.ts";
+
+import { applyFilters, TQueryFilter } from "./applyFilters.ts";
 import { Database, TablesInsert, TablesUpdate } from "./database.types.ts";
 
 export type TTask = {

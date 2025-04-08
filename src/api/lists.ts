@@ -1,8 +1,8 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import camelCase from "camelcase-keys";
-import snakeCase from "decamelize-keys";
 
-import { Database } from "./database.types.ts";
+import { camelCase, snakeCase } from "../utils/changeCase.ts";
+
+import { Database, TablesInsert, TablesUpdate } from "./database.types.ts";
 
 export type TList = {
   createdAt: string;
@@ -31,7 +31,7 @@ export const createList = async (
 ) => {
   const { data, error } = await supabase
     .from("lists")
-    .insert(snakeCase(list))
+    .insert(snakeCase(list) as TablesInsert<"lists">)
     .select();
 
   if (error) throw error;
@@ -51,7 +51,7 @@ export const updateList = async (
 ) => {
   const { data, error } = await supabase
     .from("lists")
-    .update(snakeCase(diff))
+    .update(snakeCase(diff) as TablesUpdate<"lists">)
     .eq("id", id)
     .select();
 
