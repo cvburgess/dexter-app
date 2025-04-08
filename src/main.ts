@@ -214,10 +214,14 @@ const template: Array<MenuItemConstructorOptions> = [
   {
     label: "View",
     submenu: [
-      { role: "reload" },
-      { role: "forceReload" },
-      { role: "toggleDevTools" },
-      { type: "separator" },
+      ...(app.isPackaged
+        ? [] // No dev tools in production
+        : ([
+            { role: "reload" },
+            { role: "forceReload" },
+            { role: "toggleDevTools" },
+            { type: "separator" },
+          ] as MenuItemConstructorOptions[])),
 
       { role: "resetZoom" },
       { role: "zoomIn" },
