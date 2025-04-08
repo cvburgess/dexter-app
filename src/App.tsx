@@ -8,7 +8,7 @@ import { AuthProvider } from "./hooks/useAuth.tsx";
 import { Goals } from "./routes/Goals.tsx";
 import { Lists } from "./routes/Lists.tsx";
 import { Login } from "./routes/Login.tsx";
-import { Prioritize } from "./routes/Prioritize.tsx";
+import { Priorities } from "./routes/Priorities.tsx";
 import { Review } from "./routes/Review.tsx";
 import { Settings } from "./routes/Settings/index.tsx";
 import { Today } from "./routes/Today.tsx";
@@ -44,7 +44,7 @@ const router = createHashRouter([
       { index: true, element: <Today /> },
       { path: "week", element: <Week /> },
       { path: "review", element: <Review /> },
-      { path: "prioritize", element: <Prioritize /> },
+      { path: "priorities", element: <Priorities /> },
       { path: "goals", element: <Goals /> },
       { path: "lists", element: <Lists /> },
       { path: "settings", element: <Settings /> },

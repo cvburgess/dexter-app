@@ -224,7 +224,7 @@ const template: Array<MenuItemConstructorOptions> = [
         click: console.log,
       },
       {
-        label: "Prioritize",
+        label: "Priorities",
         accelerator: isMac ? "Cmd+3" : "Ctrl+3",
         click: console.log,
       },

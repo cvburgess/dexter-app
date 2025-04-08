@@ -105,9 +105,9 @@ const navItems = [
     showOnMobile: true,
   },
   {
-    title: "Prioritize",
+    title: "Priorities",
     Icon: SquaresFour,
-    route: "/prioritize",
+    route: "/priorities",
     showOnMobile: false,
   },
   {
@@ -140,7 +140,7 @@ const Indicator = ({ route }: { route: string }) => {
   switch (route) {
     case "/":
       return <Badge count={todaysTasks.length} />;
-    case "/prioritize":
+    case "/priorities":
       return <Badge count={unprioritizedTasks.length} />;
     default:
       return null;
