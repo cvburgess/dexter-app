@@ -22,7 +22,7 @@ export const Tooltip = ({
   return (
     <div
       className={classNames(
-        "tooltip z-100",
+        "tooltip",
         {
           "tooltip-right": position === "right",
           "tooltip-left": position === "left",

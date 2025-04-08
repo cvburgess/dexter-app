@@ -41,6 +41,11 @@
   }
 }
 
+.tooltip::before,
+.tooltip::after {
+  z-index: 100;
+}
+
 @plugin "daisyui" {
   themes: all;
 }
