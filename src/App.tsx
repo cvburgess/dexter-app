@@ -40,7 +40,7 @@ const App = () => {
 
   return (
     <main
-      className="flex max-sm:flex-col-reverse h-screen w-full overflow-hidden"
+      className="flex flex-col-reverse desktop:flex-row h-screen w-full overflow-hidden"
       data-theme={theme}
     >
       <Nav />

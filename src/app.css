@@ -41,13 +41,20 @@
   }
 }
 
-.tooltip::before,
-.tooltip::after {
-  z-index: 100;
+/* https://yesviz.com/iphones.php */
+
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-desktop: 512px;
 }
 
 @plugin "daisyui" {
   themes: all;
+}
+
+.tooltip::before,
+.tooltip::after {
+  z-index: 100;
 }
 
 @plugin "daisyui/theme" {

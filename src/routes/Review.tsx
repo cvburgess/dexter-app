@@ -52,7 +52,7 @@ export const Review = () => {
         <div className="flex flex-1 flex-col items-center justify-center gap-4 px-4 pt-12 min-h-[calc(100vh-6rem)] overflow-auto">
           <Title text={title} />
           <Subtitle text={subtitle} />
-          <div className="flex gap-8 md:flex-wrap max-sm:flex-col w-full h-full justify-center max-sm:items-center overflow-auto no-scrollbar">
+          <div className="flex gap-8 flex-wrap max-desktop:flex-col w-full h-full justify-center max-desktop:items-center overflow-auto no-scrollbar">
             <CardListWithTitle
               isVisible={incompleteTasks.length > 0}
               tasks={incompleteTasks}

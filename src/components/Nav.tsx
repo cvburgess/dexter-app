@@ -30,7 +30,7 @@ const DesktopNav = () => {
     <nav
       aria-label="Main navigation"
       className={classNames(
-        "max-sm:hidden bg-base-200 h-screen w-19 pb-4",
+        "hidden desktop:block bg-base-200 h-screen w-19 pb-4",
         isFullscreen ? "pt-4" : "pt-10",
       )}
     >
@@ -66,7 +66,7 @@ const DesktopNav = () => {
 
 const MobileNav = () => {
   return (
-    <div className="dock sm:hidden bg-base-200 text-base-content/80">
+    <div className="dock desktop:hidden bg-base-200 text-base-content/80">
       {navItems
         .filter((item) => item.showOnMobile)
         .map((item) => (
