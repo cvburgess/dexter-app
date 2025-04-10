@@ -12,6 +12,7 @@ export enum EThemeMode {
 
 export type TPreferences = {
   darkTheme: string;
+  enableHabits: boolean;
   enableJournal: boolean;
   enableNotes: boolean;
   lightTheme: string;
@@ -32,14 +33,15 @@ export const getPreferences = async (supabase: SupabaseClient<Database>) => {
 };
 
 export type TUpdatePreferences = {
-  userId: string;
-  lightTheme?: string;
   darkTheme?: string;
-  themeMode?: EThemeMode;
-  enableNotes?: boolean;
+  enableHabits?: boolean;
   enableJournal?: boolean;
+  enableNotes?: boolean;
+  lightTheme?: string;
   templateNote?: string;
   templatePrompts?: string[];
+  themeMode?: EThemeMode;
+  userId: string;
 };
 
 export const updatePreferences = async (

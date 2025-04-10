@@ -155,6 +155,7 @@ export type Database = {
       preferences: {
         Row: {
           dark_theme: string
+          enable_habits: boolean
           enable_journal: boolean
           enable_notes: boolean
           light_theme: string
@@ -165,6 +166,7 @@ export type Database = {
         }
         Insert: {
           dark_theme?: string
+          enable_habits?: boolean
           enable_journal?: boolean
           enable_notes?: boolean
           light_theme?: string
@@ -175,6 +177,7 @@ export type Database = {
         }
         Update: {
           dark_theme?: string
+          enable_habits?: boolean
           enable_journal?: boolean
           enable_notes?: boolean
           light_theme?: string

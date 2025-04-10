@@ -14,6 +14,7 @@ import { Account } from "./routes/Settings/Account.tsx";
 import { AuthProvider } from "./hooks/useAuth.tsx";
 import { Day } from "./routes/Day.tsx";
 import { Goals } from "./routes/Goals.tsx";
+import { Habits } from "./routes/Settings/Habits.tsx";
 import { Journal } from "./routes/Settings/Journal.tsx";
 import { Lists } from "./routes/Lists.tsx";
 import { Login } from "./routes/Login.tsx";
@@ -66,20 +67,21 @@ const router = createHashRouter([
     children: [
       { index: true, element: <Navigate replace to="day" /> },
       { path: "day", element: <Day /> },
-      { path: "week", element: <Week /> },
-      { path: "review", element: <Review /> },
-      { path: "priorities", element: <Priorities /> },
       { path: "goals", element: <Goals /> },
       { path: "lists", element: <Lists /> },
+      { path: "priorities", element: <Priorities /> },
+      { path: "review", element: <Review /> },
+      { path: "week", element: <Week /> },
       {
         path: "settings",
         children: [
           { index: true, element: <Navigate replace to="account" /> },
+          { path: "about", element: <About /> },
           { path: "account", element: <Account /> },
-          { path: "theme", element: <Theme /> },
+          { path: "habits", element: <Habits /> },
           { path: "journal", element: <Journal /> },
           { path: "notes", element: <Notes /> },
-          { path: "about", element: <About /> },
+          { path: "theme", element: <Theme /> },
         ],
         element: <Settings />,
       },

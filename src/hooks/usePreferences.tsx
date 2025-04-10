@@ -51,6 +51,7 @@ export const usePreferences = (options?: THookOptions): TUsePreferences => {
 
 const defaultPreferences: TPreferences = {
   darkTheme: "dark",
+  enableHabits: true,
   enableJournal: true,
   enableNotes: true,
   lightTheme: "dexter",
