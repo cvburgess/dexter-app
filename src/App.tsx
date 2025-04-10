@@ -9,19 +9,20 @@ import {
 } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
-import { AuthProvider } from "./hooks/useAuth.tsx";
-import { Goals } from "./routes/Goals.tsx";
-import { Lists } from "./routes/Lists.tsx";
-import { Login } from "./routes/Login.tsx";
-import { Priorities } from "./routes/Priorities.tsx";
-import { Review } from "./routes/Review.tsx";
-import { Settings } from "./routes/Settings/index.tsx";
 import { About } from "./routes/Settings/About.tsx";
 import { Account } from "./routes/Settings/Account.tsx";
-import { Features } from "./routes/Settings/Features.tsx";
-import { Theme } from "./routes/Settings/Theme.tsx";
+import { AuthProvider } from "./hooks/useAuth.tsx";
 import { Day } from "./routes/Day.tsx";
+import { Goals } from "./routes/Goals.tsx";
+import { Journal } from "./routes/Settings/Journal.tsx";
+import { Lists } from "./routes/Lists.tsx";
+import { Login } from "./routes/Login.tsx";
+import { Notes } from "./routes/Settings/Notes.tsx";
+import { Priorities } from "./routes/Priorities.tsx";
+import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
+import { Review } from "./routes/Review.tsx";
+import { Settings } from "./routes/Settings/index.tsx";
+import { Theme } from "./routes/Settings/Theme.tsx";
 import { Week } from "./routes/Week.tsx";
 
 import { Nav } from "./components/Nav.tsx";
@@ -76,7 +77,8 @@ const router = createHashRouter([
           { index: true, element: <Navigate replace to="account" /> },
           { path: "account", element: <Account /> },
           { path: "theme", element: <Theme /> },
-          { path: "features", element: <Features /> },
+          { path: "journal", element: <Journal /> },
+          { path: "notes", element: <Notes /> },
           { path: "about", element: <About /> },
         ],
         element: <Settings />,

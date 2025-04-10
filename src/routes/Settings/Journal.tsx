@@ -6,7 +6,7 @@ import { SettingsOption } from "../../components/SettingsOption";
 
 import { usePreferences } from "../../hooks/usePreferences";
 
-export const Features = () => {
+export const Journal = () => {
   const [preferences, { updatePreferences }] = usePreferences();
 
   const addPrompt = (value: string) =>
@@ -35,36 +35,17 @@ export const Features = () => {
           {
             id: "true",
             title: "Enabled",
-            isSelected: preferences.enableNotes,
+            isSelected: preferences.enableJournal,
           },
           {
             id: "false",
             title: "Disabled",
-            isSelected: !preferences.enableNotes,
+            isSelected: !preferences.enableJournal,
           },
         ]}
-        setting="enableNotes"
-        title="Daily Notes"
+        setting="enableJournal"
+        title="Journal"
       />
-
-      <div className="mt-4">
-        <SettingsOption
-          options={[
-            {
-              id: "true",
-              title: "Enabled",
-              isSelected: preferences.enableJournal,
-            },
-            {
-              id: "false",
-              title: "Disabled",
-              isSelected: !preferences.enableJournal,
-            },
-          ]}
-          setting="enableJournal"
-          title="Journal"
-        />
-      </div>
 
       {preferences.enableJournal && (
         <fieldset className="fieldset w-full mt-4">
