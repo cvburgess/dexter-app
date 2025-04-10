@@ -4,6 +4,14 @@ import classNames from "classnames";
 import { TextToolbar } from "../../components/Toolbar.tsx";
 import { ScrollableContainer, View } from "../../components/View.tsx";
 
+const Panel = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="border-2 border-base-200 w-full h-[calc(100vh-5.5rem)] rounded-box mt-4 p-4 overflow-auto">
+      {children}
+    </div>
+  );
+};
+
 export const Settings = () => {
   const panels = ["account", "features", "theme", "about"];
 
@@ -18,14 +26,16 @@ export const Settings = () => {
                 className={({ isActive }) =>
                   classNames("capitalize", { "bg-base-200": isActive })
                 }
-                to={`/settings/${panel}`}
+                to={panel}
               >
                 {panel}
               </NavLink>
             </li>
           ))}
         </ul>
-        <Outlet />
+        <Panel>
+          <Outlet />
+        </Panel>
       </ScrollableContainer>
     </View>
   );

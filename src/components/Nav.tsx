@@ -89,43 +89,43 @@ const navItems = [
   {
     title: "Day",
     Icon: Sun,
-    route: "/",
+    route: "day",
     showOnMobile: true,
   },
   {
     title: "Review",
     Icon: Moon,
-    route: "/review",
+    route: "review",
     showOnMobile: true,
   },
   {
     title: "Week",
     Icon: CalendarDots,
-    route: "/week",
+    route: "week",
     showOnMobile: true,
   },
   {
     title: "Priorities",
     Icon: SquaresFour,
-    route: "/priorities",
+    route: "priorities",
     showOnMobile: false,
   },
   {
     title: "Lists",
     Icon: ListHeart,
-    route: "/lists",
+    route: "lists",
     showOnMobile: false,
   },
   {
     title: "Goals",
     Icon: Trophy,
-    route: "/goals",
+    route: "goals",
     showOnMobile: false,
   },
   {
     title: "Settings",
     Icon: Gear,
-    route: "/settings",
+    route: "settings",
     bottom: true,
     showOnMobile: true,
   },
@@ -138,9 +138,9 @@ const Indicator = ({ route }: { route: string }) => {
   const [unprioritizedTasks] = useTasks({ filters: taskFilters.unprioritized });
 
   switch (route) {
-    case "/":
+    case "day":
       return <Badge count={todaysTasks.length} />;
-    case "/priorities":
+    case "priorities":
       return <Badge count={unprioritizedTasks.length} />;
     default:
       return null;

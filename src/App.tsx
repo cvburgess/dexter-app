@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import {
   createHashRouter,
+  Navigate,
   Outlet,
   RouterProvider,
   useNavigate,
@@ -54,16 +55,16 @@ const App = () => {
 };
 
 const router = createHashRouter([
-  { path: "/login", element: <Login /> },
+  { path: "login", element: <Login /> },
   {
-    path: "/",
     element: (
       <ProtectedRoute>
         <App />
       </ProtectedRoute>
     ),
     children: [
-      { index: true, element: <Day /> },
+      { index: true, element: <Navigate replace to="day" /> },
+      { path: "day", element: <Day /> },
       { path: "week", element: <Week /> },
       { path: "review", element: <Review /> },
       { path: "priorities", element: <Priorities /> },
@@ -72,7 +73,8 @@ const router = createHashRouter([
       {
         path: "settings",
         children: [
-          { path: "account", element: <Account />, index: true },
+          { index: true, element: <Navigate replace to="account" /> },
+          { path: "account", element: <Account /> },
           { path: "theme", element: <Theme /> },
           { path: "features", element: <Features /> },
           { path: "about", element: <About /> },

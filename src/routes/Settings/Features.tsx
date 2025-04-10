@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Plus, Trash } from "@phosphor-icons/react";
 import { useDebounce } from "use-debounce";
 
-import { Panel } from "../../components/Panel";
 import { SettingsOption } from "../../components/SettingsOption";
 
 import { usePreferences } from "../../hooks/usePreferences";
@@ -30,7 +29,7 @@ export const Features = () => {
     });
 
   return (
-    <Panel>
+    <>
       <SettingsOption
         options={[
           {
@@ -98,7 +97,7 @@ export const Features = () => {
           </label>
         </fieldset>
       )}
-    </Panel>
+    </>
   );
 };
 
