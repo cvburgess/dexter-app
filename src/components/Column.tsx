@@ -48,7 +48,7 @@ export const Column = React.memo(
     return (
       <div
         className={classNames(
-          "max-h-screen min-h-[50vh] flex flex-col",
+          "min-h-[50vh] flex flex-col",
           cardSize === "compact-w"
             ? "min-w-compact w-compact"
             : "min-w-standard w-standard",

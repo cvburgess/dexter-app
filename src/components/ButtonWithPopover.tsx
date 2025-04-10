@@ -124,7 +124,7 @@ const popoverPolyfill = {
 } as React.CSSProperties;
 
 const popoverStyles =
-  "dropdown fixed bg-base-100 rounded-box shadow-sm !text-base-content mt-1";
+  "dropdown fixed bg-base-100 rounded-box shadow-sm !text-base-content mt-1 max-h-[50vh] no-scrollbar";
 
 type TDropdownMenuProps = {
   onChange: TOnChange<string | number | null>;
@@ -310,7 +310,7 @@ type TEmojiProps = {
 
 const Emoji = ({ onChange, popoverId }: TEmojiProps) => (
   <div
-    className={classNames(popoverStyles, "max-h-[50vh]")}
+    className={classNames(popoverStyles)}
     id={popoverId}
     popover="auto"
     style={popoverPolyfill}

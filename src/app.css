@@ -9,14 +9,12 @@
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
+    -webkit-overflow-scrolling: touch;
   }
 
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
-  }
-
-  .scroll-momentum {
     -webkit-overflow-scrolling: touch;
   }
 

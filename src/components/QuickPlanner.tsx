@@ -38,7 +38,7 @@ export const QuickPlanner = ({
     );
 
   return (
-    <div className={classNames("no-scrollbar", className)}>
+    <div className={classNames("", className)}>
       <Column
         id={columnId}
         tasks={searchTasks(filteredTasks)}
@@ -76,7 +76,7 @@ type TQuickDrawerProps = TQuickPlannerProps & { isOpen: boolean };
 export const QuickDrawer = ({ isOpen, ...props }: TQuickDrawerProps) => (
   <div
     className={classNames(
-      "bg-base-100 border-l-2 border-base-200 overflow-y-auto overflow-x-hidden flex-shrink-0 transition-all duration-300 ease-in-out",
+      "bg-base-100 border-l-2 border-base-200 overflow-x-hidden flex-shrink-0 transition-all duration-300 ease-in-out no-scrollbar",
       isOpen ? "w-78 px-4" : "w-0",
     )}
   >
