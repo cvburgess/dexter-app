@@ -310,7 +310,7 @@ type TEmojiProps = {
 
 const Emoji = ({ onChange, popoverId }: TEmojiProps) => (
   <div
-    className={classNames(popoverStyles)}
+    className={classNames(popoverStyles, "max-h-[50vh]")}
     id={popoverId}
     popover="auto"
     style={popoverPolyfill}
@@ -318,9 +318,11 @@ const Emoji = ({ onChange, popoverId }: TEmojiProps) => (
     <EmojiPicker
       data={emojiData}
       maxFrequentRows={0}
+      navPosition="none"
       onEmojiSelect={(emoji: { native: string }) => onChange(emoji.native)}
       perLine={7}
       previewEmoji="dog"
+      previewPosition="none"
     />
   </div>
 );
