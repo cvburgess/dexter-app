@@ -1,13 +1,15 @@
-// import { useState } from "react";
-
+import { useEffect, useState } from "react";
 import { Plus } from "@phosphor-icons/react";
-// import { ButtonWithPopover } from "../../components/ButtonWithPopover";
+import { useDebounce } from "use-debounce";
+
+import { ButtonWithPopover } from "../../components/ButtonWithPopover";
+// import { ConfirmModal } from "../../components/ConfirmModal";
 import { SettingsOption } from "../../components/SettingsOption";
 
 import { useHabits } from "../../hooks/useHabits";
 import { usePreferences } from "../../hooks/usePreferences";
 
-import { TCreateHabit, TUpdateHabit } from "../../api/habits";
+import { TCreateHabit, THabit, TUpdateHabit } from "../../api/habits";
 
 export const Habits = () => {
   const [habits, { createHabit, updateHabit, deleteHabit }] = useHabits();
@@ -37,13 +39,9 @@ export const Habits = () => {
           <legend className="fieldset-legend ml-2 text-sm">Habits</legend>
           {habits.map((habit) => (
             <HabitInput
-              daysActive={habit.daysActive}
               deleteHabit={deleteHabit}
-              emoji={habit.emoji}
-              isPaused={habit.isPaused}
+              habit={habit}
               key={habit.id}
-              steps={habit.steps}
-              title={habit.title}
               updateHabit={updateHabit}
             />
           ))}
@@ -89,158 +87,167 @@ const NewHabitInput = ({ createHabit }: TNewHabitProps) => {
 };
 
 type THabitInputProps = {
-  daysActive: number[];
+  habit: THabit;
   deleteHabit: (id: string) => void;
-  emoji: string;
-  isPaused: boolean;
-  steps: number;
-  title: string;
   updateHabit: (habit: TUpdateHabit) => void;
 };
 
-const HabitInput = ({
-  daysActive,
-  emoji,
-  isPaused,
-  steps,
-  title,
-}: THabitInputProps) => {
-  return JSON.stringify({
-    daysActive,
-    emoji,
-    isPaused,
-    steps,
-    title,
-  });
-  // const [newHabit, setNewHabit] = useState({
-  //   title: "",
-  //   emoji: "",
-  //   days_active: [],
-  //   steps: 1,
-  // });
+const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
+  const [title, setTitle] = useState<string>(habit.title);
+  // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [debouncedTitle] = useDebounce(title, 1000);
 
-  // const onCreate = () => {
-  //   createHabit({ ...newHabit, user_id: userId as string });
-  //   setNewHabit({ title: "", emoji: "", days_active: [], steps: 1 });
-  // };
+  useEffect(() => {
+    if (debouncedTitle !== habit.title) {
+      updateHabit({ id: habit.id, title: debouncedTitle });
+    }
+  }, [debouncedTitle]);
 
-  // return (
-  //   <div className="p-4">
-  //     <h2 className="text-xl font-bold mb-4">Manage Habits</h2>
+  const onChangeTitle = ({
+    currentTarget: { value },
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(value);
+  };
 
-  //     <div className="mb-4">
-  //       <input
-  //         type="text"
-  //         placeholder="Habit Title"
-  //         value={newHabit.title}
-  //         onChange={(e) => setNewHabit({ ...newHabit, title: e.target.value })}
-  //         className="input input-bordered w-full mb-2"
-  //       />
+  const onEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && title) {
+      updateHabit({ id: habit.id, title });
+    }
+  };
 
-  //       <ButtonWithPopover
-  //         variant="emoji"
-  //         popoverId="emoji-picker"
-  //         buttonVariant="round"
-  //         onChange={(emoji) => setNewHabit({ ...newHabit, emoji })}
-  //       >
-  //         {newHabit.emoji || "😀"}
-  //       </ButtonWithPopover>
+  const onChangeEmoji = (value: string) => {
+    updateHabit({ id: habit.id, emoji: value });
+  };
 
-  //       <ButtonWithPopover
-  //         variant="menu"
-  //         popoverId="days-picker"
-  //         buttonVariant="round"
-  //         options={[
-  //           {
-  //             id: 1,
-  //             title: "Monday",
-  //             isSelected: newHabit.days_active.includes(1),
-  //           },
-  //           {
-  //             id: 2,
-  //             title: "Tuesday",
-  //             isSelected: newHabit.days_active.includes(2),
-  //           },
-  //           {
-  //             id: 3,
-  //             title: "Wednesday",
-  //             isSelected: newHabit.days_active.includes(3),
-  //           },
-  //           {
-  //             id: 4,
-  //             title: "Thursday",
-  //             isSelected: newHabit.days_active.includes(4),
-  //           },
-  //           {
-  //             id: 5,
-  //             title: "Friday",
-  //             isSelected: newHabit.days_active.includes(5),
-  //           },
-  //           {
-  //             id: 6,
-  //             title: "Saturday",
-  //             isSelected: newHabit.days_active.includes(6),
-  //           },
-  //           {
-  //             id: 7,
-  //             title: "Sunday",
-  //             isSelected: newHabit.days_active.includes(7),
-  //           },
-  //         ]}
-  //         onChange={(day) =>
-  //           setNewHabit((prev) => ({
-  //             ...prev,
-  //             days_active: prev.days_active.includes(day)
-  //               ? prev.days_active.filter((d) => d !== day)
-  //               : [...prev.days_active, day],
-  //           }))
-  //         }
-  //       >
-  //         {newHabit.days_active.length} Days Active
-  //       </ButtonWithPopover>
+  // const openModal = () => setIsModalOpen(true);
+  // const closeModal = () => setIsModalOpen(false);
 
-  //       <input
-  //         type="number"
-  //         placeholder="Steps"
-  //         value={newHabit.steps}
-  //         onChange={(e) =>
-  //           setNewHabit({ ...newHabit, steps: Number(e.target.value) })
-  //         }
-  //         className="input input-bordered w-full mb-2"
-  //       />
+  return (
+    <div className="mb-4">
+      <input
+        className="input input-bordered w-full mb-2"
+        onChange={onChangeTitle}
+        onKeyDown={onEnter}
+        type="text"
+        value={habit.title}
+      />
 
-  //       <button className="btn btn-primary w-full" onClick={handleCreate}>
-  //         Add Habit
-  //       </button>
-  //     </div>
+      <ButtonWithPopover
+        buttonVariant="round"
+        onChange={onChangeEmoji}
+        popoverId={`habit-${habit.id}-emoji`}
+        variant="emoji"
+      >
+        {habit.emoji}
+      </ButtonWithPopover>
 
-  //     <ul>
-  //       {habitsQueryData?.map((habit) => (
-  //         <li key={habit.id} className="mb-2">
-  //           <div className="flex items-center gap-2">
-  //             <span>{habit.emoji}</span>
-  //             <span>{habit.title}</span>
-  //             <button
-  //               className="btn btn-sm btn-warning"
-  //               onClick={() =>
-  //                 updateHabit({
-  //                   id: habit.id,
-  //                   updates: { is_paused: !habit.is_paused },
-  //                 })
-  //               }
-  //             >
-  //               {habit.is_paused ? "Resume" : "Pause"}
-  //             </button>
-  //             <button
-  //               className="btn btn-sm btn-error"
-  //               onClick={() => deleteHabit(habit.id)}
-  //             >
-  //               Delete
-  //             </button>
-  //           </div>
-  //         </li>
-  //       ))}
-  //     </ul>
-  //   </div>
-  // );
+      <ButtonWithPopover
+        buttonVariant="round"
+        onChange={(daysActive: number[]) =>
+          updateHabit({ id: habit.id, daysActive })
+        }
+        options={[
+          {
+            id: 1,
+            title: "Monday",
+            isSelected: habit.daysActive.includes(1),
+          },
+          {
+            id: 2,
+            title: "Tuesday",
+            isSelected: habit.daysActive.includes(2),
+          },
+          {
+            id: 3,
+            title: "Wednesday",
+            isSelected: habit.daysActive.includes(3),
+          },
+          {
+            id: 4,
+            title: "Thursday",
+            isSelected: habit.daysActive.includes(4),
+          },
+          {
+            id: 5,
+            title: "Friday",
+            isSelected: habit.daysActive.includes(5),
+          },
+          {
+            id: 6,
+            title: "Saturday",
+            isSelected: habit.daysActive.includes(6),
+          },
+          {
+            id: 7,
+            title: "Sunday",
+            isSelected: habit.daysActive.includes(7),
+          },
+        ]}
+        popoverId={`habit-${habit.id}-days-active`}
+        variant="multiSelectMenu"
+      >
+        {habit.daysActive.length}
+      </ButtonWithPopover>
+
+      <input
+        className="input input-bordered w-full mb-2"
+        onChange={(e) => {
+          const steps = parseInt(e.currentTarget.value, 10);
+          if (steps > 0) updateHabit({ id: habit.id, steps });
+        }}
+        type="number"
+        value={habit.steps}
+      />
+    </div>
+  );
 };
+
+//   return (
+//     <>
+//       <div
+//         className={classNames("join min-w-standard h-standard", {
+//           "pt-4 sticky top-0": !list,
+//         })}
+//       >
+//         <ButtonWithPopover
+//           buttonVariant="left-join"
+//           onChange={onChangeEmoji}
+//           popoverId="emoji-picker"
+//           variant="emoji"
+//         >
+//           {emoji}
+//         </ButtonWithPopover>
+//         <label className="input join-item bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-r-[var(--radius-field)] h-standard border-1 border-base-200 text-[1rem]">
+//           <input
+//             onChange={onChangeTitle}
+//             onKeyDown={onEnter}
+//             placeholder="New List"
+//             type="text"
+//             value={title}
+//           />
+//           {list && (
+//             <span className="btn btn-link" onClick={openModal}>
+//               <Archive className="text-base-content/60 hover:text-error" />
+//             </span>
+//           )}
+//         </label>
+//       </div>
+//       {list && (
+//         <ConfirmModal
+//           confirmButtonText="Archive"
+//           isOpen={isModalOpen}
+//           message={
+//             <>
+//               This will archive the list and <br />
+//               move any open tasks to{" "}
+//               <span className="font-bold">won&apos;t do</span>.
+//             </>
+//           }
+//           onClose={closeModal}
+//           onConfirm={() => onArchive(list.id)}
+//           title={`Archive ${list.title}?`}
+//         />
+//       )}
+//     </>
+//   );
+// };

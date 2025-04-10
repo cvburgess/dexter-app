@@ -1,8 +1,10 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { DayPicker } from "react-day-picker";
 import EmojiPicker from "@emoji-mart/react";
 import emojiData from "@emoji-mart/data";
 import classNames from "classnames";
+import { useDebounce } from "use-debounce";
+import { CheckFat } from "@phosphor-icons/react";
 
 export type TOnChange<T> = (id: T) => void;
 
@@ -36,6 +38,11 @@ type TConditionalProps =
   | {
       variant: "menu";
       onChange: TOnChange<string | number | null>;
+      options: TOption[];
+    }
+  | {
+      variant: "multiSelectMenu";
+      onChange: TOnChange<Array<string | number | null>>;
       options: TOption[];
     }
   | { variant: "segmentedMenu"; options: TSegmentedOption[] }
@@ -79,6 +86,14 @@ export const ButtonWithPopover = ({
       />
     )}
 
+    {props.variant === "multiSelectMenu" && (
+      <MultiSelectMenu
+        onChange={props.onChange}
+        options={props.options}
+        popoverId={popoverId}
+      />
+    )}
+
     {props.variant === "segmentedMenu" && (
       <SegmentedMenu options={props.options} popoverId={popoverId} />
     )}
@@ -106,14 +121,14 @@ const popoverPolyfill = {
   transition: "opacity 0.15s ease-in-out, transform 0.15s ease-in-out",
 } as React.CSSProperties;
 
+const popoverStyles =
+  "dropdown fixed bg-base-100 rounded-box shadow-sm !text-base-content mt-1";
+
 type TDropdownMenuProps = {
   onChange: TOnChange<string | number | null>;
   options: TOption[];
   popoverId: string;
 };
-
-const popoverStyles =
-  "dropdown fixed bg-base-100 rounded-box shadow-sm !text-base-content mt-1";
 
 const DropdownMenu = ({ onChange, options, popoverId }: TDropdownMenuProps) => (
   <ul
@@ -143,6 +158,68 @@ const DropdownMenu = ({ onChange, options, popoverId }: TDropdownMenuProps) => (
     ))}
   </ul>
 );
+
+type TMultiSelectProps = {
+  onChange: TOnChange<Array<string | number | null>>;
+  options: TOption[];
+  popoverId: string;
+};
+
+const MultiSelectMenu = ({
+  onChange,
+  options,
+  popoverId,
+}: TMultiSelectProps) => {
+  const [selectedIds, setSelectedIds] = useState<Array<string | number>>(
+    options
+      .filter((option) => option.isSelected)
+      .map((option) => option.id) as Array<number | string>,
+  );
+  const [debouncedIds] = useDebounce(selectedIds, 300);
+
+  useEffect(() => {
+    onChange(debouncedIds);
+  }, [debouncedIds]);
+
+  const onClick = (id: string | number) => {
+    const newSelectedIds = selectedIds.includes(id)
+      ? selectedIds.filter((selectedId) => selectedId !== id)
+      : [...selectedIds, id];
+    setSelectedIds(newSelectedIds);
+  };
+
+  return (
+    <ul
+      className={classNames(
+        popoverStyles,
+        "menu p-2 min-w-48 border-1 border-base-200",
+      )}
+      id={popoverId}
+      popover="auto"
+      style={popoverPolyfill}
+    >
+      {options.map((option) => {
+        const isSelected = selectedIds.includes(option.id);
+
+        return (
+          <li key={option.id}>
+            <a
+              className={classNames("flex items-center gap-2 text-xs")}
+              onClick={() => onClick(option.id)}
+            >
+              {isSelected ? (
+                <CheckFat weight="fill" />
+              ) : (
+                <span className="size-[12px]" />
+              )}
+              <span className="ml-1">{option.title}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  );
+};
 
 type TSegmentedMenuProps = {
   options: TSegmentedOption[];
