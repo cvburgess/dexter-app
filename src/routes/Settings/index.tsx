@@ -24,7 +24,9 @@ export const Settings = () => {
             <li className="my-1" key={panel}>
               <NavLink
                 className={({ isActive }) =>
-                  classNames("capitalize", { "bg-base-200": isActive })
+                  classNames("capitalize", {
+                    "bg-base-content/80 text-base-100": isActive,
+                  })
                 }
                 to={panel}
               >
