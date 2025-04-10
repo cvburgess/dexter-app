@@ -12,13 +12,11 @@ import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
 type TQuickPlannerProps = {
   baseFilters?: TQueryFilter[];
-  className?: string;
   columnId: string;
 };
 
 export const QuickPlanner = ({
   baseFilters = [],
-  className,
   columnId,
 }: TQuickPlannerProps) => {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
@@ -38,36 +36,33 @@ export const QuickPlanner = ({
     );
 
   return (
-    <div className={classNames(className)}>
-      <Column
-        id={columnId}
-        tasks={searchTasks(filteredTasks)}
-        titleComponent={
-          <div className="join w-standard">
-            <ButtonWithPopover
-              buttonVariant="left-join"
-              onChange={(id) => setSelectedFilter(id as string)}
-              options={options}
-              popoverId="quick-planner"
-              variant="menu"
-            >
-              {selected.title}
-            </ButtonWithPopover>
+    <Column
+      id={columnId}
+      tasks={searchTasks(filteredTasks)}
+      titleComponent={
+        <div className="join w-standard">
+          <ButtonWithPopover
+            buttonVariant="left-join"
+            onChange={(id) => setSelectedFilter(id as string)}
+            options={options}
+            popoverId="quick-planner"
+            variant="menu"
+          >
+            {selected.title}
+          </ButtonWithPopover>
 
-            <InputWithIcon
-              // className="join-item"
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search"
-              type="text"
-              value={search}
-              wrapperClassName="join-item h-standard"
-            >
-              <MagnifyingGlass />
-            </InputWithIcon>
-          </div>
-        }
-      />
-    </div>
+          <InputWithIcon
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search"
+            type="text"
+            value={search}
+            wrapperClassName="join-item h-standard"
+          >
+            <MagnifyingGlass />
+          </InputWithIcon>
+        </div>
+      }
+    />
   );
 };
 
@@ -76,7 +71,7 @@ type TQuickDrawerProps = TQuickPlannerProps & { isOpen: boolean };
 export const QuickDrawer = ({ isOpen, ...props }: TQuickDrawerProps) => (
   <div
     className={classNames(
-      "bg-base-100 border-l-2 border-base-200 overflow-x-hidden flex-shrink-0 transition-all duration-300 ease-in-out no-scrollbar",
+      "flex flex-col bg-base-100 border-l-2 border-base-200 overflow-x-hidden overflow-y-scroll flex-shrink-0 transition-all duration-300 ease-in-out no-scrollbar",
       isOpen ? "w-78 px-4" : "w-0",
     )}
   >
