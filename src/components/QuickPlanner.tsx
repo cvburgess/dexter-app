@@ -38,7 +38,7 @@ export const QuickPlanner = ({
     );
 
   return (
-    <div className={classNames("", className)}>
+    <div className={classNames(className)}>
       <Column
         id={columnId}
         tasks={searchTasks(filteredTasks)}
