@@ -43,7 +43,8 @@ type TConditionalProps =
   | {
       variant: "multiSelectMenu";
       onChange: TOnChange<Array<string | number | null>>;
-      options: TOption[];
+      options: Omit<TOption, "isSelected">[];
+      selected: Array<string | number>;
     }
   | { variant: "segmentedMenu"; options: TSegmentedOption[] }
   | { variant: "emoji"; onChange: TOnChange<string> };
@@ -91,6 +92,7 @@ export const ButtonWithPopover = ({
         onChange={props.onChange}
         options={props.options}
         popoverId={popoverId}
+        selected={props.selected}
       />
     )}
 
@@ -161,21 +163,19 @@ const DropdownMenu = ({ onChange, options, popoverId }: TDropdownMenuProps) => (
 
 type TMultiSelectProps = {
   onChange: TOnChange<Array<string | number | null>>;
-  options: TOption[];
+  options: Omit<TOption, "isSelected">[];
   popoverId: string;
+  selected: Array<string | number>;
 };
 
 const MultiSelectMenu = ({
   onChange,
   options,
   popoverId,
+  selected,
 }: TMultiSelectProps) => {
-  const [selectedIds, setSelectedIds] = useState<Array<string | number>>(
-    options
-      .filter((option) => option.isSelected)
-      .map((option) => option.id) as Array<number | string>,
-  );
-  const [debouncedIds] = useDebounce(selectedIds, 300);
+  const [selectedIds, setSelectedIds] = useState(selected);
+  const [debouncedIds] = useDebounce(selectedIds, 500);
 
   useEffect(() => {
     onChange(debouncedIds);

@@ -147,43 +147,16 @@ const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
           updateHabit({ id: habit.id, daysActive })
         }
         options={[
-          {
-            id: 1,
-            title: "Monday",
-            isSelected: habit.daysActive.includes(1),
-          },
-          {
-            id: 2,
-            title: "Tuesday",
-            isSelected: habit.daysActive.includes(2),
-          },
-          {
-            id: 3,
-            title: "Wednesday",
-            isSelected: habit.daysActive.includes(3),
-          },
-          {
-            id: 4,
-            title: "Thursday",
-            isSelected: habit.daysActive.includes(4),
-          },
-          {
-            id: 5,
-            title: "Friday",
-            isSelected: habit.daysActive.includes(5),
-          },
-          {
-            id: 6,
-            title: "Saturday",
-            isSelected: habit.daysActive.includes(6),
-          },
-          {
-            id: 7,
-            title: "Sunday",
-            isSelected: habit.daysActive.includes(7),
-          },
+          { id: 1, title: "Monday" },
+          { id: 2, title: "Tuesday" },
+          { id: 3, title: "Wednesday" },
+          { id: 4, title: "Thursday" },
+          { id: 5, title: "Friday" },
+          { id: 6, title: "Saturday" },
+          { id: 7, title: "Sunday" },
         ]}
         popoverId={`habit-${habit.id}-days-active`}
+        selected={habit.daysActive}
         variant="multiSelectMenu"
       >
         {habit.daysActive.length}
