@@ -98,6 +98,7 @@ export const ButtonWithPopover = ({
 );
 
 const popoverPolyfill = {
+  minWidth: "anchor-size(width)",
   positionAnchor: "auto",
   positionArea: "bottom",
   positionTryFallbacks: "top, left, right",
