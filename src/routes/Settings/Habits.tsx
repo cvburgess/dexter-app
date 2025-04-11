@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Archive, Plus } from "@phosphor-icons/react";
+import { Archive, Pause, Play, Plus } from "@phosphor-icons/react";
 import { useDebounce } from "use-debounce";
 import classNames from "classnames";
 
@@ -88,15 +88,15 @@ const NewHabitInput = ({ createHabit }: TNewHabitProps) => {
 };
 
 type THabitInputProps = {
-  habit: THabit;
   deleteHabit: (id: string) => void;
+  habit: THabit;
   updateHabit: (habit: TUpdateHabit) => void;
 };
 
 const inputClasses =
-  "input join-item bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none h-standard border-1 border-base-200";
+  "input join-item bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none h-standard border-1 border-base-200 text-sm";
 
-const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
+const HabitInput = ({ deleteHabit, habit, updateHabit }: THabitInputProps) => {
   const [title, setTitle] = useState<string>(habit.title);
   const [debouncedTitle] = useDebounce(title, 1000);
 
@@ -195,7 +195,7 @@ const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
 
         <label className={classNames(inputClasses, "px-4 w-fit")}>
           <input
-            className="w-content-size text-right"
+            className="w-content-size text-right text-sm"
             onChange={onChangeSteps}
             onKeyDown={onNumberInputOnly}
             value={steps}
@@ -204,7 +204,7 @@ const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
         </label>
 
         <ButtonWithPopover
-          buttonClassName="text-nowrap bg-base-100 ml-[-1px]"
+          buttonClassName="text-nowrap bg-base-100 ml-[-1px] font-normal !text-sm"
           buttonVariant="join"
           onChange={(daysActive: number[]) =>
             updateHabit({ id: habit.id, daysActive })
@@ -226,6 +226,19 @@ const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
         </ButtonWithPopover>
 
         <span
+          className="btn join-item h-standard bg-base-100 text-base-content/60 hover:text-warning"
+          onClick={() =>
+            updateHabit({ id: habit.id, isPaused: !habit.isPaused })
+          }
+        >
+          {habit.isPaused ? (
+            <Play weight="duotone" />
+          ) : (
+            <Pause weight="duotone" />
+          )}
+        </span>
+
+        <span
           className="btn join-item h-standard bg-base-100 text-base-content/60 hover:text-error"
           onClick={openModal}
         >
@@ -234,16 +247,29 @@ const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
       </div>
 
       <ConfirmModal
-        confirmButtonText="Archive"
         isOpen={isModalOpen}
         message={
           <>
-            This will archive the habit and <br />
-            preserve historical habit data.
+            Archive will delete the habit
+            <br /> but retain historical habit data.
+            <br /> <br />
+            To erase all historical data, <br />
+            select <span className="font-bold">delete</span> instead.
           </>
         }
         onClose={closeModal}
-        onConfirm={() => onArchive(habit.id)}
+        options={[
+          {
+            action: () => onArchive(habit.id),
+            buttonClass: "btn-error",
+            title: "Archive",
+          },
+          {
+            action: () => deleteHabit(habit.id),
+            buttonClass: "btn-error",
+            title: "Delete",
+          },
+        ]}
         title={`Archive ${habit.title}?`}
       />
     </>

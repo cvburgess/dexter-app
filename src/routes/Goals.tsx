@@ -112,7 +112,6 @@ const GoalInput = ({ goal, onArchive, onChange }: TGoalInputProps) => {
       </div>
       {goal && (
         <ConfirmModal
-          confirmButtonText="Archive"
           isOpen={isModalOpen}
           message={
             <>
@@ -122,7 +121,13 @@ const GoalInput = ({ goal, onArchive, onChange }: TGoalInputProps) => {
             </>
           }
           onClose={closeModal}
-          onConfirm={() => onArchive(goal.id)}
+          options={[
+            {
+              action: () => onArchive(goal.id),
+              buttonClass: "btn-error",
+              title: "Archive",
+            },
+          ]}
           title={`Archive ${goal.title}?`}
         />
       )}

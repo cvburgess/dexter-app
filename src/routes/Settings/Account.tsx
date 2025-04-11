@@ -23,7 +23,6 @@ export const Account = () => {
         Delete account
       </button>
       <ConfirmModal
-        confirmButtonText="Goodbye"
         isOpen={isModalOpen}
         message={
           <>
@@ -34,7 +33,13 @@ export const Account = () => {
           </>
         }
         onClose={closeModal}
-        onConfirm={deleteAccount}
+        options={[
+          {
+            action: deleteAccount,
+            buttonClass: "btn-error",
+            title: "Goodbye",
+          },
+        ]}
         title={"Delete account"}
       />
     </>
