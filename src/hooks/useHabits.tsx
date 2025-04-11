@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Temporal } from "@js-temporal/polyfill";
 
 import { supabase } from "./useAuth.tsx";
 
@@ -8,7 +9,6 @@ import {
   deleteHabit,
   getDailyHabits,
   getHabits,
-  TCreateDailyHabit,
   TCreateHabit,
   TDailyHabit,
   THabit,
@@ -84,8 +84,8 @@ export const useHabits = (options?: TSupabaseHookOptions): TUseHabits => {
 type TUseDailyHabits = [
   TDailyHabit[],
   {
-    createDailyHabit: (habit: TCreateDailyHabit) => void;
-    incrementDailyHabit: (habit: TDailyHabit) => void;
+    createDailyHabits: () => void;
+    incrementDailyHabit: (dailyHabit: TDailyHabit) => void;
   },
 ];
 
@@ -98,16 +98,54 @@ export const useDailyHabits = (date: string): TUseDailyHabits => {
     staleTime: 1000 * 60 * 10,
   });
 
-  const { mutate: create } = useMutation<TDailyHabit, Error, TCreateDailyHabit>(
-    {
-      mutationFn: (habit) => createDailyHabit(supabase, habit),
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ["dailyHabits", date],
-        });
-      },
+  // const { mutate: create } = useMutation<TDailyHabit, Error, TCreateDailyHabit>(
+  //   {
+  //     mutationFn: (habit) => createDailyHabit(supabase, habit),
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries({
+  //         queryKey: ["dailyHabits", date],
+  //       });
+  //     },
+  //   },
+  // );
+
+  const { mutate: create } = useMutation<void, Error>({
+    mutationFn: async () => {
+      const today = Temporal.Now.plainDateISO();
+
+      const habits = await getHabits(supabase, [
+        ...habitFilters.notPaused,
+        ...habitFilters.activeForDay(Temporal.PlainDate.from(date).dayOfWeek),
+      ]);
+
+      const dailyHabits = await getDailyHabits(supabase, date);
+
+      const getDailyHabit = (habit: THabit) => {
+        return dailyHabits.find(
+          (dailyHabit) => dailyHabit.habitId === habit.id,
+        );
+      };
+
+      habits.forEach((habit) => {
+        const dailyHabit = getDailyHabit(habit);
+        const isFutureDate = Temporal.PlainDate.compare(date, today) > 0;
+
+        if (!dailyHabit && !isFutureDate) {
+          createDailyHabit(supabase, {
+            date: date.toString(),
+            habitId: habit.id,
+            steps: habit.steps,
+            stepsComplete: 0,
+          });
+        }
+      });
     },
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["dailyHabits", date],
+      });
+    },
+  });
 
   const { mutate: update } = useMutation<TDailyHabit, Error, TUpdateDailyHabit>(
     {
@@ -129,9 +167,11 @@ export const useDailyHabits = (date: string): TUseDailyHabits => {
     update({ date, habitId, stepsComplete: next });
   };
 
-  return [dailyHabits, { createDailyHabit: create, incrementDailyHabit }];
+  return [dailyHabits, { createDailyHabits: create, incrementDailyHabit }];
 };
 
-export const habitFilters: Record<string, TQueryFilter[]> = {
-  active: [["isPaused", "eq", false]],
+export const habitFilters = {
+  notPaused: [["isPaused", "eq", false]] as TQueryFilter[],
+  activeForDay: (day: number) =>
+    [["daysActive", "contains", [day]]] as TQueryFilter[],
 };

@@ -64,17 +64,12 @@
   themes: all;
 }
 
-.tooltip {
-  position: relative;
-}
-
 .tooltip::before,
 .tooltip::after {
   max-width: 75px;
   white-space: normal;
   z-index: 100;
   font-size: 0.7rem;
-  position: absolute;
   @apply bg-base-200 text-base-content shadow-md;
 }
 

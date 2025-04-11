@@ -7,6 +7,7 @@ import { Tooltip } from "./Tooltip";
 import { habitFilters, useDailyHabits, useHabits } from "../hooks/useHabits";
 
 import { TDailyHabit, THabit } from "../api/habits";
+import { TQueryFilter } from "../api/applyFilters";
 import { useEffect } from "react";
 
 type TDailyHabitsProps = {
@@ -14,49 +15,34 @@ type TDailyHabitsProps = {
   date: Temporal.PlainDate;
 };
 
-const today = Temporal.Now.plainDateISO();
-
 export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
   const { pathname } = useLocation();
   const isDayView = pathname.includes("day");
 
   const [habits] = useHabits({
-    filters: habitFilters.active,
+    filters: [
+      ...(habitFilters.notPaused as TQueryFilter[]),
+      ...habitFilters.activeForDay(date.dayOfWeek),
+    ],
   });
-  const [dailyHabits, { createDailyHabit, incrementDailyHabit }] =
+  const [dailyHabits, { createDailyHabits, incrementDailyHabit }] =
     useDailyHabits(date.toString());
-
-  const activeHabits = habits.filter((habit) =>
-    habit.daysActive.includes(date.dayOfWeek),
-  );
 
   const getDailyHabit = (habit: THabit) => {
     return dailyHabits.find((dailyHabit) => dailyHabit.habitId === habit.id);
   };
 
   useEffect(() => {
-    activeHabits.forEach((habit) => {
-      const dailyHabit = getDailyHabit(habit);
-      const isFutureDate = Temporal.PlainDate.compare(date, today) > 0;
-
-      if (!dailyHabit && !isFutureDate) {
-        createDailyHabit({
-          date: date.toString(),
-          habitId: habit.id,
-          steps: habit.steps,
-          stepsComplete: 0,
-        });
-      }
-    });
-  }, []);
+    createDailyHabits();
+  }, [date]);
 
   if (isDayView && habits.length === 0) {
     return <Link to="/settings/habits">Create a habit</Link>;
   }
 
   const habitsWillScroll =
-    (className.includes("standard") && activeHabits.length > 7) ||
-    (className.includes("compact") && activeHabits.length > 4);
+    (className.includes("standard") && habits.length > 7) ||
+    (className.includes("compact") && habits.length > 4);
 
   return (
     <div
@@ -68,7 +54,7 @@ export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
         className,
       )}
     >
-      {activeHabits.map((habit) => (
+      {habits.map((habit) => (
         <HabitButton
           dailyHabit={getDailyHabit(habit)}
           habit={habit}
