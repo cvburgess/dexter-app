@@ -41,7 +41,7 @@ export const DailyHabits = ({ date }: TDailyHabitsProps) => {
         });
       }
     });
-  }, [date]);
+  }, [dailyHabits, date, habits]);
 
   return (
     <div className="flex gap-4 justify-center">
@@ -74,17 +74,7 @@ const HabitButton = ({
   incrementDailyHabit,
 }: THabitButtonProps) => {
   if (!dailyHabit) {
-    return (
-      <div
-        className={classNames(
-          "flex justify-center items-center opacity-25",
-          ringClasses,
-          iconClasses,
-        )}
-      >
-        {habit.emoji}
-      </div>
-    );
+    return <FutureHabitButton emoji={habit.emoji} />;
   }
 
   return (
@@ -115,3 +105,15 @@ const HabitButton = ({
     </Tooltip>
   );
 };
+
+const FutureHabitButton = ({ emoji }: { emoji: string }) => (
+  <div
+    className={classNames(
+      "flex justify-center items-center opacity-25",
+      ringClasses,
+      iconClasses,
+    )}
+  >
+    {emoji}
+  </div>
+);
