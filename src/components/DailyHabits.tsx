@@ -44,7 +44,7 @@ export const DailyHabits = ({ date }: TDailyHabitsProps) => {
   }, [date]);
 
   return (
-    <div className="flex gap-2 justify-center">
+    <div className="flex gap-4 justify-center">
       {habits.map((habit) => (
         <HabitButton
           dailyHabit={getDailyHabit(habit)}
@@ -70,7 +70,7 @@ const HabitButton = ({
 }: THabitButtonProps) => {
   if (!dailyHabit) {
     return (
-      <div className="flex size-[48px] justify-center items-center bg-primary/10 rounded-full">
+      <div className="flex size-[32px] justify-center items-center border-4 border-base-300 box-border opacity-25 rounded-full font-[NotoEmoji] text-[12px]">
         {habit.emoji}
       </div>
     );
@@ -82,33 +82,25 @@ const HabitButton = ({
     >
       <div
         className={classNames(
-          "absolute border-4 border-base-300 rounded-full size-[48px] box-border transition duration-1000",
-          {
-            // "bg-primary": dailyHabit.percentComplete === 100,
-          },
+          "absolute border-4 border-base-300 box-border rounded-full size-[32px]",
+          { "z-10": !dailyHabit.percentComplete },
         )}
+        onClick={() => incrementDailyHabit(dailyHabit)}
       />
       <div
         aria-valuenow={dailyHabit.percentComplete}
-        className={classNames("radial-progress font-[NotoEmoji] text-primary")}
+        className="radial-progress font-[NotoEmoji] text-primary font-bold text-[12px]"
         onClick={() => incrementDailyHabit(dailyHabit)}
         role="progressbar"
         style={
           {
-            "--size": "48px",
+            "--size": "32px",
             "--thickness": "4px",
             "--value": dailyHabit.percentComplete,
           } as React.CSSProperties
         }
       >
-        <span
-          className={classNames("font-bold", {
-            // "text-primary": dailyHabit.percentComplete < 100,
-            // "text-primary-content": dailyHabit.percentComplete === 100,
-          })}
-        >
-          {habit.emoji}
-        </span>
+        {habit.emoji}
       </div>
     </Tooltip>
   );
