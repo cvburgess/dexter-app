@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 
 import { Column } from "../components/Column.tsx";
+import { DailyHabits } from "../components/DailyHabits.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
 import { Journal } from "../components/Journal.tsx";
 import { QuickDrawer } from "../components/QuickPlanner.tsx";
@@ -34,11 +35,14 @@ export const Day = () => {
 
       <DrawerContainer>
         <ScrollableContainer>
-          <Column
-            canCreateTasks
-            id={`scheduledFor:${date.toString()}`}
-            tasks={tasks}
-          />
+          <div className="flex flex-col mt-4">
+            <DailyHabits date={date} />
+            <Column
+              canCreateTasks
+              id={`scheduledFor:${date.toString()}`}
+              tasks={tasks}
+            />
+          </div>
           <Tabs enabled={enableNotes || enableJournal}>
             <Tab defaultChecked enabled={enableNotes} title="Notes">
               {""}

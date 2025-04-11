@@ -3,6 +3,7 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { camelCase, snakeCase } from "../utils/changeCase.ts";
 
 import { Database, TablesInsert, TablesUpdate } from "./database.types.ts";
+import { applyFilters, TQueryFilter } from "./applyFilters.ts";
 
 export type THabit = {
   daysActive: number[];
@@ -14,13 +15,16 @@ export type THabit = {
   title: string;
 };
 
-export const getHabits = async (supabase: SupabaseClient<Database>) => {
-  const { data, error } = await supabase
-    .from("habits")
-    .select("*")
-    .eq("is_archived", false)
-    .order("created_at");
+export const getHabits = async (
+  supabase: SupabaseClient<Database>,
+  filters: TQueryFilter[],
+) => {
+  const query = supabase.from("habits").select("*").eq("is_archived", false);
 
+  applyFilters(query, filters);
+  query.order("title"); // TODO: Replace with sorting?
+
+  const { data, error } = await query;
   if (error) throw error;
   return camelCase(data) as THabit[];
 };
@@ -39,10 +43,11 @@ export const createHabit = async (
   const { data, error } = await supabase
     .from("habits")
     .insert(snakeCase(habit) as TablesInsert<"habits">)
-    .select();
+    .select()
+    .single();
 
   if (error) throw error;
-  return camelCase(data) as THabit[];
+  return camelCase(data) as THabit;
 };
 
 export type TUpdateHabit = {
@@ -63,10 +68,11 @@ export const updateHabit = async (
     .from("habits")
     .update(snakeCase(diff) as TablesUpdate<"habits">)
     .eq("id", id)
-    .select();
+    .select()
+    .single();
 
   if (error) throw error;
-  return camelCase(data) as THabit[];
+  return camelCase(data) as THabit;
 };
 
 export const deleteHabit = async (

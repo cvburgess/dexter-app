@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Temporal } from "@js-temporal/polyfill";
 
+import { supabase } from "./useAuth.tsx";
+
 import {
   createTask,
   deleteTask,
@@ -13,8 +15,6 @@ import {
   updateTask,
   updateTasks,
 } from "../api/tasks.ts";
-
-import { supabase } from "./useAuth.tsx";
 import { makeOrFilter, TQueryFilter } from "../api/applyFilters.ts";
 
 type TUseTasks = [
