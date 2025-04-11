@@ -9,12 +9,13 @@ import { TDailyHabit, THabit } from "../api/habits";
 import { useEffect } from "react";
 
 type TDailyHabitsProps = {
+  className?: string;
   date: Temporal.PlainDate;
 };
 
 const today = Temporal.Now.plainDateISO();
 
-export const DailyHabits = ({ date }: TDailyHabitsProps) => {
+export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
   const [habits] = useHabits({
     filters: habitFilters.active,
   });
@@ -44,7 +45,9 @@ export const DailyHabits = ({ date }: TDailyHabitsProps) => {
   }, [dailyHabits, date, habits]);
 
   return (
-    <div className="flex gap-4 justify-center">
+    <div
+      className={classNames("flex flex-wrap gap-2 justify-center", className)}
+    >
       {habits.map((habit) => (
         <HabitButton
           dailyHabit={getDailyHabit(habit)}

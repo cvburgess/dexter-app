@@ -36,7 +36,7 @@ export const Day = () => {
       <DrawerContainer>
         <ScrollableContainer>
           <div className="flex flex-col mt-4">
-            <DailyHabits date={date} />
+            <DailyHabits className="w-standard" date={date} />
             <Column
               canCreateTasks
               id={`scheduledFor:${date.toString()}`}
