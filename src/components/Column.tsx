@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Droppable } from "@hello-pangea/dnd";
 import { Plus } from "@phosphor-icons/react";
+import { Temporal } from "@js-temporal/polyfill";
 import classNames from "classnames";
 
 import { DraggableCard, ECardSize } from "./Card.tsx";
@@ -10,12 +11,14 @@ import { ReorderingContext } from "./View.tsx";
 import { useTasks } from "../hooks/useTasks.tsx";
 
 import { TTask } from "../api/tasks.ts";
+import { DailyHabits } from "./DailyHabits.tsx";
 
 export type TColumnProps = {
   canCreateTasks?: boolean;
   cardSize?: ECardSize;
   id: string;
   isActive?: boolean;
+  showHabits?: boolean;
   subtitle?: string;
   tasks: TTask[];
   title?: string;
@@ -28,6 +31,7 @@ export const Column = React.memo(
     cardSize = "normal",
     id,
     isActive = false,
+    showHabits = false,
     subtitle,
     tasks = [],
     title,
@@ -73,6 +77,17 @@ export const Column = React.memo(
               isActive={isActive}
               subtitle={subtitle}
               title={title}
+            />
+          )}
+
+          {showHabits && (
+            <DailyHabits
+              className={classNames(
+                cardSize === "compact-w"
+                  ? "min-w-compact w-compact"
+                  : "min-w-standard w-standard",
+              )}
+              date={Temporal.PlainDate.from(id.split(":")[1])}
             />
           )}
 

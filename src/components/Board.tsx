@@ -1,13 +1,10 @@
-import { ECardSize } from "./Card.tsx";
 import { Column, TColumnProps } from "../components/Column.tsx";
 import { ScrollableContainer } from "./View.tsx";
 
 import { TTask } from "../api/tasks.ts";
 
-type TBoardProps = {
+type TBoardProps = Partial<TColumnProps> & {
   appendAfter?: React.ReactNode;
-  canCreateTasks?: boolean;
-  cardSize?: ECardSize;
   columns: TColumn[];
   groupBy: EGroupBy;
   tasks?: TTask[];
@@ -25,10 +22,9 @@ export type EGroupBy = "scheduledFor" | "listId" | "priority" | "goalId";
 
 export const Board = ({
   appendAfter = null,
-  canCreateTasks = false,
-  cardSize = "normal",
   columns,
   groupBy,
+  ...columnProps
 }: TBoardProps) => (
   <ScrollableContainer>
     {columns.map((column) => {
@@ -36,8 +32,6 @@ export const Board = ({
 
       return (
         <Column
-          canCreateTasks={canCreateTasks}
-          cardSize={cardSize}
           id={`${groupBy}:${column.id}`}
           isActive={column.isActive}
           key={column.id}
@@ -45,6 +39,7 @@ export const Board = ({
           tasks={column.tasks}
           title={column.title}
           titleComponent={column.titleComponent}
+          {...columnProps}
         />
       );
     })}

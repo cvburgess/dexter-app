@@ -51,6 +51,7 @@ export const Week = () => {
           cardSize="compact-w"
           columns={columns}
           groupBy="scheduledFor"
+          showHabits
         />
         <QuickDrawer
           baseFilters={filters.notThisWeek}
