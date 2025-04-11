@@ -37,6 +37,10 @@
   .min-w-compact {
     min-width: calc(var(--spacing) * 40);
   }
+
+  .w-content-size {
+    field-sizing: content;
+  }
 }
 
 /* https://yesviz.com/iphones.php */

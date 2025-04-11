@@ -62,7 +62,7 @@ export const Journal = () => {
             />
           ))}
 
-          <label className="input w-full bg-base-200 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
+          <label className="input w-full h-standard bg-base-200 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
             <span>
               <Plus className="text-base-content/60" />
             </span>
@@ -108,7 +108,7 @@ const PromptInput = ({
   }, [debounced]);
 
   return (
-    <label className="input w-full bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
+    <label className="input w-full h-standard bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
       <input
         className="text-xs"
         onChange={(e) => setValue(e.target.value)}

@@ -32,7 +32,7 @@ export const SettingsOption = ({
         popoverId={setting}
         variant="menu"
       >
-        <span className="btn text-xs justify-start capitalize w-full">
+        <span className="btn h-standard text-xs justify-start capitalize w-full">
           {selected.title} <CaretDown className="ml-auto" />
         </span>
       </ButtonWithPopover>

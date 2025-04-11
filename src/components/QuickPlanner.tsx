@@ -42,6 +42,7 @@ export const QuickPlanner = ({
       titleComponent={
         <div className="join w-standard">
           <ButtonWithPopover
+            buttonClassName="min-w-20"
             buttonVariant="left-join"
             onChange={(id) => setSelectedFilter(id as string)}
             options={options}

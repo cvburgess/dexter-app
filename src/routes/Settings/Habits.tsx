@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus } from "@phosphor-icons/react";
+import { Archive, Plus } from "@phosphor-icons/react";
 import { useDebounce } from "use-debounce";
 
 import { ButtonWithPopover } from "../../components/ButtonWithPopover";
@@ -10,6 +10,7 @@ import { useHabits } from "../../hooks/useHabits";
 import { usePreferences } from "../../hooks/usePreferences";
 
 import { TCreateHabit, THabit, TUpdateHabit } from "../../api/habits";
+import classNames from "classnames";
 
 export const Habits = () => {
   const [habits, { createHabit, updateHabit, deleteHabit }] = useHabits();
@@ -66,7 +67,7 @@ const NewHabitInput = ({ createHabit }: TNewHabitProps) => {
   };
 
   return (
-    <label className="input w-full bg-base-200 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
+    <label className="input w-full h-standard bg-base-200 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
       <span>
         <Plus className="text-base-content/60" />
       </span>
@@ -92,10 +93,17 @@ type THabitInputProps = {
   updateHabit: (habit: TUpdateHabit) => void;
 };
 
+const inputClasses =
+  "input join-item bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none h-standard border-1 border-base-200";
+
 const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
   const [title, setTitle] = useState<string>(habit.title);
-  // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [debouncedTitle] = useDebounce(title, 1000);
+
+  const [steps, setSteps] = useState<number | string>(habit.steps);
+  const [debouncedSteps] = useDebounce(steps, 500);
+
+  const [_isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (debouncedTitle !== habit.title) {
@@ -103,10 +111,27 @@ const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
     }
   }, [debouncedTitle]);
 
+  useEffect(() => {
+    const isValid =
+      typeof debouncedSteps === "number" &&
+      debouncedSteps > 0 &&
+      debouncedSteps < 1000;
+
+    if (debouncedSteps !== habit.steps && isValid) {
+      updateHabit({ id: habit.id, steps: debouncedSteps });
+    }
+  }, [debouncedSteps]);
+
   const onChangeTitle = ({
     currentTarget: { value },
   }: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(value);
+  };
+
+  const onChangeSteps = ({
+    currentTarget: { value },
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    setSteps(parseInt(value, 10) || "");
   };
 
   const onEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -119,21 +144,34 @@ const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
     updateHabit({ id: habit.id, emoji: value });
   };
 
-  // const openModal = () => setIsModalOpen(true);
+  const onNumberInputOnly = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Check if the key is not a number
+    if (
+      !/^[0-9]$/.test(e.key) &&
+      ![
+        "Backspace",
+        "Tab",
+        "Enter",
+        "ArrowLeft",
+        "ArrowRight",
+        "Delete",
+        "Home",
+        "End",
+      ].includes(e.key)
+    ) {
+      e.preventDefault();
+      return false;
+    }
+    return true;
+  };
+
+  const openModal = () => setIsModalOpen(true);
   // const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div className="mb-4">
-      <input
-        className="input input-bordered w-full mb-2"
-        onChange={onChangeTitle}
-        onKeyDown={onEnter}
-        type="text"
-        value={habit.title}
-      />
-
+    <div className="mb-2 join h-standard w-full">
       <ButtonWithPopover
-        buttonVariant="round"
+        buttonVariant="left-join"
         onChange={onChangeEmoji}
         popoverId={`habit-${habit.id}-emoji`}
         variant="emoji"
@@ -141,8 +179,27 @@ const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
         {habit.emoji}
       </ButtonWithPopover>
 
+      <input
+        className={classNames(inputClasses, "pl-4 grow")}
+        onChange={onChangeTitle}
+        onKeyDown={onEnter}
+        type="text"
+        value={habit.title}
+      />
+
+      <label className={classNames(inputClasses, "px-4 w-fit")}>
+        <input
+          className="w-content-size text-right"
+          onChange={onChangeSteps}
+          onKeyDown={onNumberInputOnly}
+          value={steps}
+        />
+        x daily
+      </label>
+
       <ButtonWithPopover
-        buttonVariant="round"
+        buttonClassName="text-nowrap bg-base-100 ml-[-1px]"
+        buttonVariant="join"
         onChange={(daysActive: number[]) =>
           updateHabit({ id: habit.id, daysActive })
         }
@@ -159,52 +216,21 @@ const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
         selected={habit.daysActive}
         variant="multiSelectMenu"
       >
-        {habit.daysActive.length}
+        {habit.daysActive.length}x weekly
       </ButtonWithPopover>
 
-      <input
-        className="input input-bordered w-full mb-2"
-        onChange={(e) => {
-          const steps = parseInt(e.currentTarget.value, 10);
-          if (steps > 0) updateHabit({ id: habit.id, steps });
-        }}
-        type="number"
-        value={habit.steps}
-      />
+      <span
+        className="btn join-item h-standard bg-base-100 text-base-content/60 hover:text-error"
+        onClick={openModal}
+      >
+        <Archive />
+      </span>
     </div>
   );
 };
 
 //   return (
 //     <>
-//       <div
-//         className={classNames("join min-w-standard h-standard", {
-//           "pt-4 sticky top-0": !list,
-//         })}
-//       >
-//         <ButtonWithPopover
-//           buttonVariant="left-join"
-//           onChange={onChangeEmoji}
-//           popoverId="emoji-picker"
-//           variant="emoji"
-//         >
-//           {emoji}
-//         </ButtonWithPopover>
-//         <label className="input join-item bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-r-[var(--radius-field)] h-standard border-1 border-base-200 text-[1rem]">
-//           <input
-//             onChange={onChangeTitle}
-//             onKeyDown={onEnter}
-//             placeholder="New List"
-//             type="text"
-//             value={title}
-//           />
-//           {list && (
-//             <span className="btn btn-link" onClick={openModal}>
-//               <Archive className="text-base-content/60 hover:text-error" />
-//             </span>
-//           )}
-//         </label>
-//       </div>
 //       {list && (
 //         <ConfirmModal
 //           confirmButtonText="Archive"
