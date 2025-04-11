@@ -63,6 +63,11 @@ type THabitButtonProps = {
   incrementDailyHabit: (dailyHabit: TDailyHabit) => void;
 };
 
+const ringClasses =
+  "border-4 border-base-300 box-border rounded-full size-[32px]";
+
+const iconClasses = "font-[NotoEmoji] font-bold text-[12px] text-primary";
+
 const HabitButton = ({
   dailyHabit,
   habit,
@@ -70,7 +75,13 @@ const HabitButton = ({
 }: THabitButtonProps) => {
   if (!dailyHabit) {
     return (
-      <div className="flex size-[32px] justify-center items-center border-4 border-base-300 box-border opacity-25 rounded-full font-[NotoEmoji] text-[12px]">
+      <div
+        className={classNames(
+          "flex justify-center items-center opacity-25",
+          ringClasses,
+          iconClasses,
+        )}
+      >
         {habit.emoji}
       </div>
     );
@@ -81,15 +92,14 @@ const HabitButton = ({
       text={`${habit.title} (${dailyHabit.stepsComplete}/${dailyHabit.steps})`}
     >
       <div
-        className={classNames(
-          "absolute border-4 border-base-300 box-border rounded-full size-[32px]",
-          { "z-10": !dailyHabit.percentComplete },
-        )}
+        className={classNames("absolute", ringClasses, {
+          "z-10": !dailyHabit.percentComplete,
+        })}
         onClick={() => incrementDailyHabit(dailyHabit)}
       />
       <div
         aria-valuenow={dailyHabit.percentComplete}
-        className="radial-progress font-[NotoEmoji] text-primary font-bold text-[12px]"
+        className={classNames("radial-progress", iconClasses)}
         onClick={() => incrementDailyHabit(dailyHabit)}
         role="progressbar"
         style={
