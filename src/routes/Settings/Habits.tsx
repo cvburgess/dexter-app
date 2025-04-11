@@ -184,7 +184,7 @@ const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
         onChange={onChangeTitle}
         onKeyDown={onEnter}
         type="text"
-        value={habit.title}
+        value={title}
       />
 
       <label className={classNames(inputClasses, "px-4 w-fit")}>

@@ -43,6 +43,12 @@
   }
 }
 
+@font-face {
+  font-family: NotoEmoji;
+  font-display: swap;
+  src: url("./assets/fonts/NotoEmoji.ttf");
+}
+
 /* https://yesviz.com/iphones.php */
 
 @theme {

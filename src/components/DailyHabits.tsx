@@ -81,11 +81,16 @@ const HabitButton = ({
       text={`${habit.title} (${dailyHabit.stepsComplete}/${dailyHabit.steps})`}
     >
       <div
+        className={classNames(
+          "absolute border-4 border-base-300 rounded-full size-[48px] box-border transition duration-1000",
+          {
+            // "bg-primary": dailyHabit.percentComplete === 100,
+          },
+        )}
+      />
+      <div
         aria-valuenow={dailyHabit.percentComplete}
-        className={classNames("radial-progress text-primary", {
-          "bg-primary/10": dailyHabit.percentComplete < 100,
-          "bg-primary": dailyHabit.percentComplete === 100,
-        })}
+        className={classNames("radial-progress font-[NotoEmoji] text-primary")}
         onClick={() => incrementDailyHabit(dailyHabit)}
         role="progressbar"
         style={
@@ -96,7 +101,14 @@ const HabitButton = ({
           } as React.CSSProperties
         }
       >
-        {habit.emoji}
+        <span
+          className={classNames("font-bold", {
+            // "text-primary": dailyHabit.percentComplete < 100,
+            // "text-primary-content": dailyHabit.percentComplete === 100,
+          })}
+        >
+          {habit.emoji}
+        </span>
       </div>
     </Tooltip>
   );
