@@ -1,4 +1,5 @@
 import { Temporal } from "@js-temporal/polyfill";
+import { Link, useLocation } from "react-router";
 import classNames from "classnames";
 
 import { Tooltip } from "./Tooltip";
@@ -16,20 +17,25 @@ type TDailyHabitsProps = {
 const today = Temporal.Now.plainDateISO();
 
 export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
+  const { pathname } = useLocation();
+  const isDayView = pathname.includes("day");
+
   const [habits] = useHabits({
     filters: habitFilters.active,
   });
   const [dailyHabits, { createDailyHabit, incrementDailyHabit }] =
     useDailyHabits(date.toString());
 
-  console.log("dailyHabits", dailyHabits);
+  const activeHabits = habits.filter((habit) =>
+    habit.daysActive.includes(date.dayOfWeek),
+  );
 
   const getDailyHabit = (habit: THabit) => {
     return dailyHabits.find((dailyHabit) => dailyHabit.habitId === habit.id);
   };
 
   useEffect(() => {
-    habits.forEach((habit) => {
+    activeHabits.forEach((habit) => {
       const dailyHabit = getDailyHabit(habit);
       const isFutureDate = Temporal.PlainDate.compare(date, today) > 0;
 
@@ -42,13 +48,27 @@ export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
         });
       }
     });
-  }, [dailyHabits, date, habits]);
+  }, []);
+
+  if (isDayView && habits.length === 0) {
+    return <Link to="/settings/habits">Create a habit</Link>;
+  }
+
+  const habitsWillScroll =
+    (className.includes("standard") && activeHabits.length > 7) ||
+    (className.includes("compact") && activeHabits.length > 4);
 
   return (
     <div
-      className={classNames("flex flex-wrap gap-2 justify-center", className)}
+      className={classNames(
+        "flex gap-2 justify-center-safe",
+        habitsWillScroll
+          ? "overflow-x-auto overflow-y-hidden no-scrollbar"
+          : "",
+        className,
+      )}
     >
-      {habits.map((habit) => (
+      {activeHabits.map((habit) => (
         <HabitButton
           dailyHabit={getDailyHabit(habit)}
           habit={habit}

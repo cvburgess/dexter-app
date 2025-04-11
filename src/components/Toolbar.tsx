@@ -27,12 +27,12 @@ export const Toolbar = ({
       {children}
       <div className="flex-grow w-full h-full app-draggable"></div>
       {onClickPrevious && (
-        <Tooltip position="left" text={`Previous ${tooltipNoun}`}>
+        <Tooltip text={`Previous ${tooltipNoun}`}>
           <ArrowButton onClick={onClickPrevious} variant="previous" />
         </Tooltip>
       )}
       {onClickNext && (
-        <Tooltip position="left" text={`Next ${tooltipNoun}`}>
+        <Tooltip text={`Next ${tooltipNoun}`}>
           <ArrowButton onClick={onClickNext} variant="next" />
         </Tooltip>
       )}
@@ -62,7 +62,7 @@ export const DayNav = ({ date, setDate, toggleQuickPlan }: TDayNavProps) => {
       tooltipNoun="day"
     >
       {date.toString() === Temporal.Now.plainDateISO().toString() ? (
-        <Tooltip position="right" text="Change date">
+        <Tooltip text="Change date">
           <ButtonWithPopover
             buttonClassName={buttonClasses}
             buttonVariant="none"
@@ -77,7 +77,7 @@ export const DayNav = ({ date, setDate, toggleQuickPlan }: TDayNavProps) => {
           </ButtonWithPopover>
         </Tooltip>
       ) : (
-        <Tooltip position="right" text="Go to today">
+        <Tooltip text="Go to today">
           <div
             className={buttonClasses}
             onClick={() => setDate(Temporal.Now.plainDateISO())}
@@ -111,11 +111,7 @@ export const WeekNav = ({
       toggleQuickPlan={toggleQuickPlan}
       tooltipNoun="week"
     >
-      <Tooltip
-        enabled={weeksOffset !== 0}
-        position="right"
-        text="Back to this week"
-      >
+      <Tooltip enabled={weeksOffset !== 0} text="Back to this week">
         <div className={buttonClasses} onClick={() => setWeeksOffset(0)}>
           Week {offsetDate.weekOfYear}, {offsetDate.year}
         </div>

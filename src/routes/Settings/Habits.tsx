@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { Archive, Plus } from "@phosphor-icons/react";
 import { useDebounce } from "use-debounce";
+import classNames from "classnames";
 
 import { ButtonWithPopover } from "../../components/ButtonWithPopover";
-// import { ConfirmModal } from "../../components/ConfirmModal";
+import { ConfirmModal } from "../../components/ConfirmModal";
 import { SettingsOption } from "../../components/SettingsOption";
 
 import { useHabits } from "../../hooks/useHabits";
 import { usePreferences } from "../../hooks/usePreferences";
 
 import { TCreateHabit, THabit, TUpdateHabit } from "../../api/habits";
-import classNames from "classnames";
 
 export const Habits = () => {
   const [habits, { createHabit, updateHabit, deleteHabit }] = useHabits();
@@ -103,7 +103,7 @@ const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
   const [steps, setSteps] = useState<number | string>(habit.steps);
   const [debouncedSteps] = useDebounce(steps, 500);
 
-  const [_isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (debouncedTitle !== habit.title) {
@@ -144,6 +144,11 @@ const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
     updateHabit({ id: habit.id, emoji: value });
   };
 
+  const onArchive = (id: string) => {
+    updateHabit({ id, isArchived: true });
+    setIsModalOpen(false);
+  };
+
   const onNumberInputOnly = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // Check if the key is not a number
     if (
@@ -166,87 +171,81 @@ const HabitInput = ({ habit, updateHabit }: THabitInputProps) => {
   };
 
   const openModal = () => setIsModalOpen(true);
-  // const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div className="mb-2 join h-standard w-full">
-      <ButtonWithPopover
-        buttonVariant="left-join"
-        onChange={onChangeEmoji}
-        popoverId={`habit-${habit.id}-emoji`}
-        variant="emoji"
-      >
-        {habit.emoji}
-      </ButtonWithPopover>
+    <>
+      <div className="mb-2 join h-standard w-full">
+        <ButtonWithPopover
+          buttonVariant="left-join"
+          onChange={onChangeEmoji}
+          popoverId={`habit-${habit.id}-emoji`}
+          variant="emoji"
+        >
+          {habit.emoji}
+        </ButtonWithPopover>
 
-      <input
-        className={classNames(inputClasses, "pl-4 grow")}
-        onChange={onChangeTitle}
-        onKeyDown={onEnter}
-        type="text"
-        value={title}
-      />
-
-      <label className={classNames(inputClasses, "px-4 w-fit")}>
         <input
-          className="w-content-size text-right"
-          onChange={onChangeSteps}
-          onKeyDown={onNumberInputOnly}
-          value={steps}
+          className={classNames(inputClasses, "pl-4 grow")}
+          onChange={onChangeTitle}
+          onKeyDown={onEnter}
+          type="text"
+          value={title}
         />
-        x daily
-      </label>
 
-      <ButtonWithPopover
-        buttonClassName="text-nowrap bg-base-100 ml-[-1px]"
-        buttonVariant="join"
-        onChange={(daysActive: number[]) =>
-          updateHabit({ id: habit.id, daysActive })
+        <label className={classNames(inputClasses, "px-4 w-fit")}>
+          <input
+            className="w-content-size text-right"
+            onChange={onChangeSteps}
+            onKeyDown={onNumberInputOnly}
+            value={steps}
+          />
+          x daily
+        </label>
+
+        <ButtonWithPopover
+          buttonClassName="text-nowrap bg-base-100 ml-[-1px]"
+          buttonVariant="join"
+          onChange={(daysActive: number[]) =>
+            updateHabit({ id: habit.id, daysActive })
+          }
+          options={[
+            { id: 1, title: "Monday" },
+            { id: 2, title: "Tuesday" },
+            { id: 3, title: "Wednesday" },
+            { id: 4, title: "Thursday" },
+            { id: 5, title: "Friday" },
+            { id: 6, title: "Saturday" },
+            { id: 7, title: "Sunday" },
+          ]}
+          popoverId={`habit-${habit.id}-days-active`}
+          selected={habit.daysActive}
+          variant="multiSelectMenu"
+        >
+          {habit.daysActive.length} x weekly
+        </ButtonWithPopover>
+
+        <span
+          className="btn join-item h-standard bg-base-100 text-base-content/60 hover:text-error"
+          onClick={openModal}
+        >
+          <Archive />
+        </span>
+      </div>
+
+      <ConfirmModal
+        confirmButtonText="Archive"
+        isOpen={isModalOpen}
+        message={
+          <>
+            This will archive the habit and <br />
+            preserve historical habit data.
+          </>
         }
-        options={[
-          { id: 1, title: "Monday" },
-          { id: 2, title: "Tuesday" },
-          { id: 3, title: "Wednesday" },
-          { id: 4, title: "Thursday" },
-          { id: 5, title: "Friday" },
-          { id: 6, title: "Saturday" },
-          { id: 7, title: "Sunday" },
-        ]}
-        popoverId={`habit-${habit.id}-days-active`}
-        selected={habit.daysActive}
-        variant="multiSelectMenu"
-      >
-        {habit.daysActive.length}x weekly
-      </ButtonWithPopover>
-
-      <span
-        className="btn join-item h-standard bg-base-100 text-base-content/60 hover:text-error"
-        onClick={openModal}
-      >
-        <Archive />
-      </span>
-    </div>
+        onClose={closeModal}
+        onConfirm={() => onArchive(habit.id)}
+        title={`Archive ${habit.title}?`}
+      />
+    </>
   );
 };
-
-//   return (
-//     <>
-//       {list && (
-//         <ConfirmModal
-//           confirmButtonText="Archive"
-//           isOpen={isModalOpen}
-//           message={
-//             <>
-//               This will archive the list and <br />
-//               move any open tasks to{" "}
-//               <span className="font-bold">won&apos;t do</span>.
-//             </>
-//           }
-//           onClose={closeModal}
-//           onConfirm={() => onArchive(list.id)}
-//           title={`Archive ${list.title}?`}
-//         />
-//       )}
-//     </>
-//   );
-// };

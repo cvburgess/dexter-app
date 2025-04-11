@@ -52,10 +52,10 @@ export const Column = React.memo(
     return (
       <div
         className={classNames(
-          "min-h-[50vh] flex flex-col flex-1 overflow-y-auto no-scrollbar",
+          "min-h-[50vh] flex flex-col flex-1 overscroll-x-none overflow-y-auto no-scrollbar",
           cardSize === "compact-w"
-            ? "min-w-compact w-compact"
-            : "min-w-standard w-standard",
+            ? "min-w-compact w-compact max-w-compact"
+            : "min-w-standard w-standard max-w-standard",
         )}
         ref={(el) => {
           if (isActive && el && !hasScrolled) {
@@ -83,9 +83,7 @@ export const Column = React.memo(
           {showHabits && (
             <DailyHabits
               className={classNames(
-                cardSize === "compact-w"
-                  ? "min-w-compact w-compact"
-                  : "min-w-standard w-standard",
+                cardSize === "compact-w" ? "max-w-compact" : "max-w-standard",
               )}
               date={Temporal.PlainDate.from(id.split(":")[1])}
             />
