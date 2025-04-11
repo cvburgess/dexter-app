@@ -21,6 +21,7 @@ export const Day = () => {
   const [date, setDate] = useState<Temporal.PlainDate>(
     Temporal.Now.plainDateISO(),
   );
+  const [preferences] = usePreferences();
 
   const [{ enableJournal, enableNotes }] = usePreferences();
 
@@ -37,7 +38,7 @@ export const Day = () => {
           <Column
             canCreateTasks
             id={`scheduledFor:${date.toString()}`}
-            showHabits
+            showHabits={preferences.enableHabits}
             tasks={tasks}
           />
           <Tabs enabled={enableNotes || enableJournal}>

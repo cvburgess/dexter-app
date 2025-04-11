@@ -6,6 +6,7 @@ import { WeekNav } from "../components/Toolbar.tsx";
 import { QuickDrawer } from "../components/QuickPlanner.tsx";
 import { DraggableView, DrawerContainer } from "../components/View.tsx";
 
+import { usePreferences } from "../hooks/usePreferences.tsx";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 import { useToggle } from "../hooks/useToggle.tsx";
 
@@ -16,6 +17,7 @@ import { weekStartEnd } from "../utils/weekStartEnd.ts";
 export const Week = () => {
   const [isOpen, toggle] = useToggle();
   const [weeksOffset, setWeeksOffset] = useState<number>(0);
+  const [preferences] = usePreferences();
 
   const { monday, sunday } = weekStartEnd(weeksOffset);
 
@@ -51,7 +53,7 @@ export const Week = () => {
           cardSize="compact-w"
           columns={columns}
           groupBy="scheduledFor"
-          showHabits
+          showHabits={preferences.enableHabits}
         />
         <QuickDrawer
           baseFilters={filters.notThisWeek}
