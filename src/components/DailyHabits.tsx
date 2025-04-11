@@ -25,6 +25,7 @@ export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
       ...habitFilters.activeForDay(date.dayOfWeek),
     ],
   });
+
   const [dailyHabits, { createDailyHabits, incrementDailyHabit }] =
     useDailyHabits(date.toString());
 
@@ -37,7 +38,14 @@ export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
   }, [date]);
 
   if (isDayView && habits.length === 0) {
-    return <Link to="/settings/habits">Create a habit</Link>;
+    return (
+      <Link
+        className="h-[32px] flex justify-center items-center text-xs text-primary hover:bg-primary/5 rounded-box"
+        to="/settings/habits"
+      >
+        Create a habit
+      </Link>
+    );
   }
 
   const habitsWillScroll =
