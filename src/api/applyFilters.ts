@@ -3,6 +3,7 @@ import { snakeCase } from "../utils/changeCase.ts";
 export type TQueryFilter = [
   string,
   (
+    | "contains"
     | "eq"
     | "gt"
     | "gte"

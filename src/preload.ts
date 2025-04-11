@@ -17,6 +17,10 @@ declare global {
       onThemeChange: (
         callback: (theme: TTheme) => void,
       ) => (() => void) | undefined;
+      onGoToRoute: (
+        callback: (route: string) => void,
+      ) => (() => void) | undefined;
+      onToggleQuickPlanner: (callback: () => void) => (() => void) | undefined;
     };
   }
 }
@@ -66,6 +70,28 @@ contextBridge.exposeInMainWorld("electron", {
   },
   setThemeMode: (mode: TThemeMode) => {
     ipcRenderer.invoke("set-native-theme", mode);
+  },
+
+  // ---------- SHORTCUTS ----------
+  onGoToRoute: (callback: (route: string) => void) => {
+    ipcRenderer.on("go-to-route", (_event, route) => {
+      callback(route);
+    });
+
+    // Return a function to remove the listener
+    return () => {
+      ipcRenderer.removeAllListeners("go-to-route");
+    };
+  },
+  onToggleQuickPlanner: (callback: () => void) => {
+    ipcRenderer.on("toggle-quick-planner", (_event) => {
+      callback();
+    });
+
+    // Return a function to remove the listener
+    return () => {
+      ipcRenderer.removeAllListeners("toggle-quick-planner");
+    };
   },
 });
 

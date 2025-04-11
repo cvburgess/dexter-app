@@ -117,7 +117,6 @@ const ListInput = ({ list, onArchive, onChange }: TListInputProps) => {
       </div>
       {list && (
         <ConfirmModal
-          confirmButtonText="Archive"
           isOpen={isModalOpen}
           message={
             <>
@@ -127,7 +126,13 @@ const ListInput = ({ list, onArchive, onChange }: TListInputProps) => {
             </>
           }
           onClose={closeModal}
-          onConfirm={() => onArchive(list.id)}
+          options={[
+            {
+              action: () => onArchive(list.id),
+              buttonClass: "btn-error",
+              title: "Archive",
+            },
+          ]}
           title={`Archive ${list.title}?`}
         />
       )}

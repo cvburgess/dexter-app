@@ -9,14 +9,12 @@
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
+    -webkit-overflow-scrolling: touch;
   }
 
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
-  }
-
-  .scroll-momentum {
     -webkit-overflow-scrolling: touch;
   }
 
@@ -39,10 +37,40 @@
   .min-w-compact {
     min-width: calc(var(--spacing) * 40);
   }
+
+  .w-content-size {
+    field-sizing: content;
+  }
+
+  .justify-center-safe {
+    justify-content: safe center;
+  }
+}
+
+@font-face {
+  font-family: NotoEmoji;
+  font-display: swap;
+  src: url("./assets/fonts/NotoEmoji.ttf");
+}
+
+/* https://yesviz.com/iphones.php */
+
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-desktop: 512px;
 }
 
 @plugin "daisyui" {
   themes: all;
+}
+
+.tooltip::before,
+.tooltip::after {
+  max-width: 75px;
+  white-space: normal;
+  z-index: 100;
+  font-size: 0.7rem;
+  @apply bg-base-200 text-base-content shadow-md;
 }
 
 @plugin "daisyui/theme" {

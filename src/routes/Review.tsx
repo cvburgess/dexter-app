@@ -10,11 +10,13 @@ import { DayNav } from "../components/Toolbar.tsx";
 import { DraggableView, DrawerContainer } from "../components/View.tsx";
 
 import { useTasks } from "../hooks/useTasks.tsx";
+import { useToggle } from "../hooks/useToggle.tsx";
+
 import { ETaskStatus, TTask } from "../api/tasks.ts";
 import { makeBaseFiltersForDate } from "../utils/makeBaseFiltersForDate.ts";
 
 export const Review = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, toggle] = useToggle();
   const [date, setDate] = useState<Temporal.PlainDate>(
     Temporal.Now.plainDateISO(),
   );
@@ -45,16 +47,12 @@ export const Review = () => {
 
   return (
     <DraggableView>
-      <DayNav
-        date={date}
-        setDate={setDate}
-        toggleQuickPlan={() => setIsOpen(!isOpen)}
-      />
+      <DayNav date={date} setDate={setDate} toggleQuickPlan={toggle} />
       <DrawerContainer>
         <div className="flex flex-1 flex-col items-center justify-center gap-4 px-4 pt-12 min-h-[calc(100vh-6rem)] overflow-auto">
           <Title text={title} />
           <Subtitle text={subtitle} />
-          <div className="flex gap-8 md:flex-wrap max-sm:flex-col w-full h-full justify-center max-sm:items-center overflow-auto no-scrollbar">
+          <div className="flex gap-8 flex-wrap max-desktop:flex-col w-full h-full justify-center max-desktop:items-center overflow-auto no-scrollbar">
             <CardListWithTitle
               isVisible={incompleteTasks.length > 0}
               tasks={incompleteTasks}

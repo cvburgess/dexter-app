@@ -1,8 +1,10 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { DayPicker } from "react-day-picker";
 import EmojiPicker from "@emoji-mart/react";
 import emojiData from "@emoji-mart/data";
 import classNames from "classnames";
+import { useDebounce } from "use-debounce";
+import { CheckFat } from "@phosphor-icons/react";
 
 export type TOnChange<T> = (id: T) => void;
 
@@ -21,7 +23,7 @@ export type TSegmentedOption = {
 
 type TCommonProps = {
   buttonClassName?: string;
-  buttonVariant: "round" | "left-join" | "none";
+  buttonVariant: "round" | "join" | "left-join" | "none";
   children: React.ReactNode;
   popoverId: string;
   wrapperClassName?: string;
@@ -38,6 +40,12 @@ type TConditionalProps =
       onChange: TOnChange<string | number | null>;
       options: TOption[];
     }
+  | {
+      variant: "multiSelectMenu";
+      onChange: TOnChange<Array<string | number | null>>;
+      options: Omit<TOption, "isSelected">[];
+      selected: Array<string | number>;
+    }
   | { variant: "segmentedMenu"; options: TSegmentedOption[] }
   | { variant: "emoji"; onChange: TOnChange<string> };
 
@@ -45,8 +53,10 @@ type TButtonWithPopoverProps = TCommonProps & TConditionalProps;
 
 const roundButtonClasses =
   "w-5 h-5 rounded-field outline outline-current/25 flex items-center justify-center hover:opacity-90";
-const leftJoinButtonClasses =
-  "btn join-item p-4 h-standard min-w-20 bg-base-300 border-none";
+
+const joinButtonClasses = "btn join-item p-4 h-standard";
+
+const leftJoinButtonClasses = joinButtonClasses + " border-none bg-base-300";
 
 export const ButtonWithPopover = ({
   buttonClassName,
@@ -62,6 +72,7 @@ export const ButtonWithPopover = ({
         "relative cursor-pointer",
         {
           [roundButtonClasses]: buttonVariant === "round",
+          [joinButtonClasses]: buttonVariant === "join",
           [leftJoinButtonClasses]: buttonVariant === "left-join",
         },
         props.variant === "emoji" ? "text-2xl" : "text-xs",
@@ -76,6 +87,15 @@ export const ButtonWithPopover = ({
         onChange={props.onChange}
         options={props.options}
         popoverId={popoverId}
+      />
+    )}
+
+    {props.variant === "multiSelectMenu" && (
+      <MultiSelectMenu
+        onChange={props.onChange}
+        options={props.options}
+        popoverId={popoverId}
+        selected={props.selected}
       />
     )}
 
@@ -98,6 +118,7 @@ export const ButtonWithPopover = ({
 );
 
 const popoverPolyfill = {
+  minWidth: "anchor-size(width)",
   positionAnchor: "auto",
   positionArea: "bottom",
   positionTryFallbacks: "top, left, right",
@@ -105,14 +126,14 @@ const popoverPolyfill = {
   transition: "opacity 0.15s ease-in-out, transform 0.15s ease-in-out",
 } as React.CSSProperties;
 
+const popoverStyles =
+  "dropdown fixed bg-base-100 rounded-box shadow-sm !text-base-content mt-1 max-h-[50vh] no-scrollbar";
+
 type TDropdownMenuProps = {
   onChange: TOnChange<string | number | null>;
   options: TOption[];
   popoverId: string;
 };
-
-const popoverStyles =
-  "dropdown fixed bg-base-100 rounded-box shadow-sm !text-base-content mt-1";
 
 const DropdownMenu = ({ onChange, options, popoverId }: TDropdownMenuProps) => (
   <ul
@@ -142,6 +163,66 @@ const DropdownMenu = ({ onChange, options, popoverId }: TDropdownMenuProps) => (
     ))}
   </ul>
 );
+
+type TMultiSelectProps = {
+  onChange: TOnChange<Array<string | number | null>>;
+  options: Omit<TOption, "isSelected">[];
+  popoverId: string;
+  selected: Array<string | number>;
+};
+
+const MultiSelectMenu = ({
+  onChange,
+  options,
+  popoverId,
+  selected,
+}: TMultiSelectProps) => {
+  const [selectedIds, setSelectedIds] = useState(selected);
+  const [debouncedIds] = useDebounce(selectedIds, 500);
+
+  useEffect(() => {
+    onChange(debouncedIds);
+  }, [debouncedIds]);
+
+  const onClick = (id: string | number) => {
+    const newSelectedIds = selectedIds.includes(id)
+      ? selectedIds.filter((selectedId) => selectedId !== id)
+      : [...selectedIds, id];
+    setSelectedIds(newSelectedIds);
+  };
+
+  return (
+    <ul
+      className={classNames(
+        popoverStyles,
+        "menu p-2 min-w-48 border-1 border-base-200",
+      )}
+      id={popoverId}
+      popover="auto"
+      style={popoverPolyfill}
+    >
+      {options.map((option) => {
+        const isSelected = selectedIds.includes(option.id);
+
+        return (
+          <li key={option.id}>
+            <a
+              className={classNames("flex items-center gap-2 text-xs")}
+              onClick={() => onClick(option.id)}
+            >
+              {isSelected ? (
+                <CheckFat weight="fill" />
+              ) : (
+                <span className="size-[12px]" />
+              )}
+              <span className="ml-1">{option.title}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  );
+};
 
 type TSegmentedMenuProps = {
   options: TSegmentedOption[];
@@ -240,9 +321,11 @@ const Emoji = ({ onChange, popoverId }: TEmojiProps) => (
     <EmojiPicker
       data={emojiData}
       maxFrequentRows={0}
+      navPosition="none"
       onEmojiSelect={(emoji: { native: string }) => onChange(emoji.native)}
       perLine={7}
       previewEmoji="dog"
+      previewPosition="none"
     />
   </div>
 );

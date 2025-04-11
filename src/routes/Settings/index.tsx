@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { NavLink, Outlet } from "react-router";
 import classNames from "classnames";
 
 import { TextToolbar } from "../../components/Toolbar.tsx";
 import { ScrollableContainer, View } from "../../components/View.tsx";
 
-import { About } from "./About.tsx";
-import { Account } from "./Account.tsx";
-import { Features } from "./Features.tsx";
-import { Theme } from "./Theme.tsx";
+const Panel = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="border-2 border-base-200 w-full h-fit min-h-[calc(100vh-5.5rem)] rounded-box my-4 p-4 overflow-auto">
+      {children}
+    </div>
+  );
+};
 
 export const Settings = () => {
-  const [activePanel, setActivePanel] = useState<string>("Account");
-  const panels = ["Account", "Features", "Theme", "About"];
+  const panels = ["account", "habits", "journal", "notes", "theme", "about"];
 
   return (
     <View>
@@ -20,19 +22,22 @@ export const Settings = () => {
         <ul className="menu bg-base-100 rounded-box w-standard mt-4">
           {panels.map((panel) => (
             <li className="my-1" key={panel}>
-              <a
-                className={classNames({ "bg-base-200": activePanel === panel })}
-                onClick={() => setActivePanel(panel)}
+              <NavLink
+                className={({ isActive }) =>
+                  classNames("capitalize", {
+                    "bg-base-content/80 text-base-100": isActive,
+                  })
+                }
+                to={panel}
               >
                 {panel}
-              </a>
+              </NavLink>
             </li>
           ))}
         </ul>
-        {activePanel === "Account" && <Account />}
-        {activePanel === "Theme" && <Theme />}
-        {activePanel === "Features" && <Features />}
-        {activePanel === "About" && <About />}
+        <Panel>
+          <Outlet />
+        </Panel>
       </ScrollableContainer>
     </View>
   );

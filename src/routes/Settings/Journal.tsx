@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { Plus, Trash } from "@phosphor-icons/react";
 import { useDebounce } from "use-debounce";
 
-import { Panel } from "../../components/Panel";
 import { SettingsOption } from "../../components/SettingsOption";
 
 import { usePreferences } from "../../hooks/usePreferences";
 
-export const Features = () => {
+export const Journal = () => {
   const [preferences, { updatePreferences }] = usePreferences();
 
   const addPrompt = (value: string) =>
@@ -30,42 +29,23 @@ export const Features = () => {
     });
 
   return (
-    <Panel>
+    <>
       <SettingsOption
         options={[
           {
             id: "true",
             title: "Enabled",
-            isSelected: preferences.enableNotes,
+            isSelected: preferences.enableJournal,
           },
           {
             id: "false",
             title: "Disabled",
-            isSelected: !preferences.enableNotes,
+            isSelected: !preferences.enableJournal,
           },
         ]}
-        setting="enableNotes"
-        title="Daily Notes"
+        setting="enableJournal"
+        title="Journal"
       />
-
-      <div className="mt-4">
-        <SettingsOption
-          options={[
-            {
-              id: "true",
-              title: "Enabled",
-              isSelected: preferences.enableJournal,
-            },
-            {
-              id: "false",
-              title: "Disabled",
-              isSelected: !preferences.enableJournal,
-            },
-          ]}
-          setting="enableJournal"
-          title="Journal"
-        />
-      </div>
 
       {preferences.enableJournal && (
         <fieldset className="fieldset w-full mt-4">
@@ -82,7 +62,7 @@ export const Features = () => {
             />
           ))}
 
-          <label className="input w-full bg-base-200 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
+          <label className="input w-full h-standard bg-base-200 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
             <span>
               <Plus className="text-base-content/60" />
             </span>
@@ -98,7 +78,7 @@ export const Features = () => {
           </label>
         </fieldset>
       )}
-    </Panel>
+    </>
   );
 };
 
@@ -128,7 +108,7 @@ const PromptInput = ({
   }, [debounced]);
 
   return (
-    <label className="input w-full bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
+    <label className="input w-full h-standard bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
       <input
         className="text-xs"
         onChange={(e) => setValue(e.target.value)}

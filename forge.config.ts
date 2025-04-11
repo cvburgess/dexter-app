@@ -66,8 +66,8 @@ const config: ForgeConfig = {
           owner: "cvburgess",
           name: "dexter-app",
         },
-        prerelease: true,
-        draft: false,
+        prerelease: false, // True = will not auto-update, but will publish to Github
+        draft: false, // True = will not auto-update, but will publish to Github
       },
     },
   ],

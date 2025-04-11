@@ -67,9 +67,9 @@ export const Login = () => {
       className="flex flex-1 items-center justify-center"
       data-theme="dexter"
     >
-      <div className="w-full sm:h-14 top-0 absolute app-draggable" />
-      <div className="max-sm:h-screen card w-full max-w-lg bg-base-100 sm:shadow-xl max-sm:p-8 sm:p-16 rounded-box">
-        <div className="card-body max-sm:justify-center">
+      <div className="w-full desktop:h-14 top-0 absolute app-draggable" />
+      <div className="max-desktop:h-screen card w-full max-w-lg bg-base-100 desktop:shadow-xl max-desktop:p-8 desktop:p-16 rounded-box">
+        <div className="card-body max-desktop:justify-center">
           <div className="card-title flex-col mb-8 justify-center">
             <img className="size-24 mb-4" src="/app-icon.png" />
             <h2 className="text-2xl font-bold text-center">
@@ -120,7 +120,7 @@ export const Login = () => {
               />
             </label>
 
-            <div className="form-control mt-8 max-sm:mb-10">
+            <div className="form-control mt-8 max-desktop:mb-10">
               <button
                 className="btn bg-base-content text-base-100 w-full"
                 disabled={loading}

@@ -6,7 +6,7 @@ import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
 import { ETaskPriority, TTask } from "../api/tasks.ts";
 
-export const Prioritize = () => {
+export const Priorities = () => {
   const [tasks] = useTasks({ filters: taskFilters.incomplete });
 
   const columns = makeColumns(tasks);

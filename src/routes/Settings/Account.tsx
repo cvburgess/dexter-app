@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import { ConfirmModal } from "../../components/ConfirmModal.tsx";
-import { Panel } from "../../components/Panel.tsx";
 
 import { deleteAccount, signOut } from "../../hooks/useAuth.tsx";
 
@@ -12,7 +11,7 @@ export const Account = () => {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <Panel>
+    <>
       <button
         className="btn"
         onClick={async () => await signOut()}
@@ -24,7 +23,6 @@ export const Account = () => {
         Delete account
       </button>
       <ConfirmModal
-        confirmButtonText="Goodbye"
         isOpen={isModalOpen}
         message={
           <>
@@ -35,9 +33,15 @@ export const Account = () => {
           </>
         }
         onClose={closeModal}
-        onConfirm={deleteAccount}
+        options={[
+          {
+            action: deleteAccount,
+            buttonClass: "btn-error",
+            title: "Goodbye",
+          },
+        ]}
         title={"Delete account"}
       />
-    </Panel>
+    </>
   );
 };
