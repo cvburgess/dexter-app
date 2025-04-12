@@ -89,6 +89,7 @@ export const deleteHabit = async (
 export type TDailyHabit = {
   date: string;
   habitId: string;
+  habits: THabit;
   percentComplete: number;
   steps: number;
   stepsComplete: number;
@@ -100,7 +101,7 @@ export const getDailyHabits = async (
 ) => {
   const { data, error } = await supabase
     .from("daily_habits")
-    .select("*")
+    .select("*, habits(*)")
     .eq("date", date);
 
   if (error) throw error;
