@@ -4,10 +4,9 @@ import classNames from "classnames";
 
 import { Tooltip } from "./Tooltip";
 
-import { habitFilters, useDailyHabits, useHabits } from "../hooks/useHabits";
+import { useDailyHabits } from "../hooks/useHabits";
 
-import { TDailyHabit, THabit } from "../api/habits";
-import { TQueryFilter } from "../api/applyFilters";
+import { TDailyHabit } from "../api/habits";
 import { useEffect } from "react";
 
 type TDailyHabitsProps = {
@@ -19,25 +18,14 @@ export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
   const { pathname } = useLocation();
   const isDayView = pathname.includes("day");
 
-  const [habits] = useHabits({
-    filters: [
-      ...(habitFilters.notPaused as TQueryFilter[]),
-      ...habitFilters.activeForDay(date.dayOfWeek),
-    ],
-  });
-
   const [dailyHabits, { createDailyHabits, incrementDailyHabit }] =
     useDailyHabits(date.toString());
-
-  const getDailyHabit = (habit: THabit) => {
-    return dailyHabits.find((dailyHabit) => dailyHabit.habitId === habit.id);
-  };
 
   useEffect(() => {
     createDailyHabits();
   }, [date]);
 
-  if (isDayView && habits.length === 0) {
+  if (isDayView && dailyHabits.length === 0) {
     return (
       <Link
         className="h-[32px] flex justify-center items-center text-xs text-primary hover:bg-primary/5 rounded-box"
@@ -49,8 +37,8 @@ export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
   }
 
   const habitsWillScroll =
-    (className.includes("standard") && habits.length > 7) ||
-    (className.includes("compact") && habits.length > 4);
+    (className.includes("standard") && dailyHabits.length > 7) ||
+    (className.includes("compact") && dailyHabits.length > 4);
 
   return (
     <div
@@ -62,12 +50,11 @@ export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
         className,
       )}
     >
-      {habits.map((habit) => (
+      {dailyHabits.map((dailyHabit) => (
         <HabitButton
-          dailyHabit={getDailyHabit(habit)}
-          habit={habit}
+          dailyHabit={dailyHabit}
           incrementDailyHabit={incrementDailyHabit}
-          key={habit.id}
+          key={dailyHabit.habitId}
         />
       ))}
     </div>
@@ -76,7 +63,6 @@ export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
 
 type THabitButtonProps = {
   dailyHabit?: TDailyHabit;
-  habit: THabit;
   incrementDailyHabit: (dailyHabit: TDailyHabit) => void;
 };
 
@@ -87,16 +73,15 @@ const iconClasses = "font-[NotoEmoji] font-bold text-[12px] text-primary";
 
 const HabitButton = ({
   dailyHabit,
-  habit,
   incrementDailyHabit,
 }: THabitButtonProps) => {
   if (!dailyHabit) {
-    return <FutureHabitButton emoji={habit.emoji} />;
+    return <FutureHabitButton emoji={dailyHabit.habits.emoji} />;
   }
 
   return (
     <Tooltip
-      text={`${habit.title} (${dailyHabit.stepsComplete}/${dailyHabit.steps})`}
+      text={`${dailyHabit.habits.title} (${dailyHabit.stepsComplete}/${dailyHabit.steps})`}
     >
       <div
         className={classNames("absolute", ringClasses, {
@@ -117,7 +102,7 @@ const HabitButton = ({
           } as React.CSSProperties
         }
       >
-        {habit.emoji}
+        {dailyHabit.habits.emoji}
       </div>
     </Tooltip>
   );
