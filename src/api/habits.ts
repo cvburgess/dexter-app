@@ -102,7 +102,8 @@ export const getDailyHabits = async (
   const { data, error } = await supabase
     .from("daily_habits")
     .select("*, habits(*)")
-    .eq("date", date);
+    .eq("date", date)
+    .order("habit_id");
 
   if (error) throw error;
   return camelCase(data) as TDailyHabit[];
