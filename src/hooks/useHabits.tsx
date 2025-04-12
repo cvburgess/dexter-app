@@ -25,6 +25,7 @@ type TUseHabits = [
     createHabit: (habit: TCreateHabit) => void;
     deleteHabit: (id: string) => void;
     getHabitById: (id: string | null) => THabit | undefined;
+    isLoading: boolean;
     updateHabit: (habit: TUpdateHabit) => void;
   },
 ];
@@ -37,7 +38,7 @@ type TSupabaseHookOptions = {
 export const useHabits = (options?: TSupabaseHookOptions): TUseHabits => {
   const queryClient = useQueryClient();
 
-  const { data: habits = [] } = useQuery({
+  const { data: habits = [], isLoading } = useQuery({
     enabled: !options?.skipQuery,
     queryKey: ["habits", options?.filters],
     queryFn: () => getHabits(supabase, options?.filters),
@@ -76,6 +77,7 @@ export const useHabits = (options?: TSupabaseHookOptions): TUseHabits => {
       createHabit: create,
       deleteHabit: remove,
       getHabitById,
+      isLoading,
       updateHabit: update,
     },
   ];
@@ -86,13 +88,14 @@ type TUseDailyHabits = [
   {
     createDailyHabits: () => void;
     incrementDailyHabit: (dailyHabit: TDailyHabit) => void;
+    isLoading: boolean;
   },
 ];
 
 export const useDailyHabits = (date: string): TUseDailyHabits => {
   const queryClient = useQueryClient();
 
-  const { data: dailyHabits = [] } = useQuery({
+  const { data: dailyHabits = [], isLoading } = useQuery({
     queryKey: ["dailyHabits", date],
     queryFn: () => getDailyHabits(supabase, date),
     staleTime: 1000 * 60 * 10,
@@ -167,7 +170,10 @@ export const useDailyHabits = (date: string): TUseDailyHabits => {
     update({ date, habitId, stepsComplete: next });
   };
 
-  return [dailyHabits, { createDailyHabits: create, incrementDailyHabit }];
+  return [
+    dailyHabits,
+    { createDailyHabits: create, incrementDailyHabit, isLoading },
+  ];
 };
 
 export const habitFilters = {
