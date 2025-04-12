@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 import { Link, useLocation } from "react-router";
 import classNames from "classnames";
@@ -6,9 +7,8 @@ import { Tooltip } from "./Tooltip";
 
 import { habitFilters, useDailyHabits, useHabits } from "../hooks/useHabits";
 
-import { TDailyHabit, THabit } from "../api/habits";
+import { TDailyHabit } from "../api/habits";
 import { TQueryFilter } from "../api/applyFilters";
-import { useEffect } from "react";
 
 type TDailyHabitsProps = {
   className?: string;
@@ -19,25 +19,30 @@ export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
   const { pathname } = useLocation();
   const isDayView = pathname.includes("day");
 
-  const [habits] = useHabits({
+  const today = Temporal.Now.plainDateISO();
+  const isFutureDate = Temporal.PlainDate.compare(date, today) > 0;
+
+  // Use habits for future dates, because DailyHabits are not created yet
+  const [habits, { isLoading: habitsLoading }] = useHabits({
     filters: [
       ...(habitFilters.notPaused as TQueryFilter[]),
       ...habitFilters.activeForDay(date.dayOfWeek),
     ],
   });
 
-  const [dailyHabits, { createDailyHabits, incrementDailyHabit }] =
-    useDailyHabits(date.toString());
-
-  const getDailyHabit = (habit: THabit) => {
-    return dailyHabits.find((dailyHabit) => dailyHabit.habitId === habit.id);
-  };
+  const [
+    dailyHabits,
+    { createDailyHabits, incrementDailyHabit, isLoading: dailyHabitsLoading },
+  ] = useDailyHabits(date.toString());
 
   useEffect(() => {
     createDailyHabits();
   }, [date]);
 
-  if (isDayView && habits.length === 0) {
+  const isLoading = habitsLoading || dailyHabitsLoading;
+  if (isLoading) return <div className="h-[32px]" />;
+
+  if (isDayView && dailyHabits.length === 0 && habits.length === 0) {
     return (
       <Link
         className="h-[32px] flex justify-center items-center text-xs text-primary hover:bg-primary/5 rounded-box"
@@ -49,8 +54,8 @@ export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
   }
 
   const habitsWillScroll =
-    (className.includes("standard") && habits.length > 7) ||
-    (className.includes("compact") && habits.length > 4);
+    (className.includes("standard") && dailyHabits.length > 7) ||
+    (className.includes("compact") && dailyHabits.length > 4);
 
   return (
     <div
@@ -62,21 +67,23 @@ export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
         className,
       )}
     >
-      {habits.map((habit) => (
-        <HabitButton
-          dailyHabit={getDailyHabit(habit)}
-          habit={habit}
-          incrementDailyHabit={incrementDailyHabit}
-          key={habit.id}
-        />
-      ))}
+      {isFutureDate
+        ? habits.map((habit) => (
+            <FutureHabitButton emoji={habit.emoji} key={habit.id} />
+          ))
+        : dailyHabits.map((dailyHabit) => (
+            <HabitButton
+              dailyHabit={dailyHabit}
+              incrementDailyHabit={incrementDailyHabit}
+              key={dailyHabit.habitId}
+            />
+          ))}
     </div>
   );
 };
 
 type THabitButtonProps = {
   dailyHabit?: TDailyHabit;
-  habit: THabit;
   incrementDailyHabit: (dailyHabit: TDailyHabit) => void;
 };
 
@@ -87,41 +94,34 @@ const iconClasses = "font-[NotoEmoji] font-bold text-[12px] text-primary";
 
 const HabitButton = ({
   dailyHabit,
-  habit,
   incrementDailyHabit,
-}: THabitButtonProps) => {
-  if (!dailyHabit) {
-    return <FutureHabitButton emoji={habit.emoji} />;
-  }
-
-  return (
-    <Tooltip
-      text={`${habit.title} (${dailyHabit.stepsComplete}/${dailyHabit.steps})`}
+}: THabitButtonProps) => (
+  <Tooltip
+    text={`${dailyHabit.habits.title} (${dailyHabit.stepsComplete}/${dailyHabit.steps})`}
+  >
+    <div
+      className={classNames("absolute", ringClasses, {
+        "z-10": !dailyHabit.percentComplete,
+      })}
+      onClick={() => incrementDailyHabit(dailyHabit)}
+    />
+    <div
+      aria-valuenow={dailyHabit.percentComplete}
+      className={classNames("radial-progress", iconClasses)}
+      onClick={() => incrementDailyHabit(dailyHabit)}
+      role="progressbar"
+      style={
+        {
+          "--size": "32px",
+          "--thickness": "4px",
+          "--value": dailyHabit.percentComplete,
+        } as React.CSSProperties
+      }
     >
-      <div
-        className={classNames("absolute", ringClasses, {
-          "z-10": !dailyHabit.percentComplete,
-        })}
-        onClick={() => incrementDailyHabit(dailyHabit)}
-      />
-      <div
-        aria-valuenow={dailyHabit.percentComplete}
-        className={classNames("radial-progress", iconClasses)}
-        onClick={() => incrementDailyHabit(dailyHabit)}
-        role="progressbar"
-        style={
-          {
-            "--size": "32px",
-            "--thickness": "4px",
-            "--value": dailyHabit.percentComplete,
-          } as React.CSSProperties
-        }
-      >
-        {habit.emoji}
-      </div>
-    </Tooltip>
-  );
-};
+      {dailyHabit.habits.emoji}
+    </div>
+  </Tooltip>
+);
 
 const FutureHabitButton = ({ emoji }: { emoji: string }) => (
   <div
