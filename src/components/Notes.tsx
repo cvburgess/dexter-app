@@ -74,13 +74,13 @@ export const Notes = () => {
   return (
     <LexicalComposer initialConfig={initialConfig}>
       <RichTextPlugin
+        ErrorBoundary={LexicalErrorBoundary}
         contentEditable={
           <ContentEditable
             aria-placeholder={"Enter some text..."}
             placeholder={<div>Enter some text...</div>}
           />
         }
-        ErrorBoundary={LexicalErrorBoundary}
       />
       <OnChangePlugin onChange={onChange} />
       <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
