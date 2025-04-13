@@ -63,7 +63,7 @@ export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
         "flex gap-2 justify-center-safe",
         habitsWillScroll
           ? "overflow-x-auto overflow-y-hidden no-scrollbar"
-          : "",
+          : "overflow-x-hidden",
         className,
       )}
     >

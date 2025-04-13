@@ -8,6 +8,8 @@ import {
 import { useNavigate } from "react-router";
 import classNames from "classnames";
 
+import appIconUrl from "../assets/app-icon.png";
+
 import {
   signInWithEmail,
   signInWithGoogle,
@@ -71,7 +73,7 @@ export const Login = () => {
       <div className="max-desktop:h-screen card w-full max-w-lg bg-base-100 desktop:shadow-xl max-desktop:p-8 desktop:p-16 rounded-box">
         <div className="card-body max-desktop:justify-center">
           <div className="card-title flex-col mb-8 justify-center">
-            <img className="size-24 mb-4" src="/app-icon.png" />
+            <img className="size-24 mb-4" src={appIconUrl} />
             <h2 className="text-2xl font-bold text-center">
               Dexter Day Planner
             </h2>
