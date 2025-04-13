@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Temporal } from "@js-temporal/polyfill";
 
+import { supabase } from "./useAuth.tsx";
+
 import {
   createTask,
   deleteTask,
@@ -13,8 +15,6 @@ import {
   updateTask,
   updateTasks,
 } from "../api/tasks.ts";
-
-import { useAuth } from "./useAuth.tsx";
 import { makeOrFilter, TQueryFilter } from "../api/applyFilters.ts";
 
 type TUseTasks = [
@@ -27,13 +27,20 @@ type TUseTasks = [
   },
 ];
 
-export const useTasks = (where: TQueryFilter[] = []): TUseTasks => {
-  const { supabase } = useAuth();
+type TSupabaseHookOptions = {
+  skipQuery?: boolean;
+  filters?: TQueryFilter[];
+};
+
+export const useTasks = (options?: TSupabaseHookOptions): TUseTasks => {
   const queryClient = useQueryClient();
 
-  const { data: tasks = [] } = useQuery({
-    queryKey: ["tasks", where],
-    queryFn: () => getTasks(supabase, where),
+  const { data: tasks } = useQuery({
+    enabled: !options?.skipQuery,
+    placeholderData: [],
+    queryKey: ["tasks", options?.filters],
+    queryFn: () => getTasks(supabase, options?.filters),
+    staleTime: 1000 * 60 * 10,
   });
 
   const { mutate: create } = useMutation<TTask[], Error, TCreateTask>({
@@ -45,14 +52,29 @@ export const useTasks = (where: TQueryFilter[] = []): TUseTasks => {
 
   const { mutate: update } = useMutation<TTask[], Error, TUpdateTask>({
     mutationFn: (diff) => updateTask(supabase, diff),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    },
+    // onMutate: async (diff: TUpdateTask) => {
+    //   const taskQueries = queryClient.getQueryCache().findAll({
+    //     queryKey: ["tasks"],
+    //   });
+
+    //   for (const query of taskQueries) {
+    //     const currentData = query.state.data as TTask[];
+    //     if (currentData) {
+    //       queryClient.setQueryData(
+    //         query.queryKey,
+    //         currentData.map((task: TTask) => {
+    //           return task.id === diff.id ? { ...task, ...diff } : task;
+    //         }),
+    //       );
+    //     }
+    //   }
+    // },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
   const { mutate: bulkUpdate } = useMutation<TTask[], Error, TUpdateTask[]>({
     mutationFn: (diffs) => updateTasks(supabase, diffs),
-    onSuccess: () => {
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
   });
@@ -110,5 +132,8 @@ export const taskFilters: Record<string, TQueryFilter[]> = {
       ]),
       ...this.incomplete,
     ];
+  },
+  get noGoal(): TQueryFilter[] {
+    return [["goalId", "is", null], ...this.incomplete];
   },
 };

@@ -9,6 +9,7 @@ import {
 } from "./ButtonWithPopover.tsx";
 
 import { ETaskPriority, TTask, TUpdateTask } from "../api/tasks.ts";
+import { weekStartEnd } from "../utils/weekStartEnd.ts";
 
 type TMoreButtonProps = {
   onTaskDelete: () => void;
@@ -45,8 +46,8 @@ export const MoreButton = ({
     <ButtonWithPopover
       buttonVariant="round"
       options={[schedulingOptions, priorityOptions, otherOptions]}
+      popoverId={`${task.id}-more`}
       variant="segmentedMenu"
-      wrapperClassName="dropdown-center dropdown-hover"
     >
       <DotsThreeOutlineVertical />
     </ButtonWithPopover>
@@ -94,6 +95,15 @@ const optionsForScheduling = (
   const today = Temporal.Now.plainDateISO().toString();
   const tomorrow = Temporal.Now.plainDateISO().add({ days: 1 }).toString();
 
+  const { monday } = weekStartEnd(1);
+
+  const isScheduledForNextWeek =
+    Boolean(scheduledFor) &&
+    Temporal.PlainDate.from(scheduledFor).until(monday).days <= 0 &&
+    Temporal.PlainDate.from(scheduledFor).until(monday).days >= -6;
+
+  const nextMonday = monday.toString();
+
   const options: Array<TOption & { onChange: () => void }> = [
     {
       id: today,
@@ -108,6 +118,15 @@ const optionsForScheduling = (
       title: "Tomorrow",
     },
   ];
+
+  if (!isScheduledForNextWeek && tomorrow !== nextMonday) {
+    options.push({
+      id: nextMonday,
+      isSelected: false,
+      onChange: () => onChange(nextMonday),
+      title: "Next Week",
+    });
+  }
 
   if (scheduledFor) {
     if (scheduledFor !== today && scheduledFor !== tomorrow) {

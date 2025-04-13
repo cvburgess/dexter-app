@@ -7,26 +7,41 @@
     "typescript",
     "typescriptreact"
   ],
-  "cSpell.ignorePaths": ["*.env"],
+  "cSpell.ignorePaths": ["*.env", "*.json"],
   "cSpell.words": [
     "apikey",
+    "Asar",
+    "caramellatte",
+    "codesign",
+    "cvburgess",
     "daisyui",
+    "dexterplanner",
     "hcaptcha",
+    "icns",
     "inbucket",
+    "lofi",
     "messagebird",
+    "nord",
+    "Noto",
+    "nvmrc",
     "oklch",
     "oneshot",
     "orioledb",
     "pangea",
     "pooler",
+    "popovertarget",
+    "popovertargetaction",
     "prefersdark",
     "SENDGRID",
     "signup",
     "signups",
     "supabase",
+    "synthwave",
     "textlocal",
     "timebox",
+    "togglefullscreen",
     "totp",
+    "ULFO",
     "unlisten",
     "Unprioritized",
     "vite",
@@ -39,5 +54,8 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  }
 }

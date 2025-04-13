@@ -10,7 +10,7 @@ import {
   updateList,
 } from "../api/lists.ts";
 
-import { useAuth } from "./useAuth.tsx";
+import { supabase } from "./useAuth.tsx";
 
 type TUseLists = [
   TList[],
@@ -22,13 +22,18 @@ type TUseLists = [
   },
 ];
 
-export const useLists = (): TUseLists => {
-  const { supabase } = useAuth();
+type THookOptions = {
+  skipQuery?: boolean;
+};
+
+export const useLists = (options?: THookOptions): TUseLists => {
   const queryClient = useQueryClient();
 
   const { data: lists = [] } = useQuery({
+    enabled: !options?.skipQuery,
     queryKey: ["lists"],
     queryFn: () => getLists(supabase),
+    staleTime: 1000 * 60 * 10,
   });
 
   const { mutate: create } = useMutation<TList[], Error, TCreateList>({

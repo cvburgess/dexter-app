@@ -1,0 +1,9 @@
+[build]
+command = "npm run web:build"
+publish = "dist"
+
+# Handle SPA routing
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200

@@ -7,16 +7,21 @@
     "plugin:import/electron",
     "plugin:import/recommended",
     "plugin:import/typescript",
+    "plugin:react/jsx-runtime",
+    "plugin:react/recommended",
     "prettier"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "react"],
   "rules": {
     "eqeqeq": ["error", "always"],
     "no-var": "error",
     "prefer-arrow-callback": "error",
     "prefer-const": "error",
     "prettier/prettier": "error",
+    "react/jsx-sort-props": "error",
+    "react/react-in-jsx-scope": 0,
+    "react/jsx-uses-react": 0,
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
@@ -26,5 +31,10 @@
         "destructuredArrayIgnorePattern": "^_"
       }
     ]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }

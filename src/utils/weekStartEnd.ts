@@ -9,5 +9,5 @@ export const weekStartEnd = (weeksOffset = 0) => {
 
   const sunday = mostRecentMonday.add({ days: 6 });
 
-  return { mostRecentMonday, sunday };
+  return { monday: mostRecentMonday, sunday };
 };

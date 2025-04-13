@@ -17,7 +17,7 @@ import { TTask } from "../api/tasks.ts";
 
 export const Lists = () => {
   const [lists, { createList, updateList }] = useLists();
-  const [tasks] = useTasks(taskFilters.incomplete);
+  const [tasks] = useTasks({ filters: taskFilters.incomplete });
 
   const columns = makeColumns(lists, tasks, updateList);
 
@@ -94,17 +94,18 @@ const ListInput = ({ list, onArchive, onChange }: TListInputProps) => {
       >
         <ButtonWithPopover
           buttonVariant="left-join"
-          variant="emoji"
           onChange={onChangeEmoji}
+          popoverId="emoji-picker"
+          variant="emoji"
         >
           {emoji}
         </ButtonWithPopover>
-        <label className="input join-item bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-r-[var(--radius-box)] h-standard border-1 border-base-200 text-[1rem]">
+        <label className="input join-item bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-r-[var(--radius-field)] h-standard border-1 border-base-200 text-[1rem]">
           <input
-            placeholder="New List"
-            type="text"
             onChange={onChangeTitle}
             onKeyDown={onEnter}
+            placeholder="New List"
+            type="text"
             value={title}
           />
           {list && (
@@ -117,17 +118,22 @@ const ListInput = ({ list, onArchive, onChange }: TListInputProps) => {
       {list && (
         <ConfirmModal
           isOpen={isModalOpen}
-          onClose={closeModal}
-          onConfirm={() => onArchive(list.id)}
-          title={`Archive ${list.title}?`}
           message={
             <>
               This will archive the list and <br />
-              move any open tasks to <span className="font-bold">won't do</span>
-              .
+              move any open tasks to{" "}
+              <span className="font-bold">won&apos;t do</span>.
             </>
           }
-          confirmButtonText="Archive"
+          onClose={closeModal}
+          options={[
+            {
+              action: () => onArchive(list.id),
+              buttonClass: "btn-error",
+              title: "Archive",
+            },
+          ]}
+          title={`Archive ${list.title}?`}
         />
       )}
     </>

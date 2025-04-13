@@ -1,5 +1,7 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 
+import { camelCase } from "../utils/changeCase.ts";
+
 import { Database } from "./database.types.ts";
 
 export type TJournalPrompt = { prompt: string; response: string };
@@ -14,21 +16,13 @@ export const getDay = async (
     .from("days")
     .select("*")
     .eq("date", date)
-    .limit(1);
-
-  const defaultDay: TDay = {
-    date,
-    notes: "",
-    prompts: [
-      { prompt: "Yesterday's highlight", response: "" },
-      { prompt: "Today I am grateful for", response: "" },
-      { prompt: "Today I am excited for", response: "" },
-      { prompt: "What matters most today", response: "" },
-    ],
-  };
+    .limit(1)
+    .maybeSingle();
 
   if (error) throw error;
-  return (data[0] || defaultDay) as unknown as TDay;
+  if (!data) throw new Error("No day found");
+
+  return camelCase(data) as TDay;
 };
 
 export type TUpsertDay = {
@@ -41,8 +35,12 @@ export const upsertDay = async (
   supabase: SupabaseClient<Database>,
   diff: TUpsertDay,
 ) => {
-  const { data, error } = await supabase.from("days").upsert(diff).select();
+  const { data, error } = await supabase
+    .from("days")
+    .upsert(diff)
+    .select()
+    .single();
 
   if (error) throw error;
-  return data[0] as unknown as TDay;
+  return camelCase(data) as TDay;
 };

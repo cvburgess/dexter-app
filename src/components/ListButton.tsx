@@ -1,18 +1,24 @@
 import { Smiley } from "@phosphor-icons/react";
 
 import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
+import { Tooltip } from "./Tooltip.tsx";
 
 import { useLists } from "../hooks/useLists.tsx";
 
 import { TList } from "../api/lists.ts";
-import { TUpdateTask } from "../api/tasks.ts";
+import { TTask, TUpdateTask } from "../api/tasks.ts";
 
 type TListButtonProps = {
   listId: string | null;
   onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
+  task: TTask;
 };
 
-export const ListButton = ({ onTaskUpdate, listId }: TListButtonProps) => {
+export const ListButton = ({
+  onTaskUpdate,
+  listId,
+  task,
+}: TListButtonProps) => {
   const [lists, { getListById }] = useLists();
 
   const selectedList = listId ? getListById(listId) : null;
@@ -20,15 +26,17 @@ export const ListButton = ({ onTaskUpdate, listId }: TListButtonProps) => {
   const options = optionsForListId(lists, listId);
 
   return (
-    <ButtonWithPopover
-      buttonVariant="round"
-      onChange={(value) => onTaskUpdate({ listId: value })}
-      options={options}
-      variant="menu"
-      wrapperClassName="dropdown-center dropdown-hover"
-    >
-      {selectedList ? selectedList.emoji : <Smiley weight="thin" size={24} />}
-    </ButtonWithPopover>
+    <Tooltip position="top" text="List">
+      <ButtonWithPopover
+        buttonVariant="round"
+        onChange={(value) => onTaskUpdate({ listId: value as string })}
+        options={options}
+        popoverId={`${task.id}-list`}
+        variant="menu"
+      >
+        {selectedList ? selectedList.emoji : <Smiley size={24} weight="thin" />}
+      </ButtonWithPopover>
+    </Tooltip>
   );
 };
 

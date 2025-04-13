@@ -10,18 +10,16 @@ export const Journal = ({ date }: TJournalProps) => {
   const [{ prompts }, { upsertDay }] = useDays(date.toString());
 
   return prompts.map(({ prompt, response }, index) => (
-    <div key={index} className="flex flex-col w-full my-8">
-      <label className="text-md font-bold text-center opacity-80 mb-4">
-        {prompt}
-      </label>
+    <div className="flex flex-col w-full mb-8" key={index}>
+      <label className="text-md font-bold opacity-80 mb-4">{prompt}</label>
 
       <ResponseInput
-        response={response}
         onChange={(newResponse) => {
           const diff = [...prompts];
           diff[index].response = newResponse;
           upsertDay({ prompts: diff });
         }}
+        response={response}
       />
     </div>
   ));
@@ -47,9 +45,9 @@ const ResponseInput = ({ response, onChange }: TResponseInputProps) => {
 
   return (
     <input
-      className="w-full border-b-1 border-base-content/15 border-dashed focus:outline-0 text-center text-xs"
-      value={newResponse}
+      className="w-full border-b-1 border-base-content/15 border-dashed focus:outline-0 text-xs"
       onChange={(e) => setNewResponse(e.target.value)}
+      value={newResponse}
     />
   );
 };

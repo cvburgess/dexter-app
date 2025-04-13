@@ -9,7 +9,7 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   if (initializing) return null;
 
   // If no session, redirect to login
-  if (!session) return <Navigate to="/login" replace />;
+  if (!session) return <Navigate replace to="/login" />;
 
   // If there is a valid session, render the app
   return children;

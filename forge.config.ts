@@ -1,43 +1,50 @@
 import type { ForgeConfig } from "@electron-forge/shared-types";
-import { MakerSquirrel } from "@electron-forge/maker-squirrel";
-import { MakerZIP } from "@electron-forge/maker-zip";
-import { MakerDeb } from "@electron-forge/maker-deb";
-import { MakerRpm } from "@electron-forge/maker-rpm";
 import { VitePlugin } from "@electron-forge/plugin-vite";
 import { FusesPlugin } from "@electron-forge/plugin-fuses";
 import { FuseV1Options, FuseVersion } from "@electron/fuses";
 
 const config: ForgeConfig = {
   packagerConfig: {
+    appBundleId: "com.dexterplanner",
+    appCategoryType: "public.app-category.developer-tools",
     asar: true,
     icon: "public/app-icon",
+    name: "Dexter",
+    osxSign: {},
+    osxNotarize: {
+      appleId: process.env.APPLE_ID,
+      appleIdPassword: process.env.APPLE_APP_SPECIFIC_PASSWORD,
+      teamId: process.env.APPLE_TEAM_ID,
+    },
     protocols: [{ name: "Dexter", schemes: ["dexter"] }],
   },
-  rebuildConfig: {},
   makers: [
-    new MakerSquirrel({}),
-    new MakerZIP({}, ["darwin"]),
-    new MakerRpm({}),
-    new MakerDeb({}),
+    {
+      name: "@electron-forge/maker-zip", // Used for direct downloads
+      config: {},
+    },
+    // {
+    //   name: "@electron-forge/maker-pkg", // Used for Mac App Store
+    //   config: {},
+    // },
   ],
   plugins: [
     new VitePlugin({
       // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.
-      // If you are familiar with Vite configuration, it will look really familiar.
       build: [
         {
           // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
           entry: "src/main.ts",
-          config: "vite.main.config.mjs",
+          config: "vite.config.mjs",
           target: "main",
         },
         {
           entry: "src/preload.ts",
-          config: "vite.preload.config.mjs",
+          config: "vite.config.mjs",
           target: "preload",
         },
       ],
-      renderer: [{ name: "main_window", config: "vite.renderer.config.mjs" }],
+      renderer: [{ name: "main_window", config: "vite.config.mjs" }],
     }),
     // Fuses are used to enable/disable various Electron functionality
     // at package time, before code signing the application
@@ -50,6 +57,19 @@ const config: ForgeConfig = {
       [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
+  ],
+  publishers: [
+    {
+      name: "@electron-forge/publisher-github",
+      config: {
+        repository: {
+          owner: "cvburgess",
+          name: "dexter-app",
+        },
+        prerelease: false, // True = will not auto-update, but will publish to Github
+        draft: false, // True = will not auto-update, but will publish to Github
+      },
+    },
   ],
 };
 

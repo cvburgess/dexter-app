@@ -10,11 +10,14 @@ import { TTask } from "../api/tasks.ts";
 import { TQueryFilter } from "../api/applyFilters.ts";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
-type TQuickPlannerProps = { baseFilters?: TQueryFilter[]; className?: string };
+type TQuickPlannerProps = {
+  baseFilters?: TQueryFilter[];
+  columnId: string;
+};
 
 export const QuickPlanner = ({
   baseFilters = [],
-  className,
+  columnId,
 }: TQuickPlannerProps) => {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
 
@@ -23,7 +26,9 @@ export const QuickPlanner = ({
   const activeFilters = taskFilters?.[selectedFilter] ?? [];
 
   const [search, setSearch] = useState<string>("");
-  const [filteredTasks] = useTasks([...baseFilters, ...activeFilters]);
+  const [filteredTasks] = useTasks({
+    filters: [...baseFilters, ...activeFilters],
+  });
 
   const searchTasks = (tasks: TTask[]) =>
     tasks.filter((task): boolean =>
@@ -31,35 +36,34 @@ export const QuickPlanner = ({
     );
 
   return (
-    <div className={classNames("no-scrollbar", className)}>
-      <Column
-        id="scheduledFor:null"
-        tasks={searchTasks(filteredTasks)}
-        titleComponent={
-          <div className="join w-standard">
-            <ButtonWithPopover
-              buttonVariant="left-join"
-              onChange={(id) => setSelectedFilter(id as string)}
-              options={options}
-              variant="menu"
-            >
-              {selected.title}
-            </ButtonWithPopover>
+    <Column
+      id={columnId}
+      tasks={searchTasks(filteredTasks)}
+      titleComponent={
+        <div className="join w-standard">
+          <ButtonWithPopover
+            buttonClassName="min-w-20"
+            buttonVariant="left-join"
+            onChange={(id) => setSelectedFilter(id as string)}
+            options={options}
+            popoverId="quick-planner"
+            variant="menu"
+          >
+            {selected.title}
+          </ButtonWithPopover>
 
-            <InputWithIcon
-              // className="join-item"
-              type="text"
-              placeholder="Search"
-              onChange={(event) => setSearch(event.target.value)}
-              wrapperClassName="join-item"
-              value={search}
-            >
-              <MagnifyingGlass />
-            </InputWithIcon>
-          </div>
-        }
-      />
-    </div>
+          <InputWithIcon
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search"
+            type="text"
+            value={search}
+            wrapperClassName="join-item"
+          >
+            <MagnifyingGlass />
+          </InputWithIcon>
+        </div>
+      }
+    />
   );
 };
 
@@ -68,7 +72,7 @@ type TQuickDrawerProps = TQuickPlannerProps & { isOpen: boolean };
 export const QuickDrawer = ({ isOpen, ...props }: TQuickDrawerProps) => (
   <div
     className={classNames(
-      "bg-base-100 border-l-2 border-base-200 overflow-y-auto overflow-x-hidden flex-shrink-0 transition-all duration-300 ease-in-out",
+      "flex flex-col bg-base-100 border-l-2 border-base-200 overflow-x-hidden overflow-y-scroll flex-shrink-0 transition-all duration-300 ease-in-out no-scrollbar",
       isOpen ? "w-78 px-4" : "w-0",
     )}
   >

@@ -6,25 +6,29 @@ import { WeekNav } from "../components/Toolbar.tsx";
 import { QuickDrawer } from "../components/QuickPlanner.tsx";
 import { DraggableView, DrawerContainer } from "../components/View.tsx";
 
+import { usePreferences } from "../hooks/usePreferences.tsx";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
+import { useToggle } from "../hooks/useToggle.tsx";
+
 import { TTask } from "../api/tasks.ts";
 import { makeOrFilter, TQueryFilter } from "../api/applyFilters.ts";
 import { weekStartEnd } from "../utils/weekStartEnd.ts";
 
 export const Week = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, toggle] = useToggle();
   const [weeksOffset, setWeeksOffset] = useState<number>(0);
+  const [preferences] = usePreferences();
 
-  const { mostRecentMonday, sunday } = weekStartEnd(weeksOffset);
+  const { monday, sunday } = weekStartEnd(weeksOffset);
 
   const filters: Record<string, TQueryFilter[]> = {
     thisWeek: [
-      ["scheduledFor", "gte", mostRecentMonday.toString()],
+      ["scheduledFor", "gte", monday.toString()],
       ["scheduledFor", "lte", sunday.toString()],
     ],
     notThisWeek: [
       makeOrFilter([
-        ["scheduledFor", "lt", mostRecentMonday.toString()],
+        ["scheduledFor", "lt", monday.toString()],
         ["scheduledFor", "gt", sunday.toString()],
         ["scheduledFor", "is", null],
       ]),
@@ -32,16 +36,16 @@ export const Week = () => {
     ],
   };
 
-  const [tasks] = useTasks(filters.thisWeek);
+  const [tasks] = useTasks({ filters: filters.thisWeek });
 
-  const columns = makeColumnsForWeekOf(mostRecentMonday, tasks);
+  const columns = makeColumnsForWeekOf(monday, tasks);
 
   return (
     <DraggableView>
       <WeekNav
-        weeksOffset={weeksOffset}
         setWeeksOffset={setWeeksOffset}
-        toggleQuickPlan={() => setIsOpen(!isOpen)}
+        toggleQuickPlan={toggle}
+        weeksOffset={weeksOffset}
       />
       <DrawerContainer>
         <Board
@@ -49,8 +53,13 @@ export const Week = () => {
           cardSize="compact-w"
           columns={columns}
           groupBy="scheduledFor"
+          showHabits={preferences.enableHabits}
         />
-        <QuickDrawer isOpen={isOpen} baseFilters={filters.notThisWeek} />
+        <QuickDrawer
+          baseFilters={filters.notThisWeek}
+          columnId="scheduledFor:null"
+          isOpen={isOpen}
+        />
       </DrawerContainer>
     </DraggableView>
   );
@@ -71,11 +80,16 @@ const makeColumnsForWeekOf = (
   ];
 
   return dayNames.map((dayName, index) => {
-    const isoDate = mostRecentMonday.add({ days: index }).toString();
+    const date = mostRecentMonday.add({ days: index });
+    const isoDate = date.toString();
 
     return {
       id: isoDate,
       isActive: isoDate === Temporal.Now.plainDateISO().toString(),
+      subtitle: date.toLocaleString(["en-us"], {
+        month: "numeric",
+        day: "numeric",
+      }),
       title: dayName,
       tasks: tasks?.filter((task: TTask) => task.scheduledFor === isoDate),
     };

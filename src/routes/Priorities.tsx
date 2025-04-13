@@ -6,8 +6,8 @@ import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
 import { ETaskPriority, TTask } from "../api/tasks.ts";
 
-export const Prioritize = () => {
-  const [tasks] = useTasks(taskFilters.incomplete);
+export const Priorities = () => {
+  const [tasks] = useTasks({ filters: taskFilters.incomplete });
 
   const columns = makeColumns(tasks);
 
@@ -31,6 +31,7 @@ const makeColumns = (tasks: TTask[] | undefined = []): TColumn[] => [
   {
     id: ETaskPriority.IMPORTANT_AND_URGENT.toString(),
     title: "Important & Urgent",
+    subtitle: "do it now",
     tasks: tasks?.filter(
       (task: TTask) => task.priority === ETaskPriority.IMPORTANT_AND_URGENT,
     ),
@@ -38,6 +39,7 @@ const makeColumns = (tasks: TTask[] | undefined = []): TColumn[] => [
   {
     id: ETaskPriority.IMPORTANT.toString(),
     title: "Important",
+    subtitle: "do it because it matters",
     tasks: tasks?.filter(
       (task: TTask) => task.priority === ETaskPriority.IMPORTANT,
     ),
@@ -45,13 +47,15 @@ const makeColumns = (tasks: TTask[] | undefined = []): TColumn[] => [
   {
     id: ETaskPriority.URGENT.toString(),
     title: "Urgent",
+    subtitle: "do it soon or delegate it",
     tasks: tasks?.filter(
       (task: TTask) => task.priority === ETaskPriority.URGENT,
     ),
   },
   {
     id: ETaskPriority.NEITHER.toString(),
-    title: "Rainy Day",
+    title: "Neither",
+    subtitle: "do it just for fun",
     tasks: tasks?.filter(
       (task: TTask) => task.priority === ETaskPriority.NEITHER,
     ),

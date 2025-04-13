@@ -1,21 +1,24 @@
+import classNames from "classnames";
 import { useRef, useEffect } from "react";
 
 type TConfirmModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  options: {
+    title: string;
+    action: () => void;
+    buttonClass?: string;
+  }[];
   title: string;
   message: string | React.ReactNode;
-  confirmButtonText: string;
 };
 
 export const ConfirmModal = ({
   isOpen,
   onClose,
-  onConfirm,
+  options,
   title = "Confirmation",
   message,
-  confirmButtonText,
 }: TConfirmModalProps) => {
   const dialogRef = useRef(null);
 
@@ -36,30 +39,34 @@ export const ConfirmModal = ({
     }
   }, [onClose]);
 
-  const handleConfirm = () => {
-    onConfirm();
-    dialogRef.current?.close();
-  };
-
   return (
-    <dialog ref={dialogRef} className="modal">
+    <dialog className="modal" ref={dialogRef}>
       <div className="modal-box w-xs">
         <h3 className="font-bold text-lg text-center">{title}</h3>
 
         <p className="py-4 text-center text-sm">{message}</p>
 
-        <div className="modal-action flex justify-center mt-3">
-          <form method="dialog">
-            <button className="btn mr-2 bg-base-300"> Cancel </button>
-          </form>
+        <div className="modal-action flex flex-col justify-center mt-3">
+          {options.map((option) => (
+            <button
+              className={classNames("btn w-full", option.buttonClass)}
+              key={option.title}
+              onClick={() => {
+                option.action();
+                dialogRef.current?.close();
+              }}
+            >
+              {option.title}
+            </button>
+          ))}
 
-          <button className="btn btn-error" onClick={handleConfirm}>
-            {confirmButtonText}
-          </button>
+          <form method="dialog">
+            <button className="btn w-full"> Cancel </button>
+          </form>
         </div>
       </div>
 
-      <form method="dialog" className="modal-backdrop">
+      <form className="modal-backdrop" method="dialog">
         <button>close</button>
       </form>
     </dialog>

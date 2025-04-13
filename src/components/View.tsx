@@ -1,4 +1,5 @@
-import { DragDropContext, DropResult } from "@hello-pangea/dnd";
+import { useCallback, useState, createContext } from "react";
+import { DragStart, DragDropContext, DropResult } from "@hello-pangea/dnd";
 
 import { useTasks } from "../hooks/useTasks.tsx";
 
@@ -11,7 +12,8 @@ export const View = ({ children }: TProps) => (
 );
 
 export const DraggableView = ({ children }: TProps) => {
-  const [_, { updateTask }] = useTasks();
+  const [startingColumn, setStartingColumn] = useState<string | null>(null);
+  const [_, { updateTask }] = useTasks({ skipQuery: true });
 
   const onTaskMove = (id: string, _index: number, column: string) => {
     // column is prefixed with the property name
@@ -19,8 +21,11 @@ export const DraggableView = ({ children }: TProps) => {
     const [prop, value] = column.split(":");
     const nullableValue = value === "null" ? null : value;
 
-    // TODO: support moving within a column with index
     updateTask({ id, [prop]: nullableValue });
+  };
+
+  const onDragStart = (result: DragStart<string>) => {
+    setStartingColumn(result.source.droppableId);
   };
 
   const onDragEnd = (result: DropResult<string>) => {
@@ -28,31 +33,25 @@ export const DraggableView = ({ children }: TProps) => {
     const { source, destination } = result;
 
     const taskId = result.draggableId;
-    const sourceColumn = result.source.droppableId;
+    const _sourceColumn = result.source.droppableId;
     const destColumn = result.destination.droppableId;
     const destIndex = result.destination.index;
 
     if (source.droppableId !== destination.droppableId) {
-      console.dir({ taskId, sourceColumn, destColumn });
       onTaskMove(taskId, destIndex, destColumn);
-    } else {
-      // const column = columns[source.droppableId];
-      // const copiedItems = [...column.items];
-      // const [removed] = copiedItems.splice(source.index, 1);
-      // copiedItems.splice(destination.index, 0, removed);
-      // setColumns({
-      //   ...columns,
-      //   [source.droppableId]: {
-      //     ...column,
-      //     items: copiedItems,
-      //   },
-      // });
     }
   };
 
+  const isReordering = useCallback(
+    (currentColumn: string) => startingColumn === currentColumn,
+    [startingColumn],
+  );
+
   return (
-    <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-      <View>{children}</View>
+    <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+      <ReorderingContext.Provider value={{ isReordering }}>
+        <View>{children}</View>
+      </ReorderingContext.Provider>
     </DragDropContext>
   );
 };
@@ -62,7 +61,15 @@ export const DrawerContainer = ({ children }: TProps) => (
 );
 
 export const ScrollableContainer = ({ children }: TProps) => (
-  <div className="flex flex-1 gap-4 px-4 overflow-auto bg-base-100">
+  <div className="flex flex-1 gap-4 px-4 overflow-auto bg-base-100 no-scrollbar">
     {children}
   </div>
 );
+
+type TReorderingContext = {
+  isReordering: (columnId: string) => boolean;
+};
+
+export const ReorderingContext = createContext<TReorderingContext>({
+  isReordering: () => false,
+});

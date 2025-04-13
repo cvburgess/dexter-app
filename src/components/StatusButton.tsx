@@ -1,36 +1,40 @@
-import { Check, SpinnerGap, X } from "@phosphor-icons/react";
-import classNames from "classnames";
+import { Check, Circle, SpinnerGap, X } from "@phosphor-icons/react";
 
 import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
+import { Tooltip } from "./Tooltip.tsx";
 
-import { ETaskStatus, TUpdateTask } from "../api/tasks.ts";
+import { ETaskStatus, TTask, TUpdateTask } from "../api/tasks.ts";
 
 type TStatusButtonProps = {
   className?: string;
   onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
   status: ETaskStatus;
+  task: TTask;
 };
 
 export const StatusButton = ({
   className,
   onTaskUpdate,
   status,
+  task,
 }: TStatusButtonProps) => {
   const options = optionsForStatus(status);
   const icon = iconForStatus(status);
 
   return (
-    <ButtonWithPopover
-      buttonVariant="round"
-      options={options}
-      onChange={(value) =>
-        onTaskUpdate({ status: Number(value) as ETaskStatus })
-      }
-      variant="menu"
-      wrapperClassName={classNames("dropdown-hover", className)}
-    >
-      {icon}
-    </ButtonWithPopover>
+    <Tooltip className={className} position="top" text="Status">
+      <ButtonWithPopover
+        buttonVariant="round"
+        onChange={(value) =>
+          onTaskUpdate({ status: Number(value) as ETaskStatus })
+        }
+        options={options}
+        popoverId={`${task.id}`}
+        variant="menu"
+      >
+        {icon}
+      </ButtonWithPopover>
+    </Tooltip>
   );
 };
 
@@ -38,25 +42,25 @@ const optionsForStatus = (status: ETaskStatus): TOption[] => [
   {
     id: ETaskStatus.TODO.toString(),
     title: "To Do",
-    emoji: "⚪",
+    icon: <Circle />,
     isSelected: status === ETaskStatus.TODO,
   },
   {
     id: ETaskStatus.IN_PROGRESS.toString(),
     title: "In Progress",
-    emoji: "🟡",
+    icon: <SpinnerGap />,
     isSelected: status === ETaskStatus.IN_PROGRESS,
   },
   {
     id: ETaskStatus.DONE.toString(),
     title: "Done",
-    emoji: "🟢",
+    icon: <Check />,
     isSelected: status === ETaskStatus.DONE,
   },
   {
     id: ETaskStatus.WONT_DO.toString(),
     title: "Won't Do",
-    emoji: "🔴",
+    icon: <X />,
     isSelected: status === ETaskStatus.WONT_DO,
   },
 ];
