@@ -120,14 +120,12 @@ export const ButtonWithPopover = ({
 const popoverPolyfill = {
   minWidth: "anchor-size(width)",
   positionAnchor: "auto",
-  positionArea: "bottom",
-  positionTryFallbacks: "top, left, right",
-  justifySelf: "anchor-center",
+  positionTryFallbacks: "top, left, right, flip-inline flip-block",
   transition: "opacity 0.15s ease-in-out, transform 0.15s ease-in-out",
 } as React.CSSProperties;
 
 const popoverStyles =
-  "dropdown fixed bg-base-100 rounded-box shadow-sm !text-base-content mt-1 max-h-[50vh] no-scrollbar";
+  "dropdown absolute bg-base-100 rounded-box shadow-sm !text-base-content mt-1 max-h-[50vh] no-scrollbar";
 
 type TDropdownMenuProps = {
   onChange: TOnChange<string | number | null>;
