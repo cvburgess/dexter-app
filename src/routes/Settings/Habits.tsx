@@ -5,6 +5,7 @@ import classNames from "classnames";
 
 import { ButtonWithPopover } from "../../components/ButtonWithPopover";
 import { ConfirmModal } from "../../components/ConfirmModal";
+import { InputWithIcon } from "../../components/InputWithIcon";
 import { SettingsOption } from "../../components/SettingsOption";
 
 import { useHabits } from "../../hooks/useHabits";
@@ -67,23 +68,20 @@ const NewHabitInput = ({ createHabit }: TNewHabitProps) => {
   };
 
   return (
-    <label className="input w-full h-standard bg-base-200 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
-      <span>
-        <Plus className="text-base-content/60" />
-      </span>
-      <input
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && e.currentTarget.value.trim()) {
-            createHabit({
-              ...defaultHabit,
-              title: e.currentTarget.value.trim(),
-            });
-            e.currentTarget.value = "";
-          }
-        }}
-        type="text"
-      />
-    </label>
+    <InputWithIcon
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && e.currentTarget.value.trim()) {
+          createHabit({
+            ...defaultHabit,
+            title: e.currentTarget.value.trim(),
+          });
+          e.currentTarget.value = "";
+        }
+      }}
+      type="text"
+    >
+      <Plus />
+    </InputWithIcon>
   );
 };
 

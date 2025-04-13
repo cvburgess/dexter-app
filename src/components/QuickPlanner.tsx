@@ -57,7 +57,7 @@ export const QuickPlanner = ({
             placeholder="Search"
             type="text"
             value={search}
-            wrapperClassName="join-item h-standard"
+            wrapperClassName="join-item"
           >
             <MagnifyingGlass />
           </InputWithIcon>

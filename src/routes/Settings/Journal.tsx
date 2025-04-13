@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Plus, Trash } from "@phosphor-icons/react";
 import { useDebounce } from "use-debounce";
 
+import { InputWithIcon } from "../../components/InputWithIcon";
 import { SettingsOption } from "../../components/SettingsOption";
 
 import { usePreferences } from "../../hooks/usePreferences";
@@ -62,20 +63,17 @@ export const Journal = () => {
             />
           ))}
 
-          <label className="input w-full h-standard bg-base-200 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
-            <span>
-              <Plus className="text-base-content/60" />
-            </span>
-            <input
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && e.currentTarget.value.trim()) {
-                  addPrompt(e.currentTarget.value.trim());
-                  e.currentTarget.value = "";
-                }
-              }}
-              type="text"
-            />
-          </label>
+          <InputWithIcon
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && e.currentTarget.value.trim()) {
+                addPrompt(e.currentTarget.value.trim());
+                e.currentTarget.value = "";
+              }
+            }}
+            type="text"
+          >
+            <Plus />
+          </InputWithIcon>
         </fieldset>
       )}
     </>
