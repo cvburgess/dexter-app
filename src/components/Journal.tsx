@@ -12,7 +12,7 @@ export const Journal = ({ date }: TJournalProps) => {
   return prompts.map(({ prompt, response }, index) => (
     <div
       className="flex flex-col w-full mb-8"
-      key={`${date.toString}-${index}`}
+      key={`${date.toString()}-${index}`}
     >
       <label className="text-md font-bold opacity-80 mb-4">{prompt}</label>
 
