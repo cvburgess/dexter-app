@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 
 import { EditorState, EditorThemeClasses } from "lexical";
-
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
@@ -66,6 +66,13 @@ type TLexicalEditorProps = {
 };
 
 export const LexicalEditor = ({ onChange, text }: TLexicalEditorProps) => {
+  const [md, setMd] = useState<string>(text);
+  const [debouncedMd] = useDebounce(md, 1000);
+
+  useEffect(() => {
+    onChange(debouncedMd);
+  }, [debouncedMd]);
+
   const initialConfig = {
     editorState: () => $convertFromMarkdownString(text, TRANSFORMERS),
     namespace: "Notes",
@@ -86,8 +93,7 @@ export const LexicalEditor = ({ onChange, text }: TLexicalEditorProps) => {
 
   const handleChange = (editorState: EditorState) => {
     editorState.read(() => {
-      const md = $convertToMarkdownString(TRANSFORMERS);
-      onChange(md);
+      setMd($convertToMarkdownString(TRANSFORMERS));
     });
   };
 
