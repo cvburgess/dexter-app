@@ -10,7 +10,10 @@ export const Journal = ({ date }: TJournalProps) => {
   const [{ prompts, ...rest }, { upsertDay }] = useDays(date.toString());
 
   return prompts.map(({ prompt, response }, index) => (
-    <div className="flex flex-col w-full mb-8" key={index}>
+    <div
+      className="flex flex-col w-full mb-8"
+      key={`${date.toString}-${index}`}
+    >
       <label className="text-md font-bold opacity-80 mb-4">{prompt}</label>
 
       <ResponseInput
@@ -32,7 +35,7 @@ type TResponseInputProps = {
 
 const ResponseInput = ({ response, onChange }: TResponseInputProps) => {
   const [newResponse, setNewResponse] = useState<string>(response);
-  const [debounced] = useDebounce(newResponse, 1000);
+  const [debounced] = useDebounce(newResponse, 500);
 
   // When props reflow into the component, update local state
   useEffect(() => {
