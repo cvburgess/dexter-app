@@ -17,6 +17,7 @@ export const Notes = ({ date }: TNotesProps) => {
 
   return (
     <LexicalEditor
+      key={date.toString()}
       onChange={(text) => {
         if (text !== notes) upsertDay({ ...rest, notes: text });
       }}

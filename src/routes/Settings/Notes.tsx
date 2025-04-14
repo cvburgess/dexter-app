@@ -31,6 +31,7 @@ export const Notes = () => {
           </legend>
           <div className="w-full min-h-full h-fit border-2 border-base-200 rounded-box p-4">
             <LexicalEditor
+              key="templateNote"
               onChange={(templateNote) => updatePreferences({ templateNote })}
               text={preferences.templateNote}
             />
