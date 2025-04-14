@@ -1,7 +1,9 @@
-// import { useEffect } from "react";
+import { useEffect } from "react";
+
 // import { $getRoot, $getSelection } from "lexical";
 import { EditorState, EditorThemeClasses } from "lexical";
 
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
@@ -12,7 +14,11 @@ import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { ListItemNode, ListNode } from "@lexical/list";
-import { CodeNode, CodeHighlightNode } from "@lexical/code";
+import {
+  CodeNode,
+  CodeHighlightNode,
+  registerCodeHighlighting,
+} from "@lexical/code";
 import { AutoLinkNode, LinkNode } from "@lexical/link";
 import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin";
 import { HorizontalRuleNode } from "@lexical/react/LexicalHorizontalRuleNode";
@@ -21,6 +27,7 @@ import { SelectionAlwaysOnDisplay } from "@lexical/react/LexicalSelectionAlwaysO
 import { AutoLinkPlugin } from "@lexical/react/LexicalAutoLinkPlugin";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
+import { ClickableLinkPlugin } from "@lexical/react/LexicalClickableLinkPlugin";
 import {
   $convertFromMarkdownString,
   $convertToMarkdownString,
@@ -30,9 +37,11 @@ import {
 const markdown = `
 # Heading h1
 
-This is a Markdown file.
+This is a \`Markdown\` file.
 
 ## This is a Heading h2
+
+This is the text under it
 
 ## Emphasis
 
@@ -66,9 +75,9 @@ _You **can** combine them_
 
 ### Checkboxes
 
-- [ ] Item 1
-- [ ] Item 2
-- [x] Item 3 (checked)
+* [ ] Item 1
+* [ ] Item 2
+* [x] Item 3 (checked)
 
 ## Links
 
@@ -163,10 +172,12 @@ export const Notes = () => {
       <AutoFocusPlugin />
       <TabIndentationPlugin />
       <LinkPlugin />
+      <ClickableLinkPlugin />
       <ListPlugin />
       <CheckListPlugin />
       <AutoLinkPlugin matchers={MATCHERS} />
       <SelectionAlwaysOnDisplay />
+      <CodeHighlightPlugin />
     </LexicalComposer>
   );
 };
@@ -176,38 +187,41 @@ const theme: EditorThemeClasses = {
   rtl: "rtl",
   placeholder: "",
   paragraph: "mb-2 relative",
-  quote: "font-italic border-l-2 border-gray-300 pl-4 my-2",
+  quote: "font-italic border-l-4 border-gray-300 pl-4 my-2",
   heading: {
-    h1: "text-3xl font-extrabold text-primary my-4",
-    h2: "text-2xl font-bold text-primary my-4",
-    h3: "text-xl font-bold text-primary my-4",
-    h4: "text-lg font-bold text-primary my-4",
-    h5: "font-bold text-primary my-4",
+    h1: "text-primary mt-4 mb-2 font-extrabold text-3xl",
+    h2: "text-primary mt-4 mb-2 font-bold text-2xl",
+    h3: "text-primary mt-4 mb-2 font-bold text-xl",
+    h4: "text-primary mt-4 mb-2 font-bold text-lg",
+    h5: "text-primary mt-4 mb-2 font-bold",
   },
-  indent: "lexical-indent",
+  // indent: "lexical-indent",
   list: {
-    ul: "list-outside list-disc before:hidden after:hidden",
-    ol: "list-outside list-decimal before:hidden after:hidden",
+    ul: "list-outside list-disc",
+    ol: "list-outside list-decimal ml-1",
+    listitem:
+      "text-base-content ml-4 mt-1 pl-1 marker:text-primary marker:font-medium",
     nested: {
-      listitem: "!list-none before:hidden after:hidden",
+      listitem: "list-none before:hidden after:hidden mt-2",
     },
-    listitem: "text-base-content mx-8",
-    checklist: "",
-    listitemChecked: "",
-    listitemUnchecked: "",
+    checklist: "relative mx-2 px-6 list-none outline-none",
+    listitemChecked:
+      "relative mx-2 px-6 list-none outline-none line-through before:content-[''] before:absolute before:w-4 before:h-4 before:top-0.5 before:left-0 before:cursor-pointer before:block before:bg-cover before:border before:border-blue-500 before:rounded before:bg-blue-500 before:bg-no-repeat rtl:before:left-auto rtl:before:right-0 focus:before:shadow-[0_0_0_2px_#a6cdfe] focus:before:rounded after:content-[''] after:absolute after:block after:w-[3px] after:h-1.5 after:top-1.5 after:left-[7px] after:border-white after:border-solid after:border-r-2 after:border-b-2 after:border-t-0 after:border-l-0 after:rotate-45 after:cursor-pointer",
+    listitemUnchecked:
+      "relative mx-2 px-6 list-none outline-none before:content-[''] before:absolute before:w-4 before:h-4 before:top-0.5 before:left-0 before:cursor-pointer before:block before:bg-cover before:border before:border-gray-400 before:rounded rtl:before:left-auto rtl:before:right-0 focus:before:shadow-[0_0_0_2px_#a6cdfe] focus:before:rounded",
   },
   link: "font-medium text-info link link-hover",
   text: {
     bold: "font-bold",
     italic: "italic",
-    overflowed: "overflow-auto",
-    hashtag: "text-warning",
+    // overflowed: "overflow-auto",
+    // hashtag: "text-warning",
     underline: "underline",
     strikethrough: "line-through opacity-80",
     underlineStrikethrough: "underline line-through",
-    code: "font-mono text-[94%] bg-base-200 text-base-content p-1 rounded",
+    code: "font-mono text-[94%] bg-base-300 py-1 px-2 rounded",
   },
-  code: "bg-base-200 font-mono block p-8 m-2 leading-6 tab-2 overflow-x-auto relative before:absolute before:content-[attr(data-gutter)] before:bg-gray-200 dark:before:bg-gray-700 before:left-0 before:top-0 before:p-2 before:min-w-[25px] before:whitespace-pre-wrap before:text-right after:content-[attr(data-highlight-langrage)] after:right-3 after:absolute",
+  code: "bg-base-200 font-mono block p-8 leading-6 tab-2",
   codeHighlight: {
     atrule: "text-[#07a] dark:text-cyan-400",
     attr: "text-[#07a] dark:text-cyan-400",
@@ -238,6 +252,16 @@ const theme: EditorThemeClasses = {
     symbol: "text-pink-700 dark:text-pink-400",
     tag: "text-pink-700 dark:text-pink-400",
     url: "text-[#9a6e3a]",
-    variable: "text-error",
+    variable: "text-[#e90]",
   },
+};
+
+export const CodeHighlightPlugin = (): JSX.Element | null => {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    return registerCodeHighlighting(editor);
+  }, [editor]);
+
+  return null;
 };
