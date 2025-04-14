@@ -6,7 +6,7 @@ import { ScrollableContainer, View } from "../../components/View.tsx";
 
 const Panel = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="border-2 border-base-200 w-full h-fit min-h-[calc(100vh-5.5rem)] rounded-box my-4 p-4 overflow-auto">
+    <div className="border-2 border-base-200 w-full h-[calc(100vh-5.5rem)] rounded-box my-4 p-4 overflow-auto">
       {children}
     </div>
   );
