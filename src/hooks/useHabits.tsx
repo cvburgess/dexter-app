@@ -98,6 +98,7 @@ export const useDailyHabits = (date: string): TUseDailyHabits => {
   const { data: dailyHabits = [], isLoading } = useQuery({
     queryKey: ["dailyHabits", date],
     queryFn: () => getDailyHabits(supabase, date),
+    retry: false,
     staleTime: 1000 * 60 * 10,
   });
 
