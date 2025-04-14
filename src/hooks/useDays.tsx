@@ -13,7 +13,7 @@ import { usePreferences } from "./usePreferences";
 
 type TUseDays = [
   TDay & { prompts: TJournalPrompt[] },
-  { upsertDay: (diff: Omit<TUpsertDay, "date">) => void },
+  { isLoading: boolean; upsertDay: (diff: Omit<TUpsertDay, "date">) => void },
 ];
 
 export const useDays = (date: string): TUseDays => {
@@ -29,7 +29,7 @@ export const useDays = (date: string): TUseDays => {
     })),
   };
 
-  const { data: day = defaultDay } = useQuery({
+  const { data: day = defaultDay, isLoading } = useQuery({
     queryKey: ["days", `day-${date}`],
     queryFn: () => getDay(supabase, date),
     staleTime: 1000 * 60 * 10,
@@ -44,5 +44,5 @@ export const useDays = (date: string): TUseDays => {
     },
   );
 
-  return [day, { upsertDay: upsert }];
+  return [day, { isLoading, upsertDay: upsert }];
 };

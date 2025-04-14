@@ -44,7 +44,7 @@ export const Day = () => {
           />
           <Tabs enabled={enableNotes || enableJournal}>
             <Tab defaultChecked enabled={enableNotes} title="Notes">
-              <Notes />
+              <Notes date={date} />
             </Tab>
             <Tab
               defaultChecked={!enableNotes}

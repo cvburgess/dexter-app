@@ -7,7 +7,7 @@ import { useDays } from "../hooks/useDays.tsx";
 type TJournalProps = { date: Temporal.PlainDate };
 
 export const Journal = ({ date }: TJournalProps) => {
-  const [{ prompts }, { upsertDay }] = useDays(date.toString());
+  const [{ prompts, ...rest }, { upsertDay }] = useDays(date.toString());
 
   return prompts.map(({ prompt, response }, index) => (
     <div className="flex flex-col w-full mb-8" key={index}>
@@ -17,7 +17,7 @@ export const Journal = ({ date }: TJournalProps) => {
         onChange={(newResponse) => {
           const diff = [...prompts];
           diff[index].response = newResponse;
-          upsertDay({ prompts: diff });
+          upsertDay({ ...rest, prompts: diff });
         }}
         response={response}
       />
