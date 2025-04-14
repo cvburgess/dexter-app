@@ -22,13 +22,11 @@ import {
 } from "@lexical/markdown";
 
 const markdown = `
-# Markdown syntax guide
+# Heading h1
 
-## Headers
+This is a Markdown file.
 
-# This is a Heading h1
 ## This is a Heading h2
-###### This is a Heading h6
 
 ## Emphasis
 
@@ -59,10 +57,6 @@ _You **can** combine them_
     1. Item 3a
     2. Item 3b
 
-## Images
-
-![This is an alt text.](/image/sample.webp "This is a sample image.")
-
 ## Links
 
 You may be using [Markdown Live Preview](https://markdownlivepreview.com/).
@@ -72,14 +66,6 @@ You may be using [Markdown Live Preview](https://markdownlivepreview.com/).
 > Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
 >
 >> Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
-
-## Tables
-
-| Left columns  | Right columns |
-| ------------- |:-------------:|
-| left foo      | right foo     |
-| left bar      | right bar     |
-| left baz      | right baz     |
 
 ## Blocks of code
 
