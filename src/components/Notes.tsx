@@ -223,7 +223,7 @@ const theme: EditorThemeClasses = {
     underlineStrikethrough: "underline line-through",
     code: "font-mono text-[94%] bg-base-300 py-1 px-2 rounded",
   },
-  code: "bg-base-200 font-mono block p-8 leading-6 tab-2",
+  code: "bg-base-200 font-mono block px-6 py-4 leading-6 tab-2",
   codeHighlight: {
     atrule: "text-[#07a] dark:text-cyan-400",
     attr: "text-[#07a] dark:text-cyan-400",
