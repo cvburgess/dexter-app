@@ -37,7 +37,7 @@ export const Habits = () => {
       />
 
       {preferences.enableHabits && (
-        <fieldset className="fieldset w-full mt-4">
+        <fieldset className="fieldset w-full">
           <legend className="fieldset-legend ml-2 text-sm">Habits</legend>
           {habits.map((habit) => (
             <HabitInput

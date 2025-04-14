@@ -1,8 +1,8 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 
-import { camelCase } from "../utils/changeCase.ts";
+import { camelCase, snakeCase } from "../utils/changeCase.ts";
 
-import { Database } from "./database.types.ts";
+import { Database, TablesUpdate } from "./database.types.ts";
 
 export type TJournalPrompt = { prompt: string; response: string };
 
@@ -37,7 +37,7 @@ export const upsertDay = async (
 ) => {
   const { data, error } = await supabase
     .from("days")
-    .upsert(diff)
+    .upsert(snakeCase(diff) as TablesUpdate<"days">)
     .select()
     .single();
 

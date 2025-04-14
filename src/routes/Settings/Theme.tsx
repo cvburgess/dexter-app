@@ -69,9 +69,7 @@ export const Theme = () => {
         )}
       </div>
 
-      <div className="divider divider-start text-sm mx-2 my-6">
-        Preview Themes
-      </div>
+      <div className="divider text-sm mx-2 my-4">Preview Themes</div>
 
       <details className="collapse collapse-arrow bg-base-100 border border-base-300 mb-4">
         <summary className="collapse-title font-semibold text-sm min-h-0">
