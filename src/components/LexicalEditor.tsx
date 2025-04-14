@@ -104,7 +104,7 @@ export const LexicalEditor = ({ onChange, text }: TLexicalEditorProps) => {
         contentEditable={
           <ContentEditable
             aria-placeholder=""
-            className="w-full h-fit outline-none"
+            className="w-full min-h-full h-fit outline-none"
             placeholder={<div className="w-full h-full outline-none" />}
           />
         }

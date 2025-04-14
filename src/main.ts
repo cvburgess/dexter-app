@@ -193,6 +193,7 @@ const template: Array<MenuItemConstructorOptions> = [
       { role: "cut" },
       { role: "copy" },
       { role: "paste" },
+      { role: "pasteAndMatchStyle" },
       ...((isMac
         ? [
             { role: "delete" },

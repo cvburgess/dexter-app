@@ -49,7 +49,7 @@ export const Journal = () => {
       />
 
       {preferences.enableJournal && (
-        <fieldset className="fieldset w-full mt-4">
+        <fieldset className="fieldset w-full">
           <legend className="fieldset-legend ml-2 text-sm">
             Journal Prompts
           </legend>
