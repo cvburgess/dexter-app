@@ -11,8 +11,6 @@ export const Notes = ({ date }: TNotesProps) => {
     date.toString(),
   );
 
-  console.log({ date, notes, isLoading });
-
   if (isLoading) return null;
 
   return (
