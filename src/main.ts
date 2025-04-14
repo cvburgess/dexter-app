@@ -4,6 +4,7 @@ import {
   BrowserWindow,
   ipcMain,
   Menu,
+  MenuItem,
   MenuItemConstructorOptions,
   nativeTheme,
   shell,
@@ -99,6 +100,51 @@ const createWindow = () => {
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url); // Open URL in user's browser.
     return { action: "deny" }; // Prevent the app from opening the URL.
+  });
+
+  // ---------- CONTEXT MENU ----------
+
+  mainWindow.webContents.on("context-menu", (event, params) => {
+    const menu = new Menu();
+
+    // Add each spelling suggestion
+    for (const suggestion of params.dictionarySuggestions) {
+      menu.append(
+        new MenuItem({
+          label: suggestion,
+          click: () => mainWindow.webContents.replaceMisspelling(suggestion),
+        }),
+      );
+    }
+
+    if (params.dictionarySuggestions?.length) {
+      menu.append(new MenuItem({ type: "separator" }));
+    }
+
+    // Allow users to add the misspelled word to the dictionary
+    if (params.misspelledWord) {
+      menu.append(
+        new MenuItem({
+          label: "Add to dictionary",
+          click: () =>
+            mainWindow.webContents.session.addWordToSpellCheckerDictionary(
+              params.misspelledWord,
+            ),
+        }),
+      );
+      menu.append(new MenuItem({ type: "separator" }));
+    }
+
+    // Add the default context menu items
+    // menu.append(new MenuItem({ role: "undo" }));
+    // menu.append(new MenuItem({ role: "redo" }));
+    menu.append(new MenuItem({ type: "separator" }));
+    menu.append(new MenuItem({ role: "cut" }));
+    menu.append(new MenuItem({ role: "copy" }));
+    menu.append(new MenuItem({ role: "paste" }));
+    menu.append(new MenuItem({ role: "selectAll" }));
+
+    menu.popup();
   });
 
   handleThemeChange();
