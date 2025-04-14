@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 
-// import { $getRoot, $getSelection } from "lexical";
 import { EditorState, EditorThemeClasses } from "lexical";
 
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
@@ -34,7 +33,7 @@ import {
   TRANSFORMERS,
 } from "@lexical/markdown";
 
-import DraggableBlockPlugin from "./DraggableBlockPlugin";
+// import DraggableBlockPlugin from "./DraggableBlockPlugin";
 
 const markdown = `
 # Heading h1
@@ -163,7 +162,7 @@ export const Notes = () => {
         contentEditable={
           <ContentEditable
             aria-placeholder=""
-            className="w-full h-full outline-none"
+            className="w-full h-fit outline-none"
             placeholder={<div className="w-full h-full outline-none"></div>}
           />
         }
@@ -180,7 +179,7 @@ export const Notes = () => {
       <AutoLinkPlugin matchers={MATCHERS} />
       <SelectionAlwaysOnDisplay />
       <CodeHighlightPlugin />
-      <DraggableBlockPlugin />
+      {/* <DraggableBlockPlugin /> */}
     </LexicalComposer>
   );
 };
