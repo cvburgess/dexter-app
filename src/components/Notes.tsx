@@ -1,6 +1,6 @@
 // import { useEffect } from "react";
 // import { $getRoot, $getSelection } from "lexical";
-import { EditorState } from "lexical";
+import { EditorState, EditorThemeClasses } from "lexical";
 
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
@@ -14,7 +14,13 @@ import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { ListItemNode, ListNode } from "@lexical/list";
 import { CodeNode, CodeHighlightNode } from "@lexical/code";
 import { AutoLinkNode, LinkNode } from "@lexical/link";
+import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin";
 import { HorizontalRuleNode } from "@lexical/react/LexicalHorizontalRuleNode";
+import { CheckListPlugin } from "@lexical/react/LexicalCheckListPlugin";
+import { SelectionAlwaysOnDisplay } from "@lexical/react/LexicalSelectionAlwaysOnDisplay";
+import { AutoLinkPlugin } from "@lexical/react/LexicalAutoLinkPlugin";
+import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
+import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import {
   $convertFromMarkdownString,
   $convertToMarkdownString,
@@ -38,14 +44,15 @@ __This will also be bold__
 
 _You **can** combine them_
 
+~~You can change your mind, too~~
+
 ## Lists
 
 ### Unordered
 
 * Item 1
 * Item 2
-* Item 2a
-* Item 2b
+* Item 3
     * Item 3a
     * Item 3b
 
@@ -57,15 +64,21 @@ _You **can** combine them_
     1. Item 3a
     2. Item 3b
 
+### Checkboxes
+
+- [ ] Item 1
+- [ ] Item 2
+- [x] Item 3 (checked)
+
 ## Links
 
 You may be using [Markdown Live Preview](https://markdownlivepreview.com/).
 
-## Blockquotes
+## Block quotes
 
 > Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
->
->> Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
+ 
+Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
 
 ## Blocks of code
 
@@ -78,6 +91,26 @@ alert(message);
 
 This web site is using \`markedjs/marked\`.
 `;
+
+const URL_MATCHER =
+  /((https?:\/\/(www\.)?)|(www\.))[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
+
+const MATCHERS = [
+  (text: string) => {
+    const match = URL_MATCHER.exec(text);
+    if (match === null) {
+      return null;
+    }
+    const fullMatch = match[0];
+    return {
+      index: match.index,
+      length: fullMatch.length,
+      text: fullMatch,
+      url: fullMatch.startsWith("http") ? fullMatch : `https://${fullMatch}`,
+      // attributes: { rel: 'noreferrer', target: '_blank' }, // Optional link attributes
+    };
+  },
+];
 
 // Catch any errors that occur during Lexical updates and log them
 // or throw them as needed. If you don't throw them, Lexical will
@@ -128,45 +161,53 @@ export const Notes = () => {
       <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
       <HistoryPlugin />
       <AutoFocusPlugin />
+      <TabIndentationPlugin />
+      <LinkPlugin />
+      <ListPlugin />
+      <CheckListPlugin />
+      <AutoLinkPlugin matchers={MATCHERS} />
+      <SelectionAlwaysOnDisplay />
     </LexicalComposer>
   );
 };
 
-const theme = {
+const theme: EditorThemeClasses = {
   ltr: "ltr",
   rtl: "rtl",
   placeholder: "",
   paragraph: "mb-2 relative",
-  quote: "editor-quote",
+  quote: "font-italic border-l-2 border-gray-300 pl-4 my-2",
   heading: {
-    h1: "text-3xl font-extrabold text-primary mb-4 mt-2",
-    h2: "text-2xl font-bold text-primary mb-4 mt-2",
-    h3: "text-xl font-bold text-primary mb-4 mt-2",
-    h4: "text-lg font-bold text-primary mb-4 mt-2",
-    h5: "font-bold text-primary mb-4 mt-2",
+    h1: "text-3xl font-extrabold text-primary my-4",
+    h2: "text-2xl font-bold text-primary my-4",
+    h3: "text-xl font-bold text-primary my-4",
+    h4: "text-lg font-bold text-primary my-4",
+    h5: "font-bold text-primary my-4",
   },
+  indent: "lexical-indent",
   list: {
+    ul: "list-outside list-disc before:hidden after:hidden",
+    ol: "list-outside list-decimal before:hidden after:hidden",
     nested: {
-      listitem:
-        "pl-5 mt-2 space-y-1 list-decimal list-inside text-base-content",
+      listitem: "!list-none before:hidden after:hidden",
     },
-    ol: "max-w-md space-y-1 text-gray-500 list-decimal list-inside text-base-content",
-    ul: "max-w-md space-y-1 text-gray-500 list-disc list-inside text-base-content",
-    listitem: "text-base-content",
+    listitem: "text-base-content mx-8",
+    checklist: "",
+    listitemChecked: "",
+    listitemUnchecked: "",
   },
-  image: "editor-image",
   link: "font-medium text-info link link-hover",
   text: {
     bold: "font-bold",
     italic: "italic",
-    overflowed: "editor-text-overflowed",
-    hashtag: "editor-text-hashtag",
+    overflowed: "overflow-auto",
+    hashtag: "text-warning",
     underline: "underline",
-    strikethrough: "line-through",
+    strikethrough: "line-through opacity-80",
     underlineStrikethrough: "underline line-through",
     code: "font-mono text-[94%] bg-base-200 text-base-content p-1 rounded",
   },
-  code: "bg-base-200 font-mono block py-2 px-8 leading-1 m-0 mt-2 mb-2 tab-2 overflow-x-auto relative before:absolute before:content-[attr(data-gutter)] before:bg-gray-200 dark:before:bg-gray-700 before:left-0 before:top-0 before:p-2 before:min-w-[25px] before:whitespace-pre-wrap before:text-right after:content-[attr(data-highlight-langrage)] after:right-3 after:absolute",
+  code: "bg-base-200 font-mono block p-8 m-2 leading-6 tab-2 overflow-x-auto relative before:absolute before:content-[attr(data-gutter)] before:bg-gray-200 dark:before:bg-gray-700 before:left-0 before:top-0 before:p-2 before:min-w-[25px] before:whitespace-pre-wrap before:text-right after:content-[attr(data-highlight-langrage)] after:right-3 after:absolute",
   codeHighlight: {
     atrule: "text-[#07a] dark:text-cyan-400",
     attr: "text-[#07a] dark:text-cyan-400",
@@ -197,6 +238,6 @@ const theme = {
     symbol: "text-pink-700 dark:text-pink-400",
     tag: "text-pink-700 dark:text-pink-400",
     url: "text-[#9a6e3a]",
-    variable: "text-[#e90] dark:text-blue-400",
+    variable: "text-error",
   },
 };
