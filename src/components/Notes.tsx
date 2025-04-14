@@ -34,6 +34,8 @@ import {
   TRANSFORMERS,
 } from "@lexical/markdown";
 
+import DraggableBlockPlugin from "./DraggableBlockPlugin";
+
 const markdown = `
 # Heading h1
 
@@ -178,6 +180,7 @@ export const Notes = () => {
       <AutoLinkPlugin matchers={MATCHERS} />
       <SelectionAlwaysOnDisplay />
       <CodeHighlightPlugin />
+      <DraggableBlockPlugin />
     </LexicalComposer>
   );
 };
