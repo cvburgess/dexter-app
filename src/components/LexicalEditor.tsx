@@ -106,6 +106,7 @@ export const LexicalEditor = ({ key, onChange, text }: TLexicalEditorProps) => {
           <ContentEditable
             aria-placeholder=""
             className="w-full min-h-full h-fit outline-none"
+            onBlur={() => onChange(md)}
             placeholder={<div className="w-full h-full outline-none" />}
           />
         }
