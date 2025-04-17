@@ -82,8 +82,7 @@ export const Card = React.memo(
           )}
           <p
             className={classNames(
-              "text-xs font-medium focus:outline-none mx-0.5",
-              isEditing ? "cursor-text" : "cursor-default",
+              "text-xs font-medium focus:outline-none mx-0.5 cursor-text",
               {
                 "flex-grow": cardSize !== "compact-w",
                 "w-full mb-2 text-center": cardSize === "compact-w",
