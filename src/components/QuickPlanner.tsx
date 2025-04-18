@@ -15,11 +15,14 @@ import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
 import { Column, TGrouping } from "./Column.tsx";
 import { InputWithIcon } from "./InputWithIcon.tsx";
 
+import { useGoals } from "../hooks/useGoals.tsx";
+import { useLists } from "../hooks/useLists.tsx";
+import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
+
 import { TGoal } from "../api/goals.ts";
 import { TList } from "../api/lists.ts";
 import { ETaskPriority, TTask } from "../api/tasks.ts";
 import { TQueryFilter } from "../api/applyFilters.ts";
-import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
 type TQuickPlannerProps = {
   baseFilters?: TQueryFilter[];
@@ -41,9 +44,12 @@ export const QuickPlanner = ({
   const groupOptions = makeGroupOptions(selectedGroup);
   const groupingTitle = groupOptions.find((option) => option.isSelected).title;
 
+  const [goals] = useGoals();
+  const [lists] = useLists();
+
   const groupings = makeGroupings({
-    goals: [],
-    lists: [],
+    goals,
+    lists,
   });
   const activeGrouping =
     groupings.find((group) => group.prop === selectedGroup) || undefined;
