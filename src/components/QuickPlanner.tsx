@@ -47,10 +47,7 @@ export const QuickPlanner = ({
   const [goals] = useGoals();
   const [lists] = useLists();
 
-  const groupings = makeGroupings({
-    goals,
-    lists,
-  });
+  const groupings = makeGroupings({ goals, lists });
   const activeGrouping =
     groupings.find((group) => group.prop === selectedGroup) || undefined;
 
@@ -191,17 +188,11 @@ const makeGroupings = ({
 }): TGrouping[] => [
   {
     prop: "goalId",
-    options: goals.map((goal: TGoal) => ({
-      id: goal.id,
-      title: goal.title,
-    })),
+    options: goals.map(({ id, title }: TGoal) => ({ id, title })),
   },
   {
     prop: "listId",
-    options: lists.map((list: TList) => ({
-      id: list.id,
-      title: list.title,
-    })),
+    options: lists.map(({ id, title }: TList) => ({ id, title })),
   },
   {
     prop: "priority",
