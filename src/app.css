@@ -73,6 +73,10 @@
   @apply bg-base-200 text-base-content shadow-md;
 }
 
+.fc {
+  min-width: calc(var(--spacing) * 70);
+}
+
 @plugin "daisyui/theme" {
   name: "dexter";
   default: false;
