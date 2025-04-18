@@ -13,9 +13,15 @@ import { useTasks } from "../hooks/useTasks.tsx";
 import { TTask } from "../api/tasks.ts";
 import { DailyHabits } from "./DailyHabits.tsx";
 
+export type TGrouping = {
+  prop: "listId" | "goalId" | "priority";
+  options: Array<{ id: string | number | null; title: string }>;
+};
+
 export type TColumnProps = {
   canCreateTasks?: boolean;
   cardSize?: ECardSize;
+  grouping?: TGrouping;
   id: string;
   isActive?: boolean;
   showHabits?: boolean;
@@ -29,6 +35,7 @@ export const Column = React.memo(
   ({
     canCreateTasks = false,
     cardSize = "normal",
+    grouping,
     id,
     isActive = false,
     showHabits = false,
@@ -105,17 +112,49 @@ export const Column = React.memo(
                 data-list-id={id}
                 ref={provided.innerRef}
               >
-                {tasks?.map((task, index) => (
-                  <DraggableCard
-                    cardSize={cardSize}
-                    className={classNames({
-                      "mb-4": index === tasks.length - 1,
-                    })}
-                    index={index}
-                    key={task.id}
-                    task={task}
-                  />
-                ))}
+                {grouping
+                  ? grouping.options.map((option) => {
+                      const groupedTasks =
+                        tasks?.filter(
+                          (task) => task[grouping.prop] === option.id,
+                        ) || [];
+
+                      return (
+                        <>
+                          <div
+                            className={classNames(
+                              "divider w-full font-semibold text-xs my-4",
+                              {
+                                "text-base-content/25":
+                                  groupedTasks?.length === 0,
+                              },
+                            )}
+                          >
+                            {option.title}
+                          </div>
+
+                          {groupedTasks.map((task, index) => (
+                            <DraggableCard
+                              cardSize={cardSize}
+                              index={index}
+                              key={task.id}
+                              task={task}
+                            />
+                          ))}
+                        </>
+                      );
+                    })
+                  : tasks?.map((task, index) => (
+                      <DraggableCard
+                        cardSize={cardSize}
+                        className={classNames({
+                          "mb-4": index === tasks.length - 1,
+                        })}
+                        index={index}
+                        key={task.id}
+                        task={task}
+                      />
+                    ))}
                 {provided.placeholder}
               </div>
             );
