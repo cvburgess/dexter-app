@@ -154,7 +154,9 @@ export type Database = {
       }
       preferences: {
         Row: {
+          calendar_urls: string[] | null
           dark_theme: string
+          enable_calendar: boolean
           enable_habits: boolean
           enable_journal: boolean
           enable_notes: boolean
@@ -165,7 +167,9 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          calendar_urls?: string[] | null
           dark_theme?: string
+          enable_calendar?: boolean
           enable_habits?: boolean
           enable_journal?: boolean
           enable_notes?: boolean
@@ -176,7 +180,9 @@ export type Database = {
           user_id?: string
         }
         Update: {
+          calendar_urls?: string[] | null
           dark_theme?: string
+          enable_calendar?: boolean
           enable_habits?: boolean
           enable_journal?: boolean
           enable_notes?: boolean

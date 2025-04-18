@@ -7,25 +7,23 @@ import { SettingsOption } from "../../components/SettingsOption";
 
 import { usePreferences } from "../../hooks/usePreferences";
 
-export const Journal = () => {
+export const Calendar = () => {
   const [preferences, { updatePreferences }] = usePreferences();
 
-  const addPrompt = (value: string) =>
+  const addUrl = (value: string) =>
     updatePreferences({
-      templatePrompts: [...preferences.templatePrompts, value],
+      calendarUrls: [...preferences.calendarUrls, value],
     });
 
-  const deletePrompt = (index: number) =>
+  const deleteUrl = (index: number) =>
     updatePreferences({
-      templatePrompts: preferences.templatePrompts.filter(
-        (_, i) => i !== index,
-      ),
+      calendarUrls: preferences.calendarUrls.filter((_, i) => i !== index),
     });
 
-  const updatePrompt = (index: number, value: string) =>
+  const updateUrl = (index: number, value: string) =>
     updatePreferences({
-      templatePrompts: preferences.templatePrompts.map((prompt, i) =>
-        i === index ? value : prompt,
+      calendarUrls: preferences.calendarUrls.map((url, i) =>
+        i === index ? value : url,
       ),
     });
 
@@ -36,37 +34,35 @@ export const Journal = () => {
           {
             id: "true",
             title: "Enabled",
-            isSelected: preferences.enableJournal,
+            isSelected: preferences.enableCalendar,
           },
           {
             id: "false",
             title: "Disabled",
-            isSelected: !preferences.enableJournal,
+            isSelected: !preferences.enableCalendar,
           },
         ]}
-        setting="enableJournal"
-        title="Journal"
+        setting="enableCalendar"
+        title="Calendar"
       />
 
-      {preferences.enableJournal && (
+      {preferences.enableCalendar && (
         <fieldset className="fieldset w-full">
-          <legend className="fieldset-legend ml-2 text-sm">
-            Journal Prompts
-          </legend>
-          {preferences.templatePrompts.map((prompt, index) => (
-            <PromptInput
-              deletePrompt={deletePrompt}
+          <legend className="fieldset-legend ml-2 text-sm">iCal URLs</legend>
+          {preferences.calendarUrls.map((url, index) => (
+            <UrlInput
+              deleteUrl={deleteUrl}
               index={index}
               key={index}
-              prompt={prompt}
-              updatePrompt={updatePrompt}
+              updateUrl={updateUrl}
+              url={url}
             />
           ))}
 
           <InputWithIcon
             onKeyDown={(e) => {
               if (e.key === "Enter" && e.currentTarget.value.trim()) {
-                addPrompt(e.currentTarget.value.trim());
+                addUrl(e.currentTarget.value.trim());
                 e.currentTarget.value = "";
               }
             }}
@@ -80,29 +76,24 @@ export const Journal = () => {
   );
 };
 
-type TPromptInputProps = {
-  deletePrompt: (index: number) => void;
+type TUrlInputProps = {
+  deleteUrl: (index: number) => void;
   index: number;
-  prompt: string;
-  updatePrompt: (index: number, value: string) => void;
+  url: string;
+  updateUrl: (index: number, value: string) => void;
 };
 
-const PromptInput = ({
-  deletePrompt,
-  index,
-  prompt,
-  updatePrompt,
-}: TPromptInputProps) => {
-  const [value, setValue] = useState<string>(prompt);
+const UrlInput = ({ deleteUrl, index, updateUrl, url }: TUrlInputProps) => {
+  const [value, setValue] = useState<string>(url);
   const [debounced] = useDebounce(value, 500);
 
   // When props reflow into the component, update local state
   useEffect(() => {
-    setValue(prompt);
-  }, [prompt]);
+    setValue(url);
+  }, [url]);
 
   useEffect(() => {
-    if (debounced !== prompt) updatePrompt(index, debounced);
+    if (debounced !== url) updateUrl(index, debounced);
   }, [debounced]);
 
   return (
@@ -113,7 +104,7 @@ const PromptInput = ({
         type="text"
         value={value}
       />
-      <span className="btn btn-link px-2" onClick={() => deletePrompt(index)}>
+      <span className="btn btn-link px-2" onClick={() => deleteUrl(index)}>
         <Trash className="text-base-content/60 hover:text-error" />
       </span>
     </label>

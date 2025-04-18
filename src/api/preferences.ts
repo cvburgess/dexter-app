@@ -11,7 +11,9 @@ export enum EThemeMode {
 }
 
 export type TPreferences = {
+  calendarUrls: string[];
   darkTheme: string;
+  enableCalendar: boolean;
   enableHabits: boolean;
   enableJournal: boolean;
   enableNotes: boolean;
@@ -33,7 +35,8 @@ export const getPreferences = async (supabase: SupabaseClient<Database>) => {
 };
 
 export type TUpdatePreferences = {
-  darkTheme?: string;
+  calendarUrls?: string[];
+  enableCalendar?: boolean;
   enableHabits?: boolean;
   enableJournal?: boolean;
   enableNotes?: boolean;

@@ -50,7 +50,9 @@ export const usePreferences = (options?: THookOptions): TUsePreferences => {
 };
 
 const defaultPreferences: TPreferences = {
+  calendarUrls: [],
   darkTheme: "dark",
+  enableCalendar: false,
   enableHabits: true,
   enableJournal: true,
   enableNotes: true,
