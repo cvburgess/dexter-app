@@ -156,7 +156,7 @@ export type Database = {
         Row: {
           calendar_end_time: string
           calendar_start_time: string
-          calendar_urls: string[] | null
+          calendar_urls: string[]
           dark_theme: string
           enable_calendar: boolean
           enable_habits: boolean
@@ -171,7 +171,7 @@ export type Database = {
         Insert: {
           calendar_end_time?: string
           calendar_start_time?: string
-          calendar_urls?: string[] | null
+          calendar_urls?: string[]
           dark_theme?: string
           enable_calendar?: boolean
           enable_habits?: boolean
@@ -186,7 +186,7 @@ export type Database = {
         Update: {
           calendar_end_time?: string
           calendar_start_time?: string
-          calendar_urls?: string[] | null
+          calendar_urls?: string[]
           dark_theme?: string
           enable_calendar?: boolean
           enable_habits?: boolean
