@@ -46,17 +46,21 @@ export const Calendar = () => {
         title="Calendar"
       />
 
-      <SettingsOption
-        options={makeHours(0, 11, preferences.calendarStartTime)}
-        setting="calendarStartTime"
-        title="Calendar Start Time"
-      />
+      {preferences.enableCalendar && (
+        <div className="flex gap-4">
+          <SettingsOption
+            options={makeHours(0, 11, preferences.calendarStartTime)}
+            setting="calendarStartTime"
+            title="Calendar Start Time"
+          />
 
-      <SettingsOption
-        options={makeHours(16, 24, preferences.calendarEndTime)}
-        setting="calendarEndTime"
-        title="Calendar End Time"
-      />
+          <SettingsOption
+            options={makeHours(16, 24, preferences.calendarEndTime)}
+            setting="calendarEndTime"
+            title="Calendar End Time"
+          />
+        </div>
+      )}
 
       {preferences.enableCalendar && (
         <fieldset className="fieldset w-full">
