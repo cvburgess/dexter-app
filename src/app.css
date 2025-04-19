@@ -78,6 +78,9 @@
 .fc {
   min-width: calc(var(--spacing) * 68);
 }
+.fc-scroller {
+  @extend no-scrollbar;
+}
 .fc .fc-scrollgrid,
 td[role="presentation"] {
   @apply border-none;
