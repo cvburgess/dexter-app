@@ -12,11 +12,13 @@ export const Calendar = () => {
   if (!preferences.enableCalendar) return null;
 
   return (
-    <CalendarTimeLine
-      calendarUrls={preferences.calendarUrls}
-      endTime={preferences.calendarEndTime}
-      startTime={preferences.calendarStartTime}
-    />
+    <div className="flex flex-1 w-standard my-4 border-2 border-base-200 rounded-box">
+      <CalendarTimeLine
+        calendarUrls={preferences.calendarUrls}
+        endTime={preferences.calendarEndTime}
+        startTime={preferences.calendarStartTime}
+      />
+    </div>
   );
 };
 
