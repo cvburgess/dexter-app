@@ -21,9 +21,6 @@ export const SettingsOption = ({
   const [_, { updatePreferences }] = usePreferences({ skipQuery: true });
   const selected = options.find((option) => option.isSelected);
 
-  console.log(options);
-  console.log("selected", selected);
-
   return (
     <fieldset className="fieldset w-full">
       <legend className="fieldset-legend ml-2 text-sm">{title}</legend>

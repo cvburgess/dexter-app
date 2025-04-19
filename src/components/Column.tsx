@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import { Droppable } from "@hello-pangea/dnd";
 import { Plus } from "@phosphor-icons/react";
 import { Temporal } from "@js-temporal/polyfill";
@@ -120,7 +120,7 @@ export const Column = React.memo(
                         ) || [];
 
                       return (
-                        <>
+                        <Fragment key={option.id}>
                           <div
                             className={classNames(
                               "divider w-full font-semibold text-xs my-4",
@@ -141,7 +141,7 @@ export const Column = React.memo(
                               task={task}
                             />
                           ))}
-                        </>
+                        </Fragment>
                       );
                     })
                   : tasks?.map((task, index) => (
