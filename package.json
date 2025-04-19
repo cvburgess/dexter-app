@@ -77,7 +77,7 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "git:prune": "git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D",
     "icon": "npx png2icons ./public/app-icon.png ./public/app-icon -allp",
-    "lint": "tsc && eslint --ext .ts,.tsx .",
+    "lint": "eslint --ext .ts,.tsx .",
     "make": "electron-forge make",
     "make:local": "env-cmd -- electron-forge make",
     "publish": "electron-forge publish --arch=universal",

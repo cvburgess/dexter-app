@@ -12,6 +12,7 @@
     "plugin:react/recommended",
     "prettier"
   ],
+  "ignorePatterns": ["supabase"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["prettier", "react"],
   "rules": {

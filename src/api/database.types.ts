@@ -154,6 +154,8 @@ export type Database = {
       }
       preferences: {
         Row: {
+          calendar_end_time: string
+          calendar_start_time: string
           calendar_urls: string[] | null
           dark_theme: string
           enable_calendar: boolean
@@ -167,6 +169,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          calendar_end_time?: string
+          calendar_start_time?: string
           calendar_urls?: string[] | null
           dark_theme?: string
           enable_calendar?: boolean
@@ -180,6 +184,8 @@ export type Database = {
           user_id?: string
         }
         Update: {
+          calendar_end_time?: string
+          calendar_start_time?: string
           calendar_urls?: string[] | null
           dark_theme?: string
           enable_calendar?: boolean

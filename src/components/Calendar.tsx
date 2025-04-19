@@ -1,37 +1,58 @@
-// import { formatDate } from '@fullcalendar/core'
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import iCalendarPlugin from "@fullcalendar/icalendar";
 
 import { usePreferences } from "../hooks/usePreferences";
+
+const PROXY_URL = "https://api.dexterplanner.com/functions/v1/ics-proxy";
 
 export const Calendar = () => {
   const [preferences] = usePreferences();
 
   if (!preferences.enableCalendar) return null;
 
-  return <CalendarTimeLine calendarUrl={preferences.calendarUrls[0]} />;
+  return (
+    <CalendarTimeLine
+      calendarUrls={preferences.calendarUrls}
+      endTime={preferences.calendarEndTime}
+      startTime={preferences.calendarStartTime}
+    />
+  );
 };
 
 const now = new Date();
 
-const CalendarTimeLine = ({ calendarUrl }: { calendarUrl: string }) => (
+type TCalendarTimeLineProps = {
+  calendarUrls: string[];
+  endTime: string;
+  startTime: string;
+};
+
+const CalendarTimeLine = ({
+  calendarUrls,
+  endTime,
+  startTime,
+}: TCalendarTimeLineProps) => (
   <FullCalendar
     dayHeaders={false}
     dayMaxEvents={true}
     // dayMinWidth={600}
     editable={false}
-    events={{ url: calendarUrl, format: "ics" }}
+    eventSources={calendarUrls.map((url) => ({
+      url: `${PROXY_URL}?url=${url}`,
+      format: "ics",
+    }))}
     headerToolbar={false}
     initialView="timeGridDay"
     nowIndicator
-    plugins={[timeGridPlugin]}
+    plugins={[iCalendarPlugin, timeGridPlugin]}
     scrollTime={now.toLocaleTimeString("en-US", {
       hour12: false,
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
     })}
-    selectMirror={true}
-    selectable={true}
+    slotMaxTime={endTime}
+    slotMinTime={startTime}
   />
 );

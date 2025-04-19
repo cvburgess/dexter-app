@@ -46,6 +46,18 @@ export const Calendar = () => {
         title="Calendar"
       />
 
+      <SettingsOption
+        options={makeHours(0, 11, preferences.calendarStartTime)}
+        setting="calendarStartTime"
+        title="Calendar Start Time"
+      />
+
+      <SettingsOption
+        options={makeHours(16, 24, preferences.calendarEndTime)}
+        setting="calendarEndTime"
+        title="Calendar End Time"
+      />
+
       {preferences.enableCalendar && (
         <fieldset className="fieldset w-full">
           <legend className="fieldset-legend ml-2 text-sm">iCal URLs</legend>
@@ -74,6 +86,22 @@ export const Calendar = () => {
       )}
     </>
   );
+};
+
+const makeHours = (start: number, end: number, selected: string) => {
+  const hours = [];
+  for (let i = start; i <= end; i++) {
+    hours.push(i);
+  }
+
+  return hours.map((hour) => {
+    const paddedHour = hour.toString().padStart(2, "0");
+    return {
+      id: `${paddedHour}:00:00`,
+      title: `${paddedHour}:00`,
+      isSelected: selected === `${paddedHour}:00:00`,
+    };
+  });
 };
 
 type TUrlInputProps = {
