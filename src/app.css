@@ -94,9 +94,12 @@ td {
   @apply !border-secondary;
 }
 .fc-event {
-  @apply bg-primary text-primary-content;
-  @apply border-none outline-none;
+  @apply bg-primary;
+  @apply border-primary-content outline-none !shadow-none;
   @apply rounded-box p-2 text-xs;
+}
+.fc-event * {
+  @apply text-primary-content;
 }
 
 @plugin "daisyui/theme" {
