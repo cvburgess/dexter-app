@@ -12,6 +12,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { About } from "./routes/Settings/About.tsx";
 import { Account } from "./routes/Settings/Account.tsx";
 import { AuthProvider } from "./hooks/useAuth.tsx";
+import { Calendar } from "./routes/Settings/Calendar.tsx";
 import { Day } from "./routes/Day.tsx";
 import { Goals } from "./routes/Goals.tsx";
 import { Habits } from "./routes/Settings/Habits.tsx";
@@ -78,6 +79,7 @@ const router = createHashRouter([
           { index: true, element: <Navigate replace to="account" /> },
           { path: "about", element: <About /> },
           { path: "account", element: <Account /> },
+          { path: "calendar", element: <Calendar /> },
           { path: "habits", element: <Habits /> },
           { path: "journal", element: <Journal /> },
           { path: "notes", element: <Notes /> },

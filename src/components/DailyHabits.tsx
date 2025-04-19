@@ -100,14 +100,14 @@ const HabitButton = ({
     text={`${dailyHabit.habits.title} (${dailyHabit.stepsComplete}/${dailyHabit.steps})`}
   >
     <div
-      className={classNames("absolute", ringClasses, {
+      className={classNames("absolute shadow-xs cursor-pointer", ringClasses, {
         "z-10": !dailyHabit.percentComplete,
       })}
       onClick={() => incrementDailyHabit(dailyHabit)}
     />
     <div
       aria-valuenow={dailyHabit.percentComplete}
-      className={classNames("radial-progress", iconClasses)}
+      className={classNames("radial-progress cursor-pointer", iconClasses)}
       onClick={() => incrementDailyHabit(dailyHabit)}
       role="progressbar"
       style={

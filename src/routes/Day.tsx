@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 
+import { Calendar } from "../components/Calendar.tsx";
 import { Column } from "../components/Column.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
 import { Journal } from "../components/Journal.tsx";
@@ -15,6 +16,7 @@ import {
 import { usePreferences } from "../hooks/usePreferences.tsx";
 import { useTasks } from "../hooks/useTasks.tsx";
 import { useToggle } from "../hooks/useToggle.tsx";
+
 import { makeBaseFiltersForDate } from "../utils/makeBaseFiltersForDate.ts";
 
 export const Day = () => {
@@ -54,6 +56,7 @@ export const Day = () => {
               <Journal date={date} />
             </Tab>
           </Tabs>
+          <Calendar date={date} />
         </ScrollableContainer>
         <QuickDrawer
           baseFilters={makeBaseFiltersForDate(date)}

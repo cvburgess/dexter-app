@@ -50,7 +50,11 @@ export const usePreferences = (options?: THookOptions): TUsePreferences => {
 };
 
 const defaultPreferences: TPreferences = {
+  calendarEndTime: "20:00:00",
+  calendarStartTime: "06:00:00",
+  calendarUrls: [],
   darkTheme: "dark",
+  enableCalendar: false,
   enableHabits: true,
   enableJournal: true,
   enableNotes: true,

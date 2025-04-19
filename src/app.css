@@ -73,6 +73,40 @@
   @apply bg-base-200 text-base-content shadow-md;
 }
 
+/* ---------- FULLCALENDAR STYLES ---------- */
+
+.fc {
+  min-width: calc(var(--spacing) * 68);
+}
+.fc-scroller {
+  @extend no-scrollbar;
+}
+.fc .fc-scrollgrid,
+td[role="presentation"] {
+  @apply border-none;
+  @apply text-xs;
+}
+td {
+  @apply !border-base-200;
+}
+.fc-day-today {
+  @apply !bg-transparent;
+}
+.fc-timegrid-now-indicator-arrow {
+  @apply !border-l-secondary !border-r-secondary;
+}
+.fc-timegrid-now-indicator-line {
+  @apply !border-secondary;
+}
+.fc-event {
+  @apply bg-primary;
+  @apply border-primary-content outline-none !shadow-none;
+  @apply rounded-box p-2 text-xs;
+}
+.fc-event * {
+  @apply text-primary-content;
+}
+
 @plugin "daisyui/theme" {
   name: "dexter";
   default: false;

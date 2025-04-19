@@ -61,12 +61,11 @@ const onError = (error: Error) => {
 };
 
 type TLexicalEditorProps = {
-  key: string;
   onChange: (text: string) => void;
   text: string;
 };
 
-export const LexicalEditor = ({ key, onChange, text }: TLexicalEditorProps) => {
+export const LexicalEditor = ({ onChange, text }: TLexicalEditorProps) => {
   const [md, setMd] = useState<string>(text);
   const [debouncedMd] = useDebounce(md, 500);
 
@@ -99,7 +98,7 @@ export const LexicalEditor = ({ key, onChange, text }: TLexicalEditorProps) => {
   };
 
   return (
-    <LexicalComposer initialConfig={initialConfig} key={key}>
+    <LexicalComposer initialConfig={initialConfig}>
       <RichTextPlugin
         ErrorBoundary={LexicalErrorBoundary}
         contentEditable={

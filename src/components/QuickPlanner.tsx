@@ -1,14 +1,28 @@
 import { useState } from "react";
-import { MagnifyingGlass } from "@phosphor-icons/react";
+import {
+  CalendarBlank,
+  CalendarDots,
+  HourglassLow,
+  HourglassMedium,
+  ListHeart,
+  MagnifyingGlass,
+  SquaresFour,
+  Trophy,
+} from "@phosphor-icons/react";
 import classNames from "classnames";
 
 import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
-import { Column } from "./Column.tsx";
+import { Column, TGrouping } from "./Column.tsx";
 import { InputWithIcon } from "./InputWithIcon.tsx";
 
-import { TTask } from "../api/tasks.ts";
-import { TQueryFilter } from "../api/applyFilters.ts";
+import { useGoals } from "../hooks/useGoals.tsx";
+import { useLists } from "../hooks/useLists.tsx";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
+
+import { TGoal } from "../api/goals.ts";
+import { TList } from "../api/lists.ts";
+import { ETaskPriority, TTask } from "../api/tasks.ts";
+import { TQueryFilter } from "../api/applyFilters.ts";
 
 type TQuickPlannerProps = {
   baseFilters?: TQueryFilter[];
@@ -19,13 +33,24 @@ export const QuickPlanner = ({
   baseFilters = [],
   columnId,
 }: TQuickPlannerProps) => {
-  const [selectedFilter, setSelectedFilter] = useState<string>("all");
+  const [selectedFilter, setSelectedFilter] = useState<string>("none");
+  const [selectedGroup, setSelectedGroup] = useState<string>("none");
+  const [search, setSearch] = useState<string>("");
 
-  const options = makeFilterOptions(selectedFilter);
-  const selected = options.find((option) => option.isSelected);
+  const filterOptions = makeFilterOptions(selectedFilter);
+  const filterTitle = filterOptions.find((option) => option.isSelected).title;
   const activeFilters = taskFilters?.[selectedFilter] ?? [];
 
-  const [search, setSearch] = useState<string>("");
+  const groupOptions = makeGroupOptions(selectedGroup);
+  const groupingTitle = groupOptions.find((option) => option.isSelected).title;
+
+  const [goals] = useGoals();
+  const [lists] = useLists();
+
+  const groupings = makeGroupings({ goals, lists });
+  const activeGrouping =
+    groupings.find((group) => group.prop === selectedGroup) || undefined;
+
   const [filteredTasks] = useTasks({
     filters: [...baseFilters, ...activeFilters],
   });
@@ -37,19 +62,33 @@ export const QuickPlanner = ({
 
   return (
     <Column
+      grouping={activeGrouping}
       id={columnId}
       tasks={searchTasks(filteredTasks)}
       titleComponent={
-        <div className="join w-standard">
+        <div className="flex flex-wrap gap-2">
           <ButtonWithPopover
-            buttonClassName="min-w-20"
-            buttonVariant="left-join"
+            buttonClassName="btn w-full"
+            buttonVariant="none"
             onChange={(id) => setSelectedFilter(id as string)}
-            options={options}
-            popoverId="quick-planner"
+            options={filterOptions}
+            popoverId="quick-planner-filter"
             variant="menu"
+            wrapperClassName="flex-1"
           >
-            {selected.title}
+            {filterTitle}
+          </ButtonWithPopover>
+
+          <ButtonWithPopover
+            buttonClassName="btn w-full"
+            buttonVariant="none"
+            onChange={(id) => setSelectedGroup(id as string)}
+            options={groupOptions}
+            popoverId="quick-planner-group"
+            variant="menu"
+            wrapperClassName="flex-1"
+          >
+            {groupingTitle}
           </ButtonWithPopover>
 
           <InputWithIcon
@@ -57,7 +96,7 @@ export const QuickPlanner = ({
             placeholder="Search"
             type="text"
             value={search}
-            wrapperClassName="join-item"
+            wrapperClassName="w-full"
           >
             <MagnifyingGlass />
           </InputWithIcon>
@@ -82,33 +121,87 @@ export const QuickDrawer = ({ isOpen, ...props }: TQuickDrawerProps) => (
 
 const makeFilterOptions = (selectedFilter: string): TOption[] => [
   {
-    id: "all",
-    title: "All",
-    emoji: "📥",
-    isSelected: selectedFilter === "all",
-  },
-  {
-    id: "leftBehind",
-    title: "Left Behind",
-    emoji: "📆",
-    isSelected: selectedFilter === "leftBehind",
-  },
-  {
-    id: "unscheduled",
-    title: "Unscheduled",
-    emoji: "🗓️",
-    isSelected: selectedFilter === "unscheduled",
+    id: "none",
+    icon: <span className="w-3" />,
+    title: "No Filter",
+    isSelected: selectedFilter === "none",
   },
   {
     id: "overdue",
     title: "Overdue",
-    emoji: "⌛",
+    icon: <HourglassLow />,
     isSelected: selectedFilter === "overdue",
   },
   {
     id: "dueSoon",
     title: "Due Soon",
-    emoji: "⏳",
+    icon: <HourglassMedium />,
     isSelected: selectedFilter === "dueSoon",
+  },
+  {
+    id: "leftBehind",
+    title: "Left Behind",
+    icon: <CalendarDots />,
+    isSelected: selectedFilter === "leftBehind",
+  },
+  {
+    id: "unscheduled",
+    title: "Unscheduled",
+    icon: <CalendarBlank />,
+    isSelected: selectedFilter === "unscheduled",
+  },
+];
+
+const makeGroupOptions = (selectedGroup: string): TOption[] => [
+  {
+    id: "none",
+    icon: <span className="w-3" />,
+    title: "No Grouping",
+    isSelected: selectedGroup === "none",
+  },
+  {
+    id: "listId",
+    title: "By List",
+    icon: <ListHeart />,
+    isSelected: selectedGroup === "listId",
+  },
+  {
+    id: "priority",
+    title: "By Priority",
+    icon: <SquaresFour />,
+    isSelected: selectedGroup === "priority",
+  },
+  {
+    id: "goalId",
+    title: "By Goal",
+    icon: <Trophy />,
+    isSelected: selectedGroup === "goalId",
+  },
+];
+
+const makeGroupings = ({
+  goals,
+  lists,
+}: {
+  goals: TGoal[];
+  lists: TList[];
+}): TGrouping[] => [
+  {
+    prop: "goalId",
+    options: goals.map(({ id, title }: TGoal) => ({ id, title })),
+  },
+  {
+    prop: "listId",
+    options: lists.map(({ id, title }: TList) => ({ id, title })),
+  },
+  {
+    prop: "priority",
+    options: [
+      { id: ETaskPriority.IMPORTANT_AND_URGENT, title: "Important & Urgent" },
+      { id: ETaskPriority.URGENT, title: "Urgent" },
+      { id: ETaskPriority.IMPORTANT, title: "Important" },
+      { id: ETaskPriority.NEITHER, title: "Neither" },
+      { id: ETaskPriority.UNPRIORITIZED, title: "Unprioritized" },
+    ],
   },
 ];

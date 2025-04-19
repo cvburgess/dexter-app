@@ -94,7 +94,7 @@ const PromptInput = ({
   updatePrompt,
 }: TPromptInputProps) => {
   const [value, setValue] = useState<string>(prompt);
-  const [debounced] = useDebounce(value, 1000);
+  const [debounced] = useDebounce(value, 500);
 
   // When props reflow into the component, update local state
   useEffect(() => {
@@ -102,7 +102,7 @@ const PromptInput = ({
   }, [prompt]);
 
   useEffect(() => {
-    if (debounced !== value) updatePrompt(index, debounced);
+    if (debounced !== prompt) updatePrompt(index, debounced);
   }, [debounced]);
 
   return (

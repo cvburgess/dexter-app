@@ -15,13 +15,21 @@ export const DraggableView = ({ children }: TProps) => {
   const [startingColumn, setStartingColumn] = useState<string | null>(null);
   const [_, { updateTask }] = useTasks({ skipQuery: true });
 
-  const onTaskMove = (id: string, _index: number, column: string) => {
+  const onTaskMove = (id: string, fromColumn: string, toColumn: string) => {
     // column is prefixed with the property name
     // example: "scheduledFor:2022-01-01"
-    const [prop, value] = column.split(":");
-    const nullableValue = value === "null" ? null : value;
+    const parseColumn = (column: string) => {
+      const [prop, value] = column.split(":");
+      const nullableValue = value === "null" ? null : value;
+      return { [prop]: nullableValue };
+    };
 
-    updateTask({ id, [prop]: nullableValue });
+    const _from = parseColumn(fromColumn);
+    const to = parseColumn(toColumn);
+
+    // TODO: Support multiple columns
+
+    updateTask({ id, ...to });
   };
 
   const onDragStart = (result: DragStart<string>) => {
@@ -33,12 +41,12 @@ export const DraggableView = ({ children }: TProps) => {
     const { source, destination } = result;
 
     const taskId = result.draggableId;
-    const _sourceColumn = result.source.droppableId;
+    const sourceColumn = result.source.droppableId;
     const destColumn = result.destination.droppableId;
-    const destIndex = result.destination.index;
+    const _destIndex = result.destination.index;
 
     if (source.droppableId !== destination.droppableId) {
-      onTaskMove(taskId, destIndex, destColumn);
+      onTaskMove(taskId, sourceColumn, destColumn);
     }
   };
 

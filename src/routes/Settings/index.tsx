@@ -13,7 +13,15 @@ const Panel = ({ children }: { children: React.ReactNode }) => {
 };
 
 export const Settings = () => {
-  const panels = ["account", "habits", "journal", "notes", "theme", "about"];
+  const panels = [
+    "account",
+    "calendar",
+    "habits",
+    "journal",
+    "notes",
+    "theme",
+    "about",
+  ];
 
   return (
     <View>
