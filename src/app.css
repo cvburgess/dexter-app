@@ -73,6 +73,8 @@
   @apply bg-base-200 text-base-content shadow-md;
 }
 
+/* ---------- FULLCALENDAR STYLES ---------- */
+
 .fc {
   min-width: calc(var(--spacing) * 68);
 }
