@@ -1,3 +1,4 @@
+import React from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import iCalendarPlugin from "@fullcalendar/icalendar";
@@ -11,7 +12,7 @@ type TCalendarProps = {
   date: Temporal.PlainDate;
 };
 
-export const Calendar = ({ date }: TCalendarProps) => {
+export const Calendar = React.memo(({ date }: TCalendarProps) => {
   const [preferences] = usePreferences();
 
   if (!preferences.enableCalendar) return null;
@@ -27,9 +28,9 @@ export const Calendar = ({ date }: TCalendarProps) => {
       />
     </div>
   );
-};
+});
 
-const now = new Date();
+Calendar.displayName = "Calendar";
 
 type TCalendarTimeLineProps = {
   calendarUrls: string[];
@@ -43,28 +44,34 @@ const CalendarTimeLine = ({
   date,
   endTime,
   startTime,
-}: TCalendarTimeLineProps) => (
-  <FullCalendar
-    dayHeaders={false}
-    dayMaxEvents={true}
-    // dayMinWidth={600}
-    editable={false}
-    eventSources={calendarUrls.map((url) => ({
-      url: `${PROXY_URL}?url=${url}`,
-      format: "ics",
-    }))}
-    headerToolbar={false}
-    initialDate={date}
-    initialView="timeGridDay"
-    nowIndicator
-    plugins={[iCalendarPlugin, timeGridPlugin]}
-    scrollTime={now.toLocaleTimeString("en-US", {
-      hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    })}
-    slotMaxTime={endTime}
-    slotMinTime={startTime}
-  />
-);
+}: TCalendarTimeLineProps) => {
+  const now = new Date();
+
+  const currentTime = now.toLocaleTimeString("en-US", {
+    hour12: false,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  const sources = calendarUrls.map((url) => ({
+    url: `${PROXY_URL}?url=${url}`,
+    format: "ics",
+  }));
+
+  return (
+    <FullCalendar
+      dayHeaders={false}
+      dayMaxEvents={true}
+      editable={false}
+      eventSources={sources}
+      headerToolbar={false}
+      initialDate={date}
+      initialView="timeGridDay"
+      nowIndicator
+      plugins={[iCalendarPlugin, timeGridPlugin]}
+      scrollTime={currentTime}
+      slotMaxTime={endTime}
+      slotMinTime={startTime}
+    />
+  );
+};
