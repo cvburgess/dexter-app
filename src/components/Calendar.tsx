@@ -4,21 +4,32 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import iCalendarPlugin from "@fullcalendar/icalendar";
 import { Temporal } from "@js-temporal/polyfill";
 
+import { ECardSize } from "./Card";
+
 import { usePreferences } from "../hooks/usePreferences";
+import classNames from "classnames";
 
 const PROXY_URL = "https://api.dexterplanner.com/functions/v1/ics-proxy";
 
 type TCalendarProps = {
   date: Temporal.PlainDate;
+  size: ECardSize;
 };
 
-export const Calendar = React.memo(({ date }: TCalendarProps) => {
+export const Calendar = React.memo(({ date, size }: TCalendarProps) => {
   const [preferences] = usePreferences();
 
   if (!preferences.enableCalendar) return null;
 
   return (
-    <div className="flex flex-1 w-standard my-4 border-2 border-base-200 rounded-box">
+    <div
+      className={classNames(
+        "flex flex-1 my-4 border-2 border-base-200 rounded-box",
+        size === ECardSize.COMPACT
+          ? "min-w-compact w-compact max-w-compact"
+          : "min-w-standard w-standard max-w-standard",
+      )}
+    >
       <CalendarTimeLine
         calendarUrls={preferences.calendarUrls}
         date={date.toString()}

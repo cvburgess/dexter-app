@@ -66,7 +66,7 @@ export const Day = () => {
               <Journal date={date} />
             </Tab>
           </Tabs>
-          <Calendar date={date} />
+          <Calendar date={date} size={cardSize} />
         </ScrollableContainer>
         <QuickDrawer
           baseFilters={makeBaseFiltersForDate(date)}
