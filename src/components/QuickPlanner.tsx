@@ -12,6 +12,7 @@ import {
 import classNames from "classnames";
 
 import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
+import { ECardSize } from "./Card.tsx";
 import { Column, TGrouping } from "./Column.tsx";
 import { InputWithIcon } from "./InputWithIcon.tsx";
 
@@ -62,6 +63,7 @@ export const QuickPlanner = ({
 
   return (
     <Column
+      cardSize={ECardSize.STANDARD}
       grouping={activeGrouping}
       id={columnId}
       tasks={searchTasks(filteredTasks)}
@@ -73,6 +75,7 @@ export const QuickPlanner = ({
             onChange={(id) => setSelectedFilter(id as string)}
             options={filterOptions}
             popoverId="quick-planner-filter"
+            title="Filter"
             variant="menu"
             wrapperClassName="flex-1"
           >
@@ -85,6 +88,7 @@ export const QuickPlanner = ({
             onChange={(id) => setSelectedGroup(id as string)}
             options={groupOptions}
             popoverId="quick-planner-group"
+            title="Group"
             variant="menu"
             wrapperClassName="flex-1"
           >

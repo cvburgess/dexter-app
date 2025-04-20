@@ -1,20 +1,32 @@
 import { Board, TColumn } from "../components/Board.tsx";
+import { ECardSize } from "../components/Card.tsx";
 import { TextToolbar } from "../components/Toolbar.tsx";
 import { DraggableView } from "../components/View.tsx";
 
+import { useCardSize } from "../hooks/useCardSize.tsx";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 
 import { ETaskPriority, TTask } from "../api/tasks.ts";
 
 export const Priorities = () => {
+  const [cardSize, toggleCardSize] = useCardSize(ECardSize.STANDARD);
   const [tasks] = useTasks({ filters: taskFilters.incomplete });
 
   const columns = makeColumns(tasks);
 
   return (
     <DraggableView>
-      <TextToolbar title="Prioritize" />
-      <Board canCreateTasks columns={columns} groupBy="priority" />
+      <TextToolbar
+        cardSize={cardSize}
+        title="Prioritize"
+        toggleCardSize={toggleCardSize}
+      />
+      <Board
+        canCreateTasks
+        cardSize={cardSize}
+        columns={columns}
+        groupBy="priority"
+      />
     </DraggableView>
   );
 };

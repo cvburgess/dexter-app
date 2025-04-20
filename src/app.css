@@ -76,10 +76,16 @@
 /* ---------- FULLCALENDAR STYLES ---------- */
 
 .fc {
-  min-width: calc(var(--spacing) * 68);
+  min-width: 100%;
 }
 .fc-scroller {
-  @extend no-scrollbar;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.fc-scroller::-webkit-scrollbar {
+  display: none;
+  -webkit-overflow-scrolling: touch;
 }
 .fc .fc-scrollgrid,
 td[role="presentation"] {
@@ -97,6 +103,11 @@ td {
 }
 .fc-timegrid-now-indicator-line {
   @apply !border-secondary;
+}
+.fc-timegrid-slot-label,
+.fc-timegrid-axis {
+  @apply text-base-content/80;
+  font-size: 0.5rem;
 }
 .fc-event {
   @apply bg-primary;

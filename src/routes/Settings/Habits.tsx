@@ -178,6 +178,7 @@ const HabitInput = ({ deleteHabit, habit, updateHabit }: THabitInputProps) => {
           buttonVariant="left-join"
           onChange={onChangeEmoji}
           popoverId={`habit-${habit.id}-emoji`}
+          title="Emoji"
           variant="emoji"
         >
           {habit.emoji}
@@ -218,6 +219,7 @@ const HabitInput = ({ deleteHabit, habit, updateHabit }: THabitInputProps) => {
           ]}
           popoverId={`habit-${habit.id}-days-active`}
           selected={habit.daysActive}
+          title="Days Active"
           variant="multiSelectMenu"
         >
           {habit.daysActive.length} x weekly

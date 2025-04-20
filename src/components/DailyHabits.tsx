@@ -3,8 +3,6 @@ import { Temporal } from "@js-temporal/polyfill";
 import { Link, useLocation } from "react-router";
 import classNames from "classnames";
 
-import { Tooltip } from "./Tooltip";
-
 import { habitFilters, useDailyHabits, useHabits } from "../hooks/useHabits";
 
 import { TDailyHabit } from "../api/habits";
@@ -96,18 +94,25 @@ const HabitButton = ({
   dailyHabit,
   incrementDailyHabit,
 }: THabitButtonProps) => (
-  <Tooltip
-    text={`${dailyHabit.habits.title} (${dailyHabit.stepsComplete}/${dailyHabit.steps})`}
+  <div
+    className="grid place-items-center size-8"
+    title={`${dailyHabit.habits.title} (${dailyHabit.stepsComplete}/${dailyHabit.steps})`}
   >
     <div
-      className={classNames("absolute shadow-xs cursor-pointer", ringClasses, {
-        "z-10": !dailyHabit.percentComplete,
-      })}
+      className={classNames(
+        "col-start-1 row-start-1 shadow-xs cursor-pointer",
+        ringClasses,
+        { "z-10": !dailyHabit.percentComplete },
+      )}
       onClick={() => incrementDailyHabit(dailyHabit)}
     />
+
     <div
       aria-valuenow={dailyHabit.percentComplete}
-      className={classNames("radial-progress cursor-pointer", iconClasses)}
+      className={classNames(
+        "col-start-1 row-start-1 radial-progress cursor-pointer",
+        iconClasses,
+      )}
       onClick={() => incrementDailyHabit(dailyHabit)}
       role="progressbar"
       style={
@@ -120,7 +125,7 @@ const HabitButton = ({
     >
       {dailyHabit.habits.emoji}
     </div>
-  </Tooltip>
+  </div>
 );
 
 const FutureHabitButton = ({ emoji }: { emoji: string }) => (

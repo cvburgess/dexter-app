@@ -20,7 +20,7 @@ export type TGrouping = {
 
 export type TColumnProps = {
   canCreateTasks?: boolean;
-  cardSize?: ECardSize;
+  cardSize: ECardSize;
   grouping?: TGrouping;
   id: string;
   isActive?: boolean;
@@ -34,7 +34,7 @@ export type TColumnProps = {
 export const Column = React.memo(
   ({
     canCreateTasks = false,
-    cardSize = "normal",
+    cardSize,
     grouping,
     id,
     isActive = false,
@@ -60,7 +60,7 @@ export const Column = React.memo(
       <div
         className={classNames(
           "min-h-[50vh] flex flex-col flex-1 overscroll-x-none overflow-y-auto no-scrollbar",
-          cardSize === "compact-w"
+          cardSize === ECardSize.COMPACT
             ? "min-w-compact w-compact max-w-compact"
             : "min-w-standard w-standard max-w-standard",
         )}
@@ -90,7 +90,9 @@ export const Column = React.memo(
           {showHabits && (
             <DailyHabits
               className={classNames(
-                cardSize === "compact-w" ? "max-w-compact" : "max-w-standard",
+                cardSize === ECardSize.COMPACT
+                  ? "max-w-compact"
+                  : "max-w-standard",
               )}
               date={Temporal.PlainDate.from(id.split(":")[1])}
             />
@@ -181,7 +183,7 @@ const ColumnTitle = ({ isActive, title, subtitle }: TColumnTitleProps) => {
   return (
     <div
       className={classNames(
-        "badge badge-lg p-0 mx-auto w-full h-standard rounded-field flex flex-col justify-center gap-0",
+        "badge badge-lg p-0 mx-auto w-full h-standard rounded-field flex flex-col justify-center gap-0 truncate",
         {
           "bg-base-content/80 text-base-100": isActive,
         },
