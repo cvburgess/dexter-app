@@ -79,7 +79,13 @@
   min-width: 100%;
 }
 .fc-scroller {
-  @extend no-scrollbar;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.fc-scroller::-webkit-scrollbar {
+  display: none;
+  -webkit-overflow-scrolling: touch;
 }
 .fc .fc-scrollgrid,
 td[role="presentation"] {
