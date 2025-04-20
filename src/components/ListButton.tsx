@@ -1,7 +1,6 @@
 import { Smiley } from "@phosphor-icons/react";
 
 import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
-import { Tooltip } from "./Tooltip.tsx";
 
 import { useLists } from "../hooks/useLists.tsx";
 
@@ -26,17 +25,16 @@ export const ListButton = ({
   const options = optionsForListId(lists, listId);
 
   return (
-    <Tooltip position="top" text="List">
-      <ButtonWithPopover
-        buttonVariant="round"
-        onChange={(value) => onTaskUpdate({ listId: value as string })}
-        options={options}
-        popoverId={`${task.id}-list`}
-        variant="menu"
-      >
-        {selectedList ? selectedList.emoji : <Smiley size={24} weight="thin" />}
-      </ButtonWithPopover>
-    </Tooltip>
+    <ButtonWithPopover
+      buttonVariant="round"
+      onChange={(value) => onTaskUpdate({ listId: value as string })}
+      options={options}
+      popoverId={`${task.id}-list`}
+      title="List"
+      variant="menu"
+    >
+      {selectedList ? selectedList.emoji : <Smiley size={24} weight="thin" />}
+    </ButtonWithPopover>
   );
 };
 

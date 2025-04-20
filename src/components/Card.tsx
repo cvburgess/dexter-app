@@ -16,7 +16,10 @@ import {
   TUpdateTask,
 } from "../api/tasks.ts";
 
-export type ECardSize = "normal" | "compact-h" | "compact-w";
+export enum ECardSize {
+  STANDARD = "standard",
+  COMPACT = "compact",
+}
 
 type TCardProps = {
   cardSize?: ECardSize;
@@ -26,7 +29,12 @@ type TCardProps = {
 };
 
 export const Card = React.memo(
-  ({ cardSize = "normal", className, task, provided }: TCardProps) => {
+  ({
+    cardSize = ECardSize.STANDARD,
+    className,
+    task,
+    provided,
+  }: TCardProps) => {
     const [isEditing, setIsEditing] = useState(false);
     const [_, { deleteTask, updateTask }] = useTasks({ skipQuery: true });
 
@@ -45,7 +53,7 @@ export const Card = React.memo(
     const isComplete =
       task.status === ETaskStatus.DONE || task.status === ETaskStatus.WONT_DO;
 
-    const shouldShowButtons = cardSize !== "compact-h" && !isComplete;
+    const shouldShowButtons = !isComplete;
     const dragProps = provided
       ? {
           ref: provided.innerRef,
@@ -61,7 +69,9 @@ export const Card = React.memo(
         className={classNames(
           "shadow-xs rounded-field p-4 border border-current/10 flex",
           isComplete ? colors.complete : colors.incomplete,
-          cardSize === "compact-w" ? "w-compact" : "w-standard min-h-standard",
+          cardSize === ECardSize.COMPACT
+            ? "w-compact"
+            : "w-standard min-h-standard",
           className,
         )}
       >
@@ -69,11 +79,11 @@ export const Card = React.memo(
           className={classNames(
             "flex items-center justify-start gap-2 w-full",
             {
-              "flex-wrap": cardSize === "compact-w",
+              "flex-wrap": cardSize === ECardSize.COMPACT,
             },
           )}
         >
-          {cardSize === "compact-w" ? null : (
+          {cardSize === ECardSize.STANDARD && (
             <StatusButton
               onTaskUpdate={onTaskUpdate}
               status={task.status}
@@ -84,8 +94,8 @@ export const Card = React.memo(
             className={classNames(
               "text-xs font-medium focus:outline-none mx-0.5 cursor-text",
               {
-                "flex-grow": cardSize !== "compact-w",
-                "w-full mb-2 text-center": cardSize === "compact-w",
+                "flex-grow": cardSize !== ECardSize.COMPACT,
+                "w-full mb-2 text-center": cardSize === ECardSize.COMPACT,
               },
             )}
             contentEditable={isEditing}
@@ -101,7 +111,7 @@ export const Card = React.memo(
           >
             {task.title}
           </p>
-          {cardSize === "compact-w" && (
+          {cardSize === ECardSize.COMPACT && (
             <StatusButton
               className={isComplete ? "mx-auto" : "mr-auto"}
               onTaskUpdate={onTaskUpdate}

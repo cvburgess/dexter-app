@@ -3,8 +3,6 @@ import { Temporal } from "@js-temporal/polyfill";
 import { Link, useLocation } from "react-router";
 import classNames from "classnames";
 
-import { Tooltip } from "./Tooltip";
-
 import { habitFilters, useDailyHabits, useHabits } from "../hooks/useHabits";
 
 import { TDailyHabit } from "../api/habits";
@@ -96,8 +94,8 @@ const HabitButton = ({
   dailyHabit,
   incrementDailyHabit,
 }: THabitButtonProps) => (
-  <Tooltip
-    text={`${dailyHabit.habits.title} (${dailyHabit.stepsComplete}/${dailyHabit.steps})`}
+  <div
+    title={`${dailyHabit.habits.title} (${dailyHabit.stepsComplete}/${dailyHabit.steps})`}
   >
     <div
       className={classNames("absolute shadow-xs cursor-pointer", ringClasses, {
@@ -120,7 +118,7 @@ const HabitButton = ({
     >
       {dailyHabit.habits.emoji}
     </div>
-  </Tooltip>
+  </div>
 );
 
 const FutureHabitButton = ({ emoji }: { emoji: string }) => (

@@ -1,13 +1,20 @@
 import { Temporal } from "@js-temporal/polyfill";
-import { CaretLeft, CaretRight, SquareHalf } from "@phosphor-icons/react";
+import {
+  CaretLeft,
+  CaretRight,
+  Resize,
+  SquareHalf,
+} from "@phosphor-icons/react";
 
 import { ButtonWithPopover } from "./ButtonWithPopover.tsx";
-import { Tooltip } from "./Tooltip.tsx";
+import { ECardSize } from "./Card.tsx";
 
 type TToolbarProps = {
   children: React.ReactNode;
+  cardSize?: ECardSize;
   onClickNext?: () => void;
   onClickPrevious?: () => void;
+  toggleCardSize?: () => void;
   toggleQuickPlan?: () => void;
   tooltipNoun?: string;
 };
@@ -17,8 +24,10 @@ const buttonClasses =
 
 export const Toolbar = ({
   children,
+  cardSize,
   onClickNext,
   onClickPrevious,
+  toggleCardSize,
   toggleQuickPlan,
   tooltipNoun,
 }: TToolbarProps) => {
@@ -27,79 +36,88 @@ export const Toolbar = ({
       {children}
       <div className="flex-grow w-full h-full app-draggable"></div>
       {onClickPrevious && (
-        <Tooltip text={`Previous ${tooltipNoun}`}>
-          <ArrowButton onClick={onClickPrevious} variant="previous" />
-        </Tooltip>
+        <ArrowButton
+          onClick={onClickPrevious}
+          title={`Previous ${tooltipNoun}`}
+          variant="previous"
+        />
       )}
       {onClickNext && (
-        <Tooltip text={`Next ${tooltipNoun}`}>
-          <ArrowButton onClick={onClickNext} variant="next" />
-        </Tooltip>
+        <ArrowButton
+          onClick={onClickNext}
+          title={`Next ${tooltipNoun}`}
+          variant="next"
+        />
+      )}
+      {cardSize && (
+        <button
+          className={buttonClasses}
+          onClick={toggleCardSize}
+          title="Card size"
+        >
+          <Resize />
+        </button>
       )}
       {toggleQuickPlan && (
-        <Tooltip position="left" text="Quick Planner">
-          <button className={buttonClasses} onClick={toggleQuickPlan}>
-            <SquareHalf />
-          </button>
-        </Tooltip>
+        <button
+          className={buttonClasses}
+          onClick={toggleQuickPlan}
+          title="Quick planner"
+        >
+          <SquareHalf />
+        </button>
       )}
     </div>
   );
 };
 
-type TDayNavProps = {
+type TDayNavProps = Partial<TToolbarProps> & {
   date: Temporal.PlainDate;
   setDate: (date: Temporal.PlainDate) => void;
-  toggleQuickPlan?: () => void;
 };
 
-export const DayNav = ({ date, setDate, toggleQuickPlan }: TDayNavProps) => {
+export const DayNav = ({ date, setDate, ...rest }: TDayNavProps) => {
   return (
     <Toolbar
       onClickNext={() => setDate(date.add({ days: 1 }))}
       onClickPrevious={() => setDate(date.subtract({ days: 1 }))}
-      toggleQuickPlan={toggleQuickPlan}
       tooltipNoun="day"
+      {...rest}
     >
       {date.toString() === Temporal.Now.plainDateISO().toString() ? (
-        <Tooltip text="Change date">
-          <ButtonWithPopover
-            buttonClassName={buttonClasses}
-            buttonVariant="none"
-            onChange={(value) =>
-              value && setDate(Temporal.PlainDate.from(value))
-            }
-            popoverId="today-day-picker"
-            selectedDate={date.toString()}
-            variant="calendar"
-          >
-            {formatDate(date)}
-          </ButtonWithPopover>
-        </Tooltip>
+        <ButtonWithPopover
+          buttonClassName={buttonClasses}
+          buttonVariant="none"
+          onChange={(value) => value && setDate(Temporal.PlainDate.from(value))}
+          popoverId="today-day-picker"
+          selectedDate={date.toString()}
+          title="Change date"
+          variant="calendar"
+        >
+          {formatDate(date)}
+        </ButtonWithPopover>
       ) : (
-        <Tooltip text="Go to today">
-          <div
-            className={buttonClasses}
-            onClick={() => setDate(Temporal.Now.plainDateISO())}
-          >
-            {formatDate(date)}
-          </div>
-        </Tooltip>
+        <div
+          className={buttonClasses}
+          onClick={() => setDate(Temporal.Now.plainDateISO())}
+          title="Go to today"
+        >
+          {formatDate(date)}
+        </div>
       )}
     </Toolbar>
   );
 };
 
-type TWeekNavProps = {
+type TWeekNavProps = Partial<TToolbarProps> & {
   weeksOffset: number;
   setWeeksOffset: (value: number) => void;
-  toggleQuickPlan?: () => void;
 };
 
 export const WeekNav = ({
   weeksOffset,
   setWeeksOffset,
-  toggleQuickPlan,
+  ...rest
 }: TWeekNavProps) => {
   const today = Temporal.Now.plainDateISO();
   const offsetDate = today.add({ weeks: weeksOffset });
@@ -108,33 +126,38 @@ export const WeekNav = ({
     <Toolbar
       onClickNext={() => setWeeksOffset(weeksOffset + 1)}
       onClickPrevious={() => setWeeksOffset(weeksOffset - 1)}
-      toggleQuickPlan={toggleQuickPlan}
       tooltipNoun="week"
+      {...rest}
     >
-      <Tooltip enabled={weeksOffset !== 0} text="Back to this week">
-        <div className={buttonClasses} onClick={() => setWeeksOffset(0)}>
-          Week {offsetDate.weekOfYear}, {offsetDate.year}
-        </div>
-      </Tooltip>
+      <div
+        className={buttonClasses}
+        onClick={() => setWeeksOffset(0)}
+        title={weeksOffset !== 0 ? "Back to this week" : undefined}
+      >
+        Week {offsetDate.weekOfYear}, {offsetDate.year}
+      </div>
     </Toolbar>
   );
 };
 
-type TTextToolbarProps = {
+type TTextToolbarProps = Partial<TToolbarProps> & {
   title: string;
-  toggleQuickPlan?: () => void;
 };
 
-export const TextToolbar = ({ title, toggleQuickPlan }: TTextToolbarProps) => (
-  <Toolbar toggleQuickPlan={toggleQuickPlan}>
+export const TextToolbar = ({ title, ...rest }: TTextToolbarProps) => (
+  <Toolbar {...rest}>
     <p className={buttonClasses}> {title} </p>
   </Toolbar>
 );
 
-type TArrowButtonProps = { onClick: () => void; variant: "previous" | "next" };
+type TArrowButtonProps = {
+  onClick: () => void;
+  title: string;
+  variant: "previous" | "next";
+};
 
-const ArrowButton = ({ onClick, variant }: TArrowButtonProps) => (
-  <div className={buttonClasses} onClick={onClick}>
+const ArrowButton = ({ onClick, title, variant }: TArrowButtonProps) => (
+  <div className={buttonClasses} onClick={onClick} title={title}>
     {variant === "previous" ? <CaretLeft /> : <CaretRight />}
   </div>
 );

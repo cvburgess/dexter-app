@@ -26,6 +26,7 @@ type TCommonProps = {
   buttonVariant: "round" | "join" | "left-join" | "none";
   children: React.ReactNode;
   popoverId: string;
+  title: string;
   wrapperClassName?: string;
 };
 
@@ -63,6 +64,7 @@ export const ButtonWithPopover = ({
   buttonVariant,
   children,
   popoverId,
+  title,
   wrapperClassName,
   ...props
 }: TButtonWithPopoverProps) => (
@@ -79,6 +81,7 @@ export const ButtonWithPopover = ({
         buttonClassName,
       )}
       popovertarget={popoverId}
+      title={title}
     >
       {children}
     </button>

@@ -1,7 +1,6 @@
 import { Check, Circle, SpinnerGap, X } from "@phosphor-icons/react";
 
 import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
-import { Tooltip } from "./Tooltip.tsx";
 
 import { ETaskStatus, TTask, TUpdateTask } from "../api/tasks.ts";
 
@@ -22,19 +21,19 @@ export const StatusButton = ({
   const icon = iconForStatus(status);
 
   return (
-    <Tooltip className={className} position="top" text="Status">
-      <ButtonWithPopover
-        buttonVariant="round"
-        onChange={(value) =>
-          onTaskUpdate({ status: Number(value) as ETaskStatus })
-        }
-        options={options}
-        popoverId={`${task.id}`}
-        variant="menu"
-      >
-        {icon}
-      </ButtonWithPopover>
-    </Tooltip>
+    <ButtonWithPopover
+      buttonVariant="round"
+      onChange={(value) =>
+        onTaskUpdate({ status: Number(value) as ETaskStatus })
+      }
+      options={options}
+      popoverId={`${task.id}`}
+      title="Status"
+      variant="menu"
+      wrapperClassName={className}
+    >
+      {icon}
+    </ButtonWithPopover>
   );
 };
 

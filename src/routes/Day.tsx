@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 
 import { Calendar } from "../components/Calendar.tsx";
+import { ECardSize } from "../components/Card.tsx";
 import { Column } from "../components/Column.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
 import { Journal } from "../components/Journal.tsx";
@@ -13,6 +14,7 @@ import {
   ScrollableContainer,
 } from "../components/View.tsx";
 
+import { useCardSize } from "../hooks/useCardSize.tsx";
 import { usePreferences } from "../hooks/usePreferences.tsx";
 import { useTasks } from "../hooks/useTasks.tsx";
 import { useToggle } from "../hooks/useToggle.tsx";
@@ -20,6 +22,7 @@ import { useToggle } from "../hooks/useToggle.tsx";
 import { makeBaseFiltersForDate } from "../utils/makeBaseFiltersForDate.ts";
 
 export const Day = () => {
+  const [cardSize, toggleCardSize] = useCardSize(ECardSize.STANDARD);
   const [isOpen, toggle] = useToggle();
   const [date, setDate] = useState<Temporal.PlainDate>(
     Temporal.Now.plainDateISO(),
@@ -34,12 +37,19 @@ export const Day = () => {
 
   return (
     <DraggableView>
-      <DayNav date={date} setDate={setDate} toggleQuickPlan={toggle} />
+      <DayNav
+        cardSize={cardSize}
+        date={date}
+        setDate={setDate}
+        toggleCardSize={toggleCardSize}
+        toggleQuickPlan={toggle}
+      />
 
       <DrawerContainer>
         <ScrollableContainer>
           <Column
             canCreateTasks
+            cardSize={cardSize}
             id={`scheduledFor:${date.toString()}`}
             showHabits={preferences.enableHabits}
             tasks={tasks}

@@ -3,7 +3,6 @@ import { Temporal } from "@js-temporal/polyfill";
 import classNames from "classnames";
 
 import { ButtonWithPopover } from "./ButtonWithPopover.tsx";
-import { Tooltip } from "./Tooltip.tsx";
 
 import { TTask, TUpdateTask } from "../api/tasks.ts";
 
@@ -34,17 +33,16 @@ export const DueDateButton = ({
     shouldShowCountdown && daysUntilDue !== null && daysUntilDue <= 1;
 
   return (
-    <Tooltip position="top" text="Due Date">
-      <ButtonWithPopover
-        buttonClassName={classNames({ [overdueClasses]: shouldWarnUser })}
-        buttonVariant="round"
-        onChange={(value) => onTaskUpdate({ dueOn: value })}
-        popoverId={`${task.id}-due-date`}
-        selectedDate={dueOn}
-        variant="calendar"
-      >
-        {shouldShowCountdown ? daysUntilDue : <BellRinging />}
-      </ButtonWithPopover>
-    </Tooltip>
+    <ButtonWithPopover
+      buttonClassName={classNames({ [overdueClasses]: shouldWarnUser })}
+      buttonVariant="round"
+      onChange={(value) => onTaskUpdate({ dueOn: value })}
+      popoverId={`${task.id}-due-date`}
+      selectedDate={dueOn}
+      title="Due date"
+      variant="calendar"
+    >
+      {shouldShowCountdown ? daysUntilDue : <BellRinging />}
+    </ButtonWithPopover>
   );
 };
