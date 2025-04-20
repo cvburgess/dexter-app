@@ -102,9 +102,7 @@ const HabitButton = ({
       className={classNames(
         "col-start-1 row-start-1 shadow-xs cursor-pointer",
         ringClasses,
-        {
-          "z-10": !dailyHabit.percentComplete,
-        },
+        { "z-10": !dailyHabit.percentComplete },
       )}
       onClick={() => incrementDailyHabit(dailyHabit)}
     />
