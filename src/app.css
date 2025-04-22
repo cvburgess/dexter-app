@@ -110,21 +110,28 @@ td {
   font-size: 0.5rem;
 }
 .fc-event {
-  @apply bg-primary;
-  @apply border-primary-content outline-none !shadow-none;
-  @apply rounded-box p-2;
+  @apply bg-primary border-primary-content outline-none !shadow-none rounded-box p-2;
 }
 .fc-event * {
-  @apply text-primary-content;
+  @apply text-primary-content !text-xs;
+}
+.fc-timegrid-event-short {
+  @apply py-0;
+}
+.fc-timegrid-event-short * {
+  font-size: 0.5rem !important;
 }
 .fc-event-main-frame {
   @apply flex-wrap;
 }
 .fc-event-time {
-  @apply shrink mr-4 !mb-0 !text-xs;
+  @apply shrink mr-4 !mb-0;
+}
+.fc-event-time:after {
+  content: none !important;
 }
 .fc-event-title-container {
-  @apply grow w-full !text-xs;
+  @apply grow w-full;
 }
 
 @plugin "daisyui/theme" {
