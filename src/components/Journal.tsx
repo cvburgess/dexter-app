@@ -7,7 +7,11 @@ import { useDays } from "../hooks/useDays.tsx";
 type TJournalProps = { date: Temporal.PlainDate };
 
 export const Journal = ({ date }: TJournalProps) => {
-  const [{ prompts, ...rest }, { upsertDay }] = useDays(date.toString());
+  const [{ prompts, ...rest }, { isLoading, upsertDay }] = useDays(
+    date.toString(),
+  );
+
+  if (isLoading) return null;
 
   return prompts.map(({ prompt, response }, index) => (
     <div
