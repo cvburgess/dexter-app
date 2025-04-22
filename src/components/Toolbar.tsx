@@ -21,6 +21,7 @@ type TToolbarProps = {
 
 const buttonClasses =
   "btn btn-ghost !text-sm text-nowrap hover:bg-base-200 hover:border-base-200";
+const compactButtonClasses = `${buttonClasses} px-2`;
 
 export const Toolbar = ({
   children,
@@ -33,8 +34,6 @@ export const Toolbar = ({
 }: TToolbarProps) => {
   return (
     <div className="flex items-center p-2 w-full h-14 bg-base-100 border-b-2 border-base-200">
-      {children}
-      <div className="flex-grow w-full h-full app-draggable"></div>
       {onClickPrevious && (
         <ArrowButton
           onClick={onClickPrevious}
@@ -42,6 +41,7 @@ export const Toolbar = ({
           variant="previous"
         />
       )}
+      {children}
       {onClickNext && (
         <ArrowButton
           onClick={onClickNext}
@@ -49,6 +49,7 @@ export const Toolbar = ({
           variant="next"
         />
       )}
+      <div className="flex-grow w-full h-full app-draggable" />
       {cardSize && (
         <button
           className={buttonClasses}
@@ -86,7 +87,7 @@ export const DayNav = ({ date, setDate, ...rest }: TDayNavProps) => {
     >
       {date.toString() === Temporal.Now.plainDateISO().toString() ? (
         <ButtonWithPopover
-          buttonClassName={buttonClasses}
+          buttonClassName={compactButtonClasses}
           buttonVariant="none"
           onChange={(value) => value && setDate(Temporal.PlainDate.from(value))}
           popoverId="today-day-picker"
@@ -130,7 +131,7 @@ export const WeekNav = ({
       {...rest}
     >
       <div
-        className={buttonClasses}
+        className={compactButtonClasses}
         onClick={() => setWeeksOffset(0)}
         title={weeksOffset !== 0 ? "Back to this week" : undefined}
       >
@@ -157,7 +158,7 @@ type TArrowButtonProps = {
 };
 
 const ArrowButton = ({ onClick, title, variant }: TArrowButtonProps) => (
-  <div className={buttonClasses} onClick={onClick} title={title}>
+  <div className={compactButtonClasses} onClick={onClick} title={title}>
     {variant === "previous" ? <CaretLeft /> : <CaretRight />}
   </div>
 );
