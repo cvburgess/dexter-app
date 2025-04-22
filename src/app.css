@@ -112,10 +112,19 @@ td {
 .fc-event {
   @apply bg-primary;
   @apply border-primary-content outline-none !shadow-none;
-  @apply rounded-box p-2 text-xs;
+  @apply rounded-box p-2;
 }
 .fc-event * {
   @apply text-primary-content;
+}
+.fc-event-main-frame {
+  @apply flex-wrap;
+}
+.fc-event-time {
+  @apply shrink mr-4 !mb-0 !text-xs;
+}
+.fc-event-title-container {
+  @apply grow w-full !text-xs;
 }
 
 @plugin "daisyui/theme" {
