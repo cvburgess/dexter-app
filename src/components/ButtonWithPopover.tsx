@@ -77,7 +77,7 @@ export const ButtonWithPopover = ({
           [joinButtonClasses]: buttonVariant === "join",
           [leftJoinButtonClasses]: buttonVariant === "left-join",
         },
-        props.variant === "emoji" ? "text-2xl" : "text-xs",
+        props.variant === "emoji" ? "text-3xl" : "text-sm",
         buttonClassName,
       )}
       popovertarget={popoverId}
@@ -149,7 +149,7 @@ const DropdownMenu = ({ onChange, options, popoverId }: TDropdownMenuProps) => (
     {options.map((option) => (
       <li key={option.id}>
         <a
-          className={classNames("flex items-center gap-2 text-xs", {
+          className={classNames("flex items-center gap-2 text-sm", {
             "bg-base-300": option.isSelected,
           })}
           onClick={() => onChange(option.id)}
@@ -208,7 +208,7 @@ const MultiSelectMenu = ({
         return (
           <li key={option.id}>
             <a
-              className={classNames("flex items-center gap-2 text-xs")}
+              className={classNames("flex items-center gap-2 text-sm")}
               onClick={() => onClick(option.id)}
             >
               {isSelected ? (
@@ -242,13 +242,13 @@ const SegmentedMenu = ({ options, popoverId }: TSegmentedMenuProps) => (
   >
     {options.map((segment) => (
       <Fragment key={segment.title}>
-        <div className="divider divider-start mx-2 my-2 text-xs">
+        <div className="divider divider-start mx-2 my-2 text-sm">
           {segment.title}
         </div>
         {segment.options.map((option) => (
           <li key={option.id}>
             <a
-              className={classNames("flex items-center gap-2 mx-2 text-xs", {
+              className={classNames("flex items-center gap-2 mx-2 text-sm", {
                 "bg-base-300": option.isSelected,
               })}
               onClick={option.onChange}

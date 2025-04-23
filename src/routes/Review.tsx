@@ -102,11 +102,11 @@ export const Review = () => {
 };
 
 const Title = ({ text }: { text: string }) => (
-  <h1 className="text-4xl font-black opacity-80">{text}</h1>
+  <h1 className="text-5xl font-black opacity-80">{text}</h1>
 );
 
 const Subtitle = ({ text }: { text: string }) => (
-  <p className="text-xs text-center italic opacity-40 mt-2 mb-8">{text}</p>
+  <p className="text-sm text-center italic opacity-40 mt-2 mb-8">{text}</p>
 );
 
 type TCardListWithTItleProps = {
@@ -131,7 +131,7 @@ const CardListWithTitle = ({
         isVisible ? "opacity-100 w-standard" : "opacity-0 w-0 min-w-0",
       )}
     >
-      <p className="text-xl font-bold opacity-60 inline-flex items-center pr-5 mt-4 capitalize">
+      <p className="text-2xl font-bold opacity-60 inline-flex items-center pr-5 mt-4 capitalize">
         <Icon
           className={classNames("mr-4", {
             "text-success": variant === "complete",

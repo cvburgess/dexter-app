@@ -23,7 +23,7 @@ export const SettingsOption = ({
 
   return (
     <fieldset className="fieldset w-full">
-      <legend className="fieldset-legend ml-2 text-sm">{title}</legend>
+      <legend className="fieldset-legend ml-2 text-base">{title}</legend>
       <ButtonWithPopover
         buttonClassName="w-full"
         buttonVariant="none"
@@ -33,7 +33,7 @@ export const SettingsOption = ({
         title={title}
         variant="menu"
       >
-        <span className="btn h-standard text-xs justify-start capitalize w-full">
+        <span className="btn h-standard text-sm justify-start capitalize w-full">
           {selected.title} <CaretDown className="ml-auto" />
         </span>
       </ButtonWithPopover>

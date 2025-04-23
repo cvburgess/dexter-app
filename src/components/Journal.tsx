@@ -7,7 +7,11 @@ import { useDays } from "../hooks/useDays.tsx";
 type TJournalProps = { date: Temporal.PlainDate };
 
 export const Journal = ({ date }: TJournalProps) => {
-  const [{ prompts, ...rest }, { upsertDay }] = useDays(date.toString());
+  const [{ prompts, ...rest }, { isLoading, upsertDay }] = useDays(
+    date.toString(),
+  );
+
+  if (isLoading) return null;
 
   return prompts.map(({ prompt, response }, index) => (
     <div
@@ -48,7 +52,7 @@ const ResponseInput = ({ response, onChange }: TResponseInputProps) => {
 
   return (
     <input
-      className="w-full border-b-1 border-base-content/15 border-dashed focus:outline-0 text-xs"
+      className="w-full border-b-1 border-base-content/15 border-dashed focus:outline-0 text-sm"
       onBlur={() => onChange(newResponse)}
       onChange={(e) => setNewResponse(e.target.value)}
       value={newResponse}

@@ -95,7 +95,7 @@ const GoalInput = ({ goal, onArchive, onChange }: TGoalInputProps) => {
           "pt-4 sticky top-0": !goal,
         })}
       >
-        <label className="input bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field h-standard border-1 border-base-200 text-[1rem] pl-6">
+        <label className="input bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field h-standard border-1 border-base-200 text-lg pl-6">
           <input
             onChange={onChangeTitle}
             onKeyDown={onEnter}

@@ -64,7 +64,7 @@ export const Calendar = () => {
 
       {preferences.enableCalendar && (
         <fieldset className="fieldset w-full">
-          <legend className="fieldset-legend ml-2 text-sm">iCal URLs</legend>
+          <legend className="fieldset-legend ml-2">iCal URLs</legend>
           {preferences.calendarUrls.map((url, index) => (
             <UrlInput
               deleteUrl={deleteUrl}
@@ -131,7 +131,7 @@ const UrlInput = ({ deleteUrl, index, updateUrl, url }: TUrlInputProps) => {
   return (
     <label className="input w-full h-standard bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
       <input
-        className="text-xs"
+        className="text-sm"
         onChange={(e) => setValue(e.target.value)}
         type="text"
         value={value}

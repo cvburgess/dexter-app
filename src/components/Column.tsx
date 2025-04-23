@@ -59,7 +59,7 @@ export const Column = React.memo(
     return (
       <div
         className={classNames(
-          "min-h-[50vh] flex flex-col flex-1 overscroll-x-none overflow-y-auto no-scrollbar",
+          "min-h-[50vh] flex flex-col overscroll-x-none overflow-y-auto no-scrollbar",
           cardSize === ECardSize.COMPACT
             ? "min-w-compact w-compact max-w-compact"
             : "min-w-standard w-standard max-w-standard",
@@ -125,7 +125,7 @@ export const Column = React.memo(
                         <Fragment key={option.id}>
                           <div
                             className={classNames(
-                              "divider w-full font-semibold text-xs my-4",
+                              "divider w-full font-semibold text-sm my-4",
                               {
                                 "text-base-content/25":
                                   groupedTasks?.length === 0,
@@ -191,7 +191,7 @@ const ColumnTitle = ({ isActive, title, subtitle }: TColumnTitleProps) => {
     >
       {title}
       {subtitle && (
-        <span className="text-[0.5rem] opacity-80 mt-[-1px] mb-[2px]">
+        <span className="text-xs opacity-80 mt-[-1px] mb-[2px]">
           {subtitle}
         </span>
       )}

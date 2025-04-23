@@ -92,7 +92,7 @@ export const Card = React.memo(
           )}
           <p
             className={classNames(
-              "text-xs font-medium focus:outline-none mx-0.5 cursor-text",
+              "text-sm font-medium focus:outline-none mx-0.5 cursor-text",
               {
                 "flex-grow": cardSize !== ECardSize.COMPACT,
                 "w-full mb-2 text-center": cardSize === ECardSize.COMPACT,
