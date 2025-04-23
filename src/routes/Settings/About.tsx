@@ -5,11 +5,11 @@ import pkg from "../../../package.json";
 export const About = () => {
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-sm">{pkg.productName}</p>
-      <p className="text-xs">{pkg.description}</p>
-      <p className="text-sm">Version: v{pkg.version}</p>
+      <p className="text-base">{pkg.productName}</p>
+      <p className="text-sm">{pkg.description}</p>
+      <p className="text-base">Version: v{pkg.version}</p>
       <a
-        className="flex items-center gap-1 text-sm link link-hover"
+        className="flex items-center gap-1 text-base link link-hover"
         href="https://dexterplanner.com/releases"
         rel="noopener noreferrer"
         target="_blank"
@@ -18,7 +18,7 @@ export const About = () => {
         <ArrowSquareOut />
       </a>
       <a
-        className="flex items-center gap-1 text-sm link link-hover"
+        className="flex items-center gap-1 text-base link link-hover"
         href="https://dexterplanner.com/terms"
         rel="noopener noreferrer"
         target="_blank"
@@ -27,7 +27,7 @@ export const About = () => {
         <ArrowSquareOut />
       </a>
       <a
-        className="flex items-center gap-1 text-sm link link-hover"
+        className="flex items-center gap-1 text-base link link-hover"
         href="https://dexterplanner.com/privacy"
         rel="noopener noreferrer"
         target="_blank"

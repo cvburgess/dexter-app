@@ -50,7 +50,7 @@ export const Journal = () => {
 
       {preferences.enableJournal && (
         <fieldset className="fieldset w-full">
-          <legend className="fieldset-legend ml-2 text-sm">
+          <legend className="fieldset-legend ml-2 text-base">
             Journal Prompts
           </legend>
           {preferences.templatePrompts.map((prompt, index) => (
@@ -108,7 +108,7 @@ const PromptInput = ({
   return (
     <label className="input w-full h-standard bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-field border-1 border-base-200">
       <input
-        className="text-xs"
+        className="text-sm"
         onChange={(e) => setValue(e.target.value)}
         type="text"
         value={value}

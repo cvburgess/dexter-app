@@ -43,7 +43,7 @@ export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
   if (isDayView && dailyHabits.length === 0 && habits.length === 0) {
     return (
       <Link
-        className="h-[32px] flex justify-center items-center text-xs text-primary hover:bg-primary/5 rounded-box"
+        className="h-[32px] flex justify-center items-center text-sm text-primary hover:bg-primary/5 rounded-box"
         to="/settings/habits"
       >
         Create a habit
@@ -88,7 +88,7 @@ type THabitButtonProps = {
 const ringClasses =
   "border-4 border-base-300 box-border rounded-full size-[32px]";
 
-const iconClasses = "font-[NotoEmoji] font-bold text-[12px] text-primary";
+const iconClasses = "font-[NotoEmoji] font-bold text-sm text-primary";
 
 const HabitButton = ({
   dailyHabit,

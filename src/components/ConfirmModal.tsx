@@ -42,9 +42,9 @@ export const ConfirmModal = ({
   return (
     <dialog className="modal" ref={dialogRef}>
       <div className="modal-box w-xs">
-        <h3 className="font-bold text-lg text-center">{title}</h3>
+        <h3 className="font-bold text-xl text-center">{title}</h3>
 
-        <p className="py-4 text-center text-sm">{message}</p>
+        <p className="py-4 text-center text-base">{message}</p>
 
         <div className="modal-action flex flex-col justify-center mt-3">
           {options.map((option) => (

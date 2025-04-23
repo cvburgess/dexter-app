@@ -74,7 +74,7 @@ export const Login = () => {
         <div className="card-body max-desktop:justify-center">
           <div className="card-title flex-col mb-8 justify-center">
             <img className="size-24 mb-4" src={appIconUrl} />
-            <h2 className="text-2xl font-bold text-center">
+            <h2 className="text-3xl font-bold text-center">
               Dexter Day Planner
             </h2>
           </div>

@@ -20,7 +20,7 @@ type TToolbarProps = {
 };
 
 const buttonClasses =
-  "btn btn-ghost !text-sm text-nowrap hover:bg-base-200 hover:border-base-200";
+  "btn btn-ghost !text-base text-nowrap hover:bg-base-200 hover:border-base-200";
 const compactButtonClasses = `${buttonClasses} px-2`;
 
 export const Toolbar = ({

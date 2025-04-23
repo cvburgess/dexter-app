@@ -101,7 +101,7 @@ const ListInput = ({ list, onArchive, onChange }: TListInputProps) => {
         >
           {emoji}
         </ButtonWithPopover>
-        <label className="input join-item bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-r-[var(--radius-field)] h-standard border-1 border-base-200 text-[1rem]">
+        <label className="input join-item bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none rounded-r-[var(--radius-field)] h-standard border-1 border-base-200 text-lg">
           <input
             onChange={onChangeTitle}
             onKeyDown={onEnter}

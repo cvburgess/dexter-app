@@ -38,7 +38,7 @@ export const Habits = () => {
 
       {preferences.enableHabits && (
         <fieldset className="fieldset w-full">
-          <legend className="fieldset-legend ml-2 text-sm">Habits</legend>
+          <legend className="fieldset-legend ml-2 text-base">Habits</legend>
           {habits.map((habit) => (
             <HabitInput
               deleteHabit={deleteHabit}
@@ -92,7 +92,7 @@ type THabitInputProps = {
 };
 
 const inputClasses =
-  "input join-item bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none h-standard border-1 border-base-200 text-sm";
+  "input join-item bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none h-standard border-1 border-base-200 text-base";
 
 const HabitInput = ({ deleteHabit, habit, updateHabit }: THabitInputProps) => {
   const [title, setTitle] = useState<string>(habit.title);
@@ -194,7 +194,7 @@ const HabitInput = ({ deleteHabit, habit, updateHabit }: THabitInputProps) => {
 
         <label className={classNames(inputClasses, "px-4 w-fit")}>
           <input
-            className="w-content-size text-right text-sm"
+            className="w-content-size text-right text-base"
             onChange={onChangeSteps}
             onKeyDown={onNumberInputOnly}
             value={steps}
@@ -203,7 +203,7 @@ const HabitInput = ({ deleteHabit, habit, updateHabit }: THabitInputProps) => {
         </label>
 
         <ButtonWithPopover
-          buttonClassName="text-nowrap bg-base-100 ml-[-1px] font-normal !text-sm"
+          buttonClassName="text-nowrap bg-base-100 ml-[-1px] font-normal !text-base"
           buttonVariant="join"
           onChange={(daysActive: number[]) =>
             updateHabit({ id: habit.id, daysActive })

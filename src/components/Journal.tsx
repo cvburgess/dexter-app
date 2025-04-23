@@ -52,7 +52,7 @@ const ResponseInput = ({ response, onChange }: TResponseInputProps) => {
 
   return (
     <input
-      className="w-full border-b-1 border-base-content/15 border-dashed focus:outline-0 text-xs"
+      className="w-full border-b-1 border-base-content/15 border-dashed focus:outline-0 text-sm"
       onBlur={() => onChange(newResponse)}
       onChange={(e) => setNewResponse(e.target.value)}
       value={newResponse}
