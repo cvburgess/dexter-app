@@ -90,7 +90,7 @@ type TTabsProps = {
 const Tabs = ({ children, enabled }: TTabsProps) => {
   if (!enabled) return null;
   return (
-    <div className="tabs tabs-lift py-4 h-[calc(100vh-6rem)] flex-2">
+    <div className="tabs tabs-lift py-4 h-[calc(100vh-6rem)] flex-1">
       {children}
     </div>
   );
