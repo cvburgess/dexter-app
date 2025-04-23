@@ -25,7 +25,7 @@ import { usePersistedRouteState } from "../hooks/usePersistedRouteState.tsx";
 export const Day = () => {
   const [cardSize, toggleCardSize] = useCardSize(ECardSize.STANDARD);
   const [isOpen, toggle] = useToggle();
-  const [showCalendar, setCal] = usePersistedRouteState("showCalendar", true);
+  const [showCal, setShowCal] = usePersistedRouteState("showCalendar", true);
   const [date, setDate] = useState<Temporal.PlainDate>(
     Temporal.Now.plainDateISO(),
   );
@@ -36,7 +36,7 @@ export const Day = () => {
     filters: [["scheduledFor", "eq", date.toString()]],
   });
 
-  const toggleCalendar = () => setCal(!showCalendar);
+  const toggleCalendar = () => setShowCal(!showCal);
 
   return (
     <DraggableView>
@@ -70,7 +70,7 @@ export const Day = () => {
               <Journal date={date} />
             </Tab>
           </Tabs>
-          {enableCalendar && showCalendar && <Calendar date={date} />}
+          {enableCalendar && showCal && <Calendar date={date} />}
         </ScrollableContainer>
         <QuickDrawer
           baseFilters={makeBaseFiltersForDate(date)}
