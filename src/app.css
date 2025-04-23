@@ -136,16 +136,19 @@ td {
   @apply bg-primary border-primary-content outline-none !shadow-none rounded-box p-2;
 }
 .fc-event * {
-  @apply text-primary-content !text-xs !leading-3.5;
+  @apply text-primary-content !leading-3.5;
 }
-.fc-timegrid-event-short {
-  @apply py-0;
-}
-.fc-timegrid-event-short * {
+.fc-event-time {
   @apply !text-xs;
 }
-.fc-event-main-frame {
-  @apply flex-wrap;
+.fc-event-title {
+  @apply !text-sm;
+}
+.fc-timegrid-event-short {
+  @apply py-0 flex-wrap;
+}
+.fc-timegrid-event-short * {
+  @apply !text-xs !leading-2.5;
 }
 .fc-event-time {
   @apply shrink mr-2 !mb-0;
