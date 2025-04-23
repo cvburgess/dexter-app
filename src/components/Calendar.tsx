@@ -18,30 +18,30 @@ export const Calendar = React.memo(({ date }: TCalendarProps) => {
 
   if (!preferences.enableCalendar) return null;
 
-  if (preferences.calendarUrls.length === 0) {
-    return (
-      <div className="flex flex-1 my-4 border-2 border-base-200 rounded-box min-w-40 w-50 max-w-60 items-center justify-center">
-        <Link className="btn btn-ghost" to="/settings/calendar">
-          Add a Calendar
-        </Link>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-1 my-4 border-2 border-base-200 rounded-box min-w-40 w-50 max-w-60 overflow-scroll no-scrollbar">
-      <CalendarTimeLine
-        calendarUrls={preferences.calendarUrls}
-        date={date.toString()}
-        endTime={preferences.calendarEndTime}
-        key={date.toString()}
-        startTime={preferences.calendarStartTime}
-      />
+      {preferences.calendarUrls.length === 0 ? (
+        <NoCalendarButton />
+      ) : (
+        <CalendarTimeLine
+          calendarUrls={preferences.calendarUrls}
+          date={date.toString()}
+          endTime={preferences.calendarEndTime}
+          key={date.toString()}
+          startTime={preferences.calendarStartTime}
+        />
+      )}
     </div>
   );
 });
 
 Calendar.displayName = "Calendar";
+
+const NoCalendarButton = () => (
+  <Link className="btn btn-ghost self-center mx-auto" to="/settings/calendar">
+    Add a Calendar
+  </Link>
+);
 
 type TCalendarTimeLineProps = {
   calendarUrls: string[];
