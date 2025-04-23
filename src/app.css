@@ -91,9 +91,7 @@
 .tooltip::after {
   max-width: 75px;
   white-space: normal;
-  z-index: 100;
-  font-size: 0.7rem;
-  @apply bg-base-200 text-base-content shadow-md;
+  @apply bg-base-200 text-base-content shadow-md text-xs z-100;
 }
 
 /* ---------- FULLCALENDAR STYLES ---------- */
@@ -132,20 +130,19 @@ td {
 }
 .fc-timegrid-slot-label,
 .fc-timegrid-axis {
-  @apply text-base-content/80;
-  font-size: 0.5rem;
+  @apply text-base-content/80 text-xs;
 }
 .fc-event {
   @apply bg-primary border-primary-content outline-none !shadow-none rounded-box p-2;
 }
 .fc-event * {
-  @apply text-primary-content !text-xs;
+  @apply text-primary-content !text-xs !leading-3.5;
 }
 .fc-timegrid-event-short {
   @apply py-0;
 }
 .fc-timegrid-event-short * {
-  font-size: 0.5rem !important;
+  @apply !text-xs;
 }
 .fc-event-main-frame {
   @apply flex-wrap;
