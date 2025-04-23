@@ -66,7 +66,7 @@ export const Day = () => {
               <Journal date={date} />
             </Tab>
           </Tabs>
-          <Calendar date={date} size={cardSize} />
+          <Calendar date={date} />
         </ScrollableContainer>
         <QuickDrawer
           baseFilters={makeBaseFiltersForDate(date)}
@@ -86,7 +86,7 @@ type TTabsProps = {
 const Tabs = ({ children, enabled }: TTabsProps) => {
   if (!enabled) return null;
   return (
-    <div className="tabs tabs-lift py-4 h-[calc(100vh-6rem)] w-full">
+    <div className="tabs tabs-lift py-4 h-[calc(100vh-6rem)] flex-2">
       {children}
     </div>
   );
@@ -110,7 +110,7 @@ const Tab = ({ children, defaultChecked, enabled, title }: TTabProps) => {
         name="today-tabs"
         type="radio"
       />
-      <div className="tab-content bg-base-100 border-base-300 p-4 min-w-standard h-full overflow-y-scroll">
+      <div className="tab-content bg-base-100 border-base-300 p-4 min-w-40 h-full overflow-y-scroll">
         {children}
       </div>
     </>
