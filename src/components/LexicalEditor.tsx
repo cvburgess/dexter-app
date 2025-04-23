@@ -104,7 +104,7 @@ export const LexicalEditor = ({ onChange, text }: TLexicalEditorProps) => {
         contentEditable={
           <ContentEditable
             aria-placeholder=""
-            className="w-full min-h-full h-fit outline-none"
+            className="w-full min-h-full h-fit outline-none text-sm"
             onBlur={() => onChange(md)}
             placeholder={<div className="w-full h-full outline-none" />}
           />
@@ -137,24 +137,24 @@ const theme: EditorThemeClasses = {
   ltr: "ltr",
   rtl: "rtl",
   placeholder: "",
-  paragraph: "mb-2 relative",
+  paragraph: "mb-1 relative",
   quote:
-    "border-l-4 border-base-content/50 text-base-content/80 pl-4 my-2 italic",
+    "border-l-4 border-base-content/50 text-base-content/80 pl-4 my-1 italic",
   heading: {
-    h1: "text-primary mt-4 mb-2 font-extrabold text-3xl",
-    h2: "text-primary mt-4 mb-2 font-bold text-2xl",
-    h3: "text-primary mt-4 mb-2 font-bold text-xl",
-    h4: "text-primary mt-4 mb-2 font-bold text-lg",
-    h5: "text-primary mt-4 mb-2 font-bold",
+    h1: "text-primary mt-3 mb-1 font-extrabold text-xl",
+    h2: "text-primary mt-3 mb-1 font-bold text-lg",
+    h3: "text-primary mt-3 mb-1 font-bold text-base",
+    h4: "text-primary mt-3 mb-1 font-bold",
+    h5: "text-primary mt-3 mb-1 font-bold",
   },
   // indent: "lexical-indent",
   list: {
     ul: "list-outside list-disc",
     ol: "list-outside list-decimal ml-1",
     listitem:
-      "text-base-content ml-4 mt-1 pl-1 marker:text-primary marker:font-medium",
+      "text-base-content ml-3 mt-1 pl-1 marker:text-primary marker:font-medium",
     nested: {
-      listitem: "list-none before:hidden after:hidden mt-2",
+      listitem: "list-none before:hidden after:hidden mt-1",
     },
     checklist: "relative mx-2 px-6 list-none outline-none",
     listitemChecked:
@@ -171,9 +171,9 @@ const theme: EditorThemeClasses = {
     underline: "underline",
     strikethrough: "line-through opacity-80",
     underlineStrikethrough: "underline line-through opacity-80",
-    code: "font-mono text-[94%] bg-base-300 py-1 px-2 rounded",
+    code: "font-mono text-[94%] bg-base-300 py-0.5 px-1 rounded",
   },
-  code: "bg-base-200 font-mono block px-6 py-4 leading-6 tab-2 rounded-box",
+  code: "bg-base-200 font-mono block px-3 py-2 leading-6 tab-2 rounded-box",
   codeHighlight: {
     atrule: accent,
     attr: accent,
