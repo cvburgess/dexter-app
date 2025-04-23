@@ -20,20 +20,23 @@ import { useTasks } from "../hooks/useTasks.tsx";
 import { useToggle } from "../hooks/useToggle.tsx";
 
 import { makeBaseFiltersForDate } from "../utils/makeBaseFiltersForDate.ts";
+import { usePersistedRouteState } from "../hooks/usePersistedRouteState.tsx";
 
 export const Day = () => {
   const [cardSize, toggleCardSize] = useCardSize(ECardSize.STANDARD);
   const [isOpen, toggle] = useToggle();
+  const [showCalendar, setCal] = usePersistedRouteState("showCalendar", true);
   const [date, setDate] = useState<Temporal.PlainDate>(
     Temporal.Now.plainDateISO(),
   );
-  const [preferences] = usePreferences();
-
-  const [{ enableJournal, enableNotes }] = usePreferences();
+  const [{ enableCalendar, enableHabits, enableJournal, enableNotes }] =
+    usePreferences();
 
   const [tasks] = useTasks({
     filters: [["scheduledFor", "eq", date.toString()]],
   });
+
+  const toggleCalendar = () => setCal(!showCalendar);
 
   return (
     <DraggableView>
@@ -41,6 +44,7 @@ export const Day = () => {
         cardSize={cardSize}
         date={date}
         setDate={setDate}
+        toggleCalendar={enableCalendar && toggleCalendar}
         toggleCardSize={toggleCardSize}
         toggleQuickPlan={toggle}
       />
@@ -51,7 +55,7 @@ export const Day = () => {
             canCreateTasks
             cardSize={cardSize}
             id={`scheduledFor:${date.toString()}`}
-            showHabits={preferences.enableHabits}
+            showHabits={enableHabits}
             tasks={tasks}
           />
           <Tabs enabled={enableNotes || enableJournal}>
@@ -66,7 +70,7 @@ export const Day = () => {
               <Journal date={date} />
             </Tab>
           </Tabs>
-          <Calendar date={date} />
+          {enableCalendar && showCalendar && <Calendar date={date} />}
         </ScrollableContainer>
         <QuickDrawer
           baseFilters={makeBaseFiltersForDate(date)}

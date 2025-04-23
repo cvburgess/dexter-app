@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import iCalendarPlugin from "@fullcalendar/icalendar";
@@ -17,8 +18,18 @@ export const Calendar = React.memo(({ date }: TCalendarProps) => {
 
   if (!preferences.enableCalendar) return null;
 
+  if (preferences.calendarUrls.length === 0) {
+    return (
+      <div className="flex flex-1 my-4 border-2 border-base-200 rounded-box min-w-40 w-50 max-w-60 items-center justify-center">
+        <Link className="btn btn-ghost" to="/settings/calendar">
+          Add a Calendar
+        </Link>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-1 my-4 border-2 border-base-200 rounded-box min-w-compact max-w-standard overflow-scroll no-scrollbar">
+    <div className="flex flex-1 my-4 border-2 border-base-200 rounded-box min-w-40 w-50 max-w-60 overflow-scroll no-scrollbar">
       <CalendarTimeLine
         calendarUrls={preferences.calendarUrls}
         date={date.toString()}

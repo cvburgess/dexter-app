@@ -1,5 +1,6 @@
 import { Temporal } from "@js-temporal/polyfill";
 import {
+  Calendar,
   CaretLeft,
   CaretRight,
   Resize,
@@ -14,6 +15,7 @@ type TToolbarProps = {
   cardSize?: ECardSize;
   onClickNext?: () => void;
   onClickPrevious?: () => void;
+  toggleCalendar?: () => void;
   toggleCardSize?: () => void;
   toggleQuickPlan?: () => void;
   tooltipNoun?: string;
@@ -28,6 +30,7 @@ export const Toolbar = ({
   cardSize,
   onClickNext,
   onClickPrevious,
+  toggleCalendar,
   toggleCardSize,
   toggleQuickPlan,
   tooltipNoun,
@@ -57,6 +60,15 @@ export const Toolbar = ({
           title="Card size"
         >
           <Resize />
+        </button>
+      )}
+      {toggleCalendar && (
+        <button
+          className={buttonClasses}
+          onClick={toggleCalendar}
+          title="Calendar"
+        >
+          <Calendar />
         </button>
       )}
       {toggleQuickPlan && (
