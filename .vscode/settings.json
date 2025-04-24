@@ -7,6 +7,11 @@
     "typescript",
     "typescriptreact"
   ],
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "file": "./.vscode/daisyui.md"
+    }
+  ],
   "cSpell.ignorePaths": ["*.env", "*.json"],
   "cSpell.words": [
     "apikey",
