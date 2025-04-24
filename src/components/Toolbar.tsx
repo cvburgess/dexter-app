@@ -1,6 +1,6 @@
 import { Temporal } from "@js-temporal/polyfill";
 import {
-  Calendar,
+  CalendarBlank,
   CaretLeft,
   CaretRight,
   Resize,
@@ -68,7 +68,7 @@ export const Toolbar = ({
           onClick={toggleCalendar}
           title="Calendar"
         >
-          <Calendar />
+          <CalendarBlank />
         </button>
       )}
       {toggleQuickPlan && (
