@@ -3,7 +3,6 @@ import {
   CalendarDots,
   Gear,
   ListHeart,
-  Moon,
   SquaresFour,
   Sun,
   Trophy,
@@ -88,12 +87,6 @@ const navItems = [
     showOnMobile: true,
   },
   {
-    title: "Review",
-    Icon: Moon,
-    route: "review",
-    showOnMobile: true,
-  },
-  {
     title: "Week",
     Icon: CalendarDots,
     route: "week",
@@ -109,7 +102,7 @@ const navItems = [
     title: "Lists",
     Icon: ListHeart,
     route: "lists",
-    showOnMobile: false,
+    showOnMobile: true,
   },
   {
     title: "Goals",
