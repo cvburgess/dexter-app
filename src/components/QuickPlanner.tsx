@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CalendarBlank,
   CalendarDots,
@@ -28,15 +28,27 @@ import { TQueryFilter } from "../api/applyFilters.ts";
 type TQuickPlannerProps = {
   baseFilters?: TQueryFilter[];
   columnId: string;
+  defaultFilter?: string;
+  defaultGroup?: string;
+  defaultSearch?: string;
 };
 
 export const QuickPlanner = ({
   baseFilters = [],
   columnId,
+  defaultFilter = "none",
+  defaultGroup = "none",
+  defaultSearch = "",
 }: TQuickPlannerProps) => {
-  const [selectedFilter, setSelectedFilter] = useState<string>("none");
-  const [selectedGroup, setSelectedGroup] = useState<string>("none");
-  const [search, setSearch] = useState<string>("");
+  const [selectedFilter, setSelectedFilter] = useState<string>(defaultFilter);
+  const [selectedGroup, setSelectedGroup] = useState<string>(defaultGroup);
+  const [search, setSearch] = useState<string>(defaultSearch);
+
+  useEffect(() => {
+    setSelectedFilter(defaultFilter);
+    setSelectedGroup(defaultGroup);
+    setSearch(defaultSearch);
+  }, [defaultFilter, defaultGroup, defaultSearch]);
 
   const filterOptions = makeFilterOptions(selectedFilter);
   const filterTitle = filterOptions.find((option) => option.isSelected).title;
@@ -119,7 +131,7 @@ export const QuickDrawer = ({ isOpen, ...props }: TQuickDrawerProps) => (
       isOpen ? "w-78 px-4" : "w-0",
     )}
   >
-    <QuickPlanner {...props} />
+    {isOpen && <QuickPlanner {...props} />}
   </div>
 );
 

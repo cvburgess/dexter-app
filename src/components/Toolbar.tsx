@@ -6,6 +6,7 @@ import {
   Resize,
   SquareHalf,
 } from "@phosphor-icons/react";
+import classNames from "classnames";
 
 import { ButtonWithPopover } from "./ButtonWithPopover.tsx";
 import { ECardSize } from "./Card.tsx";
@@ -13,6 +14,7 @@ import { ECardSize } from "./Card.tsx";
 type TToolbarProps = {
   children: React.ReactNode;
   cardSize?: ECardSize;
+  hoverQuickPlan?: string;
   onClickNext?: () => void;
   onClickPrevious?: () => void;
   toggleCalendar?: () => void;
@@ -28,6 +30,7 @@ const compactButtonClasses = `${buttonClasses} px-2`;
 export const Toolbar = ({
   children,
   cardSize,
+  hoverQuickPlan,
   onClickNext,
   onClickPrevious,
   toggleCalendar,
@@ -73,9 +76,11 @@ export const Toolbar = ({
       )}
       {toggleQuickPlan && (
         <button
-          className={buttonClasses}
+          className={classNames(buttonClasses, {
+            "text-warning": hoverQuickPlan,
+          })}
           onClick={toggleQuickPlan}
-          title="Quick planner"
+          title={hoverQuickPlan || "Quick planner"}
         >
           <SquareHalf />
         </button>
