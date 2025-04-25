@@ -9,6 +9,7 @@ import { CheckFat } from "@phosphor-icons/react";
 export type TOnChange<T> = (id: T) => void;
 
 export type TOption = {
+  count?: number;
   emoji?: string;
   icon?: React.ReactNode;
   id: string | number | null;
@@ -154,9 +155,16 @@ const DropdownMenu = ({ onChange, options, popoverId }: TDropdownMenuProps) => (
           })}
           onClick={() => onChange(option.id)}
         >
-          {option.emoji}
-          {option.icon}
-          <span className={classNames({ "ml-1": option.emoji || option.icon })}>
+          {option.count ? (
+            <Badge count={option.count} />
+          ) : (
+            option.emoji || option.icon
+          )}
+          <span
+            className={classNames({
+              "ml-1": option.count || option.emoji || option.icon,
+            })}
+          >
             {option.title}
           </span>
         </a>
@@ -164,6 +172,16 @@ const DropdownMenu = ({ onChange, options, popoverId }: TDropdownMenuProps) => (
     ))}
   </ul>
 );
+
+const Badge = ({ count }: { count: number }) => {
+  if (!count) return null;
+
+  return (
+    <span className="flex items-center justify-center bg-warning text-warning-content text-sm size-[18px] -m-[3px] rounded-box">
+      {count}
+    </span>
+  );
+};
 
 type TMultiSelectProps = {
   onChange: TOnChange<Array<string | number | null>>;

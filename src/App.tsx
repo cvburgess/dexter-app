@@ -22,7 +22,6 @@ import { Login } from "./routes/Login.tsx";
 import { Notes } from "./routes/Settings/Notes.tsx";
 import { Priorities } from "./routes/Priorities.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
-import { Review } from "./routes/Review.tsx";
 import { Settings } from "./routes/Settings/index.tsx";
 import { Theme } from "./routes/Settings/Theme.tsx";
 import { Week } from "./routes/Week.tsx";
@@ -71,7 +70,6 @@ const router = createHashRouter([
       { path: "goals", element: <Goals /> },
       { path: "lists", element: <Lists /> },
       { path: "priorities", element: <Priorities /> },
-      { path: "review", element: <Review /> },
       { path: "week", element: <Week /> },
       {
         path: "settings",

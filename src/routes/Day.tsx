@@ -16,7 +16,7 @@ import {
 
 import { useCardSize } from "../hooks/useCardSize.tsx";
 import { usePreferences } from "../hooks/usePreferences.tsx";
-import { useTasks } from "../hooks/useTasks.tsx";
+import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 import { useToggle } from "../hooks/useToggle.tsx";
 
 import { makeBaseFiltersForDate } from "../utils/makeBaseFiltersForDate.ts";
@@ -35,6 +35,12 @@ export const Day = () => {
   const [tasks] = useTasks({
     filters: [["scheduledFor", "eq", date.toString()]],
   });
+  const [leftBehindTasks] = useTasks({ filters: taskFilters.leftBehind });
+
+  const taskOrTasks = leftBehindTasks.length === 1 ? "task" : "tasks";
+  const hoverQuickPlan = leftBehindTasks.length
+    ? `${leftBehindTasks.length} ${taskOrTasks} left behind`
+    : undefined;
 
   const toggleCalendar = () => setShowCal(!showCal);
 
@@ -43,6 +49,7 @@ export const Day = () => {
       <DayNav
         cardSize={cardSize}
         date={date}
+        hoverQuickPlan={hoverQuickPlan}
         setDate={setDate}
         toggleCalendar={enableCalendar && toggleCalendar}
         toggleCardSize={toggleCardSize}
@@ -75,6 +82,7 @@ export const Day = () => {
         <QuickDrawer
           baseFilters={makeBaseFiltersForDate(date)}
           columnId="scheduledFor:null"
+          defaultFilter={leftBehindTasks.length ? "leftBehind" : undefined}
           isOpen={isOpen}
         />
       </DrawerContainer>

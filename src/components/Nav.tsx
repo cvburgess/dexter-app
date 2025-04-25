@@ -3,7 +3,6 @@ import {
   CalendarDots,
   Gear,
   ListHeart,
-  Moon,
   SquaresFour,
   Sun,
   Trophy,
@@ -12,7 +11,6 @@ import classNames from "classnames";
 
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 import { useFullScreen } from "../hooks/useFullscreen.tsx";
-import { Tooltip } from "./Tooltip.tsx";
 
 export const Nav = () => {
   return (
@@ -36,28 +34,24 @@ const DesktopNav = () => {
     >
       <div className="flex flex-col gap-4 text-base-content h-full items-center">
         {navItems.map((item) => (
-          <Tooltip
-            className={classNames({ "mt-auto": item.bottom })}
+          <NavLink
+            className={({ isActive }) =>
+              classNames(
+                "bg-base-100 rounded-box shadow-md hover:shadow-lg transition-shadow flex items-center justify-center size-12",
+                {
+                  "bg-base-content/80 text-base-100": isActive,
+                  "mt-auto": item.bottom,
+                  indicator: true,
+                },
+              )
+            }
             key={item.route}
-            position="right"
-            text={item.title}
+            title={item.title}
+            to={item.route}
           >
-            <NavLink
-              className={({ isActive }) =>
-                classNames(
-                  "bg-base-100 rounded-box shadow-md hover:shadow-lg transition-shadow flex items-center justify-center size-12",
-                  {
-                    "bg-base-content/80 text-base-100": isActive,
-                    indicator: true,
-                  },
-                )
-              }
-              to={item.route}
-            >
-              <Indicator route={item.route} />
-              <item.Icon size={26} weight="light" />
-            </NavLink>
-          </Tooltip>
+            <Indicator route={item.route} />
+            <item.Icon size={26} weight="light" />
+          </NavLink>
         ))}
       </div>
     </nav>
@@ -93,12 +87,6 @@ const navItems = [
     showOnMobile: true,
   },
   {
-    title: "Review",
-    Icon: Moon,
-    route: "review",
-    showOnMobile: true,
-  },
-  {
     title: "Week",
     Icon: CalendarDots,
     route: "week",
@@ -114,7 +102,7 @@ const navItems = [
     title: "Lists",
     Icon: ListHeart,
     route: "lists",
-    showOnMobile: false,
+    showOnMobile: true,
   },
   {
     title: "Goals",
