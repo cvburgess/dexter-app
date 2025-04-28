@@ -6,12 +6,7 @@ import {
   Umbrella,
 } from "@phosphor-icons/react";
 
-import {
-  ButtonWithPopover,
-  TOnChange,
-  TOption,
-  TSegmentedOption,
-} from "./ButtonWithPopover.tsx";
+import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
 
 import { ETaskPriority, TTask, TUpdateTask } from "../api/tasks.ts";
 import { TTemplate, TUpdateTemplate } from "../api/templates.ts";
@@ -33,9 +28,7 @@ export const PriorityButton = ({
   const isTask = "task" in props;
   const taskOrTemplate = isTask ? props.task : props.template;
 
-  const options = optionsForPriority(taskOrTemplate.priority, (priority) =>
-    onUpdate({ priority }),
-  );
+  const options = optionsForPriority(taskOrTemplate.priority);
 
   let icon: JSX.Element;
 
@@ -60,50 +53,40 @@ export const PriorityButton = ({
   return (
     <ButtonWithPopover
       buttonVariant="round"
-      options={[options]}
+      onChange={(priority: ETaskPriority) => onUpdate({ priority })}
+      options={options}
       popoverId={`${taskOrTemplate.id}-more`}
       title="Priority"
-      variant="segmentedMenu"
+      variant="menu"
     >
       {icon}
     </ButtonWithPopover>
   );
 };
 
-const optionsForPriority = (
-  priority: ETaskPriority,
-  onChange: TOnChange<ETaskPriority>,
-): TSegmentedOption => {
-  const options: Array<TOption & { onChange: () => void }> = [
-    {
-      id: ETaskPriority.IMPORTANT_AND_URGENT,
-      isSelected: priority === ETaskPriority.IMPORTANT_AND_URGENT,
-      onChange: () => onChange(ETaskPriority.IMPORTANT_AND_URGENT),
-      title: "Important & Urgent",
-      icon: <Fire className="text-warning" />,
-    },
-    {
-      id: ETaskPriority.IMPORTANT,
-      isSelected: priority === ETaskPriority.IMPORTANT,
-      onChange: () => onChange(ETaskPriority.IMPORTANT),
-      title: "Important",
-      icon: <Star className="text-info" />,
-    },
-    {
-      id: ETaskPriority.URGENT,
-      isSelected: priority === ETaskPriority.URGENT,
-      onChange: () => onChange(ETaskPriority.URGENT),
-      title: "Urgent",
-      icon: <Alarm className="text-error" />,
-    },
-    {
-      id: ETaskPriority.NEITHER,
-      isSelected: priority === ETaskPriority.NEITHER,
-      onChange: () => onChange(ETaskPriority.NEITHER),
-      title: "Neither",
-      icon: <Umbrella />,
-    },
-  ];
-
-  return { title: "Priority", display: "row", options };
-};
+const optionsForPriority = (priority: ETaskPriority): TOption[] => [
+  {
+    id: ETaskPriority.IMPORTANT_AND_URGENT,
+    isSelected: priority === ETaskPriority.IMPORTANT_AND_URGENT,
+    title: "Important & Urgent",
+    icon: <Fire className="text-warning" />,
+  },
+  {
+    id: ETaskPriority.IMPORTANT,
+    isSelected: priority === ETaskPriority.IMPORTANT,
+    title: "Important",
+    icon: <Star className="text-info" />,
+  },
+  {
+    id: ETaskPriority.URGENT,
+    isSelected: priority === ETaskPriority.URGENT,
+    title: "Urgent",
+    icon: <Alarm className="text-error" />,
+  },
+  {
+    id: ETaskPriority.NEITHER,
+    isSelected: priority === ETaskPriority.NEITHER,
+    title: "Neither",
+    icon: <Umbrella />,
+  },
+];
