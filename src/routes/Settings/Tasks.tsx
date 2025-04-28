@@ -4,6 +4,7 @@ import { useDebounce } from "use-debounce";
 import classNames from "classnames";
 
 // import { ButtonWithPopover } from "../../components/ButtonWithPopover";
+import { Card } from "../../components/CardTemplate";
 import { ConfirmModal } from "../../components/ConfirmModal";
 
 import { useTemplates } from "../../hooks/useTemplates";
@@ -16,14 +17,18 @@ export const Tasks = () => {
   return (
     <fieldset className="fieldset w-full">
       <legend className="fieldset-legend ml-2 text-base">Repeat Tasks</legend>
-      {templates.map((template) => (
-        <TemplateInput
-          deleteTemplate={deleteTemplate}
-          key={template.id}
-          template={template}
-          updateTemplate={updateTemplate}
-        />
-      ))}
+      <div className="flex flex-col gap-2">
+        {templates.map((template) => (
+          <div className="flex flex-wrap gap-2" key={template.id}>
+            <Card template={template} />
+            <TemplateInput
+              deleteTemplate={deleteTemplate}
+              template={template}
+              updateTemplate={updateTemplate}
+            />
+          </div>
+        ))}
+      </div>
     </fieldset>
   );
 };
@@ -35,7 +40,7 @@ type TTemplateInputProps = {
 };
 
 const inputClasses =
-  "input join-item bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none h-standard border-1 border-base-200 text-base";
+  "input join-item bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none h-full border-1 border-base-200 text-base";
 
 const TemplateInput = ({
   deleteTemplate,
@@ -91,7 +96,7 @@ const TemplateInput = ({
 
   return (
     <>
-      <div className="mb-2 join h-standard w-full">
+      <div className="join flex-1 min-w-standard min-h-standard h-auto">
         <input
           className={classNames(inputClasses, "pl-4 grow")}
           onChange={onChangeTitle}
@@ -101,7 +106,7 @@ const TemplateInput = ({
         />
 
         <span
-          className="btn join-item h-standard bg-base-100 text-base-content/60 hover:text-error"
+          className="btn join-item h-full bg-base-100 text-base-content/60 hover:text-error"
           onClick={openModal}
         >
           <Trash />

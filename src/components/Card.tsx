@@ -144,7 +144,7 @@ export const Card = React.memo(
               />
               <ListButton
                 listId={task.listId}
-                onTaskUpdate={onTaskUpdate}
+                onUpdate={onTaskUpdate}
                 task={task}
               />
               <MoreButton
@@ -180,7 +180,7 @@ export const DraggableCard = React.memo(
 
 DraggableCard.displayName = "DraggableCard";
 
-const cardColors = {
+export const cardColors = {
   [ETaskPriority.IMPORTANT_AND_URGENT]: {
     complete: "bg-warning/3 hover:bg-warning/10 text-base-content/25",
     incomplete: "bg-warning/80 hover:bg-warning/90 text-warning-content",

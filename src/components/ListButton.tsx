@@ -6,19 +6,32 @@ import { useLists } from "../hooks/useLists.tsx";
 
 import { TList } from "../api/lists.ts";
 import { TTask, TUpdateTask } from "../api/tasks.ts";
+import { TTemplate, TUpdateTemplate } from "../api/templates.ts";
 
-type TListButtonProps = {
+type TCommonProps = {
   listId: string | null;
-  onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
-  task: TTask;
 };
 
+type TConditionalProps =
+  | {
+      onUpdate: (diff: Omit<TUpdateTask, "id">) => void;
+      task: TTask;
+    }
+  | {
+      onUpdate: (diff: Omit<TUpdateTemplate, "id">) => void;
+      template: TTemplate;
+    };
+
+type TListButtonProps = TCommonProps & TConditionalProps;
+
 export const ListButton = ({
-  onTaskUpdate,
+  onUpdate,
   listId,
-  task,
+  ...props
 }: TListButtonProps) => {
   const [lists, { getListById }] = useLists();
+
+  const taskOrTemplate = "task" in props ? props.task : props.template;
 
   const selectedList = listId ? getListById(listId) : null;
 
@@ -27,9 +40,9 @@ export const ListButton = ({
   return (
     <ButtonWithPopover
       buttonVariant="round"
-      onChange={(value) => onTaskUpdate({ listId: value as string })}
+      onChange={(value) => onUpdate({ listId: value as string })}
       options={options}
-      popoverId={`${task.id}-list`}
+      popoverId={`${taskOrTemplate.id}-list`}
       title="List"
       variant="menu"
     >
