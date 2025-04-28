@@ -130,7 +130,7 @@ const popoverPolyfill = {
 } as React.CSSProperties;
 
 const popoverStyles =
-  "dropdown absolute bg-base-100 rounded-box shadow-sm !text-base-content mt-1 max-h-[50vh] no-scrollbar";
+  "dropdown absolute bg-base-100 rounded-box shadow-sm !text-base-content mt-1 max-h-[55vh] no-scrollbar";
 
 type TDropdownMenuProps = {
   onChange: TOnChange<string | number | null>;
