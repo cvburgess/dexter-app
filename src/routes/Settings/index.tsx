@@ -15,6 +15,7 @@ const Panel = ({ children }: { children: React.ReactNode }) => {
 export const Settings = () => {
   const panels = [
     "account",
+    "tasks",
     "calendar",
     "habits",
     "journal",
