@@ -28,8 +28,8 @@ export const getTemplates = async (supabase: SupabaseClient<Database>) => {
 export type TCreateTemplate = {
   goalId?: string | null;
   listId?: string | null;
-  priority?: number;
-  schedule: string;
+  priority: number;
+  schedule?: string;
   title: string;
 };
 

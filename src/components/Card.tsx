@@ -9,6 +9,7 @@ import { MoreButton } from "./MoreButton.tsx";
 import { StatusButton } from "./StatusButton.tsx";
 
 import { useTasks } from "../hooks/useTasks.tsx";
+import { useTemplates } from "../hooks/useTemplates.tsx";
 
 import {
   ETaskPriority,
@@ -37,8 +38,8 @@ export const Card = React.memo(
     provided,
   }: TCardProps) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [_, { deleteTask, updateTask }] = useTasks({ skipQuery: true });
-    // const [_, { createTemplate }] = useTaskTemplates({ skipQuery: true });
+    const [, { deleteTask, updateTask }] = useTasks({ skipQuery: true });
+    const [, { createTemplateFromTask }] = useTemplates({ skipQuery: true });
 
     const navigate = useNavigate();
 
@@ -48,21 +49,12 @@ export const Card = React.memo(
       updateTask({ id: task.id, ...diff });
 
     const onTaskRepeat = () => {
-      // Create a template if it doesn't exist
+      const goToSettings = () => navigate("/settings/tasks");
       if (!task.templateId) {
-        // TODO: Create a new repeatTaskTemplate
-        // const { data: template } = await createTemplate({
-        //   goal_id: task.goalId,
-        //   list_id: task.listId,
-        //   priority: task.priority,
-        //   title: task.title,
-        // });
-        //
-        // await onTaskUpdate({ templateId: template.id });
+        createTemplateFromTask(task, { onSuccess: goToSettings });
+      } else {
+        goToSettings();
       }
-
-      // Navigate to task settings
-      navigate("/settings/tasks");
     };
 
     const updateTitle = (title: string) => {

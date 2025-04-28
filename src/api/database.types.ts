@@ -219,7 +219,7 @@ export type Database = {
           priority?: number
           schedule?: string
           title?: string
-          user_id: string
+          user_id?: string
         }
         Update: {
           created_at?: string

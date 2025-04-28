@@ -1,67 +1,57 @@
 import { useEffect, useState } from "react";
-import { Pause, Play, Trash } from "@phosphor-icons/react";
+import { Trash } from "@phosphor-icons/react";
 import { useDebounce } from "use-debounce";
 import classNames from "classnames";
 
-import { ButtonWithPopover } from "../../components/ButtonWithPopover";
+// import { ButtonWithPopover } from "../../components/ButtonWithPopover";
 import { ConfirmModal } from "../../components/ConfirmModal";
 
-import { useHabits } from "../../hooks/useHabits";
+import { useTemplates } from "../../hooks/useTemplates";
 
-import { THabit, TUpdateHabit } from "../../api/habits";
+import { TTemplate, TUpdateTemplate } from "../../api/templates";
 
 export const Tasks = () => {
-  const [habits, { updateHabit, deleteHabit }] = useHabits();
+  const [templates, { updateTemplate, deleteTemplate }] = useTemplates();
 
   return (
     <fieldset className="fieldset w-full">
       <legend className="fieldset-legend ml-2 text-base">Repeat Tasks</legend>
-      {habits.map((habit) => (
-        <HabitInput
-          deleteHabit={deleteHabit}
-          habit={habit}
-          key={habit.id}
-          updateHabit={updateHabit}
+      {templates.map((template) => (
+        <TemplateInput
+          deleteTemplate={deleteTemplate}
+          key={template.id}
+          template={template}
+          updateTemplate={updateTemplate}
         />
       ))}
     </fieldset>
   );
 };
 
-type THabitInputProps = {
-  deleteHabit: (id: string) => void;
-  habit: THabit;
-  updateHabit: (habit: TUpdateHabit) => void;
+type TTemplateInputProps = {
+  deleteTemplate: (id: string) => void;
+  template: TTemplate;
+  updateTemplate: (template: TUpdateTemplate) => void;
 };
 
 const inputClasses =
   "input join-item bg-base-100 focus-within:outline-none shadow-none focus-within:shadow-none h-standard border-1 border-base-200 text-base";
 
-const HabitInput = ({ deleteHabit, habit, updateHabit }: THabitInputProps) => {
-  const [title, setTitle] = useState<string>(habit.title);
+const TemplateInput = ({
+  deleteTemplate,
+  template,
+  updateTemplate,
+}: TTemplateInputProps) => {
+  const [title, setTitle] = useState<string>(template.title);
   const [debouncedTitle] = useDebounce(title, 1000);
-
-  const [steps, setSteps] = useState<number | string>(habit.steps);
-  const [debouncedSteps] = useDebounce(steps, 500);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    if (debouncedTitle !== habit.title) {
-      updateHabit({ id: habit.id, title: debouncedTitle });
+    if (debouncedTitle !== template.title) {
+      updateTemplate({ id: template.id, title: debouncedTitle });
     }
   }, [debouncedTitle]);
-
-  useEffect(() => {
-    const isValid =
-      typeof debouncedSteps === "number" &&
-      debouncedSteps > 0 &&
-      debouncedSteps < 1000;
-
-    if (debouncedSteps !== habit.steps && isValid) {
-      updateHabit({ id: habit.id, steps: debouncedSteps });
-    }
-  }, [debouncedSteps]);
 
   const onChangeTitle = ({
     currentTarget: { value },
@@ -69,28 +59,13 @@ const HabitInput = ({ deleteHabit, habit, updateHabit }: THabitInputProps) => {
     setTitle(value);
   };
 
-  const onChangeSteps = ({
-    currentTarget: { value },
-  }: React.ChangeEvent<HTMLInputElement>) => {
-    setSteps(parseInt(value, 10) || "");
-  };
-
   const onEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && title) {
-      updateHabit({ id: habit.id, title });
+      updateTemplate({ id: template.id, title });
     }
   };
 
-  const onChangeEmoji = (value: string) => {
-    updateHabit({ id: habit.id, emoji: value });
-  };
-
-  const onArchive = (id: string) => {
-    updateHabit({ id, isArchived: true });
-    setIsModalOpen(false);
-  };
-
-  const onNumberInputOnly = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const _onNumberInputOnly = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // Check if the key is not a number
     if (
       !/^[0-9]$/.test(e.key) &&
@@ -117,16 +92,6 @@ const HabitInput = ({ deleteHabit, habit, updateHabit }: THabitInputProps) => {
   return (
     <>
       <div className="mb-2 join h-standard w-full">
-        <ButtonWithPopover
-          buttonVariant="left-join"
-          onChange={onChangeEmoji}
-          popoverId={`habit-${habit.id}-emoji`}
-          title="Emoji"
-          variant="emoji"
-        >
-          {habit.emoji}
-        </ButtonWithPopover>
-
         <input
           className={classNames(inputClasses, "pl-4 grow")}
           onChange={onChangeTitle}
@@ -134,52 +99,6 @@ const HabitInput = ({ deleteHabit, habit, updateHabit }: THabitInputProps) => {
           type="text"
           value={title}
         />
-
-        <label className={classNames(inputClasses, "px-4 w-fit")}>
-          <input
-            className="w-content-size text-right text-base"
-            onChange={onChangeSteps}
-            onKeyDown={onNumberInputOnly}
-            value={steps}
-          />
-          x daily
-        </label>
-
-        <ButtonWithPopover
-          buttonClassName="text-nowrap bg-base-100 ml-[-1px] font-normal !text-base"
-          buttonVariant="join"
-          onChange={(daysActive: number[]) =>
-            updateHabit({ id: habit.id, daysActive })
-          }
-          options={[
-            { id: 1, title: "Monday" },
-            { id: 2, title: "Tuesday" },
-            { id: 3, title: "Wednesday" },
-            { id: 4, title: "Thursday" },
-            { id: 5, title: "Friday" },
-            { id: 6, title: "Saturday" },
-            { id: 7, title: "Sunday" },
-          ]}
-          popoverId={`habit-${habit.id}-days-active`}
-          selected={habit.daysActive}
-          title="Days Active"
-          variant="multiSelectMenu"
-        >
-          {habit.daysActive.length} x weekly
-        </ButtonWithPopover>
-
-        <span
-          className="btn join-item h-standard bg-base-100 text-base-content/60 hover:text-warning"
-          onClick={() =>
-            updateHabit({ id: habit.id, isPaused: !habit.isPaused })
-          }
-        >
-          {habit.isPaused ? (
-            <Play weight="duotone" />
-          ) : (
-            <Pause weight="duotone" />
-          )}
-        </span>
 
         <span
           className="btn join-item h-standard bg-base-100 text-base-content/60 hover:text-error"
@@ -193,27 +112,20 @@ const HabitInput = ({ deleteHabit, habit, updateHabit }: THabitInputProps) => {
         isOpen={isModalOpen}
         message={
           <>
-            Archive will delete the habit
-            <br /> but retain historical habit data.
-            <br /> <br />
-            To erase all historical data, <br />
-            select <span className="font-bold">delete</span> instead.
+            Deleting this template will prevent Dexter from
+            <br /> automatically creating any new tasks
+            <br /> based on this schedule.
           </>
         }
         onClose={closeModal}
         options={[
           {
-            action: () => onArchive(habit.id),
-            buttonClass: "btn-error",
-            title: "Archive",
-          },
-          {
-            action: () => deleteHabit(habit.id),
+            action: () => deleteTemplate(template.id),
             buttonClass: "btn-error",
             title: "Delete",
           },
         ]}
-        title={`Archive ${habit.title}?`}
+        title={`Delete ${template.title}?`}
       />
     </>
   );

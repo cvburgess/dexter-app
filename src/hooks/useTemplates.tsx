@@ -1,7 +1,13 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  UseMutateFunction,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import { supabase } from "./useAuth.tsx";
 
+import { updateTask, TTask } from "../api/tasks.ts";
 import {
   createTemplate,
   deleteTemplate,
@@ -16,6 +22,7 @@ type TUseTemplates = [
   TTemplate[],
   {
     createTemplate: (template: TCreateTemplate) => void;
+    createTemplateFromTask: UseMutateFunction<TTemplate, Error, TTask>;
     deleteTemplate: (id: string) => void;
     updateTemplate: (template: TUpdateTemplate) => void;
   },
@@ -42,6 +49,24 @@ export const useTemplates = (options?: TUseTemplatesOptions): TUseTemplates => {
     },
   });
 
+  const { mutate: createFromTask } = useMutation<TTemplate, Error, TTask>({
+    mutationFn: async (task) => {
+      const template = await createTemplate(supabase, {
+        goalId: task.goalId,
+        listId: task.listId,
+        priority: task.priority,
+        title: task.title,
+      });
+
+      await updateTask(supabase, { id: task.id, templateId: template.id });
+
+      return template;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["templates"] });
+    },
+  });
+
   const { mutate: update } = useMutation<TTemplate, Error, TUpdateTemplate>({
     mutationFn: (diff) => updateTemplate(supabase, diff),
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["templates"] }),
@@ -58,6 +83,7 @@ export const useTemplates = (options?: TUseTemplatesOptions): TUseTemplates => {
     templates,
     {
       createTemplate: create,
+      createTemplateFromTask: createFromTask,
       deleteTemplate: remove,
       updateTemplate: update,
     },
