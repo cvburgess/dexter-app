@@ -251,10 +251,10 @@ const HabitInput = ({ deleteHabit, habit, updateHabit }: THabitInputProps) => {
         message={
           <>
             Archive will delete the habit
-            <br /> but retain historical habit data.
+            <br /> but retain historical habit data
             <br /> <br />
             To erase all historical data, <br />
-            select <span className="font-bold">delete</span> instead.
+            select <span className="font-bold">delete</span> instead
           </>
         }
         onClose={closeModal}

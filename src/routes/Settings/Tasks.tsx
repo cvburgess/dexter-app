@@ -117,9 +117,8 @@ const TemplateInput = ({
         isOpen={isModalOpen}
         message={
           <>
-            Deleting this template will prevent Dexter from
-            <br /> automatically creating any new tasks
-            <br /> based on this schedule.
+            Dexter will no longer automatically
+            <br /> create tasks based on this schedule
           </>
         }
         onClose={closeModal}
