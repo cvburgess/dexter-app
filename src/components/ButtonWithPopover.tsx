@@ -19,6 +19,7 @@ export type TOption = {
 
 export type TSegmentedOption = {
   title: string;
+  display?: "row" | "column";
   options: Array<TOption & { isDangerous?: boolean; onChange: () => void }>;
 };
 
@@ -263,27 +264,42 @@ const SegmentedMenu = ({ options, popoverId }: TSegmentedMenuProps) => (
         <div className="divider divider-start mx-2 my-2 text-sm">
           {segment.title}
         </div>
-        {segment.options.map((option) => (
-          <li key={option.id}>
-            <a
-              className={classNames("flex items-center gap-2 mx-2 text-sm", {
-                "bg-base-300": option.isSelected,
+        <div
+          className={classNames("mx-2", {
+            "flex gap-1": segment.display === "row",
+          })}
+        >
+          {segment.options.map((option) => (
+            <li
+              className={classNames({
+                "w-auto items-start": segment.display === "row",
               })}
-              onClick={option.onChange}
+              key={option.id}
+              title={segment.display === "row" ? option.title : undefined}
             >
-              {option.emoji}
-              {option.icon}
-              <span
-                className={classNames({
-                  "text-red-600": option.isDangerous,
-                  "ml-1": option.emoji || option.icon,
+              <a
+                className={classNames("text-sm", {
+                  "flex items-center gap-2": segment.display !== "row",
+                  "bg-base-300": option.isSelected,
                 })}
+                onClick={option.onChange}
               >
-                {option.title}
-              </span>
-            </a>
-          </li>
-        ))}
+                {option.emoji}
+                {option.icon}
+                {segment.display !== "row" && (
+                  <span
+                    className={classNames({
+                      "text-red-600": option.isDangerous,
+                      "ml-1": option.emoji || option.icon,
+                    })}
+                  >
+                    {option.title}
+                  </span>
+                )}
+              </a>
+            </li>
+          ))}
+        </div>
       </Fragment>
     ))}
   </ul>
