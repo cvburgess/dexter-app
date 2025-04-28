@@ -13,12 +13,14 @@ import { weekStartEnd } from "../utils/weekStartEnd.ts";
 
 type TMoreButtonProps = {
   onTaskDelete: () => void;
+  onTaskRepeat: () => void;
   onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
   task: TTask;
 };
 
 export const MoreButton = ({
   onTaskDelete,
+  onTaskRepeat,
   onTaskUpdate,
   task,
 }: TMoreButtonProps) => {
@@ -29,9 +31,16 @@ export const MoreButton = ({
   const priorityOptions = optionsForPriority(task.priority, (priority) =>
     onTaskUpdate({ priority }),
   );
+
   const otherOptions: TSegmentedOption = {
     title: "Other",
     options: [
+      {
+        id: "repeat",
+        title: task.templateId ? "Edit Repeat Schedule" : "Repeat",
+        onChange: onTaskRepeat,
+        isSelected: false,
+      },
       {
         id: "delete",
         title: "Delete",

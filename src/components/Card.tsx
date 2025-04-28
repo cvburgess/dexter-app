@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
 import classNames from "classnames";
 
@@ -37,11 +38,32 @@ export const Card = React.memo(
   }: TCardProps) => {
     const [isEditing, setIsEditing] = useState(false);
     const [_, { deleteTask, updateTask }] = useTasks({ skipQuery: true });
+    // const [_, { createTemplate }] = useTaskTemplates({ skipQuery: true });
+
+    const navigate = useNavigate();
 
     const onTaskDelete = () => deleteTask(task.id);
 
     const onTaskUpdate = (diff: Omit<TUpdateTask, "id">) =>
       updateTask({ id: task.id, ...diff });
+
+    const onTaskRepeat = () => {
+      // Create a template if it doesn't exist
+      if (!task.templateId) {
+        // TODO: Create a new repeatTaskTemplate
+        // const { data: template } = await createTemplate({
+        //   goal_id: task.goalId,
+        //   list_id: task.listId,
+        //   priority: task.priority,
+        //   title: task.title,
+        // });
+        //
+        // await onTaskUpdate({ templateId: template.id });
+      }
+
+      // Navigate to task settings
+      navigate("/settings/tasks");
+    };
 
     const updateTitle = (title: string) => {
       if (title !== task.title) onTaskUpdate({ title });
@@ -135,6 +157,7 @@ export const Card = React.memo(
               />
               <MoreButton
                 onTaskDelete={onTaskDelete}
+                onTaskRepeat={onTaskRepeat}
                 onTaskUpdate={onTaskUpdate}
                 task={task}
               />
