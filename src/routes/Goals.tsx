@@ -117,7 +117,7 @@ const GoalInput = ({ goal, onArchive, onChange }: TGoalInputProps) => {
             <>
               This will archive the goal and <br />
               move any open tasks to{" "}
-              <span className="font-bold">won&apos;t do</span>.
+              <span className="font-bold">won&apos;t do</span>
             </>
           }
           onClose={closeModal}

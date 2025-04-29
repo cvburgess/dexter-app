@@ -22,6 +22,10 @@
     height: calc(var(--spacing) * 13);
   }
 
+  .min-h-standard {
+    min-height: calc(var(--spacing) * 13);
+  }
+
   .w-standard {
     width: calc(var(--spacing) * 70);
   }

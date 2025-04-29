@@ -19,6 +19,7 @@ export type TOption = {
 
 export type TSegmentedOption = {
   title: string;
+  display?: "row" | "column";
   options: Array<TOption & { isDangerous?: boolean; onChange: () => void }>;
 };
 
@@ -56,7 +57,7 @@ type TButtonWithPopoverProps = TCommonProps & TConditionalProps;
 const roundButtonClasses =
   "w-5 h-5 rounded-field outline outline-current/25 flex items-center justify-center hover:opacity-90";
 
-const joinButtonClasses = "btn join-item p-4 h-standard";
+const joinButtonClasses = "btn join-item p-4 min-h-standard";
 
 const leftJoinButtonClasses = joinButtonClasses + " border-none bg-base-300";
 
@@ -129,7 +130,7 @@ const popoverPolyfill = {
 } as React.CSSProperties;
 
 const popoverStyles =
-  "dropdown absolute bg-base-100 rounded-box shadow-sm !text-base-content mt-1 max-h-[50vh] no-scrollbar";
+  "dropdown absolute bg-base-100 rounded-box shadow-sm !text-base-content mt-1 max-h-[55vh] no-scrollbar";
 
 type TDropdownMenuProps = {
   onChange: TOnChange<string | number | null>;
@@ -263,27 +264,42 @@ const SegmentedMenu = ({ options, popoverId }: TSegmentedMenuProps) => (
         <div className="divider divider-start mx-2 my-2 text-sm">
           {segment.title}
         </div>
-        {segment.options.map((option) => (
-          <li key={option.id}>
-            <a
-              className={classNames("flex items-center gap-2 mx-2 text-sm", {
-                "bg-base-300": option.isSelected,
+        <div
+          className={classNames("mx-2", {
+            "flex gap-1": segment.display === "row",
+          })}
+        >
+          {segment.options.map((option) => (
+            <li
+              className={classNames({
+                "w-auto items-start": segment.display === "row",
               })}
-              onClick={option.onChange}
+              key={option.id}
+              title={segment.display === "row" ? option.title : undefined}
             >
-              {option.emoji}
-              {option.icon}
-              <span
-                className={classNames({
-                  "text-red-600": option.isDangerous,
-                  "ml-1": option.emoji || option.icon,
+              <a
+                className={classNames("text-sm", {
+                  "flex items-center gap-2": segment.display !== "row",
+                  "bg-base-300": option.isSelected,
                 })}
+                onClick={option.onChange}
               >
-                {option.title}
-              </span>
-            </a>
-          </li>
-        ))}
+                {option.emoji}
+                {option.icon}
+                {segment.display !== "row" && (
+                  <span
+                    className={classNames({
+                      "text-red-600": option.isDangerous,
+                      "ml-1": option.emoji || option.icon,
+                    })}
+                  >
+                    {option.title}
+                  </span>
+                )}
+              </a>
+            </li>
+          ))}
+        </div>
       </Fragment>
     ))}
   </ul>

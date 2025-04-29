@@ -200,9 +200,57 @@ export type Database = {
         }
         Relationships: []
       }
+      repeat_task_templates: {
+        Row: {
+          created_at: string
+          goal_id: string | null
+          id: string
+          list_id: string | null
+          priority: number
+          schedule: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          goal_id?: string | null
+          id?: string
+          list_id?: string | null
+          priority?: number
+          schedule?: string
+          title?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          goal_id?: string | null
+          id?: string
+          list_id?: string | null
+          priority?: number
+          schedule?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "repeat_task_templates_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "goals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "repeat_task_templates_list_id_fkey"
+            columns: ["list_id"]
+            isOneToOne: false
+            referencedRelation: "lists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tasks: {
         Row: {
-          created_at: string | null
+          created_at: string
           due_on: string | null
           goal_id: string | null
           id: string
@@ -211,11 +259,12 @@ export type Database = {
           scheduled_for: string | null
           status: number
           subtask_of: string | null
-          title: string | null
+          template_id: string | null
+          title: string
           user_id: string
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           due_on?: string | null
           goal_id?: string | null
           id?: string
@@ -224,11 +273,12 @@ export type Database = {
           scheduled_for?: string | null
           status?: number
           subtask_of?: string | null
-          title?: string | null
+          template_id?: string | null
+          title?: string
           user_id?: string
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           due_on?: string | null
           goal_id?: string | null
           id?: string
@@ -237,29 +287,37 @@ export type Database = {
           scheduled_for?: string | null
           status?: number
           subtask_of?: string | null
-          title?: string | null
+          template_id?: string | null
+          title?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "task_list_id_fkey"
+            foreignKeyName: "tasks_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "goals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_list_id_fkey"
             columns: ["list_id"]
             isOneToOne: false
             referencedRelation: "lists"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "task_subtask_of_fkey"
+            foreignKeyName: "tasks_subtask_of_fkey"
             columns: ["subtask_of"]
             isOneToOne: false
             referencedRelation: "tasks"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "tasks_goal_id_fkey"
-            columns: ["goal_id"]
+            foreignKeyName: "tasks_template_id_fkey"
+            columns: ["template_id"]
             isOneToOne: false
-            referencedRelation: "goals"
+            referencedRelation: "repeat_task_templates"
             referencedColumns: ["id"]
           },
         ]

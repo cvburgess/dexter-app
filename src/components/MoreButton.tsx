@@ -1,5 +1,11 @@
 import { Temporal } from "@js-temporal/polyfill";
-import { DotsThreeOutlineVertical } from "@phosphor-icons/react";
+import {
+  Alarm,
+  DotsThreeOutlineVertical,
+  Fire,
+  Star,
+  Umbrella,
+} from "@phosphor-icons/react";
 
 import {
   ButtonWithPopover,
@@ -13,12 +19,14 @@ import { weekStartEnd } from "../utils/weekStartEnd.ts";
 
 type TMoreButtonProps = {
   onTaskDelete: () => void;
+  onTaskRepeat: () => void;
   onTaskUpdate: (diff: Omit<TUpdateTask, "id">) => void;
   task: TTask;
 };
 
 export const MoreButton = ({
   onTaskDelete,
+  onTaskRepeat,
   onTaskUpdate,
   task,
 }: TMoreButtonProps) => {
@@ -29,9 +37,16 @@ export const MoreButton = ({
   const priorityOptions = optionsForPriority(task.priority, (priority) =>
     onTaskUpdate({ priority }),
   );
+
   const otherOptions: TSegmentedOption = {
     title: "Other",
     options: [
+      {
+        id: "repeat",
+        title: task.templateId ? "Edit Repeat Schedule" : "Repeat",
+        onChange: onTaskRepeat,
+        isSelected: false,
+      },
       {
         id: "delete",
         title: "Delete",
@@ -45,7 +60,7 @@ export const MoreButton = ({
   return (
     <ButtonWithPopover
       buttonVariant="round"
-      options={[schedulingOptions, priorityOptions, otherOptions]}
+      options={[priorityOptions, schedulingOptions, otherOptions]}
       popoverId={`${task.id}-more`}
       title="More"
       variant="segmentedMenu"
@@ -65,28 +80,32 @@ const optionsForPriority = (
       isSelected: priority === ETaskPriority.IMPORTANT_AND_URGENT,
       onChange: () => onChange(ETaskPriority.IMPORTANT_AND_URGENT),
       title: "Important & Urgent",
+      icon: <Fire className="text-warning" />,
     },
     {
       id: ETaskPriority.IMPORTANT,
       isSelected: priority === ETaskPriority.IMPORTANT,
       onChange: () => onChange(ETaskPriority.IMPORTANT),
       title: "Important",
+      icon: <Star className="text-info" />,
     },
     {
       id: ETaskPriority.URGENT,
       isSelected: priority === ETaskPriority.URGENT,
       onChange: () => onChange(ETaskPriority.URGENT),
       title: "Urgent",
+      icon: <Alarm className="text-error" />,
     },
     {
       id: ETaskPriority.NEITHER,
       isSelected: priority === ETaskPriority.NEITHER,
       onChange: () => onChange(ETaskPriority.NEITHER),
       title: "Neither",
+      icon: <Umbrella />,
     },
   ];
 
-  return { title: "Priority", options };
+  return { title: "Priority", display: "row", options };
 };
 
 const optionsForScheduling = (

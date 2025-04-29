@@ -13,6 +13,7 @@ export type TTask = {
   priority: ETaskPriority;
   scheduledFor: string | null;
   status: ETaskStatus;
+  templateId: string | null;
   title: string;
 };
 
@@ -53,6 +54,7 @@ export type TCreateTask = {
   priority?: ETaskPriority;
   scheduledFor?: string | null;
   status?: ETaskStatus;
+  templateId?: string | null;
   title: string;
 };
 
@@ -77,6 +79,7 @@ export type TUpdateTask = {
   priority?: ETaskPriority;
   scheduledFor?: string | null;
   status?: ETaskStatus;
+  templateId?: string | null;
   title?: string;
 };
 

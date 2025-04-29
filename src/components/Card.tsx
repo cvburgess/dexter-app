@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
 import classNames from "classnames";
 
@@ -8,6 +9,7 @@ import { MoreButton } from "./MoreButton.tsx";
 import { StatusButton } from "./StatusButton.tsx";
 
 import { useTasks } from "../hooks/useTasks.tsx";
+import { useTemplates } from "../hooks/useTemplates.tsx";
 
 import {
   ETaskPriority,
@@ -36,12 +38,24 @@ export const Card = React.memo(
     provided,
   }: TCardProps) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [_, { deleteTask, updateTask }] = useTasks({ skipQuery: true });
+    const [, { deleteTask, updateTask }] = useTasks({ skipQuery: true });
+    const [, { createTemplateFromTask }] = useTemplates({ skipQuery: true });
+
+    const navigate = useNavigate();
 
     const onTaskDelete = () => deleteTask(task.id);
 
     const onTaskUpdate = (diff: Omit<TUpdateTask, "id">) =>
       updateTask({ id: task.id, ...diff });
+
+    const onTaskRepeat = () => {
+      const goToSettings = () => navigate("/settings/tasks");
+      if (!task.templateId) {
+        createTemplateFromTask(task, { onSuccess: goToSettings });
+      } else {
+        goToSettings();
+      }
+    };
 
     const updateTitle = (title: string) => {
       if (title !== task.title) onTaskUpdate({ title });
@@ -130,11 +144,12 @@ export const Card = React.memo(
               />
               <ListButton
                 listId={task.listId}
-                onTaskUpdate={onTaskUpdate}
+                onUpdate={onTaskUpdate}
                 task={task}
               />
               <MoreButton
                 onTaskDelete={onTaskDelete}
+                onTaskRepeat={onTaskRepeat}
                 onTaskUpdate={onTaskUpdate}
                 task={task}
               />
@@ -165,7 +180,7 @@ export const DraggableCard = React.memo(
 
 DraggableCard.displayName = "DraggableCard";
 
-const cardColors = {
+export const cardColors = {
   [ETaskPriority.IMPORTANT_AND_URGENT]: {
     complete: "bg-warning/3 hover:bg-warning/10 text-base-content/25",
     incomplete: "bg-warning/80 hover:bg-warning/90 text-warning-content",
