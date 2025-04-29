@@ -64,6 +64,7 @@ export const useTemplates = (options?: TUseTemplatesOptions): TUseTemplates => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["templates"] });
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
   });
 
