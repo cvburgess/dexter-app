@@ -46,6 +46,7 @@ export const Week = () => {
   return (
     <DraggableView>
       <WeekNav
+        articleUrl="https://dexterplanner.com/tips/week"
         cardSize={cardSize}
         setWeeksOffset={setWeeksOffset}
         toggleCardSize={toggleCardSize}

@@ -23,7 +23,10 @@ export const Lists = () => {
 
   return (
     <DraggableView>
-      <TextToolbar title="Lists" />
+      <TextToolbar
+        articleUrl="https://dexterplanner.com/tips/lists"
+        title="Lists"
+      />
       <Board
         appendAfter={<ListInput onChange={createList} />}
         canCreateTasks

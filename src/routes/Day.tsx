@@ -47,6 +47,7 @@ export const Day = () => {
   return (
     <DraggableView>
       <DayNav
+        articleUrl="https://dexterplanner.com/tips/day"
         cardSize={cardSize}
         date={date}
         hoverQuickPlan={hoverQuickPlan}

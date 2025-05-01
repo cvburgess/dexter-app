@@ -17,6 +17,7 @@ export const Priorities = () => {
   return (
     <DraggableView>
       <TextToolbar
+        articleUrl="https://dexterplanner.com/tips/priorities"
         cardSize={cardSize}
         title="Prioritize"
         toggleCardSize={toggleCardSize}
