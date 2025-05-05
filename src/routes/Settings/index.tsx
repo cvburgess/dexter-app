@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router";
+import { NavLink, Outlet, useLocation } from "react-router";
 import classNames from "classnames";
 
 import { TextToolbar } from "../../components/Toolbar.tsx";
@@ -13,6 +13,8 @@ const Panel = ({ children }: { children: React.ReactNode }) => {
 };
 
 export const Settings = () => {
+  const location = useLocation();
+
   const panels = [
     "account",
     "tasks",
@@ -24,9 +26,19 @@ export const Settings = () => {
     "about",
   ];
 
+  const noArticle = ["account", "theme", "about"];
+
+  const currentPanel = location.pathname.split("/").at(-1);
+
+  
+
+  const articleUrl = noArticle.includes(currentPanel)
+    ? undefined
+    : `https://dexterplanner.com/tips/${currentPanel}`;
+
   return (
     <View>
-      <TextToolbar title="Settings" />
+      <TextToolbar articleUrl={articleUrl} title="Settings" />
       <ScrollableContainer>
         <ul className="menu bg-base-100 rounded-box w-standard mt-4">
           {panels.map((panel) => (

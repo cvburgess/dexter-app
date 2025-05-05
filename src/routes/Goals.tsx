@@ -25,7 +25,11 @@ export const Goals = () => {
 
   return (
     <DraggableView>
-      <TextToolbar title="Goals" toggleQuickPlan={toggle} />
+      <TextToolbar
+        articleUrl="https://dexterplanner.com/tips/goals"
+        title="Goals"
+        toggleQuickPlan={toggle}
+      />
 
       <DrawerContainer>
         <Board

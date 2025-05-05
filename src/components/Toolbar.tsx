@@ -3,6 +3,7 @@ import {
   CalendarBlank,
   CaretLeft,
   CaretRight,
+  Info,
   Resize,
   SquareHalf,
 } from "@phosphor-icons/react";
@@ -12,6 +13,7 @@ import { ButtonWithPopover } from "./ButtonWithPopover.tsx";
 import { ECardSize } from "./Card.tsx";
 
 type TToolbarProps = {
+  articleUrl?: string;
   children: React.ReactNode;
   cardSize?: ECardSize;
   hoverQuickPlan?: string;
@@ -28,6 +30,7 @@ const buttonClasses =
 const compactButtonClasses = `${buttonClasses} px-2`;
 
 export const Toolbar = ({
+  articleUrl,
   children,
   cardSize,
   hoverQuickPlan,
@@ -47,7 +50,9 @@ export const Toolbar = ({
           variant="previous"
         />
       )}
+
       {children}
+
       {onClickNext && (
         <ArrowButton
           onClick={onClickNext}
@@ -55,7 +60,21 @@ export const Toolbar = ({
           variant="next"
         />
       )}
+
       <div className="flex-grow w-full h-full app-draggable" />
+
+      {articleUrl && (
+        <a
+          className={buttonClasses}
+          href={articleUrl}
+          rel="noopener noreferrer"
+          target="_blank"
+          title="Tips & tricks"
+        >
+          <Info />
+        </a>
+      )}
+
       {cardSize && (
         <button
           className={buttonClasses}
@@ -65,6 +84,7 @@ export const Toolbar = ({
           <Resize />
         </button>
       )}
+
       {toggleCalendar && (
         <button
           className={buttonClasses}
@@ -74,6 +94,7 @@ export const Toolbar = ({
           <CalendarBlank />
         </button>
       )}
+
       {toggleQuickPlan && (
         <button
           className={classNames(buttonClasses, {

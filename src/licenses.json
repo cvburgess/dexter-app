@@ -1,0 +1,206 @@
+{
+    "@emoji-mart/data@1.2.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/missive/emoji-mart",
+        "licenseUrl": "https://github.com/missive/emoji-mart/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "@emoji-mart/react@1.1.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/missive/emoji-mart",
+        "licenseUrl": "https://github.com/missive/emoji-mart/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "@fullcalendar/core@6.1.17": {
+        "licenses": "MIT",
+        "repository": "https://github.com/fullcalendar/fullcalendar",
+        "licenseUrl": "https://github.com/fullcalendar/fullcalendar/raw/master/LICENSE.md",
+        "parents": "dexter-app"
+    },
+    "@fullcalendar/icalendar@6.1.17": {
+        "licenses": "MIT",
+        "repository": "https://github.com/fullcalendar/fullcalendar",
+        "licenseUrl": "https://github.com/fullcalendar/fullcalendar/raw/master/LICENSE.md",
+        "parents": "dexter-app"
+    },
+    "@fullcalendar/react@6.1.17": {
+        "licenses": "MIT",
+        "repository": "https://github.com/fullcalendar/fullcalendar-react",
+        "licenseUrl": "https://github.com/fullcalendar/fullcalendar-react/raw/master/LICENSE.txt",
+        "parents": "dexter-app"
+    },
+    "@fullcalendar/scrollgrid@6.1.17": {
+        "licenses": "SEE LICENSE IN LICENSE.md",
+        "repository": "https://github.com/fullcalendar/fullcalendar-workspace",
+        "licenseUrl": "https://github.com/fullcalendar/fullcalendar-workspace/raw/master/LICENSE.md",
+        "parents": "dexter-app"
+    },
+    "@fullcalendar/timegrid@6.1.17": {
+        "licenses": "MIT",
+        "repository": "https://github.com/fullcalendar/fullcalendar",
+        "licenseUrl": "https://github.com/fullcalendar/fullcalendar/raw/master/LICENSE.md",
+        "parents": "dexter-app"
+    },
+    "@hello-pangea/dnd@18.0.1": {
+        "licenses": "Apache-2.0",
+        "repository": "https://github.com/hello-pangea/dnd",
+        "licenseUrl": "https://github.com/hello-pangea/dnd/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "@js-temporal/polyfill@0.4.4": {
+        "licenses": "ISC",
+        "repository": "https://github.com/js-temporal/temporal-polyfill",
+        "licenseUrl": "https://github.com/js-temporal/temporal-polyfill/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "@lexical/code@0.28.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebook/lexical",
+        "licenseUrl": "https://github.com/facebook/lexical/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "@lexical/list@0.28.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebook/lexical",
+        "licenseUrl": "https://github.com/facebook/lexical/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "@lexical/markdown@0.28.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebook/lexical",
+        "licenseUrl": "https://github.com/facebook/lexical/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "@lexical/react@0.28.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebook/lexical",
+        "licenseUrl": "https://github.com/facebook/lexical/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "@lexical/rich-text@0.28.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebook/lexical",
+        "licenseUrl": "https://github.com/facebook/lexical/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "@phosphor-icons/react@2.1.7": {
+        "licenses": "MIT",
+        "repository": "https://github.com/phosphor-icons/react",
+        "licenseUrl": "https://github.com/phosphor-icons/react/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "@supabase/supabase-js@2.49.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/supabase/supabase-js",
+        "licenseUrl": "https://github.com/supabase/supabase-js/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "@tanstack/react-query@5.74.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/TanStack/query",
+        "licenseUrl": "https://github.com/TanStack/query/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "@uidotdev/usehooks@2.4.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/uidotdev/usehooks",
+        "licenseUrl": "https://github.com/uidotdev/usehooks/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "camelcase-keys@9.1.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/sindresorhus/camelcase-keys",
+        "licenseUrl": "https://github.com/sindresorhus/camelcase-keys/raw/master/license",
+        "parents": "dexter-app"
+    },
+    "classnames@2.5.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/JedWatson/classnames",
+        "licenseUrl": "https://github.com/JedWatson/classnames/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "daisyui@5.0.19": {
+        "licenses": "MIT",
+        "repository": "https://github.com/saadeghi/daisyui",
+        "licenseUrl": "https://github.com/saadeghi/daisyui/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "decamelize-keys@2.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/sindresorhus/decamelize-keys",
+        "licenseUrl": "https://github.com/sindresorhus/decamelize-keys/raw/master/license",
+        "parents": "dexter-app"
+    },
+    "emoji-mart@5.6.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/missive/emoji-mart",
+        "licenseUrl": "https://github.com/missive/emoji-mart/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "env-cmd@10.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/toddbluhm/env-cmd",
+        "licenseUrl": "https://github.com/toddbluhm/env-cmd/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "ical.js@1.5.0": {
+        "licenses": "MPL-2.0",
+        "repository": "https://github.com/mozilla-comm/ical.js",
+        "licenseUrl": "https://github.com/mozilla-comm/ical.js/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "lexical@0.28.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebook/lexical",
+        "licenseUrl": "https://github.com/facebook/lexical/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "npm-license-crawler@0.2.1": {
+        "licenses": "BSD-3-Clause",
+        "repository": "http://github.com/mwittig/npm-license-crawler",
+        "licenseUrl": "http://github.com/mwittig/npm-license-crawler/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "react-day-picker@9.6.6": {
+        "licenses": "MIT",
+        "repository": "https://github.com/gpbl/react-day-picker",
+        "licenseUrl": "https://github.com/gpbl/react-day-picker/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "react-dom@18.3.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebook/react",
+        "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "react-router@7.5.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/remix-run/react-router",
+        "licenseUrl": "https://github.com/remix-run/react-router/raw/master/LICENSE.md",
+        "parents": "dexter-app"
+    },
+    "react@18.3.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebook/react",
+        "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "tailwindcss@4.1.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/tailwindlabs/tailwindcss",
+        "licenseUrl": "https://github.com/tailwindlabs/tailwindcss/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "update-electron-app@3.1.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/electron/update-electron-app",
+        "licenseUrl": "https://github.com/electron/update-electron-app/raw/master/LICENSE",
+        "parents": "dexter-app"
+    },
+    "use-debounce@10.0.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/xnimorz/use-debounce",
+        "licenseUrl": "https://github.com/xnimorz/use-debounce/raw/master/LICENSE",
+        "parents": "dexter-app"
+    }
+}
