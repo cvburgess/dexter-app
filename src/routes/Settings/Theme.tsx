@@ -71,29 +71,25 @@ export const Theme = () => {
 
       <div className="divider text-sm mx-2 my-4">Preview Themes</div>
 
-      <details className="collapse collapse-arrow bg-base-100 border border-base-300 mb-4">
+      <details className="bg-base-100 border border-base-300 mb-4 rounded-box">
         <summary className="collapse-title font-semibold text-sm min-h-0">
           Light Themes
         </summary>
-        <div className="collapse-content">
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4">
-            {lightThemes.map((theme) => (
-              <ThemeOption key={theme.id} theme={theme.id} />
-            ))}
-          </div>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4 p-4">
+          {lightThemes.map((theme) => (
+            <ThemeOption key={theme.id} theme={theme.id} />
+          ))}
         </div>
       </details>
 
-      <details className="collapse collapse-arrow bg-base-100 border border-base-300">
+      <details className="bg-base-100 border border-base-300 rounded-box">
         <summary className="collapse-title font-semibold text-sm min-h-0">
           Dark Themes
         </summary>
-        <div className="collapse-content">
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4">
-            {darkThemes.map((theme) => (
-              <ThemeOption key={theme.id} theme={theme.id} />
-            ))}
-          </div>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4 p-4">
+          {darkThemes.map((theme) => (
+            <ThemeOption key={theme.id} theme={theme.id} />
+          ))}
         </div>
       </details>
     </>
