@@ -30,8 +30,6 @@ export const Settings = () => {
 
   const currentPanel = location.pathname.split("/").at(-1);
 
-  
-
   const articleUrl = noArticle.includes(currentPanel)
     ? undefined
     : `https://dexterplanner.com/tips/${currentPanel}`;

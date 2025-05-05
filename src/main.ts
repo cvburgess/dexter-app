@@ -14,6 +14,7 @@ import {
   REACT_DEVELOPER_TOOLS,
 } from "electron-devtools-installer";
 import { updateElectronApp } from "update-electron-app";
+import windowStateKeeper from "electron-window-state";
 
 const isMac = process.platform === "darwin";
 
@@ -50,14 +51,22 @@ if (process.defaultApp) {
 }
 
 const createWindow = () => {
+  // Load the previous state with fallback to defaults
+  const mainWindowState = windowStateKeeper({
+    defaultWidth: 800,
+    defaultHeight: 600,
+  });
+
   // Create the browser window.
   mainWindow = new BrowserWindow({
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height,
     backgroundColor: nativeTheme.shouldUseDarkColors
       ? darkBackgroundColor
       : lightBackgroundColor,
     show: false,
-    width: 800,
-    height: 600,
     minWidth: 512,
     minHeight: 512,
     webPreferences: { preload: path.join(__dirname, "preload.js") },
@@ -65,6 +74,9 @@ const createWindow = () => {
     trafficLightPosition: { x: 10, y: 10 },
     ...(process.platform !== "darwin" ? { titleBarOverlay: true } : {}),
   });
+
+  // Manage the window state
+  mainWindowState.manage(mainWindow);
 
   // Listen for fullscreen changes
   mainWindow.on("enter-full-screen", () => {
