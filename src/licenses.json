@@ -131,6 +131,12 @@
         "licenseUrl": "https://github.com/sindresorhus/decamelize-keys/raw/master/license",
         "parents": "dexter-app"
     },
+    "electron-window-state@5.0.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/mawie81/electron-window-state",
+        "licenseUrl": "https://github.com/mawie81/electron-window-state/raw/master/license",
+        "parents": "dexter-app"
+    },
     "emoji-mart@5.6.0": {
         "licenses": "MIT",
         "repository": "https://github.com/missive/emoji-mart",
