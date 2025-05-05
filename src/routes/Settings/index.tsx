@@ -30,7 +30,7 @@ export const Settings = () => {
 
   const currentPanel = location.pathname.split("/").at(-1);
 
-  console.log({ location, currentPanel });
+  
 
   const articleUrl = noArticle.includes(currentPanel)
     ? undefined
