@@ -6,6 +6,8 @@ import classNames from "classnames";
 import { useDebounce } from "use-debounce";
 import { CheckFat } from "@phosphor-icons/react";
 
+import { arraysAreEqual } from "../utils/arraysAreEqual";
+
 export type TOnChange<T> = (id: T) => void;
 
 export type TOption = {
@@ -201,7 +203,9 @@ const MultiSelectMenu = ({
   const [debouncedIds] = useDebounce(selectedIds, 500);
 
   useEffect(() => {
-    onChange(debouncedIds);
+    if (!arraysAreEqual(selected, debouncedIds)) {
+      onChange(debouncedIds);
+    }
   }, [debouncedIds]);
 
   const onClick = (id: string | number) => {
