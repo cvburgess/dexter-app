@@ -40,7 +40,7 @@ export const useHabits = (options?: TSupabaseHookOptions): TUseHabits => {
 
   const { data: habits = [], isLoading } = useQuery({
     enabled: !options?.skipQuery,
-    queryKey: ["habits", JSON.stringify(options?.filters)],
+    queryKey: ["habits", options?.filters],
     queryFn: () => getHabits(supabase, options?.filters),
     staleTime: 1000 * 60 * 10,
   });
