@@ -40,7 +40,7 @@ export const useHabits = (options?: TSupabaseHookOptions): TUseHabits => {
 
   const { data: habits = [], isLoading } = useQuery({
     enabled: !options?.skipQuery,
-    queryKey: ["habits", options?.filters],
+    queryKey: ["habits", JSON.stringify(options?.filters)],
     queryFn: () => getHabits(supabase, options?.filters),
     staleTime: 1000 * 60 * 10,
   });
@@ -94,6 +94,12 @@ type TUseDailyHabits = [
 
 export const useDailyHabits = (date: string): TUseDailyHabits => {
   const queryClient = useQueryClient();
+  const [habits] = useHabits({
+    filters: [
+      ...habitFilters.notPaused,
+      ...habitFilters.activeForDay(Temporal.PlainDate.from(date).dayOfWeek),
+    ],
+  });
 
   const { data: dailyHabits = [], isLoading } = useQuery({
     queryKey: ["dailyHabits", date],
@@ -102,27 +108,12 @@ export const useDailyHabits = (date: string): TUseDailyHabits => {
     staleTime: 1000 * 60 * 10,
   });
 
-  // const { mutate: create } = useMutation<TDailyHabit, Error, TCreateDailyHabit>(
-  //   {
-  //     mutationFn: (habit) => createDailyHabit(supabase, habit),
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries({
-  //         queryKey: ["dailyHabits", date],
-  //       });
-  //     },
-  //   },
-  // );
-
   const { mutate: create } = useMutation<void, Error>({
     mutationFn: async () => {
       const today = Temporal.Now.plainDateISO();
+      const isFutureDate = Temporal.PlainDate.compare(date, today) > 0;
 
-      const habits = await getHabits(supabase, [
-        ...habitFilters.notPaused,
-        ...habitFilters.activeForDay(Temporal.PlainDate.from(date).dayOfWeek),
-      ]);
-
-      const dailyHabits = await getDailyHabits(supabase, date);
+      if (isLoading || isFutureDate) return;
 
       const getDailyHabit = (habit: THabit) => {
         return dailyHabits.find(
@@ -130,18 +121,17 @@ export const useDailyHabits = (date: string): TUseDailyHabits => {
         );
       };
 
-      habits.forEach((habit) => {
-        const dailyHabit = getDailyHabit(habit);
-        const isFutureDate = Temporal.PlainDate.compare(date, today) > 0;
+      const missingHabits = habits.filter((habit) => !getDailyHabit(habit));
 
-        if (!dailyHabit && !isFutureDate) {
-          createDailyHabit(supabase, {
-            date: date.toString(),
-            habitId: habit.id,
-            steps: habit.steps,
-            stepsComplete: 0,
-          });
-        }
+      if (missingHabits.length === 0) throw new Error("No missing habits");
+
+      missingHabits.forEach((habit) => {
+        createDailyHabit(supabase, {
+          date: date.toString(),
+          habitId: habit.id,
+          steps: habit.steps,
+          stepsComplete: 0,
+        });
       });
     },
     onSuccess: () => {

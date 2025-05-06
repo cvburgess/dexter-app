@@ -35,7 +35,7 @@ export const DailyHabits = ({ className, date }: TDailyHabitsProps) => {
 
   useEffect(() => {
     createDailyHabits();
-  }, [date]);
+  }, [date, dailyHabitsLoading]);
 
   const isLoading = habitsLoading || dailyHabitsLoading;
   if (isLoading) return <div className="h-[32px]" />;
