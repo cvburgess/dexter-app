@@ -36,7 +36,7 @@ export default defineConfig({
         ],
         name: "Dexter Day Planner",
         short_name: "Dexter",
-        theme_color: "#553E33",
+        theme_color: "#FFFBF5",
       },
     }),
   ],
