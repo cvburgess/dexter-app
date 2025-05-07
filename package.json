@@ -62,6 +62,7 @@
     "@types/react-dom": "^18.3.5",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
+    "@vite-pwa/assets-generator": "^1.0.0",
     "@vitejs/plugin-react": "^4.3.4",
     "electron": "^35.0.3",
     "electron-devtools-installer": "^4.0.0",
@@ -74,7 +75,9 @@
     "supabase": "^2.22.6",
     "ts-node": "^10.9.2",
     "typescript": "5.8.2",
-    "vite": "6.2.3"
+    "vite": "6.2.3",
+    "vite-plugin-pwa": "^1.0.0",
+    "workbox-window": "^7.3.0"
   },
   "scripts": {
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
