@@ -11,7 +11,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { About } from "./routes/Settings/About.tsx";
 import { Account } from "./routes/Settings/Account.tsx";
-import { AuthProvider } from "./hooks/useAuth.tsx";
+import { AuthProvider, useAuth } from "./hooks/useAuth.tsx";
 import { Calendar } from "./routes/Settings/Calendar.tsx";
 import { Day } from "./routes/Day.tsx";
 import { Goals } from "./routes/Goals.tsx";
@@ -29,6 +29,42 @@ import { Week } from "./routes/Week.tsx";
 
 import { Nav } from "./components/Nav.tsx";
 import { useTheme } from "./hooks/useTheme.ts";
+
+// AuthCallback component to handle auth redirects gracefully
+const AuthCallback: React.FC = () => {
+  const navigate = useNavigate();
+  const { initializing, session } = useAuth();
+
+  useEffect(() => {
+    // For web auth, we need to give Supabase time to process the tokens in the URL
+    if (!window.electron) {
+      const url = window.location.href;
+      const hasAuthParams =
+        url.includes("access_token") || url.includes("refresh_token");
+
+      if (hasAuthParams) {
+        // The session will be set by Supabase's onAuthStateChange in the AuthProvider
+        console.log(
+          "Auth callback detected with auth params, waiting for session",
+        );
+      }
+    }
+
+    if (!initializing) {
+      // Only redirect when we're done initializing
+      if (session || window.electron) {
+        // If we have a session, go to the main app
+        // For Electron, redirect to day anyway as auth is handled differently
+        navigate("/day", { replace: true });
+      } else {
+        // If we don't have a session after initializing, go to login
+        navigate("/login", { replace: true });
+      }
+    }
+  }, [navigate, initializing, session]);
+
+  return null;
+};
 
 const App = () => {
   const theme = useTheme();
@@ -59,6 +95,11 @@ const App = () => {
 
 const router = createHashRouter([
   { path: "login", element: <Login /> },
+  // Add dedicated routes for auth callback paths
+  { path: "auth-callback", element: <AuthCallback /> },
+  // Handle hash fragments with authentication tokens
+  // This special loader pattern helps intercept auth callbacks before showing "not found"
+  { path: "*", element: <AuthCallback /> },
   {
     element: (
       <ProtectedRoute>

@@ -68,12 +68,10 @@ const UserProfile = ({ user }: { user: User }) => {
               </div>
             </div>
           ) : (
-            <div className="avatar placeholder">
+            <div className="avatar avatar-placeholder">
               <div className="bg-neutral text-neutral-content rounded-full w-16">
-                <span className="text-2xl">
-                  {user.user_metadata.user_name?.charAt(0) ||
-                    user.email?.charAt(0) ||
-                    "?"}
+                <span className="text-3xl">
+                  {user.email?.charAt(0)?.toUpperCase() ?? "😄"}
                 </span>
               </div>
             </div>
