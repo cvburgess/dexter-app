@@ -81,6 +81,7 @@
   },
   "scripts": {
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "generate-pwa-assets": "pwa-assets-generator --preset minimal-2023 public/web-icon.svg",
     "git:prune": "git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D",
     "icon": "npx png2icons ./public/app-icon.png ./public/app-icon -allp",
     "lint": "tsc && eslint --ext .ts,.tsx .",

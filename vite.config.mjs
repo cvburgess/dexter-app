@@ -15,28 +15,37 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: [
-        "web-icon.png",
-        "favicon.ico",
-        "apple-touch-icon.png",
-        "masked-icon.svg",
-      ],
+      includeAssets: ["web-icon.png", "web-icon.svg"],
       manifest: {
         background_color: "#FFFBF5",
         description: "An opinionated day planner",
         display: "standalone",
-        icons: [
-          { src: "web-icon.png", sizes: "192x192", type: "image/png" },
-          {
-            src: "web-icon.png",
-            sizes: "512x512",
-            type: "image/png",
-            purpose: "any maskable",
-          },
-        ],
         name: "Dexter Day Planner",
         short_name: "Dexter",
         theme_color: "#FFFBF5",
+        icons: [
+          {
+            src: "pwa-64x64.png",
+            sizes: "64x64",
+            type: "image/png",
+          },
+          {
+            src: "pwa-192x192.png",
+            sizes: "192x192",
+            type: "image/png",
+          },
+          {
+            src: "pwa-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+          },
+          {
+            src: "maskable-icon-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "maskable",
+          },
+        ],
       },
     }),
   ],
