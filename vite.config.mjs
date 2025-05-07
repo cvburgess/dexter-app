@@ -16,7 +16,7 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: [
-        "app-icon.png",
+        "web-icon.png",
         "favicon.ico",
         "apple-touch-icon.png",
         "masked-icon.svg",
@@ -26,9 +26,9 @@ export default defineConfig({
         description: "An opinionated day planner",
         display: "standalone",
         icons: [
-          { src: "app-icon.png", sizes: "192x192", type: "image/png" },
+          { src: "web-icon.png", sizes: "192x192", type: "image/png" },
           {
-            src: "app-icon.png",
+            src: "web-icon.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "any maskable",
