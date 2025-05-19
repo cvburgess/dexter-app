@@ -12,10 +12,20 @@ export const About = () => {
         <p className="text-sm">{pkg.description}</p>
       </div>
 
-      <ExternalLink
-        link="https://dexterplanner.com/method"
-        title="Learn about the Dexter Method"
-      />
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-4">
+        <ExternalLink
+          link="https://dexterplanner.com/method"
+          title="The Dexter Method"
+        />
+        <ExternalLink
+          link="https://github.com/sponsors/cvburgess"
+          title="Sponsor on GitHub"
+        />
+        <ExternalLink
+          link="https://www.patreon.com/cvburgess"
+          title="Sponsor on Patreon"
+        />
+      </div>
 
       <details className="bg-base-100 border border-base-300 mb-4 rounded-box">
         <summary className="collapse-title font-semibold text-sm min-h-0">
