@@ -16,6 +16,8 @@
 
 ## Development Commands
 
+See @README for project overview and @package.json for available npm commands for this project.
+
 ```bash
 npm run format  # Prettier formatting
 npm run lint    # ESLint checking

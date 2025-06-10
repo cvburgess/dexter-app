@@ -38,12 +38,28 @@ export const Card = React.memo(
     provided,
   }: TCardProps) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [, { deleteTask, updateTask }] = useTasks({ skipQuery: true });
+    const [, { createTask, deleteTask, updateTask }] = useTasks({
+      skipQuery: true,
+    });
     const [, { createTemplateFromTask }] = useTemplates({ skipQuery: true });
 
     const navigate = useNavigate();
 
     const onTaskDelete = () => deleteTask(task.id);
+
+    const onTaskDuplicate = () => {
+      const duplicatedTask = {
+        title: task.title,
+        dueOn: task.dueOn,
+        goalId: task.goalId,
+        listId: task.listId,
+        priority: task.priority,
+        scheduledFor: task.scheduledFor,
+        status: task.status,
+        templateId: task.templateId,
+      };
+      createTask(duplicatedTask);
+    };
 
     const onTaskUpdate = (diff: Omit<TUpdateTask, "id">) =>
       updateTask({ id: task.id, ...diff });
@@ -149,6 +165,7 @@ export const Card = React.memo(
               />
               <MoreButton
                 onTaskDelete={onTaskDelete}
+                onTaskDuplicate={onTaskDuplicate}
                 onTaskRepeat={onTaskRepeat}
                 onTaskUpdate={onTaskUpdate}
                 task={task}
