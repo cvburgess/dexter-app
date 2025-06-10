@@ -34,7 +34,7 @@
 
 Postgres acts as the API layer with triggers and functions doing some of the heavy lifting for things like repeating tasks and account setup.
 
-*Once local scripts and schemas are in this repo it should be easy enough to self-host Dexter anywhere you can host a Postgres database!*
+_Once local scripts and schemas are in this repo it should be easy enough to self-host Dexter anywhere you can host a Postgres database!_
 
 ### Working with Supabase
 
