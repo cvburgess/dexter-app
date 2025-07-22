@@ -47,31 +47,29 @@ export const parseTaskShorthand = (
   let listId: string | null = null;
   let dueOn: string | null = null;
 
-  // Parse priority pattern first: one or more consecutive exclamation marks
-  const priorityMatch = workingInput.match(/^(!{1,4})\s*/);
+  // Parse priority pattern: exactly 1-4 consecutive exclamation marks at start or anywhere with whitespace
+  const priorityMatch = workingInput.match(/(?:^|\s)(!{1,4})(?:\s|$)/);
   if (priorityMatch) {
     const exclamationCount = priorityMatch[1].length;
-    workingInput = workingInput.replace(priorityMatch[0], "").trim();
+    // Only parse if it's exactly 1-4 exclamations (not more)
+    if (exclamationCount <= 4) {
+      workingInput = workingInput.replace(priorityMatch[0], " ").trim();
 
-    // Map exclamation count to priority enum
-    switch (exclamationCount) {
-      case 1:
-        priority = ETaskPriority.URGENT; // 1
-        break;
-      case 2:
-        priority = ETaskPriority.IMPORTANT; // 2
-        break;
-      case 3:
-        priority = ETaskPriority.IMPORTANT_AND_URGENT; // 0
-        break;
-      case 4:
-        priority = ETaskPriority.NEITHER; // 3
-        break;
-      default:
-        // More than 4 exclamations, don't parse priority
-        workingInput = input.trim();
-        priority = undefined;
-        break;
+      // Map exclamation count to priority enum
+      switch (exclamationCount) {
+        case 1:
+          priority = ETaskPriority.URGENT; // 1
+          break;
+        case 2:
+          priority = ETaskPriority.IMPORTANT; // 2
+          break;
+        case 3:
+          priority = ETaskPriority.IMPORTANT_AND_URGENT; // 0
+          break;
+        case 4:
+          priority = ETaskPriority.NEITHER; // 3
+          break;
+      }
     }
   }
 
