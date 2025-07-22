@@ -9,6 +9,7 @@ import { InputWithIcon } from "./InputWithIcon.tsx";
 import { ReorderingContext } from "./View.tsx";
 
 import { useTasks } from "../hooks/useTasks.tsx";
+import { useLists } from "../hooks/useLists.tsx";
 
 import { TTask } from "../api/tasks.ts";
 import { DailyHabits } from "./DailyHabits.tsx";
@@ -50,9 +51,10 @@ export const Column = React.memo(
     const { isReordering } = useContext(ReorderingContext);
     const [hasScrolled, setHasScrolled] = useState(false);
     const [_, { createTask }] = useTasks({ skipQuery: true });
+    const [lists] = useLists();
     const onTaskCreate = (taskTitle: string) => {
-      // Parse shorthand syntax for priorities
-      const { title, priority } = parseTaskShorthand(taskTitle);
+      // Parse shorthand syntax for priorities and lists
+      const { title, priority, listId } = parseTaskShorthand(taskTitle, lists);
 
       // column is prefixed with the property name
       // example: "scheduledFor:2022-01-01"
@@ -63,6 +65,7 @@ export const Column = React.memo(
         title,
         [prop]: nullableValue,
         ...(priority !== undefined && { priority }),
+        ...(listId !== undefined && { listId }),
       });
     };
 

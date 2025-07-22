@@ -1,8 +1,10 @@
 import { ETaskPriority } from "../api/tasks";
+import { TList } from "../api/lists";
 
 export type TaskShorthandResult = {
   title: string;
   priority?: ETaskPriority;
+  listId?: string | null;
 };
 
 /**
@@ -14,46 +16,85 @@ export type TaskShorthandResult = {
  * - !!! = IMPORTANT_AND_URGENT (0)
  * - !!!! = NEITHER (3)
  *
+ * List syntax:
+ * - #listname matches list titles (case-insensitive, spaces become hyphens)
+ * - example: #my-first-list matches "My First List"
+ *
  * @param input - The raw task input from user
- * @returns Object with parsed title and optional priority
+ * @param availableLists - Array of available lists for matching
+ * @returns Object with parsed title and optional priority/listId
  */
-export const parseTaskShorthand = (input: string): TaskShorthandResult => {
-  const trimmedInput = input.trim();
+/**
+ * Helper function to normalize list title for matching
+ * Converts "My First List" to "my-first-list"
+ */
+const normalizeListTitle = (title: string): string => {
+  return title.toLowerCase().replace(/\s+/g, "-");
+};
 
-  // Match priority pattern: one or more consecutive exclamation marks
-  const priorityMatch = trimmedInput.match(/^(!{1,4})\s*/);
+export const parseTaskShorthand = (
+  input: string,
+  availableLists: TList[] = [],
+): TaskShorthandResult => {
+  let workingInput = input.trim();
+  let priority: ETaskPriority | undefined;
+  let listId: string | null = null;
 
-  if (!priorityMatch) {
-    return { title: trimmedInput };
+  // Parse priority pattern first: one or more consecutive exclamation marks
+  const priorityMatch = workingInput.match(/^(!{1,4})\s*/);
+  if (priorityMatch) {
+    const exclamationCount = priorityMatch[1].length;
+    workingInput = workingInput.replace(priorityMatch[0], "").trim();
+
+    // Map exclamation count to priority enum
+    switch (exclamationCount) {
+      case 1:
+        priority = ETaskPriority.URGENT; // 1
+        break;
+      case 2:
+        priority = ETaskPriority.IMPORTANT; // 2
+        break;
+      case 3:
+        priority = ETaskPriority.IMPORTANT_AND_URGENT; // 0
+        break;
+      case 4:
+        priority = ETaskPriority.NEITHER; // 3
+        break;
+      default:
+        // More than 4 exclamations, don't parse priority
+        workingInput = input.trim();
+        priority = undefined;
+        break;
+    }
   }
 
-  const exclamationCount = priorityMatch[1].length;
-  const title = trimmedInput.replace(priorityMatch[0], "").trim();
+  // Parse list pattern: #listname
+  const listMatch = workingInput.match(/#([a-zA-Z0-9-]+)(?:\s|$)/);
+  if (listMatch && availableLists.length > 0) {
+    const listShorthand = listMatch[1]; // Extract the part after #
 
-  // Map exclamation count to priority enum
-  let priority: ETaskPriority;
-  switch (exclamationCount) {
-    case 1:
-      priority = ETaskPriority.URGENT; // 1
-      break;
-    case 2:
-      priority = ETaskPriority.IMPORTANT; // 2
-      break;
-    case 3:
-      priority = ETaskPriority.IMPORTANT_AND_URGENT; // 0
-      break;
-    case 4:
-      priority = ETaskPriority.NEITHER; // 3
-      break;
-    default:
-      // More than 4 exclamations, treat as regular title
-      return { title: trimmedInput };
+    // Find matching list by normalized title
+    const matchingList = availableLists.find(
+      (list) => normalizeListTitle(list.title) === listShorthand,
+    );
+
+    if (matchingList) {
+      listId = matchingList.id;
+      // Remove the list shorthand from the working input
+      workingInput = workingInput.replace(listMatch[0], "").trim();
+    }
   }
 
-  // Don't set priority if title is empty after removing shorthand
+  const title = workingInput.trim();
+
+  // Don't parse shorthand if title would be empty
   if (!title) {
-    return { title: trimmedInput };
+    return { title: input.trim() };
   }
 
-  return { title, priority };
+  return {
+    title,
+    ...(priority !== undefined && { priority }),
+    ...(listId !== null && { listId }),
+  };
 };
