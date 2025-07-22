@@ -21,6 +21,7 @@ declare global {
         callback: (route: string) => void,
       ) => (() => void) | undefined;
       onToggleQuickPlanner: (callback: () => void) => (() => void) | undefined;
+      onFocusTaskInput: (callback: () => void) => (() => void) | undefined;
     };
   }
 }
@@ -91,6 +92,16 @@ contextBridge.exposeInMainWorld("electron", {
     // Return a function to remove the listener
     return () => {
       ipcRenderer.removeAllListeners("toggle-quick-planner");
+    };
+  },
+  onFocusTaskInput: (callback: () => void) => {
+    ipcRenderer.on("focus-task-input", (_event) => {
+      callback();
+    });
+
+    // Return a function to remove the listener
+    return () => {
+      ipcRenderer.removeAllListeners("focus-task-input");
     };
   },
 });

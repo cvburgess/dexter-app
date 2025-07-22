@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 
 import { Calendar } from "../components/Calendar.tsx";
@@ -32,6 +32,8 @@ export const Day = () => {
   const [{ enableCalendar, enableHabits, enableJournal, enableNotes }] =
     usePreferences();
 
+  const taskInputRef = useRef<HTMLInputElement>(null);
+
   const [tasks] = useTasks({
     filters: [["scheduledFor", "eq", date.toString()]],
   });
@@ -43,6 +45,14 @@ export const Day = () => {
     : undefined;
 
   const toggleCalendar = () => setShowCal(!showCal);
+
+  useEffect(() => {
+    const handleFocusTaskInput = () => {
+      taskInputRef.current?.focus();
+    };
+
+    window.electron?.onFocusTaskInput?.(handleFocusTaskInput);
+  }, []);
 
   return (
     <DraggableView>
@@ -64,6 +74,7 @@ export const Day = () => {
             cardSize={cardSize}
             id={`scheduledFor:${date.toString()}`}
             showHabits={enableHabits}
+            taskInputRef={taskInputRef}
             tasks={tasks}
           />
           <Tabs enabled={enableNotes || enableJournal}>

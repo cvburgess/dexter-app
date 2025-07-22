@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useContext, useState, forwardRef } from "react";
 import { Droppable } from "@hello-pangea/dnd";
 import { Plus } from "@phosphor-icons/react";
 import { Temporal } from "@js-temporal/polyfill";
@@ -29,6 +29,7 @@ export type TColumnProps = {
   tasks: TTask[];
   title?: string;
   titleComponent?: React.ReactNode | null;
+  taskInputRef?: React.RefObject<HTMLInputElement>;
 };
 
 export const Column = React.memo(
@@ -43,6 +44,7 @@ export const Column = React.memo(
     tasks = [],
     title,
     titleComponent = null,
+    taskInputRef,
   }: TColumnProps) => {
     const { isReordering } = useContext(ReorderingContext);
     const [hasScrolled, setHasScrolled] = useState(false);
@@ -102,6 +104,7 @@ export const Column = React.memo(
             columnId={id}
             enabled={canCreateTasks}
             onTaskCreate={onTaskCreate}
+            ref={taskInputRef}
           />
         </div>
 
@@ -205,17 +208,22 @@ type TCreateTaskProps = {
   onTaskCreate?: (title: string) => void;
 };
 
-const CreateTask = ({ enabled, onTaskCreate }: TCreateTaskProps) =>
-  enabled && (
-    <InputWithIcon
-      onKeyDown={(e) => {
-        if (e.key === "Enter" && e.currentTarget.value.trim()) {
-          onTaskCreate?.(e.currentTarget.value.trim());
-          e.currentTarget.value = "";
-        }
-      }}
-      type="text"
-    >
-      <Plus />
-    </InputWithIcon>
-  );
+const CreateTask = forwardRef<HTMLInputElement, TCreateTaskProps>(
+  ({ enabled, onTaskCreate }, ref) =>
+    enabled && (
+      <InputWithIcon
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && e.currentTarget.value.trim()) {
+            onTaskCreate?.(e.currentTarget.value.trim());
+            e.currentTarget.value = "";
+          }
+        }}
+        ref={ref}
+        type="text"
+      >
+        <Plus />
+      </InputWithIcon>
+    ),
+);
+
+CreateTask.displayName = "CreateTask";
