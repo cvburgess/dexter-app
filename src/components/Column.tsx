@@ -12,6 +12,7 @@ import { useTasks } from "../hooks/useTasks.tsx";
 
 import { TTask } from "../api/tasks.ts";
 import { DailyHabits } from "./DailyHabits.tsx";
+import { parseTaskShorthand } from "../utils/parseTaskShorthand.ts";
 
 export type TGrouping = {
   prop: "listId" | "goalId" | "priority";
@@ -50,12 +51,19 @@ export const Column = React.memo(
     const [hasScrolled, setHasScrolled] = useState(false);
     const [_, { createTask }] = useTasks({ skipQuery: true });
     const onTaskCreate = (taskTitle: string) => {
+      // Parse shorthand syntax for priorities
+      const { title, priority } = parseTaskShorthand(taskTitle);
+
       // column is prefixed with the property name
       // example: "scheduledFor:2022-01-01"
       const [prop, value] = id.split(":");
       const nullableValue = value === "null" ? null : value;
 
-      createTask({ title: taskTitle, [prop]: nullableValue });
+      createTask({
+        title,
+        [prop]: nullableValue,
+        ...(priority !== undefined && { priority }),
+      });
     };
 
     return (
