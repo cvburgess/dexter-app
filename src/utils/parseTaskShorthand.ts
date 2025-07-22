@@ -1,3 +1,4 @@
+import { Temporal } from "@js-temporal/polyfill";
 import { ETaskPriority } from "../api/tasks";
 import { TList } from "../api/lists";
 
@@ -5,6 +6,7 @@ export type TaskShorthandResult = {
   title: string;
   priority?: ETaskPriority;
   listId?: string | null;
+  dueOn?: string | null;
 };
 
 /**
@@ -20,9 +22,13 @@ export type TaskShorthandResult = {
  * - #listname matches list titles (case-insensitive, spaces become hyphens)
  * - example: #my-first-list matches "My First List"
  *
+ * Due date syntax:
+ * - due:N sets dueOn to N days from today
+ * - due:0 = today, due:1 = tomorrow, due:7 = next week
+ *
  * @param input - The raw task input from user
  * @param availableLists - Array of available lists for matching
- * @returns Object with parsed title and optional priority/listId
+ * @returns Object with parsed title and optional priority/listId/dueOn
  */
 /**
  * Helper function to normalize list title for matching
@@ -39,6 +45,7 @@ export const parseTaskShorthand = (
   let workingInput = input.trim();
   let priority: ETaskPriority | undefined;
   let listId: string | null = null;
+  let dueOn: string | null = null;
 
   // Parse priority pattern first: one or more consecutive exclamation marks
   const priorityMatch = workingInput.match(/^(!{1,4})\s*/);
@@ -85,6 +92,16 @@ export const parseTaskShorthand = (
     }
   }
 
+  // Parse due date pattern: due:N where N is number of days from today
+  const dueDateMatch = workingInput.match(/due:(\d+)(?:\s|$)/);
+  if (dueDateMatch) {
+    const daysFromNow = parseInt(dueDateMatch[1], 10);
+    const today = Temporal.Now.plainDateISO();
+    dueOn = today.add({ days: daysFromNow }).toString();
+    // Remove the due date shorthand from the working input
+    workingInput = workingInput.replace(dueDateMatch[0], "").trim();
+  }
+
   const title = workingInput.trim();
 
   // Don't parse shorthand if title would be empty
@@ -96,5 +113,6 @@ export const parseTaskShorthand = (
     title,
     ...(priority !== undefined && { priority }),
     ...(listId !== null && { listId }),
+    ...(dueOn !== null && { dueOn }),
   };
 };

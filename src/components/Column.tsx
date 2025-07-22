@@ -53,8 +53,11 @@ export const Column = React.memo(
     const [_, { createTask }] = useTasks({ skipQuery: true });
     const [lists] = useLists();
     const onTaskCreate = (taskTitle: string) => {
-      // Parse shorthand syntax for priorities and lists
-      const { title, priority, listId } = parseTaskShorthand(taskTitle, lists);
+      // Parse shorthand syntax for priorities, lists, and due dates
+      const { title, priority, listId, dueOn } = parseTaskShorthand(
+        taskTitle,
+        lists,
+      );
 
       // column is prefixed with the property name
       // example: "scheduledFor:2022-01-01"
@@ -66,6 +69,7 @@ export const Column = React.memo(
         [prop]: nullableValue,
         ...(priority !== undefined && { priority }),
         ...(listId !== undefined && { listId }),
+        ...(dueOn !== undefined && { dueOn }),
       });
     };
 
