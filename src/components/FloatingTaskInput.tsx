@@ -126,26 +126,26 @@ export const FloatingTaskInput: React.FC<FloatingTaskInputProps> = ({
         }
 
         // Add highlighted match with priority-specific color
-        let priorityClassName = "text-primary font-bold";
+        let priorityClassName = "";
         switch (exclamationCount) {
           case 1:
-            priorityClassName = "text-error font-bold";
+            priorityClassName = "text-error";
             break;
           case 2:
-            priorityClassName = "text-info font-bold";
+            priorityClassName = "text-info";
             break;
           case 3:
-            priorityClassName = "text-warning font-bold";
+            priorityClassName = "text-warning";
             break;
           case 4:
-            priorityClassName = "text-base-content font-bold";
+            priorityClassName = "text-base-content";
             break;
         }
 
         priorityNewParts.push({
           text: match[0],
           highlighted: true,
-          className: priorityClassName,
+          className: `font-bold ${priorityClassName}`,
         });
 
         lastIndex = matchEnd;
