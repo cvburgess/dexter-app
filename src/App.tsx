@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import {
   createHashRouter,
@@ -28,6 +28,7 @@ import { Theme } from "./routes/Settings/Theme.tsx";
 import { Week } from "./routes/Week.tsx";
 
 import { Nav } from "./components/Nav.tsx";
+import { FloatingTaskInput } from "./components/FloatingTaskInput.tsx";
 import { useTheme } from "./hooks/useTheme.ts";
 
 // AuthCallback component to handle auth redirects gracefully
@@ -69,6 +70,7 @@ const AuthCallback: React.FC = () => {
 const App = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const [showFloatingInput, setShowFloatingInput] = useState(false);
 
   useEffect(() => {
     // Add the event listener
@@ -82,6 +84,14 @@ const App = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const handleShowFloatingInput = () => {
+      setShowFloatingInput(true);
+    };
+
+    window.electron?.onFocusTaskInput?.(handleShowFloatingInput);
+  }, []);
+
   return (
     <main
       className="flex flex-col-reverse desktop:flex-row h-screen w-full overflow-hidden"
@@ -89,6 +99,10 @@ const App = () => {
     >
       <Nav />
       <Outlet />
+      <FloatingTaskInput
+        isVisible={showFloatingInput}
+        onClose={() => setShowFloatingInput(false)}
+      />
     </main>
   );
 };
