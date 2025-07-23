@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useContext, useState, forwardRef } from "react";
 import { Droppable } from "@hello-pangea/dnd";
 import { Plus } from "@phosphor-icons/react";
 import { Temporal } from "@js-temporal/polyfill";
@@ -9,9 +9,11 @@ import { InputWithIcon } from "./InputWithIcon.tsx";
 import { ReorderingContext } from "./View.tsx";
 
 import { useTasks } from "../hooks/useTasks.tsx";
+import { useLists } from "../hooks/useLists.tsx";
 
 import { TTask } from "../api/tasks.ts";
 import { DailyHabits } from "./DailyHabits.tsx";
+import { parseTaskShorthand } from "../utils/parseTaskShorthand.ts";
 
 export type TGrouping = {
   prop: "listId" | "goalId" | "priority";
@@ -29,6 +31,7 @@ export type TColumnProps = {
   tasks: TTask[];
   title?: string;
   titleComponent?: React.ReactNode | null;
+  taskInputRef?: React.RefObject<HTMLInputElement>;
 };
 
 export const Column = React.memo(
@@ -43,17 +46,31 @@ export const Column = React.memo(
     tasks = [],
     title,
     titleComponent = null,
+    taskInputRef,
   }: TColumnProps) => {
     const { isReordering } = useContext(ReorderingContext);
     const [hasScrolled, setHasScrolled] = useState(false);
     const [_, { createTask }] = useTasks({ skipQuery: true });
+    const [lists] = useLists();
     const onTaskCreate = (taskTitle: string) => {
+      // Parse shorthand syntax for priorities, lists, and due dates
+      const { title, priority, listId, dueOn } = parseTaskShorthand(
+        taskTitle,
+        lists,
+      );
+
       // column is prefixed with the property name
       // example: "scheduledFor:2022-01-01"
       const [prop, value] = id.split(":");
       const nullableValue = value === "null" ? null : value;
 
-      createTask({ title: taskTitle, [prop]: nullableValue });
+      createTask({
+        title,
+        [prop]: nullableValue,
+        ...(priority !== undefined && { priority }),
+        ...(listId !== undefined && { listId }),
+        ...(dueOn !== undefined && { dueOn }),
+      });
     };
 
     return (
@@ -102,6 +119,7 @@ export const Column = React.memo(
             columnId={id}
             enabled={canCreateTasks}
             onTaskCreate={onTaskCreate}
+            ref={taskInputRef}
           />
         </div>
 
@@ -205,17 +223,22 @@ type TCreateTaskProps = {
   onTaskCreate?: (title: string) => void;
 };
 
-const CreateTask = ({ enabled, onTaskCreate }: TCreateTaskProps) =>
-  enabled && (
-    <InputWithIcon
-      onKeyDown={(e) => {
-        if (e.key === "Enter" && e.currentTarget.value.trim()) {
-          onTaskCreate?.(e.currentTarget.value.trim());
-          e.currentTarget.value = "";
-        }
-      }}
-      type="text"
-    >
-      <Plus />
-    </InputWithIcon>
-  );
+const CreateTask = forwardRef<HTMLInputElement, TCreateTaskProps>(
+  ({ enabled, onTaskCreate }, ref) =>
+    enabled && (
+      <InputWithIcon
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && e.currentTarget.value.trim()) {
+            onTaskCreate?.(e.currentTarget.value.trim());
+            e.currentTarget.value = "";
+          }
+        }}
+        ref={ref}
+        type="text"
+      >
+        <Plus />
+      </InputWithIcon>
+    ),
+);
+
+CreateTask.displayName = "CreateTask";

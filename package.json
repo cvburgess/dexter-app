@@ -1,13 +1,13 @@
 {
   "name": "dexter-app",
   "productName": "Dexter",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "An opinionated day planner",
   "license": "AGPLv3",
   "main": ".vite/build/main.js",
   "repository": "github:cvburgess/dexter-app",
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=24.0.0"
   },
   "dependencies": {
     "@emoji-mart/data": "^1.2.1",
@@ -85,6 +85,7 @@
     "git:prune": "git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D",
     "icon": "npx png2icons ./public/app-icon.png ./public/app-icon -allp",
     "lint": "tsc && eslint --ext .ts,.tsx .",
+    "test": "ts-node --compilerOptions='{\"module\":\"commonjs\"}' src/**/*.test.ts",
     "make": "electron-forge make",
     "make:local": "env-cmd -- electron-forge make",
     "postinstall": "npm-license-crawler -onlyDirectDependencies -json src/licenses.json",

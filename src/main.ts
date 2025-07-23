@@ -244,6 +244,13 @@ const toggleQuickPlanner = () => {
   }
 };
 
+const focusTaskInput = () => {
+  if (mainWindow) {
+    mainWindow.focus();
+    mainWindow.webContents.send("focus-task-input");
+  }
+};
+
 const template: Array<MenuItemConstructorOptions> = [
   ...((isMac ? [{ role: "appMenu" }] : []) as MenuItemConstructorOptions[]),
   { role: "fileMenu" },
@@ -332,6 +339,11 @@ const template: Array<MenuItemConstructorOptions> = [
         label: "Toggle Quick Planner",
         accelerator: isMac ? "Cmd+B" : "Ctrl+B",
         click: () => toggleQuickPlanner(),
+      },
+      {
+        label: "New Task",
+        accelerator: isMac ? "Cmd+N" : "Ctrl+N",
+        click: () => focusTaskInput(),
       },
     ],
   },
