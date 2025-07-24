@@ -130,20 +130,20 @@ td {
   @apply !border-secondary;
 }
 .fc .fc-timegrid-slot {
-  @apply !h-6;
+  @apply !h-7;
 }
 .fc-timegrid-slot-label,
 .fc-timegrid-axis {
   @apply text-base-content/80 text-xs;
 }
 .fc-event {
-  @apply bg-primary border-primary-content outline-none !shadow-none rounded-box p-2;
+  @apply bg-primary border-primary-content outline-none !shadow-none rounded-box px-2;
 }
 .fc-event * {
   @apply text-primary-content !leading-3.5;
 }
 .fc-event-time {
-  @apply !text-xs;
+  display: none;
 }
 .fc-event-title {
   @apply !text-sm;
@@ -161,7 +161,7 @@ td {
   content: none !important;
 }
 .fc-event-title-container {
-  @apply grow w-full;
+  @apply grow w-full flex items-center;
 }
 
 @plugin "daisyui/theme" {
