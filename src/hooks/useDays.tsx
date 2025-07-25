@@ -33,7 +33,7 @@ export const useDays = (date: string): TUseDays => {
   };
 
   const { data: day = defaultDay, isLoading } = useQuery({
-    queryKey: ["days", `day-${date}`],
+    queryKey: ["days", date],
     queryFn: () => getDay(supabase, date),
     retry: false,
     staleTime: 1000 * 60 * 10,
@@ -43,7 +43,7 @@ export const useDays = (date: string): TUseDays => {
     {
       mutationFn: (diff) => upsertDay(supabase, { ...diff, date }),
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [`day-${date}`] });
+        queryClient.invalidateQueries({ queryKey: ["days", date] });
       },
     },
   );
