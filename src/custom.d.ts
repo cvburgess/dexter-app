@@ -16,3 +16,15 @@ declare module "react" {
     popover?: "auto" | "manual";
   }
 }
+
+// PWA Badge API types
+declare global {
+  interface Navigator {
+    setAppBadge(contents?: number): Promise<void>;
+    clearAppBadge(): Promise<void>;
+  }
+
+  interface SyncManager {
+    register(tag: string): Promise<void>;
+  }
+}

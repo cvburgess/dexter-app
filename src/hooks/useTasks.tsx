@@ -1,7 +1,9 @@
+import React from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Temporal } from "@js-temporal/polyfill";
 
 import { supabase } from "./useAuth.tsx";
+import { badgeManager } from "../utils/badgeManager.ts";
 
 import {
   createTask,
@@ -43,10 +45,18 @@ export const useTasks = (options?: TSupabaseHookOptions): TUseTasks => {
     staleTime: 1000 * 60 * 10,
   });
 
+  // Update badge when tasks change
+  React.useEffect(() => {
+    if (tasks && !options?.skipQuery) {
+      badgeManager.updateBadgeFromTasks(tasks);
+    }
+  }, [tasks, options?.skipQuery]);
+
   const { mutate: create } = useMutation<TTask[], Error, TCreateTask>({
     mutationFn: (task) => createTask(supabase, task),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      badgeManager.triggerBackgroundUpdate();
     },
   });
 
@@ -69,13 +79,17 @@ export const useTasks = (options?: TSupabaseHookOptions): TUseTasks => {
     //     }
     //   }
     // },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      badgeManager.triggerBackgroundUpdate();
+    },
   });
 
   const { mutate: bulkUpdate } = useMutation<TTask[], Error, TUpdateTask[]>({
     mutationFn: (diffs) => updateTasks(supabase, diffs),
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      badgeManager.triggerBackgroundUpdate();
     },
   });
 
@@ -83,6 +97,7 @@ export const useTasks = (options?: TSupabaseHookOptions): TUseTasks => {
     mutationFn: (id) => deleteTask(supabase, id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      badgeManager.triggerBackgroundUpdate();
     },
   });
 

@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { createClient, Session } from "@supabase/supabase-js";
 
 import { Database } from "../api/database.types.ts";
+import { badgeManager } from "../utils/badgeManager.ts";
 
 const { VITE_SUPABASE_URL, VITE_SUPABASE_KEY } = import.meta.env;
 
@@ -72,10 +73,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
+    // Initialize badge manager with Supabase URL
+    badgeManager.init(VITE_SUPABASE_URL);
+
     supabase.auth
       .getSession()
       .then(({ data: { session } }) => {
         setSession(session);
+        // Set auth token for badge manager if session exists
+        if (session?.access_token) {
+          badgeManager.setAuthToken(session.access_token);
+        }
       })
       .finally(() => {
         setInitializing(false);
@@ -85,6 +93,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
+      // Update auth token for badge manager on auth state change
+      if (session?.access_token) {
+        badgeManager.setAuthToken(session.access_token);
+      } else {
+        badgeManager.clearBadge();
+      }
     });
 
     return () => subscription.unsubscribe();

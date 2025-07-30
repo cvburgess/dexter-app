@@ -16,6 +16,9 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["web-icon.png", "web-icon.svg"],
+      strategies: "injectManifest",
+      srcDir: "public",
+      filename: "sw.js",
       manifest: {
         background_color: "#FFFBF5",
         description: "An opinionated day planner",
