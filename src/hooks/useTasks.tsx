@@ -56,7 +56,6 @@ export const useTasks = (options?: TSupabaseHookOptions): TUseTasks => {
     mutationFn: (task) => createTask(supabase, task),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      badgeManager.triggerBackgroundUpdate();
     },
   });
 
@@ -81,7 +80,6 @@ export const useTasks = (options?: TSupabaseHookOptions): TUseTasks => {
     // },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      badgeManager.triggerBackgroundUpdate();
     },
   });
 
@@ -89,7 +87,6 @@ export const useTasks = (options?: TSupabaseHookOptions): TUseTasks => {
     mutationFn: (diffs) => updateTasks(supabase, diffs),
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      badgeManager.triggerBackgroundUpdate();
     },
   });
 
@@ -97,7 +94,6 @@ export const useTasks = (options?: TSupabaseHookOptions): TUseTasks => {
     mutationFn: (id) => deleteTask(supabase, id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      badgeManager.triggerBackgroundUpdate();
     },
   });
 
