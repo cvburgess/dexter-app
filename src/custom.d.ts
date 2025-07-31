@@ -23,8 +23,4 @@ declare global {
     setAppBadge(contents?: number): Promise<void>;
     clearAppBadge(): Promise<void>;
   }
-
-  interface SyncManager {
-    register(tag: string): Promise<void>;
-  }
 }

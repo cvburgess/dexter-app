@@ -13,12 +13,12 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    VitePWA({
-      registerType: "autoUpdate",
+VitePWA({
+      registerType: "autoUpdate", 
       includeAssets: ["web-icon.png", "web-icon.svg"],
-      strategies: "injectManifest",
-      srcDir: "public",
-      filename: "sw.js",
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+      },
       manifest: {
         background_color: "#FFFBF5",
         description: "An opinionated day planner",

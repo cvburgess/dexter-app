@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Temporal } from "@js-temporal/polyfill";
 
 import { supabase } from "./useAuth.tsx";
-import { badgeManager } from "../utils/badgeManager.ts";
+import { updateBadgeFromTasks } from "../utils/badge.ts";
 
 import {
   createTask,
@@ -48,7 +48,7 @@ export const useTasks = (options?: TSupabaseHookOptions): TUseTasks => {
   // Update badge when tasks change
   React.useEffect(() => {
     if (tasks && !options?.skipQuery) {
-      badgeManager.updateBadgeFromTasks(tasks);
+      updateBadgeFromTasks(tasks);
     }
   }, [tasks, options?.skipQuery]);
 

@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { createClient, Session } from "@supabase/supabase-js";
 
 import { Database } from "../api/database.types.ts";
-import { badgeManager } from "../utils/badgeManager.ts";
+import { clearBadge } from "../utils/badge.ts";
 
 const { VITE_SUPABASE_URL, VITE_SUPABASE_KEY } = import.meta.env;
 
@@ -73,9 +73,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
-    // Initialize badge manager
-    badgeManager.init();
-
     supabase.auth
       .getSession()
       .then(({ data: { session } }) => {
@@ -91,7 +88,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setSession(session);
       // Clear badge when user logs out
       if (!session) {
-        badgeManager.clearBadge();
+        clearBadge();
       }
     });
 
