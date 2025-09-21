@@ -3,14 +3,12 @@ import { CheckCircle, XCircle } from "@phosphor-icons/react";
 import { Temporal } from "@js-temporal/polyfill";
 import classNames from "classnames";
 
-import { ECardSize } from "../components/Card.tsx";
 import { CardList } from "../components/CardList.tsx";
 import { Column } from "../components/Column.tsx";
 import { QuickDrawer } from "../components/QuickPlanner.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
 import { DraggableView, DrawerContainer } from "../components/View.tsx";
 
-import { useCardSize } from "../hooks/useCardSize.tsx";
 import { useTasks } from "../hooks/useTasks.tsx";
 import { useToggle } from "../hooks/useToggle.tsx";
 
@@ -18,7 +16,6 @@ import { ETaskStatus, TTask } from "../api/tasks.ts";
 import { makeBaseFiltersForDate } from "../utils/makeBaseFiltersForDate.ts";
 
 export const Review = () => {
-  const [cardSize, toggleCardSize] = useCardSize(ECardSize.STANDARD);
   const [isOpen, toggle] = useToggle();
   const [date, setDate] = useState<Temporal.PlainDate>(
     Temporal.Now.plainDateISO(),
@@ -50,26 +47,18 @@ export const Review = () => {
 
   return (
     <DraggableView>
-      <DayNav
-        cardSize={cardSize}
-        date={date}
-        setDate={setDate}
-        toggleCardSize={toggleCardSize}
-        toggleQuickPlan={toggle}
-      />
+      <DayNav date={date} setDate={setDate} toggleQuickPlan={toggle} />
       <DrawerContainer>
         <div className="flex flex-1 flex-col items-center justify-center gap-4 px-4 pt-12 min-h-[calc(100vh-6rem)] overflow-auto">
           <Title text={title} />
           <Subtitle text={subtitle} />
           <div className="flex gap-8 flex-wrap max-desktop:flex-col w-full h-full justify-center max-desktop:items-center overflow-auto no-scrollbar">
             <CardListWithTitle
-              cardSize={cardSize}
               isVisible={incompleteTasks.length > 0}
               tasks={incompleteTasks}
               variant="incomplete"
             />
             <CardListWithTitle
-              cardSize={cardSize}
               isVisible
               tasks={completeTasks}
               variant="complete"
@@ -84,7 +73,6 @@ export const Review = () => {
             >
               <Column
                 canCreateTasks
-                cardSize={cardSize}
                 id={`scheduledFor:${nextDay.toString()}`}
                 tasks={nextDaysTasks}
               />
@@ -110,14 +98,12 @@ const Subtitle = ({ text }: { text: string }) => (
 );
 
 type TCardListWithTItleProps = {
-  cardSize: ECardSize;
   isVisible: boolean;
   tasks: TTask[];
   variant: "complete" | "incomplete";
 };
 
 const CardListWithTitle = ({
-  cardSize,
   isVisible,
   tasks,
   variant,
@@ -140,7 +126,7 @@ const CardListWithTitle = ({
         />
         {variant}
       </p>
-      <CardList cardSize={cardSize} tasks={tasks} />
+      <CardList tasks={tasks} />
     </div>
   );
 };

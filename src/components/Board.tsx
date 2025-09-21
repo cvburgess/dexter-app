@@ -10,10 +10,7 @@ type TBoardProps = Partial<TColumnProps> & {
   tasks?: TTask[];
 };
 
-export type TColumn = Omit<
-  TColumnProps,
-  "canCreateTasks" | "cardSize" | "id"
-> & {
+export type TColumn = Omit<TColumnProps, "canCreateTasks" | "id"> & {
   autoCollapse?: boolean;
   id: string | null;
 };
@@ -22,7 +19,6 @@ export type EGroupBy = "scheduledFor" | "listId" | "priority" | "goalId";
 
 export const Board = ({
   appendAfter = null,
-  cardSize,
   columns,
   groupBy,
   ...columnProps
@@ -33,7 +29,6 @@ export const Board = ({
 
       return (
         <Column
-          cardSize={cardSize}
           id={`${groupBy}:${column.id}`}
           isActive={column.isActive}
           key={column.id}
