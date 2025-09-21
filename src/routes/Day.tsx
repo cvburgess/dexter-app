@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 
 import { Calendar } from "../components/Calendar.tsx";
-import { ECardSize } from "../components/Card.tsx";
 import { Column } from "../components/Column.tsx";
 import { DayNav } from "../components/Toolbar.tsx";
 import { Journal } from "../components/Journal.tsx";
@@ -14,7 +13,6 @@ import {
   ScrollableContainer,
 } from "../components/View.tsx";
 
-import { useCardSize } from "../hooks/useCardSize.tsx";
 import { usePreferences } from "../hooks/usePreferences.tsx";
 import { taskFilters, useTasks } from "../hooks/useTasks.tsx";
 import { useToggle } from "../hooks/useToggle.tsx";
@@ -23,7 +21,6 @@ import { makeBaseFiltersForDate } from "../utils/makeBaseFiltersForDate.ts";
 import { usePersistedRouteState } from "../hooks/usePersistedRouteState.tsx";
 
 export const Day = () => {
-  const [cardSize, toggleCardSize] = useCardSize(ECardSize.STANDARD);
   const [isOpen, toggle] = useToggle();
   const [showCal, setShowCal] = usePersistedRouteState("showCalendar", true);
   const [date, setDate] = useState<Temporal.PlainDate>(
@@ -48,12 +45,10 @@ export const Day = () => {
     <DraggableView>
       <DayNav
         articleUrl="https://dexterplanner.com/tips/day"
-        cardSize={cardSize}
         date={date}
         hoverQuickPlan={hoverQuickPlan}
         setDate={setDate}
         toggleCalendar={enableCalendar && toggleCalendar}
-        toggleCardSize={toggleCardSize}
         toggleQuickPlan={toggle}
       />
 
@@ -61,7 +56,6 @@ export const Day = () => {
         <ScrollableContainer>
           <Column
             canCreateTasks
-            cardSize={cardSize}
             id={`scheduledFor:${date.toString()}`}
             showHabits={enableHabits}
             tasks={tasks}

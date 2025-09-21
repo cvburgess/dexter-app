@@ -12,7 +12,6 @@ import {
 import classNames from "classnames";
 
 import { ButtonWithPopover, TOption } from "./ButtonWithPopover.tsx";
-import { ECardSize } from "./Card.tsx";
 import { Column, TGrouping } from "./Column.tsx";
 import { InputWithIcon } from "./InputWithIcon.tsx";
 
@@ -75,7 +74,6 @@ export const QuickPlanner = ({
 
   return (
     <Column
-      cardSize={ECardSize.STANDARD}
       grouping={activeGrouping}
       id={columnId}
       tasks={searchTasks(filteredTasks)}

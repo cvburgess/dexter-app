@@ -4,7 +4,7 @@ import { Plus } from "@phosphor-icons/react";
 import { Temporal } from "@js-temporal/polyfill";
 import classNames from "classnames";
 
-import { DraggableCard, ECardSize } from "./Card.tsx";
+import { DraggableCard } from "./Card.tsx";
 import { InputWithIcon } from "./InputWithIcon.tsx";
 import { ReorderingContext } from "./View.tsx";
 
@@ -22,7 +22,6 @@ export type TGrouping = {
 
 export type TColumnProps = {
   canCreateTasks?: boolean;
-  cardSize: ECardSize;
   grouping?: TGrouping;
   id: string;
   isActive?: boolean;
@@ -37,7 +36,6 @@ export type TColumnProps = {
 export const Column = React.memo(
   ({
     canCreateTasks = false,
-    cardSize,
     grouping,
     id,
     isActive = false,
@@ -75,12 +73,7 @@ export const Column = React.memo(
 
     return (
       <div
-        className={classNames(
-          "min-h-[50vh] flex flex-col overscroll-x-none overflow-y-auto no-scrollbar",
-          cardSize === ECardSize.COMPACT
-            ? "min-w-compact w-compact max-w-compact"
-            : "min-w-standard w-standard max-w-standard",
-        )}
+        className="min-h-[50vh] flex flex-col overscroll-x-none overflow-y-auto no-scrollbar min-w-standard desktop:w-standard desktop:max-w-standard"
         ref={(el) => {
           if (isActive && el && !hasScrolled) {
             el.scrollIntoView({ behavior: "smooth", inline: "center" });
@@ -106,11 +99,7 @@ export const Column = React.memo(
 
           {showHabits && (
             <DailyHabits
-              className={classNames(
-                cardSize === ECardSize.COMPACT
-                  ? "max-w-compact"
-                  : "max-w-standard",
-              )}
+              className="max-w-standard"
               date={Temporal.PlainDate.from(id.split(":")[1])}
             />
           )}
@@ -155,7 +144,6 @@ export const Column = React.memo(
 
                           {groupedTasks.map((task, index) => (
                             <DraggableCard
-                              cardSize={cardSize}
                               index={index}
                               key={task.id}
                               task={task}
@@ -166,7 +154,6 @@ export const Column = React.memo(
                     })
                   : tasks?.map((task, index) => (
                       <DraggableCard
-                        cardSize={cardSize}
                         className={classNames({
                           "mb-4": index === tasks.length - 1,
                         })}

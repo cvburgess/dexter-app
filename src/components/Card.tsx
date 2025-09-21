@@ -18,178 +18,134 @@ import {
   TUpdateTask,
 } from "../api/tasks.ts";
 
-export enum ECardSize {
-  STANDARD = "standard",
-  COMPACT = "compact",
-}
-
 type TCardProps = {
-  cardSize?: ECardSize;
   className?: string;
   provided?: DraggableProvided;
   task: TTask;
 };
 
-export const Card = React.memo(
-  ({
-    cardSize = ECardSize.STANDARD,
-    className,
-    task,
-    provided,
-  }: TCardProps) => {
-    const [isEditing, setIsEditing] = useState(false);
-    const [, { createTask, deleteTask, updateTask }] = useTasks({
-      skipQuery: true,
-    });
-    const [, { createTemplateFromTask }] = useTemplates({ skipQuery: true });
+export const Card = React.memo(({ className, task, provided }: TCardProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [, { createTask, deleteTask, updateTask }] = useTasks({
+    skipQuery: true,
+  });
+  const [, { createTemplateFromTask }] = useTemplates({ skipQuery: true });
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const onTaskDelete = () => deleteTask(task.id);
+  const onTaskDelete = () => deleteTask(task.id);
 
-    const onTaskDuplicate = () => {
-      const duplicatedTask = {
-        title: task.title,
-        dueOn: task.dueOn,
-        goalId: task.goalId,
-        listId: task.listId,
-        priority: task.priority,
-        scheduledFor: task.scheduledFor,
-        status: task.status,
-        templateId: task.templateId,
-      };
-      createTask(duplicatedTask);
+  const onTaskDuplicate = () => {
+    const duplicatedTask = {
+      title: task.title,
+      dueOn: task.dueOn,
+      goalId: task.goalId,
+      listId: task.listId,
+      priority: task.priority,
+      scheduledFor: task.scheduledFor,
+      status: task.status,
+      templateId: task.templateId,
     };
+    createTask(duplicatedTask);
+  };
 
-    const onTaskUpdate = (diff: Omit<TUpdateTask, "id">) =>
-      updateTask({ id: task.id, ...diff });
+  const onTaskUpdate = (diff: Omit<TUpdateTask, "id">) =>
+    updateTask({ id: task.id, ...diff });
 
-    const onTaskRepeat = () => {
-      const goToSettings = () => navigate("/settings/tasks");
-      if (!task.templateId) {
-        createTemplateFromTask(task, { onSuccess: goToSettings });
-      } else {
-        goToSettings();
+  const onTaskRepeat = () => {
+    const goToSettings = () => navigate("/settings/tasks");
+    if (!task.templateId) {
+      createTemplateFromTask(task, { onSuccess: goToSettings });
+    } else {
+      goToSettings();
+    }
+  };
+
+  const updateTitle = (title: string) => {
+    if (title !== task.title) onTaskUpdate({ title });
+    setIsEditing(false);
+  };
+
+  const colors = cardColors[task.priority];
+
+  const isComplete =
+    task.status === ETaskStatus.DONE || task.status === ETaskStatus.WONT_DO;
+
+  const shouldShowButtons = !isComplete;
+  const dragProps = provided
+    ? {
+        ref: provided.innerRef,
+        ...provided.draggableProps,
+        ...provided.dragHandleProps,
+        style: { ...provided.draggableProps.style },
       }
-    };
+    : {};
 
-    const updateTitle = (title: string) => {
-      if (title !== task.title) onTaskUpdate({ title });
-      setIsEditing(false);
-    };
-
-    const colors = cardColors[task.priority];
-
-    const isComplete =
-      task.status === ETaskStatus.DONE || task.status === ETaskStatus.WONT_DO;
-
-    const shouldShowButtons = !isComplete;
-    const dragProps = provided
-      ? {
-          ref: provided.innerRef,
-          ...provided.draggableProps,
-          ...provided.dragHandleProps,
-          style: { ...provided.draggableProps.style },
-        }
-      : {};
-
-    return (
-      <div
-        {...dragProps}
-        className={classNames(
-          "shadow-xs rounded-field p-4 border border-current/10 flex",
-          isComplete ? colors.complete : colors.incomplete,
-          cardSize === ECardSize.COMPACT
-            ? "w-compact"
-            : "w-standard min-h-standard",
-          className,
-        )}
-      >
-        <div
-          className={classNames(
-            "flex items-center justify-start gap-2 w-full",
-            {
-              "flex-wrap": cardSize === ECardSize.COMPACT,
-            },
-          )}
+  return (
+    <div
+      {...dragProps}
+      className={classNames(
+        "shadow-xs rounded-field p-4 border border-current/10 flex",
+        isComplete ? colors.complete : colors.incomplete,
+        className,
+      )}
+    >
+      <div className="flex items-center justify-start gap-2 w-full">
+        <StatusButton
+          onTaskUpdate={onTaskUpdate}
+          status={task.status}
+          task={task}
+        />
+        <p
+          className="text-sm font-medium focus:outline-none mx-0.5 cursor-text flex-grow"
+          contentEditable={isEditing}
+          onBlur={(e) => updateTitle(e.currentTarget.innerText)}
+          onClick={() => setIsEditing(true)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              updateTitle(e.currentTarget.innerText);
+              (e.target as HTMLParagraphElement).blur(); // Unfocus the input
+            }
+          }}
+          suppressContentEditableWarning
         >
-          {cardSize === ECardSize.STANDARD && (
-            <StatusButton
+          {task.title}
+        </p>
+        {shouldShowButtons && (
+          <>
+            <DueDateButton
+              dueOn={task.dueOn}
+              isComplete={isComplete}
               onTaskUpdate={onTaskUpdate}
-              status={task.status}
+              overdueClasses={colors.overdue}
               task={task}
             />
-          )}
-          <p
-            className={classNames(
-              "text-sm font-medium focus:outline-none mx-0.5 cursor-text",
-              {
-                "flex-grow": cardSize !== ECardSize.COMPACT,
-                "w-full mb-2 text-center": cardSize === ECardSize.COMPACT,
-              },
-            )}
-            contentEditable={isEditing}
-            onBlur={(e) => updateTitle(e.currentTarget.innerText)}
-            onClick={() => setIsEditing(true)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                updateTitle(e.currentTarget.innerText);
-                (e.target as HTMLParagraphElement).blur(); // Unfocus the input
-              }
-            }}
-            suppressContentEditableWarning
-          >
-            {task.title}
-          </p>
-          {cardSize === ECardSize.COMPACT && (
-            <StatusButton
-              className={isComplete ? "mx-auto" : "mr-auto"}
-              onTaskUpdate={onTaskUpdate}
-              status={task.status}
+            <ListButton
+              listId={task.listId}
+              onUpdate={onTaskUpdate}
               task={task}
             />
-          )}
-          {shouldShowButtons && (
-            <>
-              <DueDateButton
-                dueOn={task.dueOn}
-                isComplete={isComplete}
-                onTaskUpdate={onTaskUpdate}
-                overdueClasses={colors.overdue}
-                task={task}
-              />
-              <ListButton
-                listId={task.listId}
-                onUpdate={onTaskUpdate}
-                task={task}
-              />
-              <MoreButton
-                onTaskDelete={onTaskDelete}
-                onTaskDuplicate={onTaskDuplicate}
-                onTaskRepeat={onTaskRepeat}
-                onTaskUpdate={onTaskUpdate}
-                task={task}
-              />
-            </>
-          )}
-        </div>
+            <MoreButton
+              onTaskDelete={onTaskDelete}
+              onTaskDuplicate={onTaskDuplicate}
+              onTaskRepeat={onTaskRepeat}
+              onTaskUpdate={onTaskUpdate}
+              task={task}
+            />
+          </>
+        )}
       </div>
-    );
-  },
-);
+    </div>
+  );
+});
 
 Card.displayName = "Card";
 
 export const DraggableCard = React.memo(
-  ({ cardSize, className, index, task }: TCardProps & { index: number }) => (
+  ({ className, index, task }: TCardProps & { index: number }) => (
     <Draggable draggableId={task.id} index={index} key={task.id}>
       {(provided) => (
-        <Card
-          cardSize={cardSize}
-          className={className}
-          provided={provided}
-          task={task}
-        />
+        <Card className={className} provided={provided} task={task} />
       )}
     </Draggable>
   ),

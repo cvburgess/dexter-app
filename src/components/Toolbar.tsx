@@ -4,23 +4,19 @@ import {
   CaretLeft,
   CaretRight,
   Info,
-  Resize,
   SquareHalf,
 } from "@phosphor-icons/react";
 import classNames from "classnames";
 
 import { ButtonWithPopover } from "./ButtonWithPopover.tsx";
-import { ECardSize } from "./Card.tsx";
 
 type TToolbarProps = {
   articleUrl?: string;
   children: React.ReactNode;
-  cardSize?: ECardSize;
   hoverQuickPlan?: string;
   onClickNext?: () => void;
   onClickPrevious?: () => void;
   toggleCalendar?: () => void;
-  toggleCardSize?: () => void;
   toggleQuickPlan?: () => void;
   tooltipNoun?: string;
 };
@@ -32,12 +28,10 @@ const compactButtonClasses = `${buttonClasses} px-2`;
 export const Toolbar = ({
   articleUrl,
   children,
-  cardSize,
   hoverQuickPlan,
   onClickNext,
   onClickPrevious,
   toggleCalendar,
-  toggleCardSize,
   toggleQuickPlan,
   tooltipNoun,
 }: TToolbarProps) => {
@@ -73,16 +67,6 @@ export const Toolbar = ({
         >
           <Info />
         </a>
-      )}
-
-      {cardSize && (
-        <button
-          className={buttonClasses}
-          onClick={toggleCardSize}
-          title="Card size"
-        >
-          <Resize />
-        </button>
       )}
 
       {toggleCalendar && (

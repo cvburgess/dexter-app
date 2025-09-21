@@ -7,6 +7,7 @@ import { useDebounce } from "use-debounce";
 import { CheckFat } from "@phosphor-icons/react";
 
 import { arraysAreEqual } from "../utils/arraysAreEqual";
+import { isSafari } from "../utils/isSafari";
 
 export type TOnChange<T> = (id: T) => void;
 
@@ -85,6 +86,7 @@ export const ButtonWithPopover = ({
         buttonClassName,
       )}
       popovertarget={popoverId}
+      style={{ anchorName: `--${popoverId}` } as React.CSSProperties}
       title={title}
     >
       {children}
@@ -124,12 +126,25 @@ export const ButtonWithPopover = ({
   </div>
 );
 
-const popoverPolyfill = {
-  minWidth: "anchor-size(width)",
-  positionAnchor: "auto",
-  positionTryFallbacks: "top, left, right, flip-inline flip-block",
-  transition: "opacity 0.15s ease-in-out, transform 0.15s ease-in-out",
-} as React.CSSProperties;
+const popoverPolyfill = (anchorId: string) => {
+  const baseStyles = {
+    minWidth: "anchor-size(width)",
+    positionAnchor: `--${anchorId}`,
+    transition: "opacity 0.15s ease-in-out, transform 0.15s ease-in-out",
+  };
+
+  // Safari 26 does not support anchor positioning fully
+  return isSafari()
+    ? {
+        ...baseStyles,
+        positionArea: "bottom start",
+        positionTry: "top start, bottom end, top end",
+      }
+    : ({
+        ...baseStyles,
+        positionTryFallbacks: "top, left, right, flip-inline flip-block",
+      } as React.CSSProperties);
+};
 
 const popoverStyles =
   "dropdown absolute bg-base-100 rounded-box shadow-sm !text-base-content mt-1 max-h-[55vh] no-scrollbar";
@@ -148,7 +163,7 @@ const DropdownMenu = ({ onChange, options, popoverId }: TDropdownMenuProps) => (
     )}
     id={popoverId}
     popover="auto"
-    style={popoverPolyfill}
+    style={popoverPolyfill(popoverId)}
   >
     {options.map((option) => (
       <li key={option.id}>
@@ -223,7 +238,7 @@ const MultiSelectMenu = ({
       )}
       id={popoverId}
       popover="auto"
-      style={popoverPolyfill}
+      style={popoverPolyfill(popoverId)}
     >
       {options.map((option) => {
         const isSelected = selectedIds.includes(option.id);
@@ -261,7 +276,7 @@ const SegmentedMenu = ({ options, popoverId }: TSegmentedMenuProps) => (
     )}
     id={popoverId}
     popover="auto"
-    style={popoverPolyfill}
+    style={popoverPolyfill(popoverId)}
   >
     {options.map((segment) => (
       <Fragment key={segment.title}>
@@ -322,7 +337,7 @@ const Calendar = ({ onChange, popoverId, selectedDate }: TCalendarProps) => (
     className={classNames(popoverStyles)}
     id={popoverId}
     popover="auto"
-    style={popoverPolyfill}
+    style={popoverPolyfill(popoverId)}
   >
     <DayPicker
       className="react-day-picker flex cursor-pointer"
@@ -355,7 +370,7 @@ const Emoji = ({ onChange, popoverId }: TEmojiProps) => (
     className={classNames(popoverStyles)}
     id={popoverId}
     popover="auto"
-    style={popoverPolyfill}
+    style={popoverPolyfill(popoverId)}
   >
     <EmojiPicker
       data={emojiData}
