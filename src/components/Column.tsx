@@ -78,8 +78,8 @@ export const Column = React.memo(
         className={classNames(
           "min-h-[50vh] flex flex-col overscroll-x-none overflow-y-auto no-scrollbar",
           cardSize === ECardSize.COMPACT
-            ? "min-w-compact w-compact max-w-compact"
-            : "min-w-standard w-standard max-w-standard",
+            ? "min-w-compact desktop:w-compact desktop:max-w-compact"
+            : "min-w-standard desktop:w-standard desktop:max-w-standard",
         )}
         ref={(el) => {
           if (isActive && el && !hasScrolled) {

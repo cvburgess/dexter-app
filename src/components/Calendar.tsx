@@ -19,7 +19,7 @@ export const Calendar = React.memo(({ date }: TCalendarProps) => {
   if (!preferences.enableCalendar) return null;
 
   return (
-    <div className="flex flex-1 my-4 border-2 border-base-200 rounded-box min-w-40 w-50 max-w-60 overflow-scroll no-scrollbar">
+    <div className="flex flex-1 my-4 border-2 border-base-200 rounded-box min-w-40 desktop:w-50 desktop:max-w-60 max-desktop:h-full overflow-scroll no-scrollbar">
       {preferences.calendarUrls.length === 0 ? (
         <NoCalendarButton />
       ) : (
