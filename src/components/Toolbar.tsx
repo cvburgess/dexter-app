@@ -24,6 +24,8 @@ type TToolbarProps = {
 const buttonClasses =
   "btn btn-ghost !text-base text-nowrap hover:bg-base-200 hover:border-base-200";
 const compactButtonClasses = `${buttonClasses} px-2`;
+const fixedWidthButtonClasses = `${compactButtonClasses} w-48`;
+const desktopOnlyButtonClasses = `${buttonClasses} hidden desktop:flex`;
 
 export const Toolbar = ({
   articleUrl,
@@ -59,7 +61,7 @@ export const Toolbar = ({
 
       {articleUrl && (
         <a
-          className={buttonClasses}
+          className={desktopOnlyButtonClasses}
           href={articleUrl}
           rel="noopener noreferrer"
           target="_blank"
@@ -71,7 +73,7 @@ export const Toolbar = ({
 
       {toggleCalendar && (
         <button
-          className={buttonClasses}
+          className={desktopOnlyButtonClasses}
           onClick={toggleCalendar}
           title="Calendar"
         >
@@ -109,7 +111,7 @@ export const DayNav = ({ date, setDate, ...rest }: TDayNavProps) => {
     >
       {date.toString() === Temporal.Now.plainDateISO().toString() ? (
         <ButtonWithPopover
-          buttonClassName={compactButtonClasses}
+          buttonClassName={fixedWidthButtonClasses}
           buttonVariant="none"
           onChange={(value) => value && setDate(Temporal.PlainDate.from(value))}
           popoverId="today-day-picker"
@@ -121,7 +123,7 @@ export const DayNav = ({ date, setDate, ...rest }: TDayNavProps) => {
         </ButtonWithPopover>
       ) : (
         <div
-          className={buttonClasses}
+          className={fixedWidthButtonClasses}
           onClick={() => setDate(Temporal.Now.plainDateISO())}
           title="Go to today"
         >
@@ -153,7 +155,7 @@ export const WeekNav = ({
       {...rest}
     >
       <div
-        className={compactButtonClasses}
+        className={fixedWidthButtonClasses}
         onClick={() => setWeeksOffset(0)}
         title={weeksOffset !== 0 ? "Back to this week" : undefined}
       >
@@ -188,6 +190,6 @@ const ArrowButton = ({ onClick, title, variant }: TArrowButtonProps) => (
 const formatDate = (date: Temporal.PlainDate) =>
   date.toLocaleString("en-US", {
     weekday: "long",
-    month: "long",
+    month: "short",
     day: "numeric",
   });
