@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> **Dexter has moved.** This repo is deprecated and no longer maintained. Development continues in the new monorepo: [cvburgess/dexter](https://github.com/cvburgess/dexter). Please file issues and follow development there.
+
 # Dexter - an opinionated day planner for Mac (and Web)
 
 ![Screenshot](https://dexterplanner.com/assets/screenshot-light.png)
