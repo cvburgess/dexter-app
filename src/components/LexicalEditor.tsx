@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 
 import { EditorState, EditorThemeClasses } from "lexical";
@@ -69,8 +69,21 @@ export const LexicalEditor = ({ onChange, text }: TLexicalEditorProps) => {
   const [md, setMd] = useState<string>(text);
   const [debouncedMd] = useDebounce(md, 500);
 
+  // `ignoreSelectionChange` below keeps the mount-time *selection* update out of
+  // `handleChange`, but it is not the only update a fresh editor makes: code
+  // highlighting re-tokenizes fenced blocks in an untagged nested
+  // `editor.update`, which dirties leaves and does reach it. Since the markdown
+  // round-trip is not guaranteed byte-identical, that emission can hand us a
+  // normalized copy of the daily-note template, and autosaving it would write a
+  // `notes` row for a day the user only looked at. Only a real interaction
+  // arms the autosave.
+  const hasUserEdited = useRef(false);
+  const markEdited = () => {
+    hasUserEdited.current = true;
+  };
+
   useEffect(() => {
-    onChange(debouncedMd);
+    if (hasUserEdited.current) onChange(debouncedMd);
   }, [debouncedMd]);
 
   const initialConfig = {
@@ -105,12 +118,31 @@ export const LexicalEditor = ({ onChange, text }: TLexicalEditorProps) => {
           <ContentEditable
             aria-placeholder=""
             className="w-full min-h-full h-fit outline-none text-sm"
-            onBlur={() => onChange(md)}
+            onBeforeInput={markEdited}
+            // Gated on the same flag as the debounce: blur exists to flush a
+            // pending edit, and with no interaction there is none to flush.
+            // Ungated, it reopens the hole above by the likeliest route —
+            // AutoFocusPlugin focuses on mount, so opening the day and clicking
+            // straight to another tab blurs an untouched editor.
+            onBlur={() => {
+              if (hasUserEdited.current) onChange(md);
+            }}
+            // A click can change content without any input event — toggling a
+            // checklist item — so it arms the autosave too.
+            onClick={markEdited}
+            onDrop={markEdited}
+            onKeyDown={markEdited}
+            onPaste={markEdited}
             placeholder={<div className="w-full h-full outline-none" />}
           />
         }
       />
-      <OnChangePlugin onChange={handleChange} />
+      {/* `ignoreSelectionChange` so the selection AutoFocusPlugin creates on
+          mount can't emit a "change". The markdown round-trip isn't guaranteed
+          byte-identical, so a normalized re-serialization of the daily-note
+          template would otherwise autosave — writing a `notes` row for a day
+          the user only looked at. */}
+      <OnChangePlugin ignoreSelectionChange onChange={handleChange} />
       <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
       <HistoryPlugin />
       <AutoFocusPlugin />

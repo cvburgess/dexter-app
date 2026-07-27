@@ -1,15 +1,13 @@
 import { Temporal } from "@js-temporal/polyfill";
 
-import { useDays } from "../hooks/useDays";
+import { useNotes } from "../hooks/useNotes";
 
 import { LexicalEditor } from "./LexicalEditor";
 
 type TNotesProps = { date: Temporal.PlainDate };
 
 export const Notes = ({ date }: TNotesProps) => {
-  const [{ notes, ...rest }, { isLoading, upsertDay }] = useDays(
-    date.toString(),
-  );
+  const [{ content }, { isLoading, upsertNote }] = useNotes(date.toString());
 
   if (isLoading) return null;
 
@@ -17,9 +15,9 @@ export const Notes = ({ date }: TNotesProps) => {
     <LexicalEditor
       key={date.toString()}
       onChange={(text) => {
-        if (text !== notes) upsertDay({ ...rest, notes: text });
+        if (text !== content) upsertNote({ content: text });
       }}
-      text={notes}
+      text={content}
     />
   );
 };

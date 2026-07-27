@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { Temporal } from "@js-temporal/polyfill";
 
-import { useDays } from "../hooks/useDays.tsx";
+import { useJournals } from "../hooks/useJournals.tsx";
 
 type TJournalProps = { date: Temporal.PlainDate };
 
 export const Journal = ({ date }: TJournalProps) => {
-  const [{ prompts, ...rest }, { isLoading, upsertDay }] = useDays(
+  const [{ prompts }, { isLoading, upsertJournal }] = useJournals(
     date.toString(),
   );
 
@@ -22,9 +22,13 @@ export const Journal = ({ date }: TJournalProps) => {
 
       <ResponseInput
         onChange={(newResponse) => {
-          const diff = [...prompts];
-          diff[index].response = newResponse;
-          upsertDay({ ...rest, prompts: diff });
+          // Map rather than mutate a shallow copy — `[...prompts][index]` is
+          // the very object React Query has cached.
+          upsertJournal({
+            prompts: prompts.map((entry, i) =>
+              i === index ? { ...entry, response: newResponse } : entry,
+            ),
+          });
         }}
         response={response}
       />
@@ -53,7 +57,12 @@ const ResponseInput = ({ response, onChange }: TResponseInputProps) => {
   return (
     <input
       className="w-full border-b-1 border-base-content/15 border-dashed focus:outline-0 text-sm"
-      onBlur={() => onChange(newResponse)}
+      // Guarded like the debounce above: blurring an untouched input would
+      // otherwise save a journal of empty responses, and an all-empty write is
+      // exactly what must not create a `journals` row.
+      onBlur={() => {
+        if (newResponse !== response) onChange(newResponse);
+      }}
       onChange={(e) => setNewResponse(e.target.value)}
       value={newResponse}
     />
